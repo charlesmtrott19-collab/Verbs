@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1c2e6e">
+<title>Verbes</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none !important}
+:root{
+  --page:#eceff6; --paper:#fcfcfe; --ink:#1e2234; --muted:#596077; --line:#d5daea;
+  --navy:#1c2e6e; --navy-ink:#ffffff; --navy-soft:#e0e5f5;
+  --seyes:#bcc6ea; --seyes-fine:#e3e8f7; --margin:#d4505f;
+  --know:#1f7448; --know-ink:#ffffff; --know-soft:#dff1e6;
+  --miss:#bd2e44; --miss-soft:#f9e1e5;
+  --end:#7a3cb5; --close:#9a6200; --warn-bg:#fff4d9; --warn-ink:#5e4100;
+  --ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:Georgia,"Noto Serif","Droid Serif",Cambria,"Times New Roman",serif;
+  --scale:1;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --page:#0e1120; --paper:#161a2b; --ink:#e6e8f2; --muted:#9ca3bc; --line:#2b3150;
+  --navy:#aab8ff; --navy-ink:#0e1120; --navy-soft:#232b4c;
+  --seyes:#2d355a; --seyes-fine:#1d2239; --margin:#a8434f;
+  --know:#67c995; --know-ink:#0e1120; --know-soft:#163021;
+  --miss:#ff8c9b; --miss-soft:#3b1a23;
+  --end:#d0a6f6; --close:#ffc46b; --warn-bg:#3a2f12; --warn-ink:#ffdb8f;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){
+  :root[data-theme="system"]{
+    --page:#0e1120; --paper:#161a2b; --ink:#e6e8f2; --muted:#9ca3bc; --line:#2b3150;
+    --navy:#aab8ff; --navy-ink:#0e1120; --navy-soft:#232b4c;
+    --seyes:#2d355a; --seyes-fine:#1d2239; --margin:#a8434f;
+    --know:#67c995; --know-ink:#0e1120; --know-soft:#163021;
+    --miss:#ff8c9b; --miss-soft:#3b1a23;
+    --end:#d0a6f6; --close:#ffc46b; --warn-bg:#3a2f12; --warn-ink:#ffdb8f;
+    color-scheme:dark;
+  }
+}
+html{font-size:calc(16px * var(--scale));-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--ui);line-height:1.45;-webkit-tap-highlight-color:transparent}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.45}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+h1,h2,h3{line-height:1.2;margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+kbd{font:600 .72rem var(--ui);border:1px solid currentColor;border-radius:4px;padding:0 .3em;margin-left:.5em;opacity:.7}
+@media not all and (hover:hover) and (pointer:fine){ kbd{display:none} .legend{display:none} }
+body.no-legend kbd, body.no-legend .legend{display:none}
+
+/* ---------- page layout ---------- */
+.screen{max-width:760px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom))}
+.pagehead{margin:6px 0 14px}
+.pagehead h1{font-family:var(--serif);font-weight:600;font-size:2.1rem;color:var(--navy);letter-spacing:-.01em}
+.lede{margin:6px 0 0;color:var(--muted)}
+.btnrow{display:flex;gap:8px;align-items:center}
+.btnrow.wrap{flex-wrap:wrap}
+.primary,.ghost,.danger{border-radius:10px;min-height:44px;padding:0 16px;font-weight:650;border:1.5px solid transparent}
+.primary{background:var(--navy);color:var(--navy-ink)}
+.ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+.danger{background:transparent;border-color:var(--miss);color:var(--miss)}
+.sm{min-height:40px;padding:0 13px;font-size:.92rem}
+.linkbtn{background:none;border:0;padding:6px 0;color:var(--navy);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.linkbtn.sm{font-size:.85rem;padding:4px 0}
+.tag{font:600 .7rem var(--ui);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 7px;margin-left:8px;white-space:nowrap}
+
+/* ---------- notices, problems, toast ---------- */
+.notice{display:flex;gap:10px;align-items:flex-start;background:var(--warn-bg);color:var(--warn-ink);border-radius:10px;padding:10px 12px;margin:10px 0}
+.notice p{margin:0;flex:1}
+.notice .x{background:none;border:0;color:inherit;font-size:1.3rem;line-height:1;padding:2px 6px}
+.problems{background:var(--warn-bg);color:var(--warn-ink);border-radius:10px;padding:10px 14px;margin:10px 0}
+.problems summary{font-weight:650;cursor:pointer}
+.problems ul{margin:8px 0 2px;padding-left:20px}
+.problems li{margin:4px 0}
+.toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--page);padding:10px 16px;border-radius:10px;font-weight:600;z-index:60;max-width:90vw;text-align:center}
+.fatal{max-width:640px;margin:40px auto;padding:20px;background:var(--warn-bg);color:var(--warn-ink);border-radius:12px}
+.fatal h1{font-family:var(--serif);margin-bottom:10px}
+
+/* ---------- tabs ---------- */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(4,1fr);background:var(--paper);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.tabs button{min-height:58px;background:none;border:0;color:var(--muted);font-weight:650;font-size:.88rem}
+.tabs button[aria-current="page"]{color:var(--navy);box-shadow:inset 0 3px 0 var(--navy)}
+
+/* ---------- library ---------- */
+.lib{margin:22px 0 8px}
+.libhead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding-bottom:10px;border-bottom:2px solid var(--navy)}
+.libhead h2{font-family:var(--serif);font-weight:600;font-size:1.45rem}
+.libhead h3{font-size:1.05rem;font-weight:700}
+.libhead.sub{border-bottom:1px solid var(--line);padding-bottom:8px}
+.count{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+.subsec{margin:16px 0 4px 0;padding-left:12px;border-left:2px solid var(--margin)}
+.vlist{list-style:none;margin:8px 0 0;padding:0}
+.vchip{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:2px 12px;padding:10px 4px;background:none;border:0;border-bottom:1px solid var(--line);text-align:left}
+.vchip .vfr{font-family:var(--serif);font-size:1.2rem}
+.vchip .ven{grid-column:1;color:var(--muted);font-size:.9rem;font-weight:400}
+.vchip .vstat{grid-column:2;grid-row:1 / span 2;align-self:center;color:var(--muted);font-size:.82rem;font-variant-numeric:tabular-nums}
+.resume{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--navy-soft);border-radius:12px;padding:12px 14px;margin:12px 0}
+.resume p{margin:0}
+.empty{color:var(--muted);padding:12px 0}
+
+/* ---------- study ---------- */
+body.in-study .screen#scr-study{display:flex}
+#scr-study{flex-direction:column;min-height:100vh;min-height:100dvh;padding:calc(10px + env(safe-area-inset-top)) 12px calc(10px + env(safe-area-inset-bottom));max-width:720px}
+.studybar{display:flex;align-items:center;gap:10px}
+.iconbtn{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:12px;background:var(--paper);border:1px solid var(--line);color:var(--ink)}
+.iconbtn svg{width:22px;height:22px}
+.sprog{flex:1;min-width:0}
+.sprog-text{display:flex;justify-content:space-between;gap:8px;font-size:.85rem;color:var(--muted)}
+.sprog-text b{color:var(--ink);font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.score{display:flex;gap:10px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.score .k{color:var(--know)} .score .m{color:var(--miss)}
+.track{height:5px;border-radius:3px;background:var(--line);margin-top:5px;overflow:hidden}
+.fill{height:100%;background:var(--navy);width:0;transition:width .25s}
+.quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:10px}
+.qbtn{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:0;min-height:50px;padding:5px 9px;border-radius:10px;border:1px solid var(--line);background:var(--paper);text-align:left;min-width:0}
+.qbtn small{font-size:.7rem;color:var(--muted)}
+.qbtn b{font-size:.86rem;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+@media (max-width:400px){.qbtn{padding:5px 7px}.qbtn small{font-size:.66rem}.qbtn b{font-size:.8rem}}
+.qbtn.on{border-color:var(--navy);background:var(--navy-soft)}
+.micnote{margin:8px 2px 0;font-size:.85rem;color:var(--muted)}
+.cardwrap{flex:1;display:flex;flex-direction:column;padding:10px 0 4px;min-height:0}
+.card{flex:1;position:relative;border-radius:6px;padding:16px 16px 22px 56px;touch-action:pan-y;user-select:none;-webkit-user-select:none;
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(to right,transparent 0 38px,var(--margin) 38px 39.5px,transparent 39.5px),
+    repeating-linear-gradient(to bottom,transparent 0 31px,var(--seyes) 31px 32px),
+    repeating-linear-gradient(to bottom,transparent 0 7px,var(--seyes-fine) 7px 8px);
+  background-attachment:local;
+  box-shadow:0 0 0 1px var(--line),0 14px 30px -20px rgba(28,46,110,.45)}
+.card.enter{animation:cardIn .22s ease-out}
+.card.turn{animation:cardTurn .2s ease-out}
+.card.fly{transition:transform .2s ease-in,opacity .2s ease-in}
+.card.dragging{transition:none}
+.card[data-lean="know"]{box-shadow:0 0 0 3px var(--know),0 14px 30px -20px rgba(0,0,0,.4)}
+.card[data-lean="miss"]{box-shadow:0 0 0 3px var(--miss),0 14px 30px -20px rgba(0,0,0,.4)}
+body.no-anim .card{animation:none !important;transition:none !important}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes cardTurn{from{opacity:.4;transform:scaleX(.97)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.card{animation:none !important;transition:none !important}.fill{transition:none}}
+.ctop{display:flex;align-items:center;min-height:28px;color:var(--muted);font-size:.85rem}
+.cbig{margin:22px 0 6px;font-size:2.4rem;line-height:1.15;overflow-wrap:anywhere}
+.cbig.fr{font-family:var(--serif);color:var(--navy)}
+.cbig.en{font-weight:650}
+.cphon{font-size:1.15rem;color:var(--muted);margin:2px 0}
+.cen{font-size:1.25rem;font-weight:600;margin:8px 0 2px}
+.cask{color:var(--muted);margin:14px 0 0;font-size:.95rem}
+.cnote{color:var(--muted);margin:10px 0 0;font-size:.9rem}
+.cplay{margin:12px 0 4px}
+.verdict{margin:14px 0 0;font-weight:650}
+.verdict.known{color:var(--know)} .verdict.missed{color:var(--miss)}
+.phontap{background:var(--paper);border:1px dashed var(--muted);border-radius:8px;padding:6px 10px;color:var(--muted);margin:4px 0;font-size:.9rem}
+.mtitle{margin:12px 0 2px;font-weight:600;font-size:1.5rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.mtitle .fr{font-family:var(--serif);color:var(--navy);font-size:1.9rem}
+.mtitle .mtense{font-family:var(--ui);font-size:1.1rem;color:var(--ink)}
+.msub{margin:0 0 6px;color:var(--muted)}
+.plist{list-style:none;margin:10px 0 0;padding:0}
+.plist li{display:flex;align-items:center;gap:12px;min-height:32px;font-size:1.1rem}
+.plist .pl{font-family:var(--serif);min-width:5.5em}
+.plist .dots{color:var(--muted);letter-spacing:.2em}
+.rule{margin:10px 0 2px;font-size:.92rem;color:var(--ink);background:var(--navy-soft);border-radius:8px;padding:6px 10px;display:inline-block}
+.play{display:inline-flex;align-items:center;gap:6px;min-height:40px;min-width:40px;justify-content:center;padding:0 10px;border-radius:999px;border:1.5px solid var(--navy);background:var(--paper);color:var(--navy);font-weight:650;font-size:.9rem}
+.play svg{width:20px;height:20px;flex:none}
+.play.playing{background:var(--navy);color:var(--navy-ink)}
+.microw{display:flex;align-items:flex-start;gap:12px;margin-top:18px}
+.micbtn{width:48px;height:48px;flex:none;border-radius:50%;border:2px solid var(--navy);background:var(--paper);color:var(--navy);display:grid;place-items:center}
+.micbtn svg{width:22px;height:22px}
+.micbtn.on{background:var(--miss);border-color:var(--miss);color:#fff;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px transparent,0 0 0 4px var(--miss-soft)}}
+.heard{font-size:.92rem;padding-top:4px;min-width:0;overflow-wrap:anywhere;user-select:text;-webkit-user-select:text}
+.heard q{font-family:var(--serif);font-size:1.05rem;quotes:"“" "”"}
+.hmsg{color:var(--muted)}
+.hb{display:inline-block;font:650 .75rem var(--ui);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle;white-space:nowrap}
+.hb.ok{color:var(--know);background:var(--know-soft)}
+.hb.close{color:var(--close);background:var(--warn-bg)}
+.hb.no{color:var(--muted);border:1px solid var(--line)}
+.actions{display:flex;gap:10px;padding:10px 0 calc(6px + env(safe-area-inset-bottom));position:sticky;bottom:0;z-index:5;background:var(--page)}
+.act{flex:1;min-height:58px;border-radius:12px;font-size:1.05rem;font-weight:700;border:2px solid transparent}
+.act.know{background:var(--know);color:var(--know-ink)}
+.act.miss{background:var(--paper);color:var(--miss);border-color:var(--miss)}
+.act.next,.act.reveal{background:var(--navy);color:var(--navy-ink)}
+.legend{margin:8px 0 0;text-align:center;color:var(--muted);font-size:.8rem}
+.legend kbd{margin:0 .25em 0 .8em}
+
+/* ---------- conjugation tables ---------- */
+.conj{width:100%;border-collapse:collapse;margin:8px 0 4px}
+.conj th{text-align:left;font:600 .75rem var(--ui);color:var(--muted);padding:4px 6px;border-bottom:1px solid var(--line)}
+.conj td{padding:6px;border-bottom:1px solid var(--line);vertical-align:middle}
+.card .conj td{background:color-mix(in srgb,var(--paper) 86%,transparent)}
+.c-p{color:var(--muted);font-size:.9rem;white-space:nowrap}
+.c-fr{font-family:var(--serif);font-size:1.12rem}
+.c-ph{color:var(--muted);font-size:.9rem}
+.c-en{font-size:.92rem}
+.c-pl{width:48px;text-align:right}
+.c-pl .play{min-height:36px;min-width:36px;padding:0}
+.c-m{width:30px;font-weight:800;color:var(--know);text-align:center}
+.end{color:var(--end);font-weight:700}
+.markable tbody tr{cursor:pointer}
+.card .markable tr.wrong td{background:var(--miss-soft)}
+.markable tr.wrong .c-m{color:var(--miss)}
+@media (max-width:560px){
+  .conj thead{display:none}
+  .conj,.conj tbody{display:block}
+  .conj tr{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"m p pl" "m fr pl" "m ph pl" "m en pl";column-gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .conj:not(.markable) tr{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"p pl" "fr pl" "ph pl" "en pl"}
+  .conj td{display:block;padding:0;border:0}
+  .card .conj tr{background:color-mix(in srgb,var(--paper) 86%,transparent)}
+  .card .conj td{background:none}
+  .card .markable tr.wrong{background:var(--miss-soft)}
+  .card .markable tr.wrong td{background:none}
+  .conj .c-m{grid-area:m;align-self:center;width:auto}
+  .conj .c-p{grid-area:p;font-size:.78rem}
+  .conj.persons .c-p{display:none}
+  .conj .c-fr{grid-area:fr}
+  .conj .c-ph{grid-area:ph}
+  .conj .c-en{grid-area:en}
+  .conj .c-pl{grid-area:pl;align-self:center;width:auto}
+  .card{padding-left:40px;background-image:
+    linear-gradient(to right,transparent 0 24px,var(--margin) 24px 25.5px,transparent 25.5px),
+    repeating-linear-gradient(to bottom,transparent 0 31px,var(--seyes) 31px 32px),
+    repeating-linear-gradient(to bottom,transparent 0 7px,var(--seyes-fine) 7px 8px)}
+  .cbig{font-size:2rem}
+}
+
+/* ---------- learn ---------- */
+.banner{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--navy-soft);border-radius:12px;padding:10px 12px;margin:4px 0 8px}
+.banner p{margin:0;color:var(--muted);font-size:.9rem}
+.learnctl{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.sel{display:flex;flex-direction:column;gap:3px;font-size:.85rem;color:var(--muted)}
+select{min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);padding:0 10px;max-width:100%}
+.lverb{border-bottom:1px solid var(--line)}
+.lrow{width:100%;display:flex;align-items:center;gap:8px;min-height:54px;padding:8px 2px;background:none;border:0;text-align:left}
+.lname{flex:1;min-width:0;font-size:1.05rem}
+.lfr{font-family:var(--serif);font-size:1.2rem;color:var(--navy)}
+.ldash{color:var(--muted)}
+.lchev svg{width:22px;height:22px;color:var(--muted);transition:transform .2s}
+.lrow[aria-expanded="true"] .lchev svg{transform:rotate(180deg)}
+.lbody{padding:4px 0 18px}
+.vhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.vfr{font-family:var(--serif);font-size:2rem;color:var(--navy);line-height:1.1}
+.vph{color:var(--muted);font-size:1.05rem}
+.ven{font-weight:600}
+.vmeta{margin:4px 0 0;color:var(--muted);font-size:.88rem}
+.vbtns{margin:10px 0 4px}
+.ltense{margin-top:18px}
+.lthead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.lthead h3{font-family:var(--serif);font-weight:600;font-size:1.2rem;margin-right:auto}
+
+/* ---------- guide ---------- */
+.gentry{padding:16px 0 20px;border-bottom:1px solid var(--line);scroll-margin-top:12px}
+.gentry h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;color:var(--navy)}
+.gentry h3{font-size:.95rem;margin:14px 0 4px}
+.gentry p{margin:0;max-width:68ch}
+.gentry.flash{animation:flash 1.4s ease-out}
+@keyframes flash{from{background:var(--navy-soft)}to{background:transparent}}
+.gtable{border-collapse:collapse;width:100%;margin-top:6px}
+.gtable th,.gtable td{text-align:left;vertical-align:top;padding:7px 8px 7px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.gtable th{white-space:nowrap;font-weight:650}
+.gex{font-family:var(--serif);color:var(--navy);white-space:nowrap}
+@media (max-width:560px){.gtable tr{display:grid;grid-template-columns:auto 1fr;column-gap:10px;border-bottom:1px solid var(--line);padding:6px 0}.gtable th,.gtable td{border:0;padding:0}.gtable td:last-child{grid-column:2}}
+
+/* ---------- settings ---------- */
+.sgroup{margin:20px 0 6px}
+.sgroup h2{font-family:var(--serif);font-weight:600;font-size:1.35rem;padding-bottom:8px;border-bottom:2px solid var(--navy);margin-bottom:4px}
+.sh3{font-size:1rem;margin:16px 0 8px}
+.srow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.srow.col{flex-direction:column;align-items:stretch}
+.stext{flex:1;min-width:0}
+.slabel{font-weight:650;display:block}
+.shelp{margin:3px 0 0;color:var(--muted);font-size:.88rem}
+.switch{flex:none;width:52px;height:32px;border-radius:999px;border:0;background:var(--line);position:relative}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--paper);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .15s}
+.switch[aria-checked="true"]{background:var(--navy)}
+.switch[aria-checked="true"]::after{transform:translateX(20px)}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.seg button{min-height:40px;padding:0 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);font-size:.92rem}
+.seg button[aria-pressed="true"]{border-color:var(--navy);background:var(--navy-soft);font-weight:650}
+input[type=range]{width:100%;accent-color:var(--navy);min-height:36px}
+details.shelpbox{margin:10px 0;color:var(--muted);font-size:.9rem}
+details.shelpbox summary{cursor:pointer;color:var(--navy);font-weight:600}
+details.shelpbox p{margin:8px 0}
+
+/* ---------- dialogs ---------- */
+dialog{border:0;border-radius:14px;padding:20px;max-width:min(460px,calc(100vw - 24px));width:100%;background:var(--paper);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,14,30,.5)}
+dialog h2{font-family:var(--serif);font-weight:600;font-size:1.4rem;margin-bottom:10px}
+dialog p{margin:8px 0}
+dialog fieldset{border:0;margin:10px 0;padding:0}
+dialog legend{font-weight:650;margin-bottom:6px;padding:0}
+.radio{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 10px;border:1.5px solid var(--line);border-radius:10px;margin:6px 0;cursor:pointer}
+.radio:has(input:checked){border-color:var(--navy);background:var(--navy-soft)}
+.radio input{accent-color:var(--navy);width:18px;height:18px}
+.dlgbtns{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
+.pnote{color:var(--muted);font-size:.88rem}
+</style>
+</head>
+<body>
+
+<div id="fatal" class="fatal" hidden></div>
+
+<!-- LIBRARY -->
+<section class="screen" id="scr-library" hidden>
+  <header class="pagehead"><h1>Verbes</h1><p class="lede" id="libLede"></p></header>
+  <div class="notices"></div>
+  <div id="problems"></div>
+  <div id="resume"></div>
+  <div id="sections"></div>
+</section>
+
+<!-- STUDY -->
+<section class="screen" id="scr-study" hidden>
+  <div class="studybar">
+    <button class="iconbtn" id="studyBack" aria-label="Back to Library"></button>
+    <div class="sprog">
+      <div class="sprog-text"><b id="sTitle"></b><span class="score" id="sScore"></span></div>
+      <div class="track"><div class="fill" id="sFill"></div></div>
+    </div>
+    <button class="iconbtn" id="undoBtn" aria-label="Undo last card" title="Undo (U)"></button>
+  </div>
+  <div class="quick" role="toolbar" aria-label="Quick settings">
+    <button class="qbtn" id="qAuto"></button>
+    <button class="qbtn" id="qDir"></button>
+    <button class="qbtn" id="qPhon"></button>
+    <button class="qbtn" id="qMic"></button>
+  </div>
+  <p class="micnote" id="micNote" hidden></p>
+  <div class="cardwrap"><article class="card" id="card" aria-live="polite"></article></div>
+  <div class="actions" id="actions"></div>
+  <p class="legend"><kbd>Space</kbd>flip <kbd>1</kbd>know <kbd>2</kbd>don’t know <kbd>3</kbd>–<kbd>8</kbd>mark a row <kbd>P</kbd>play <kbd>M</kbd>mic <kbd>U</kbd>undo <kbd>Esc</kbd>back</p>
+</section>
+
+<!-- ROUND SUMMARY -->
+<section class="screen" id="scr-summary" hidden>
+  <header class="pagehead"><h1 id="sumTitle"></h1><p class="lede" id="sumText"></p></header>
+  <div id="sumList"></div>
+  <div class="btnrow wrap" id="sumActions" style="margin-top:18px"></div>
+</section>
+
+<!-- LEARN -->
+<section class="screen" id="scr-learn" hidden>
+  <div id="learnBanner"></div>
+  <header class="pagehead"><h1>Learn</h1></header>
+  <div class="learnctl">
+    <label class="sel"><span>Showing</span><select id="learnScope"></select></label>
+    <div class="btnrow"><button class="ghost sm" id="expandAll">Expand all</button><button class="ghost sm" id="collapseAll">Collapse all</button></div>
+  </div>
+  <div id="learnList"></div>
+</section>
+
+<!-- TENSE GUIDE -->
+<section class="screen" id="scr-guide" hidden>
+  <header class="pagehead"><h1>Tense guide</h1><p class="lede">How each tense is formed and when it’s used.</p></header>
+  <div id="guideList"></div>
+</section>
+
+<!-- SETTINGS -->
+<section class="screen" id="scr-settings" hidden>
+  <header class="pagehead"><h1>Settings</h1></header>
+  <div class="notices"></div>
+  <div id="settingsBody"></div>
+</section>
+
+<nav class="tabs" id="tabs" aria-label="Main" hidden>
+  <button data-tab="library">Library</button>
+  <button data-tab="learn">Learn</button>
+  <button data-tab="guide">Tenses</button>
+  <button data-tab="settings">Settings</button>
+</nav>
+
+<dialog id="confirmDlg" aria-labelledby="cTitle">
+  <h2 id="cTitle"></h2>
+  <div id="cText"></div>
+  <div class="dlgbtns"><button class="ghost" id="cCancel">Cancel</button><button class="primary" id="cOk">OK</button></div>
+</dialog>
+
+<dialog id="practiseDlg" aria-labelledby="pTitle">
+  <h2 id="pTitle">Practise</h2>
+  <fieldset>
+    <legend>Cards</legend>
+    <label class="radio"><input type="radio" name="pcontent" value="main">Main card only</label>
+    <label class="radio"><input type="radio" name="pcontent" value="key">Main card + key forms</label>
+    <label class="radio"><input type="radio" name="pcontent" value="full">Main card + full tables</label>
+  </fieldset>
+  <fieldset>
+    <legend>Order</legend>
+    <label class="radio"><input type="radio" name="porder" value="order">In order</label>
+    <label class="radio"><input type="radio" name="porder" value="shuffle">Shuffled</label>
+  </fieldset>
+  <p class="pnote" id="pNote"></p>
+  <div class="dlgbtns"><button class="ghost" id="pCancel">Cancel</button><button class="primary" id="pStart">Start</button></div>
+</dialog>
+
+<input type="file" id="importFile" accept=".json,application/json" hidden>
+
+<script>
+  // Catch errors inside verbs.js so the app can say what went wrong.
+  window.__verbsErrors = [];
+  window.addEventListener("error", function (e) {
+    if (e && e.filename && /verbs\.js/i.test(e.filename)) {
+      window.__verbsErrors.push((e.message || "error") + (e.lineno ? " (line " + e.lineno + ")" : ""));
+    }
+  });
+</script>
+<script src="verbs.js" onerror="window.__verbsMissing = true"></script>
+<script>
+(function () {
+"use strict";
+
+/* =========================================================================
+   CONSTANTS AND SMALL HELPERS
+   ========================================================================= */
+const APP_VERSION = "2.0";
+const SCHEMA = 1;
+// Storage keys. NEVER rename these: saved progress lives under them.
+const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", backup: "frverbs.backup." };
+const TYPE_ORDER = ["irregular", "regular"];
+const TYPE_LABEL = { irregular: "Irregular verbs", regular: "Regular verbs" };
+
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const isObj = o => o !== null && typeof o === "object" && !Array.isArray(o);
+const filled = s => typeof s === "string" && s.trim() !== "";
+const plural = (n, w) => n + " " + w + (n === 1 ? "" : "s");
+
+const ICON = {
+  back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  undo: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5a1 1 0 0 0 1 1h3l4.3 3.6a1 1 0 0 0 1.7-.8V5.7a1 1 0 0 0-1.7-.8L8 8.5H5a1 1 0 0 0-1 1z" fill="currentColor"/><path d="M16.5 8.6a4.8 4.8 0 0 1 0 6.8M19 6.2a8.4 8.4 0 0 1 0 11.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  mic: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3.5 3.5 0 0 0 3.5-3.5v-6a3.5 3.5 0 1 0-7 0v6A3.5 3.5 0 0 0 12 15z" fill="currentColor"/><path d="M18.5 11a6.5 6.5 0 0 1-13 0M12 17.5V21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  chev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+};
+
+/* =========================================================================
+   NOTICES AND TOAST
+   ========================================================================= */
+const notices = [];
+function addNotice(text) {
+  notices.push({ id: Math.random().toString(36).slice(2), text });
+  renderNotices();
+}
+function renderNotices() {
+  $$(".notices").forEach(box => {
+    box.innerHTML = notices.map(n => `<div class="notice" role="status"><p>${esc(n.text)}</p><button class="x" data-dismiss="${n.id}" aria-label="Dismiss">×</button></div>`).join("");
+  });
+}
+let toastTimer = null;
+function toast(text) {
+  let t = $("#toast");
+  if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+  t.textContent = text; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2600);
+}
+
+/* =========================================================================
+   STORAGE (every read and write is wrapped)
+   ========================================================================= */
+let storageWarned = false, writeWarned = false;
+function lsGet(k) {
+  try { return localStorage.getItem(k); }
+  catch (e) {
+    if (!storageWarned) { storageWarned = true; addNotice("This browser is blocking saved data, so progress and settings will be lost when you close the page."); }
+    return null;
+  }
+}
+function lsSet(k, v) {
+  try { localStorage.setItem(k, v); return true; }
+  catch (e) {
+    if (!writeWarned) { writeWarned = true; addNotice("Your progress couldn’t be saved in this browser (storage is full or blocked). Export a backup from Settings to keep it."); }
+    return false;
+  }
+}
+function lsRemove(k) { try { localStorage.removeItem(k); } catch (e) {} }
+function stamp() { return new Date().toISOString().replace(/[:.]/g, "-"); }
+function makeBackup(label, raw) {
+  if (raw == null) return null;
+  const k = KEYS.backup + label + "." + stamp();
+  lsSet(k, raw);
+  pruneBackups();
+  return k;
+}
+function pruneBackups() {
+  try {
+    const ks = [];
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.indexOf(KEYS.backup) === 0) ks.push(k); }
+    const when = k => k.slice(k.lastIndexOf(".") + 1);
+    ks.sort((a, b) => (when(a) < when(b) ? 1 : -1));
+    ks.slice(8).forEach(lsRemove);
+  } catch (e) {}
+}
+
+/* ---------- settings ---------- */
+const DEFAULTS = {
+  autoplay: true, direction: "en-fr", phonetics: "always", mic: true,
+  voice: "", rate: 0.9, theme: "system", textSize: 1,
+  repeatAudio: 1, repeatPile: true, swipe: true, haptics: true, animations: true, keyLegend: true,
+  practiseContent: "main", practiseOrder: "order"
+};
+const CHOICES = {
+  direction: ["en-fr", "fr-en", "mixed"], phonetics: ["always", "tap", "hidden"], theme: ["system", "light", "dark"],
+  textSize: [0, 1, 2, 3], repeatAudio: [1, 2], practiseContent: ["main", "key", "full"], practiseOrder: ["order", "shuffle"]
+};
+const SCALE = [0.9, 1, 1.15, 1.3];
+let settings = Object.assign({}, DEFAULTS);
+
+function cleanSettings(o) {
+  const s = Object.assign({}, DEFAULTS);
+  if (!isObj(o)) return s;
+  Object.keys(DEFAULTS).forEach(k => {
+    const v = o[k], d = DEFAULTS[k];
+    if (v === undefined) return;
+    if (CHOICES[k]) { if (CHOICES[k].includes(v)) s[k] = v; }
+    else if (k === "rate") { if (typeof v === "number" && v >= 0.5 && v <= 1.3) s[k] = v; }
+    else if (typeof d === "boolean") { if (typeof v === "boolean") s[k] = v; }
+    else if (typeof d === "string") { if (typeof v === "string") s[k] = v; }
+  });
+  return s;
+}
+function loadSettings() {
+  const raw = lsGet(KEYS.settings);
+  if (raw == null) return Object.assign({}, DEFAULTS);
+  try {
+    const o = JSON.parse(raw);
+    if (!isObj(o) || typeof o.schema !== "number") throw new Error("bad");
+    return cleanSettings(o);
+  } catch (e) {
+    const k = makeBackup("settings-damaged", raw);
+    addNotice(`Your saved settings were damaged, so they’ve been reset to the defaults. The damaged copy is kept in this browser under “${k}”.`);
+    return Object.assign({}, DEFAULTS);
+  }
+}
+function saveSettings() { lsSet(KEYS.settings, JSON.stringify(Object.assign({ schema: SCHEMA }, settings))); }
+
+/* ---------- progress: { schema, verbs: { verbId: { cardKey: record } } } ---------- */
+let progress = { schema: SCHEMA, verbs: {} };
+function loadProgress() {
+  const raw = lsGet(KEYS.progress);
+  if (raw == null) return { schema: SCHEMA, verbs: {} };
+  try {
+    const o = JSON.parse(raw);
+    if (!isObj(o) || typeof o.schema !== "number" || !isObj(o.verbs)) throw new Error("bad");
+    if (o.schema > SCHEMA) throw new Error("newer");
+    return o;
+  } catch (e) {
+    const k = makeBackup("progress-damaged", raw);
+    addNotice(`Your saved progress was damaged and couldn’t be read, so it has started fresh. The damaged copy is kept in this browser under “${k}”. If you have an export file, import it from Settings.`);
+    return { schema: SCHEMA, verbs: {} };
+  }
+}
+function saveProgress() { lsSet(KEYS.progress, JSON.stringify(progress)); }
+function getRec(verbId, key) {
+  const v = progress.verbs[verbId];
+  return isObj(v) && isObj(v[key]) ? v[key] : null;
+}
+function ensureRec(verbId, key) {
+  if (!isObj(progress.verbs[verbId])) progress.verbs[verbId] = {};
+  const v = progress.verbs[verbId];
+  if (!isObj(v[key])) v[key] = { seen: 0, known: 0, missed: 0 };
+  return v[key];
+}
+
+/* =========================================================================
+   VERB DATA: LOAD AND VALIDATE
+   ========================================================================= */
+let TENSE_KEYS = [], PERSONS = [], VERBS_OK = [], BY_ID = {}, PROBLEMS = [], FATAL = "", SECTIONS = [];
+let RULESX = {}, AUX = null;
+const brokenGroups = new Set();
+
+function checkGroup(G) {
+  const e = [];
+  if (!isObj(G)) return ["must be { ... }"];
+  if (!filled(G.name)) e.push("needs a name");
+  if (!filled(G.infinitiveEnding)) e.push("needs infinitiveEnding");
+  if (!isObj(G.participle) || typeof G.participle.fr !== "string" || typeof G.participle.phon !== "string") e.push("needs participle: { fr, phon }");
+  if (!isObj(G.futureStem) || typeof G.futureStem.drop !== "number" || typeof G.futureStem.phon !== "string") e.push("needs futureStem: { drop, phon }");
+  if (!isObj(G.tenses)) { e.push("needs tenses"); return e; }
+  TENSE_KEYS.forEach(t => {
+    const R = G.tenses[t];
+    if (!isObj(R)) { e.push(`has no rule for the tense “${t}”`); return; }
+    if (!["stem", "future", "auxiliary"].includes(R.from)) { e.push(`tenses.${t}.from must be "stem", "future" or "auxiliary"`); return; }
+    if (R.from === "auxiliary") return;
+    if (!isObj(R.endings)) { e.push(`tenses.${t} needs endings`); return; }
+    PERSONS.forEach(p => {
+      const x = R.endings[p];
+      if (!isObj(x) || typeof x.fr !== "string" || typeof x.phon !== "string") e.push(`tenses.${t}.endings is missing “${p}” ({ fr, phon })`);
+    });
+  });
+  Object.keys(G.tenses).forEach(t => { if (!TENSE_KEYS.includes(t)) e.push(`tenses has an unknown tense “${t}”`); });
+  return e;
+}
+
+function checkVerb(v, errs, seen) {
+  if (!isObj(v)) { errs.push("is not a verb entry { ... }"); return; }
+  ["id", "type", "group", "english", "french", "phonetic"].forEach(f => { if (!filled(v[f])) errs.push(`missing “${f}”`); });
+  if (filled(v.id) && !/^[a-z0-9_-]+$/.test(v.id)) errs.push("id must use lowercase letters, digits, - or _ only (no accents or spaces)");
+  if (filled(v.id) && seen.has(v.id)) errs.push(`duplicate id: an earlier entry already uses “${v.id}”`);
+  if (filled(v.type) && !TYPE_ORDER.includes(v.type)) errs.push(`unknown type “${v.type}” (use "irregular" or "regular")`);
+  const groups = ["irregular"].concat(Object.keys(RULESX));
+  if (filled(v.group)) {
+    if (!groups.includes(v.group)) errs.push(`unknown group “${v.group}” (use one of: ${groups.join(", ")})`);
+    else if (v.type === "regular" && v.group === "irregular") errs.push(`a regular verb needs a regular group (${Object.keys(RULESX).join(", ")})`);
+  }
+  if (v.auxiliary !== undefined && v.auxiliary !== "avoir" && v.auxiliary !== "être") errs.push('auxiliary must be "avoir" or "être"');
+  if (v.hAspire !== undefined && typeof v.hAspire !== "boolean") errs.push("hAspire must be true or false");
+  if (v.test !== undefined && typeof v.test !== "boolean") errs.push("test must be true or false");
+  if (v.conjugations !== undefined && !isObj(v.conjugations)) errs.push("conjugations must be { ... }");
+  const C = isObj(v.conjugations) ? v.conjugations : {};
+  Object.keys(C).forEach(t => {
+    if (!TENSE_KEYS.includes(t)) { errs.push(`unknown tense “${t}” in conjugations (use: ${TENSE_KEYS.join(", ")})`); return; }
+    const tab = C[t];
+    if (!isObj(tab)) { errs.push(`conjugations.${t} must be { je: {...}, ... }`); return; }
+    PERSONS.forEach(p => {
+      const f = tab[p];
+      if (!isObj(f)) { errs.push(`conjugations.${t} is missing the person “${p}”`); return; }
+      if (!filled(f.fr)) errs.push(`conjugations.${t}.${p} needs fr`);
+      if (!filled(f.phon)) errs.push(`conjugations.${t}.${p} needs phon`);
+      if (v.type === "irregular" && !filled(f.en)) errs.push(`conjugations.${t}.${p} needs en`);
+    });
+    Object.keys(tab).forEach(p => { if (!PERSONS.includes(p)) errs.push(`conjugations.${t} has an unknown person “${p}” (use: ${PERSONS.join(", ")})`); });
+  });
+  if (v.type === "irregular") {
+    if (!isObj(v.conjugations)) errs.push("irregular verbs need conjugations");
+    else TENSE_KEYS.forEach(t => { if (!C[t]) errs.push(`conjugations is missing the tense “${t}”`); });
+  }
+  if (v.type === "regular" && isObj(RULESX[v.group])) {
+    const G = RULESX[v.group];
+    if (brokenGroups.has(v.group)) errs.push(`RULES.${v.group} has problems (listed above)`);
+    if (!filled(v.stemPhon)) errs.push('regular verbs need stemPhon (the sound of the stem, e.g. "parl")');
+    if (filled(v.french) && filled(G.infinitiveEnding) && !v.french.endsWith(G.infinitiveEnding)) errs.push(`“${v.french}” doesn’t end in -${G.infinitiveEnding}`);
+    const needsAux = isObj(G.tenses) && TENSE_KEYS.some(t => isObj(G.tenses[t]) && G.tenses[t].from === "auxiliary" && !C[t]);
+    if (needsAux && !AUX) errs.push("AUXILIARIES is missing or incomplete, so the passé composé can’t be built");
+  }
+}
+
+function loadData() {
+  if (window.__verbsMissing) { FATAL = "verbs.js didn’t load. It must sit in the same folder as index.html, with exactly that name."; return; }
+  if (window.__verbsErrors.length || typeof VERBS === "undefined") {
+    FATAL = "verbs.js has an error, so no verbs could be loaded" +
+      (window.__verbsErrors.length ? ": " + window.__verbsErrors.join("; ") + "." : ". Open Chrome’s console (Ctrl+Shift+J) to see the line. A missing comma or bracket is the usual cause.");
+    return;
+  }
+  const T = typeof TENSES !== "undefined" ? TENSES : null;
+  if (!isObj(T) || !Object.keys(T).length) { FATAL = "verbs.js has no TENSES object."; return; }
+  const P = typeof PRONOUNS !== "undefined" ? PRONOUNS : null;
+  if (!isObj(P) || !Object.keys(P).length) { FATAL = "verbs.js has no PRONOUNS object."; return; }
+  PERSONS = Object.keys(P);
+  const pErr = PERSONS.filter(p => !isObj(P[p]) || !filled(P[p].fr) || typeof P[p].phon !== "string");
+  if (pErr.length) { FATAL = `PRONOUNS.${pErr[0]} needs fr and phon.`; return; }
+  TENSE_KEYS = Object.keys(T).filter(k => {
+    if (isObj(T[k]) && filled(T[k].name)) return true;
+    PROBLEMS.push({ where: `TENSES.${k}`, errs: ["needs a name, so this tense was skipped"] });
+    return false;
+  });
+  if (!TENSE_KEYS.length) { FATAL = "TENSES has no usable tenses."; return; }
+  RULESX = (typeof RULES !== "undefined" && isObj(RULES)) ? RULES : {};
+  Object.keys(RULESX).forEach(g => {
+    const e = checkGroup(RULESX[g]);
+    if (e.length) { brokenGroups.add(g); PROBLEMS.push({ where: `RULES.${g}`, errs: e }); }
+  });
+  const A = typeof AUXILIARIES !== "undefined" ? AUXILIARIES : null;
+  const auxOk = isObj(A) && ["avoir", "être"].every(a => isObj(A[a]) && PERSONS.every(p => isObj(A[a][p]) && filled(A[a][p].fr) && typeof A[a][p].phon === "string"))
+    && isObj(A.agreement) && PERSONS.every(p => typeof A.agreement[p] === "string");
+  if (auxOk) AUX = A; else if (A !== null) PROBLEMS.push({ where: "AUXILIARIES", errs: ["needs avoir and être with every person ({ fr, phon }) and agreement for every person"] });
+  if (!Array.isArray(VERBS)) { FATAL = "VERBS in verbs.js must be a list: [ ... ]."; return; }
+
+  const seen = new Set();
+  VERBS.forEach((raw, i) => {
+    const where = `Verb ${i + 1}` + (isObj(raw) && filled(raw.id) ? ` (id “${raw.id}”)` : "");
+    const errs = [];
+    let prepared = null;
+    try {
+      checkVerb(raw, errs, seen);
+      if (!errs.length) prepared = prepareVerb(raw, i);
+    } catch (ex) { errs.push("couldn’t be read (" + (ex && ex.message || ex) + ")"); }
+    if (errs.length) PROBLEMS.push({ where, errs });
+    else { VERBS_OK.push(prepared); BY_ID[prepared.id] = prepared; seen.add(prepared.id); }
+  });
+}
+
+/* =========================================================================
+   CONJUGATION ENGINE
+   ========================================================================= */
+const VOWEL_START = /^[aàâäeéèêëiîïoôöuùûüyÿœæ]/i;
+function vowelStart(form, v) {
+  const f = form.trim();
+  if (VOWEL_START.test(f)) return true;
+  if (/^h/i.test(f)) return !v.hAspire;
+  return false;
+}
+function stripAgree(s) { return s.replace(/\((?:e|s)\)/g, ""); }
+
+// One row of a table: the app adds the pronoun (elision, liaison) to a form.
+function makeRow(v, p, form, phon, en, pre, end) {
+  const P = PRONOUNS[p];
+  const vowel = vowelStart(form, v);
+  const elide = vowel && filled(P.elided);
+  const pron = elide ? P.elided : P.fr + " ";
+  const phonPron = elide ? (typeof P.phonElided === "string" ? P.phonElided : P.phon)
+                         : P.phon + " " + (vowel && filled(P.liaison) ? P.liaison : "");
+  const speakPron = elide ? P.elided : (filled(P.speak) ? P.speak : P.fr) + " ";
+  return {
+    key: p, person: p, label: filled(P.label) ? P.label : p,
+    pron, form, pre: pre == null ? form : pre, end: end || "",
+    fr: pron + form, phon: (phonPron + phon).trim(), en: en || "",
+    speak: speakPron + stripAgree(form), elided: elide
+  };
+}
+
+function buildTable(v, t) {
+  const own = isObj(v.raw.conjugations) && isObj(v.raw.conjugations[t]) ? v.raw.conjugations[t] : null;
+  if (own) {
+    return {
+      source: v.type === "irregular" ? "data" : "override",
+      rule: v.type === "regular" ? "This verb has its own forms for this tense." : "",
+      rows: PERSONS.map(p => makeRow(v, p, own[p].fr.trim(), own[p].phon.trim(), own[p].en))
+    };
+  }
+  const G = RULESX[v.group], R = G.tenses[t];
+  const stem = v.french.slice(0, v.french.length - G.infinitiveEnding.length);
+  if (R.from === "auxiliary") {
+    const aux = v.auxiliary, A = AUX[aux], agree = aux === "être" ? AUX.agreement : null;
+    const part = stem + G.participle.fr, partPh = v.stemPhon + G.participle.phon;
+    return {
+      source: "rules",
+      rule: `${aux} (présent) + past participle ${part}${agree ? ", which agrees with the subject" : ""}`,
+      rows: PERSONS.map(p => {
+        const ag = agree ? agree[p] : "";
+        const pre = A[p].fr + " " + stem;
+        return makeRow(v, p, pre + G.participle.fr + ag, A[p].phon + " " + partPh, "", pre, G.participle.fr + ag);
+      })
+    };
+  }
+  const future = R.from === "future";
+  const base = future ? v.french.slice(0, v.french.length - (G.futureStem.drop || 0)) : stem;
+  const basePh = future ? v.stemPhon + G.futureStem.phon : v.stemPhon;
+  return {
+    source: "rules",
+    rule: `stem ${base}- + ` + PERSONS.map(p => (R.endings[p].fr ? "-" + R.endings[p].fr : "(nothing)")).join(", "),
+    rows: PERSONS.map(p => makeRow(v, p, base + R.endings[p].fr, basePh + R.endings[p].phon, "", base, R.endings[p].fr))
+  };
+}
+
+function prepareVerb(raw, i) {
+  const v = {
+    id: raw.id, type: raw.type, group: raw.group, english: raw.english.trim(), french: raw.french.trim(),
+    phonetic: raw.phonetic.trim(), auxiliary: raw.auxiliary || "avoir", stemPhon: raw.stemPhon || "",
+    hAspire: !!raw.hAspire, test: !!raw.test, order: i, raw, tables: {}, keyRows: []
+  };
+  TENSE_KEYS.forEach(t => { v.tables[t] = buildTable(v, t); });
+  if (v.type === "irregular") {
+    v.keyRows = TENSE_KEYS.filter(t => TENSES[t].keyForm !== false).map(t => {
+      const r = v.tables[t].rows[0];
+      return Object.assign({}, r, { key: t, label: TENSES[t].name, tense: t });
+    });
+  }
+  return v;
+}
+
+function groupLabel(g) { return g === "irregular" ? "Irregular" : (isObj(RULESX[g]) && filled(RULESX[g].name) ? RULESX[g].name : g); }
+function typeName(v) { return v.type === "irregular" ? "Irregular verb" : "Regular -" + RULESX[v.group].infinitiveEnding + " verb"; }
+
+// Sections and subsections come from the data, never from a fixed list.
+function buildSections() {
+  const types = [];
+  VERBS_OK.forEach(v => {
+    let T = types.find(x => x.type === v.type);
+    if (!T) { T = { type: v.type, label: TYPE_LABEL[v.type] || v.type, groups: [], verbs: [] }; types.push(T); }
+    T.verbs.push(v);
+    let G = T.groups.find(x => x.group === v.group);
+    if (!G) { G = { group: v.group, label: groupLabel(v.group), verbs: [] }; T.groups.push(G); }
+    G.verbs.push(v);
+  });
+  const rank = t => { const i = TYPE_ORDER.indexOf(t); return i < 0 ? 99 : i; };
+  types.sort((a, b) => rank(a.type) - rank(b.type));
+  const gk = Object.keys(RULESX);
+  const gr = g => (g === "irregular" ? -1 : gk.indexOf(g));
+  types.forEach(T => T.groups.sort((a, b) => gr(a.group) - gr(b.group)));
+  return types;
+}
+function verbsInScope(scope) {
+  if (!scope || scope === "all") return VERBS_OK.slice();
+  const p = scope.split(":");
+  if (p[0] === "type") return VERBS_OK.filter(v => v.type === p[1]);
+  if (p[0] === "group") return VERBS_OK.filter(v => v.type === p[1] && v.group === p[2]);
+  if (p[0] === "verb") return VERBS_OK.filter(v => v.id === p[1]);
+  return VERBS_OK.slice();
+}
+function scopeLabel(scope) {
+  if (!scope || scope === "all") return "All verbs";
+  const p = scope.split(":");
+  if (p[0] === "type") return TYPE_LABEL[p[1]] || p[1];
+  if (p[0] === "group") return groupLabel(p[2]);
+  if (p[0] === "verb") return BY_ID[p[1]] ? BY_ID[p[1]].french : p[1];
+  return "All verbs";
+}
+function scopeOptions() {
+  const out = [["all", "All verbs"]];
+  SECTIONS.forEach(T => {
+    out.push(["type:" + T.type, T.label]);
+    if (T.type === "regular" || T.groups.length > 1) T.groups.forEach(G => out.push([`group:${T.type}:${G.group}`, "   " + G.label]));
+  });
+  return out;
+}
+
+/* ---------- cards ---------- */
+function cardsFor(verbs, content) {
+  const out = [];
+  verbs.forEach(v => {
+    out.push({ verbId: v.id, kind: "main" });
+    if (content === "key" && v.keyRows.length) out.push({ verbId: v.id, kind: "keyforms" });
+    if (content === "full") TENSE_KEYS.forEach(t => out.push({ verbId: v.id, kind: "tense", tense: t }));
+  });
+  return out;
+}
+function cardKeyOf(c) { return c.kind === "main" ? "main" : c.kind === "keyforms" ? "keyforms" : "t:" + c.tense; }
+function cardName(c) { return c.kind === "main" ? "Main card" : c.kind === "keyforms" ? "Key forms" : TENSES[c.tense].name; }
+function verbStat(v) {
+  const keys = ["main"].concat(v.keyRows.length ? ["keyforms"] : [], TENSE_KEYS.map(t => "t:" + t));
+  const known = keys.filter(k => { const r = getRec(v.id, k); return r && r.last === "known"; }).length;
+  return { known, total: keys.length };
+}
+
+/* =========================================================================
+   TEXT-TO-SPEECH (device voices, French)
+   ========================================================================= */
+const synth = ("speechSynthesis" in window) ? window.speechSynthesis : null;
+let voices = [], voice = null, speakTok = 0, utterRef = null, safetyT = null, playingBtn = null;
+function voiceRank(v) {
+  let s = /^fr[-_]fr/i.test(v.lang) ? 10 : 0;
+  if (/natural|neural|premium|enhanced/i.test(v.name)) s += 3; else if (/google/i.test(v.name)) s += 2; else s += 1;
+  return s;
+}
+function loadVoices() {
+  if (!synth) return;
+  let all = [];
+  try { all = synth.getVoices() || []; } catch (e) {}
+  const seen = new Set();
+  voices = all.filter(v => /^fr([-_]|$)/i.test(v.lang || ""))
+    .filter(v => { const k = v.voiceURI + "|" + v.name; if (seen.has(k)) return false; seen.add(k); return true; })
+    .sort((a, b) => voiceRank(b) - voiceRank(a));
+  voice = voices.find(v => v.voiceURI === settings.voice) || voices.find(v => v.name === settings.voice) || voices[0] || null;
+  syncVoiceUI();
+}
+function setPlaying(btn) {
+  if (playingBtn) playingBtn.classList.remove("playing");
+  playingBtn = btn || null;
+  if (playingBtn) playingBtn.classList.add("playing");
+}
+function stopSpeech() {
+  speakTok++; clearTimeout(safetyT);
+  if (synth) { try { synth.cancel(); } catch (e) {} }
+  setPlaying(null);
+}
+function speak(text, btn) {
+  if (!synth) { toast("This browser can’t play speech."); return; }
+  if (!text) return;
+  if (listening) stopListening();
+  if (!voice) loadVoices();
+  const tok = ++speakTok, times = settings.repeatAudio === 2 ? 2 : 1;
+  let n = 0;
+  try { synth.cancel(); if (synth.paused) synth.resume(); } catch (e) {}
+  setPlaying(btn);
+  const once = () => {
+    if (tok !== speakTok) return;
+    const u = new SpeechSynthesisUtterance(text);
+    utterRef = u; // keep a reference so Chrome doesn't drop the events
+    u.lang = voice ? voice.lang.replace("_", "-") : "fr-FR";
+    if (voice) u.voice = voice;
+    u.rate = settings.rate; u.pitch = 1;
+    let finished = false;
+    const done = () => {
+      if (finished || tok !== speakTok) return;
+      finished = true; clearTimeout(safetyT); n++;
+      if (n < times) setTimeout(once, 450); else setPlaying(null);
+    };
+    u.onend = done;
+    u.onerror = e => { if (e && (e.error === "interrupted" || e.error === "canceled")) return; done(); };
+    clearTimeout(safetyT);
+    safetyT = setTimeout(done, 5000 + text.length * 120 / settings.rate);
+    try { synth.speak(u); } catch (e) { done(); }
+  };
+  once();
+}
+function speakText(it) {
+  const v = BY_ID[it.verbId];
+  return it.kind === "main" ? v.french : rowsOf(it).map(r => r.speak).join(". ") + ".";
+}
+
+/* =========================================================================
+   SPEECH RECOGNITION (French, hint only)
+   ========================================================================= */
+const SRClass = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+let micState = SRClass ? "ok" : "unsupported"; // ok | unsupported | blocked | unavailable
+let rec = null, recTok = 0, listening = false, micPromise = null;
+
+function ensureMic() {
+  // Asking for the microphone directly is what makes Chrome show its permission prompt.
+  if (micPromise) return micPromise;
+  micPromise = (async () => {
+    if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) return { ok: true };
+    try {
+      const s = await navigator.mediaDevices.getUserMedia({ audio: true });
+      s.getTracks().forEach(t => t.stop());
+      return { ok: true };
+    } catch (e) { return { ok: false, reason: (e && e.name) || "error" }; }
+  })();
+  micPromise.then(r => { if (!r.ok) micPromise = null; });
+  return micPromise;
+}
+function setMicState(state) {
+  micState = state;
+  stopListening();
+  if (currentScreen === "study" && session) renderStudy(false);
+  syncSettingsUI();
+}
+if (micState === "ok" && navigator.permissions && navigator.permissions.query) {
+  navigator.permissions.query({ name: "microphone" }).then(st => {
+    const apply = () => {
+      if (st.state === "denied") { if (micState === "ok") setMicState("blocked"); }
+      else if (micState === "blocked") { micPromise = null; setMicState("ok"); }
+    };
+    apply(); st.onchange = apply;
+  }).catch(() => {});
+}
+function toggleMic() {
+  const it = curItem();
+  if (!it || !settings.mic || micState !== "ok") return;
+  if (listening) { stopListening(); return; }
+  stopSpeech();
+  it.micMsg = "";
+  if (it.kind === "main") it.heard = []; // one word: judge the latest attempt only
+  const tok0 = ++recTok;
+  listening = true; refreshMic();
+  ensureMic().then(r => {
+    if (tok0 !== recTok || curItem() !== it) { if (tok0 === recTok) listening = false; return; }
+    if (!r.ok) {
+      listening = false;
+      if (r.reason === "NotAllowedError" || r.reason === "SecurityError") { setMicState("blocked"); return; }
+      it.micMsg = r.reason === "NotFoundError" ? "No microphone was found." : r.reason === "NotReadableError" ? "Another app is using the microphone." : "The microphone couldn’t start. Tap the mic to try again.";
+      refreshMic(); return;
+    }
+    startRecognition(it);
+  });
+}
+function startRecognition(it) {
+  const tok = ++recTok;
+  try { rec = new SRClass(); } catch (e) { listening = false; setMicState("unsupported"); return; }
+  rec.lang = "fr-FR";
+  rec.interimResults = false;
+  rec.maxAlternatives = 5;
+  rec.continuous = it.kind !== "main";
+  rec.onresult = e => {
+    if (tok !== recTok || curItem() !== it) return;
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const res = e.results[i];
+      if (!res.isFinal) continue;
+      const alts = [];
+      for (let j = 0; j < res.length; j++) { const t = (res[j].transcript || "").trim(); if (t) alts.push(t); }
+      if (alts.length) it.heard.push(alts);
+    }
+    it.micMsg = ""; refreshMic();
+  };
+  rec.onerror = e => {
+    if (tok !== recTok) return;
+    const er = e.error;
+    if (er === "not-allowed") { setMicState("blocked"); return; }
+    if (er === "service-not-allowed") { setMicState("unavailable"); return; }
+    it.micMsg = er === "no-speech" ? "Didn’t catch anything. Tap the mic to try again."
+      : er === "network" ? "Speech recognition needs an internet connection."
+      : er === "audio-capture" ? "No microphone found, or another app is using it."
+      : er === "aborted" ? "" : "The mic stopped (" + er + "). Tap to try again.";
+    refreshMic();
+  };
+  rec.onend = () => { if (tok !== recTok) return; listening = false; rec = null; refreshMic(); };
+  try { rec.start(); listening = true; refreshMic(); }
+  catch (e) { listening = false; it.micMsg = "The mic couldn’t start. Tap to try again."; refreshMic(); }
+}
+function stopListening() {
+  recTok++;
+  if (rec) { try { rec.abort(); } catch (e) {} rec = null; }
+  if (listening) { listening = false; refreshMic(); }
+}
+function refreshMic() { if (currentScreen === "study" && session && curItem()) renderCard(false); }
+
+// Matching: lowercase, trim, drop punctuation. Accent-only differences are "close".
+function norm(s) { return String(s).toLowerCase().normalize("NFC").replace(/[’‘`´']/g, " ").replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim(); }
+function deacc(s) { return s.normalize("NFD").replace(/\p{M}/gu, ""); }
+function phraseIn(hay, needle) { return !!needle && (" " + hay + " ").indexOf(" " + needle + " ") >= 0; }
+function matchLevel(alts, answers) {
+  const A = answers.map(norm).filter(Boolean), AD = A.map(deacc);
+  let best = 0;
+  for (const t of alts) {
+    const n = norm(t), nd = deacc(n);
+    if (A.some(a => n === a || phraseIn(n, a))) return 2;
+    if (AD.some(a => nd === a || phraseIn(nd, a))) best = 1;
+  }
+  return best;
+}
+function agreeVariants(f) {
+  if (f.indexOf("(") < 0) return [f];
+  return Array.from(new Set([
+    f.replace(/\((e|s)\)/g, ""), f.replace(/\((e|s)\)/g, "$1"),
+    f.replace(/\(e\)/g, "e").replace(/\(s\)/g, ""), f.replace(/\(e\)/g, "").replace(/\(s\)/g, "s")
+  ]));
+}
+function rowAnswers(r) {
+  const P = PRONOUNS[r.person];
+  const prons = r.elided ? [P.elided] : P.fr.split("/").map(s => s.trim() + " ");
+  const out = [];
+  prons.forEach(pr => agreeVariants(r.form).forEach(f => out.push(pr + f)));
+  return out;
+}
+function rowLevels(it, rows) {
+  if (!it.heard.length) return null;
+  const alts = [].concat.apply([], it.heard);
+  return rows.map(r => matchLevel(alts, rowAnswers(r)));
+}
+function badge(level) {
+  return level === 2 ? '<span class="hb ok">heard</span>' : level === 1 ? '<span class="hb close">close (check accents)</span>' : "";
+}
+
+/* =========================================================================
+   SESSION
+   ========================================================================= */
+let session = null, busy = false, suppressClickUntil = 0;
+function newItem(spec) { return { verbId: spec.verbId, kind: spec.kind, tense: spec.tense, dir: null, revealed: false, pending: null, wrong: new Set(), heard: [], micMsg: "", phonShown: false }; }
+function specOf(it) { return { verbId: it.verbId, kind: it.kind, tense: it.tense }; }
+function curItem() { return session && !session.done && session.queue ? session.queue[session.idx] || null : null; }
+function rowsOf(it) {
+  const v = BY_ID[it.verbId];
+  return it.kind === "keyforms" ? v.keyRows : it.kind === "tense" ? v.tables[it.tense].rows : [];
+}
+function shuffled(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+function resolveDir() { return settings.direction === "mixed" ? (Math.random() < 0.5 ? "en-fr" : "fr-en") : settings.direction; }
+const animOn = () => settings.animations && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+function startSession(specs, title, order) {
+  if (!specs.length) { toast("No cards to practise here."); return; }
+  session = { title, order, base: specs.slice(), round: 1 };
+  startRound(order === "shuffle" ? shuffled(specs) : specs.slice());
+}
+function startRound(specs) {
+  Object.assign(session, { queue: specs.map(newItem), idx: 0, known: 0, missed: 0, pile: [], missedItems: [], undo: [], done: false });
+  curItem().dir = resolveDir();
+  navigate("study");
+  presentCurrent(true);
+}
+function presentCurrent(animate) {
+  const it = curItem(); if (!it) return;
+  stopSpeech(); stopListening();
+  if (!it.dir) it.dir = resolveDir();
+  renderStudy(animate);
+  if (settings.autoplay && it.dir === "fr-en" && !it.revealed) speak(speakText(it), $("#card .cplay .play"));
+}
+function haptic() { if (settings.haptics && navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} } }
+
+function commit(it, wrongKeys) {
+  const key = cardKeyOf(it), before = getRec(it.verbId, key);
+  session.undo.push({
+    idx: session.idx, known: session.known, missed: session.missed, pileLen: session.pile.length,
+    missedLen: session.missedItems.length, verbId: it.verbId, key, before: before ? JSON.parse(JSON.stringify(before)) : null
+  });
+  if (session.undo.length > 60) session.undo.shift();
+  const r = ensureRec(it.verbId, key), knew = wrongKeys.length === 0;
+  r.seen = (r.seen || 0) + 1;
+  if (knew) r.known = (r.known || 0) + 1;
+  else {
+    r.missed = (r.missed || 0) + 1;
+    if (it.kind !== "main") {
+      if (!isObj(r.formMisses)) r.formMisses = {};
+      wrongKeys.forEach(k => { r.formMisses[k] = (r.formMisses[k] || 0) + 1; });
+    }
+  }
+  r.last = knew ? "known" : "missed";
+  r.lastSeen = new Date().toISOString();
+  saveProgress();
+  if (knew) session.known++;
+  else {
+    session.missed++;
+    session.missedItems.push({ spec: specOf(it), wrong: wrongKeys.slice() });
+    if (settings.repeatPile) session.pile.push(specOf(it));
+  }
+  haptic();
+}
+function undo() {
+  if (!session || !session.undo || !session.undo.length || busy) return;
+  const u = session.undo.pop();
+  stopSpeech(); stopListening();
+  if (u.before) { if (!isObj(progress.verbs[u.verbId])) progress.verbs[u.verbId] = {}; progress.verbs[u.verbId][u.key] = u.before; }
+  else if (isObj(progress.verbs[u.verbId])) { delete progress.verbs[u.verbId][u.key]; if (!Object.keys(progress.verbs[u.verbId]).length) delete progress.verbs[u.verbId]; }
+  saveProgress();
+  Object.assign(session, { idx: u.idx, known: u.known, missed: u.missed, done: false });
+  session.pile.length = u.pileLen; session.missedItems.length = u.missedLen;
+  const old = session.queue[u.idx], fresh = newItem(specOf(old));
+  fresh.dir = old.dir; session.queue[u.idx] = fresh;
+  if (currentScreen !== "study") navigate("study");
+  renderStudy(true);
+}
+function advance(dir) {
+  stopSpeech(); stopListening();
+  session.idx++;
+  const next = curItem();
+  // start the next card's audio inside the tap, so phones allow it
+  if (next) { if (!next.dir) next.dir = resolveDir(); if (settings.autoplay && next.dir === "fr-en") speak(speakText(next)); }
+  const finish = () => { if (!next) endRound(); else renderStudy(true); };
+  if (dir && animOn()) flyOut(dir, finish); else finish();
+}
+function flyOut(dir, then) {
+  const card = $("#card");
+  busy = true;
+  card.classList.add("fly");
+  requestAnimationFrame(() => { card.style.transform = `translateX(${dir * 120}%) rotate(${dir * 9}deg)`; card.style.opacity = "0"; });
+  setTimeout(() => { busy = false; card.classList.remove("fly"); then(); }, 210);
+}
+function afterReveal(it) { if (settings.autoplay && it.dir === "en-fr") speak(speakText(it), $("#card .cplay .play")); }
+
+function gradeMain(knew, viaSwipe) {
+  const it = curItem(); if (!it || busy) return;
+  if (it.pending) { advance(it.pending === "known" ? 1 : -1); return; }
+  stopListening();
+  commit(it, knew ? [] : ["main"]);
+  if (it.revealed || viaSwipe) { advance(knew ? 1 : -1); return; }
+  it.revealed = true; it.pending = knew ? "known" : "missed";
+  renderStudy(false); turnCard();
+  afterReveal(it);
+}
+function revealMulti(allWrong) {
+  const it = curItem(); if (!it) return;
+  it.revealed = true;
+  if (allWrong) rowsOf(it).forEach(r => it.wrong.add(r.key));
+  renderStudy(false); turnCard();
+  afterReveal(it);
+}
+function toggleAllWrong() {
+  const it = curItem(), rows = rowsOf(it);
+  if (it.wrong.size === rows.length) it.wrong.clear(); else rows.forEach(r => it.wrong.add(r.key));
+  renderCard(false); renderActions();
+}
+function toggleRow(i) {
+  const it = curItem();
+  if (!it || it.kind === "main" || !it.revealed) return;
+  const r = rowsOf(it)[i]; if (!r) return;
+  if (it.wrong.has(r.key)) it.wrong.delete(r.key); else it.wrong.add(r.key);
+  renderCard(false); renderActions();
+}
+function commitMulti() {
+  const it = curItem(); if (!it || busy) return;
+  stopListening();
+  const w = rowsOf(it).filter(r => it.wrong.has(r.key)).map(r => r.key);
+  commit(it, w);
+  advance(w.length ? -1 : 1);
+}
+function turnCard() { if (!animOn()) return; const c = $("#card"); c.classList.remove("turn", "enter"); void c.offsetWidth; c.classList.add("turn"); }
+
+function onKnow() { const it = curItem(); if (!it || busy) return; if (it.kind === "main") gradeMain(true); else if (!it.revealed) revealMulti(false); else commitMulti(); }
+function onDont() { const it = curItem(); if (!it || busy) return; if (it.kind === "main") gradeMain(false); else if (!it.revealed) revealMulti(true); else toggleAllWrong(); }
+function onFlip() {
+  const it = curItem(); if (!it || busy) return;
+  if (it.kind === "main") {
+    if (it.pending) { advance(it.pending === "known" ? 1 : -1); return; }
+    it.revealed = !it.revealed;
+    renderStudy(false); turnCard();
+    if (it.revealed) afterReveal(it);
+  } else if (!it.revealed) revealMulti(false);
+  else { it.revealed = false; renderStudy(false); turnCard(); }
+}
+function onNext() { const it = curItem(); if (!it) return; if (it.kind === "main") { if (it.pending) advance(it.pending === "known" ? 1 : -1); else onFlip(); } else if (it.revealed) commitMulti(); else revealMulti(false); }
+
+function endRound() {
+  stopSpeech(); stopListening();
+  session.done = true;
+  try { history.replaceState({ screen: "summary" }, ""); } catch (e) {}
+  route({ screen: "summary" });
+}
+
+/* =========================================================================
+   STUDY SCREEN RENDERING
+   ========================================================================= */
+function renderStudy(animate) {
+  const it = curItem(); if (!it) return;
+  const s = session;
+  $("#sTitle").textContent = s.title + (s.round > 1 ? ` (round ${s.round})` : "");
+  $("#sScore").innerHTML = `<span>${Math.min(s.idx + 1, s.queue.length)} of ${s.queue.length}</span><span class="k">✓ ${s.known}</span><span class="m">✕ ${s.missed}</span>`;
+  $("#sFill").style.width = (s.idx / s.queue.length * 100) + "%";
+  $("#undoBtn").disabled = !s.undo.length;
+  renderQuick();
+  renderCard(animate);
+  renderActions();
+}
+function renderQuick() {
+  const q = (id, on, label, value, title) => { const b = $(id); b.classList.toggle("on", !!on); b.innerHTML = `<small>${label}</small><b>${value}</b>`; b.title = title; };
+  q("#qAuto", settings.autoplay, "Auto-play", settings.autoplay ? "On" : "Off", "Auto-play audio on or off");
+  q("#qDir", false, "Direction", { "en-fr": "EN→FR", "fr-en": "FR→EN", mixed: "Mixed" }[settings.direction], "Card direction: tap to change");
+  q("#qPhon", false, "Phonetics", { always: "Always", tap: "On tap", hidden: "Hidden" }[settings.phonetics], "Phonetics: tap to change");
+  const micOk = micState === "ok";
+  q("#qMic", micOk && settings.mic, "Mic", micOk ? (settings.mic ? "On" : "Off") : "None", "Microphone on or off");
+  $("#qMic").disabled = !micOk;
+  const note = $("#micNote");
+  if (settings.mic && !micOk) { note.hidden = false; note.textContent = micNoteText(); } else note.hidden = true;
+}
+function micNoteText() {
+  if (micState === "unsupported") return "Speech recognition isn’t available in this browser, so the mic is hidden. Chrome on your laptop and phone supports it.";
+  if (micState === "unavailable") return "Speech recognition isn’t available on this device right now, so the mic is hidden.";
+  return "The microphone is blocked for this site, so the mic is hidden. To allow it, tap the icon left of the web address, then Permissions › Microphone › Allow, and reload." +
+    (location.protocol === "file:" ? " Opened as a file from your computer? Use the GitHub Pages link instead." : "");
+}
+function phonBlock(text, it) {
+  if (settings.phonetics === "hidden") return "";
+  if (settings.phonetics === "tap" && !it.phonShown) return '<button class="phontap" data-phon>Show sounds-like</button>';
+  return `<div class="cphon">${esc(text)}</div>`;
+}
+function playBtn(text, label, aria) {
+  return `<button class="play" data-say="${esc(text)}" aria-label="Play ${esc(aria || label || text)}">${ICON.play}${label ? `<span>${esc(label)}</span>` : ""}</button>`;
+}
+function fullLink(v) { return `<p><button class="linkbtn" data-full="${esc(v.id)}">Show full verb</button></p>`; }
+function micBlock(it) {
+  if (!settings.mic || micState !== "ok") return "";
+  return `<div class="microw"><button class="micbtn${listening ? " on" : ""}" data-mic aria-label="${listening ? "Stop listening" : "Answer aloud"}" aria-pressed="${listening}">${ICON.mic}</button><div class="heard" aria-live="polite">${heardHTML(it)}</div></div>`;
+}
+function heardHTML(it) {
+  if (it.micMsg) return `<span class="hmsg">${esc(it.micMsg)}</span>`;
+  if (!it.heard.length) return `<span class="hmsg">${listening ? "Listening…" : "Tap the mic and say it in French."}</span>`;
+  const said = it.heard.map(a => `<q>${esc(a[0])}</q>`).join(" ");
+  let verdict = "";
+  if (it.kind === "main") {
+    const lv = matchLevel([].concat.apply([], it.heard), [BY_ID[it.verbId].french]);
+    verdict = lv === 2 ? '<span class="hb ok">match</span>' : lv === 1 ? '<span class="hb close">close (check accents)</span>' : '<span class="hb no">no match</span>';
+  } else {
+    const rows = rowsOf(it), lv = rowLevels(it, rows) || [];
+    verdict = `<span class="hb no">${lv.filter(x => x === 2).length} of ${rows.length} heard</span>`;
+  }
+  return `<span class="hmsg">Heard:</span> ${said}${verdict}${listening ? ' <span class="hmsg">Listening…</span>' : ""}`;
+}
+function tableHTML(rows, o) {
+  const marks = o.marks || null;
+  let h = `<table class="conj${marks ? " markable" : ""}${o.keyforms ? "" : " persons"}"><thead><tr>` +
+    (marks ? '<th class="c-m"><span class="sr">Your mark</span></th>' : "") +
+    `<th class="c-p">${o.keyforms ? "Tense" : "Person"}</th><th class="c-fr">French</th>` +
+    (o.phon ? '<th class="c-ph">Sounds like</th>' : "") + (o.en ? '<th class="c-en">English</th>' : "") +
+    '<th class="c-pl"><span class="sr">Play</span></th></tr></thead><tbody>';
+  rows.forEach((r, i) => {
+    const wrong = marks && marks.has(r.key);
+    const frHTML = esc(r.pron) + (o.hl && r.end ? esc(r.pre) + `<span class="end">${esc(r.end)}</span>` : esc(r.form));
+    h += `<tr${marks ? ` data-row="${i}" class="${wrong ? "wrong" : "right"}"` : ""}>` +
+      (marks ? `<td class="c-m">${wrong ? "✕" : "✓"}<span class="sr">${wrong ? " marked wrong" : " marked right"}</span></td>` : "") +
+      `<td class="c-p">${esc(r.label)}</td><td class="c-fr" lang="fr">${frHTML}${o.levels ? badge(o.levels[i]) : ""}</td>` +
+      (o.phon ? `<td class="c-ph">${esc(r.phon)}</td>` : "") +
+      (o.en ? `<td class="c-en">${esc(r.en)}</td>` : "") +
+      `<td class="c-pl">${playBtn(r.speak, "", r.fr)}</td></tr>`;
+  });
+  return h + "</tbody></table>";
+}
+function cardPhonOn(it) { return settings.phonetics === "always" || (settings.phonetics === "tap" && it.phonShown); }
+function mainHTML(it, v) {
+  let h = `<div class="ctop"><span>${esc(typeName(v))}</span>${v.test ? '<span class="tag">test</span>' : ""}</div>`;
+  if (!it.revealed) {
+    if (it.dir === "fr-en") h += `<div class="cbig fr" lang="fr">${esc(v.french)}</div>${phonBlock(v.phonetic, it)}<div class="cplay">${playBtn(v.french, "Play")}</div><p class="cask">What does it mean? Tap the card to flip.</p>`;
+    else h += `<div class="cbig en">${esc(v.english)}</div><p class="cask">Say it in French. Tap the card to flip.</p>`;
+  } else {
+    h += `<div class="cbig fr" lang="fr">${esc(v.french)}</div>${phonBlock(v.phonetic, it)}<div class="cen">${esc(v.english)}</div><div class="cplay">${playBtn(v.french, "Play")}</div>`;
+    if (v.auxiliary === "être") h += '<p class="cnote">Takes être in the passé composé.</p>';
+    if (it.pending) h += `<p class="verdict ${it.pending}">${it.pending === "known" ? "Marked as known." : settings.repeatPile ? "Marked as don’t know. It comes back at the end of the round." : "Marked as don’t know."}</p>`;
+    h += fullLink(v);
+  }
+  return h + micBlock(it);
+}
+function multiHTML(it, v) {
+  const rows = rowsOf(it), tab = it.kind === "tense" ? v.tables[it.tense] : null;
+  const title = it.kind === "keyforms" ? "Key forms" : TENSES[it.tense].name;
+  const regular = v.type === "regular";
+  const levels = rowLevels(it, rows);
+  const playAll = playBtn(rows.map(r => r.speak).join(". ") + ".", "Play all");
+  let h = `<div class="ctop"><span>${esc(typeName(v))}</span>${v.test ? '<span class="tag">test</span>' : ""}</div>` +
+    `<h2 class="mtitle"><span class="fr" lang="fr">${esc(v.french)}</span><span class="mtense">${esc(title)}</span></h2><p class="msub">${esc(v.english)}</p>`;
+  if (!it.revealed) {
+    if (it.dir === "en-fr") {
+      h += '<ul class="plist">' + rows.map((r, i) => `<li><span class="pl">${esc(r.label)}</span><span class="dots" aria-label="hidden">· · ·</span>${levels ? badge(levels[i]) : ""}</li>`).join("") + "</ul>";
+      h += `<p class="cask">${it.kind === "keyforms" ? "Say the je form of each tense aloud" : "Say all six aloud"}, then show the answer.</p>`;
+    } else {
+      h += `<div class="cplay">${playAll}</div>`;
+      if (settings.phonetics === "tap" && !it.phonShown) h += '<button class="phontap" data-phon>Show sounds-like</button>';
+      h += tableHTML(rows, { en: false, phon: cardPhonOn(it), hl: false, keyforms: it.kind === "keyforms", levels });
+      h += `<p class="cask">${regular ? "Say them aloud" : "Say what each one means"}, then show the answer.</p>`;
+    }
+  } else {
+    if (regular && tab && tab.rule) h += `<p class="rule">${esc(tab.rule)}</p>`;
+    h += `<div class="cplay">${playAll}</div>`;
+    if (settings.phonetics === "tap" && !it.phonShown) h += '<button class="phontap" data-phon>Show sounds-like</button>';
+    h += tableHTML(rows, { en: !regular || rows.some(r => r.en), phon: cardPhonOn(it), hl: regular && tab && tab.source === "rules", marks: it.wrong, keyforms: it.kind === "keyforms", levels });
+    h += `<p class="cask">${it.wrong.size ? `${plural(it.wrong.size, "form")} marked wrong. Tap a row to change it.` : "All marked right. Tap any you got wrong."}</p>`;
+    h += fullLink(v);
+  }
+  return h + micBlock(it);
+}
+function renderCard(animate) {
+  const it = curItem(); if (!it) return;
+  const v = BY_ID[it.verbId], card = $("#card");
+  card.className = "card" + (animate && animOn() ? " enter" : "");
+  card.style.transform = ""; card.style.opacity = ""; card.dataset.lean = "";
+  card.innerHTML = it.kind === "main" ? mainHTML(it, v) : multiHTML(it, v);
+}
+function renderActions() {
+  const it = curItem(); if (!it) return;
+  let h;
+  if (it.kind === "main") {
+    h = it.pending ? '<button class="act next" data-act="next">Next<kbd>Space</kbd></button>'
+      : '<button class="act miss" data-act="dont">Don’t know<kbd>2</kbd></button><button class="act know" data-act="know">Know<kbd>1</kbd></button>';
+  } else if (!it.revealed) {
+    h = '<button class="act reveal" data-act="flip">Show answer<kbd>Space</kbd></button>';
+  } else {
+    const all = it.wrong.size === rowsOf(it).length;
+    h = `<button class="act miss" data-act="dont">${all ? "Clear marks" : "All wrong"}<kbd>2</kbd></button><button class="act know" data-act="next">Next<kbd>1</kbd></button>`;
+  }
+  $("#actions").innerHTML = h;
+}
+
+/* ---------- study events ---------- */
+function openFullVerb(id) { navigate("learn", { scope: "all", verb: id, fromStudy: true }); }
+$("#card").addEventListener("click", e => {
+  if (performance.now() < suppressClickUntil) return;
+  const it = curItem(); if (!it) return;
+  const t = e.target;
+  const say = t.closest("[data-say]");
+  if (say) { say.blur(); speak(say.dataset.say, say); return; }
+  if (t.closest("[data-mic]")) { t.closest("[data-mic]").blur(); toggleMic(); return; }
+  const full = t.closest("[data-full]");
+  if (full) { openFullVerb(full.dataset.full); return; }
+  if (t.closest("[data-phon]")) { it.phonShown = true; renderCard(false); return; }
+  const row = t.closest("tr[data-row]");
+  if (row) { toggleRow(Number(row.dataset.row)); return; }
+  if (t.closest("button, a, input, select")) return;
+  if (it.kind === "main") onFlip();
+  else if (!it.revealed) revealMulti(false);
+});
+$("#actions").addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  b.blur();
+  const a = b.dataset.act;
+  if (a === "know") onKnow(); else if (a === "dont") onDont(); else if (a === "flip") onFlip(); else if (a === "next") onNext();
+});
+$("#studyBack").innerHTML = ICON.back;
+$("#undoBtn").innerHTML = ICON.undo;
+$("#studyBack").addEventListener("click", () => navigate("library"));
+$("#undoBtn").addEventListener("click", e => { e.currentTarget.blur(); undo(); });
+$("#qAuto").addEventListener("click", e => { e.currentTarget.blur(); settings.autoplay = !settings.autoplay; saveSettings(); renderQuick(); });
+$("#qDir").addEventListener("click", e => {
+  e.currentTarget.blur();
+  const o = CHOICES.direction; settings.direction = o[(o.indexOf(settings.direction) + 1) % o.length]; saveSettings();
+  const it = curItem();
+  if (it && !it.revealed && !it.pending) {
+    it.dir = resolveDir(); renderStudy(false);
+    if (settings.autoplay && it.dir === "fr-en") speak(speakText(it), $("#card .cplay .play"));
+  } else renderQuick();
+});
+$("#qPhon").addEventListener("click", e => {
+  e.currentTarget.blur();
+  const o = CHOICES.phonetics; settings.phonetics = o[(o.indexOf(settings.phonetics) + 1) % o.length]; saveSettings();
+  renderStudy(false);
+});
+$("#qMic").addEventListener("click", e => {
+  e.currentTarget.blur();
+  settings.mic = !settings.mic; saveSettings();
+  if (!settings.mic) stopListening();
+  renderStudy(false);
+});
+
+/* ---------- swipe (main card only) ---------- */
+(function () {
+  const card = $("#card");
+  let sx = 0, sy = 0, dx = 0, t0 = 0, down = false, horiz = null, pid = null;
+  card.addEventListener("pointerdown", e => {
+    const it = curItem();
+    if (!it || it.kind !== "main" || !settings.swipe || busy || e.button > 0) return;
+    if (e.target.closest("button, a, input, select")) return;
+    down = true; pid = e.pointerId; sx = e.clientX; sy = e.clientY; dx = 0; t0 = performance.now(); horiz = null;
+  });
+  card.addEventListener("pointermove", e => {
+    if (!down || e.pointerId !== pid) return;
+    const mx = e.clientX - sx, my = e.clientY - sy;
+    if (horiz === null && (Math.abs(mx) > 10 || Math.abs(my) > 10)) {
+      horiz = Math.abs(mx) > Math.abs(my) * 1.2;
+      if (horiz) { try { card.setPointerCapture(pid); } catch (_) {} card.classList.add("dragging"); }
+    }
+    if (!horiz) return;
+    dx = mx;
+    card.style.transform = `translateX(${dx}px) rotate(${dx / 25}deg)`;
+    card.dataset.lean = dx > 40 ? "know" : dx < -40 ? "miss" : "";
+  });
+  const end = e => {
+    if (!down || e.pointerId !== pid) return;
+    down = false; card.classList.remove("dragging");
+    if (!horiz) return;
+    suppressClickUntil = performance.now() + 400;
+    const dt = Math.max(1, performance.now() - t0);
+    const far = Math.abs(dx) > Math.min(120, card.offsetWidth * 0.3), fast = Math.abs(dx) > 50 && Math.abs(dx) / dt > 0.5;
+    if (e.type === "pointerup" && (far || fast)) gradeMain(dx > 0, true);
+    else { card.style.transform = ""; card.dataset.lean = ""; }
+  };
+  card.addEventListener("pointerup", end);
+  card.addEventListener("pointercancel", end);
+})();
+
+/* ---------- keyboard ---------- */
+const dialogOpen = () => $$("dialog").some(d => d.open);
+document.addEventListener("keydown", e => {
+  if (currentScreen !== "study" || dialogOpen() || e.ctrlKey || e.metaKey || e.altKey) return;
+  const tag = e.target && e.target.tagName;
+  if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
+  const it = curItem(); if (!it) return;
+  const k = e.key;
+  if (k === " " || k === "Spacebar") { e.preventDefault(); if (!e.repeat) onFlip(); }
+  else if (k === "1") { e.preventDefault(); if (!e.repeat) onKnow(); }
+  else if (k === "2") { e.preventDefault(); if (!e.repeat) onDont(); }
+  else if (/^[3-8]$/.test(k)) { e.preventDefault(); toggleRow(Number(k) - 3); }
+  else if (k === "Enter") { if (e.target.closest && e.target.closest("button")) return; e.preventDefault(); if (!e.repeat) onNext(); }
+  else if (k === "p" || k === "P") { e.preventDefault(); speak(speakText(it), $("#card .cplay .play")); }
+  else if (k === "m" || k === "M") { e.preventDefault(); toggleMic(); }
+  else if (k === "u" || k === "U" || k === "Backspace") { e.preventDefault(); undo(); }
+  else if (k === "Escape") { e.preventDefault(); navigate("library"); }
+});
+// Space on a focused button must not also click it.
+document.addEventListener("keyup", e => {
+  if (currentScreen === "study" && e.key === " " && e.target.closest && e.target.closest("button")) e.preventDefault();
+});
+
+/* =========================================================================
+   ROUND SUMMARY
+   ========================================================================= */
+function renderSummary() {
+  const s = session; if (!s) return;
+  const total = s.queue.length;
+  $("#sumTitle").textContent = s.missed ? (s.round === 1 ? "Round finished" : `Round ${s.round} finished`) : (s.round === 1 ? "All known" : `Cleared in ${s.round} rounds`);
+  $("#sumText").textContent = `${s.known} known and ${s.missed} to work on, out of ${plural(total, "card")}.`;
+  const byVerb = {};
+  s.missedItems.forEach(m => { (byVerb[m.spec.verbId] = byVerb[m.spec.verbId] || []).push(m); });
+  const ids = Object.keys(byVerb).sort((a, b) => BY_ID[a].order - BY_ID[b].order);
+  $("#sumList").innerHTML = ids.length ? '<ul class="vlist">' + ids.map(id => {
+    const v = BY_ID[id];
+    const parts = byVerb[id].map(m => {
+      const c = m.spec;
+      if (c.kind === "main") return "Main card";
+      const rows = rowsOf(c), wrong = rows.filter(r => m.wrong.includes(r.key)).map(r => r.label);
+      return `${cardName(c)}: ${wrong.join(", ")}`;
+    });
+    return `<li><button class="vchip" data-learn-verb="${esc(id)}"><span class="vfr" lang="fr">${esc(v.french)}</span><span class="ven">${esc(parts.join(". "))}</span></button></li>`;
+  }).join("") + "</ul>" : "";
+  let a = "";
+  if (s.pile.length) a += `<button class="primary" data-sum="repeat">Repeat the ${plural(s.pile.length, "missed card")}</button>`;
+  a += `<button class="${s.pile.length ? "ghost" : "primary"}" data-sum="again">Practise the whole set again</button>`;
+  if (s.undo.length) a += '<button class="ghost" data-sum="undo">Undo last card</button>';
+  a += '<button class="ghost" data-sum="home">Back to Library</button>';
+  $("#sumActions").innerHTML = a;
+}
+$("#sumActions").addEventListener("click", e => {
+  const b = e.target.closest("[data-sum]"); if (!b || !session) return;
+  const k = b.dataset.sum;
+  if (k === "repeat") { session.round++; startRound(session.order === "shuffle" ? shuffled(session.pile) : session.pile.slice()); }
+  else if (k === "again") startSession(session.base, session.title, session.order);
+  else if (k === "undo") undo();
+  else navigate("library");
+});
+$("#sumList").addEventListener("click", e => { const b = e.target.closest("[data-learn-verb]"); if (b) navigate("learn", { scope: "all", verb: b.dataset.learnVerb }); });
+
+/* =========================================================================
+   LIBRARY
+   ========================================================================= */
+function chipsHTML(verbs) {
+  return '<ul class="vlist">' + verbs.map(v => {
+    const st = verbStat(v);
+    return `<li><button class="vchip" data-learn-verb="${esc(v.id)}"><span class="vfr" lang="fr">${esc(v.french)}${v.test ? '<span class="tag">test</span>' : ""}</span><span class="ven">${esc(v.english)}</span><span class="vstat" title="Cards you know">${st.known}/${st.total} known</span></button></li>`;
+  }).join("") + "</ul>";
+}
+function renderLibrary() {
+  const n = VERBS_OK.length;
+  $("#libLede").textContent = n ? `${plural(n, "verb")}. Practise a section, or open a verb to learn it.` : "No verbs are loaded yet. Add them to verbs.js.";
+  $("#problems").innerHTML = PROBLEMS.length ? `<details class="problems" open><summary>${plural(PROBLEMS.length, "problem")} in verbs.js. These parts were skipped; everything else loaded.</summary><ul>${PROBLEMS.map(p => `<li><b>${esc(p.where)}</b>: ${esc(p.errs.join("; "))}.</li>`).join("")}</ul></details>` : "";
+  const it = curItem();
+  $("#resume").innerHTML = it ? `<div class="resume"><p>Session in progress: <b>${esc(session.title)}</b>, card ${session.idx + 1} of ${session.queue.length}.</p><button class="primary sm" data-resume>Continue</button></div>` : "";
+  $("#sections").innerHTML = SECTIONS.map(T => {
+    const subs = T.type === "regular" || T.groups.length > 1;
+    let h = `<section class="lib"><div class="libhead"><div><h2>${esc(T.label)}</h2><p class="count">${plural(T.verbs.length, "verb")}</p></div><div class="btnrow"><button class="primary sm" data-practise="type:${esc(T.type)}">Practise</button><button class="ghost sm" data-learn-scope="type:${esc(T.type)}">Learn</button></div></div>`;
+    if (subs) T.groups.forEach(G => {
+      const sc = `group:${T.type}:${G.group}`;
+      h += `<div class="subsec"><div class="libhead sub"><div><h3>${esc(G.label)}</h3><p class="count">${plural(G.verbs.length, "verb")}</p></div><div class="btnrow"><button class="ghost sm" data-practise="${esc(sc)}">Practise</button><button class="ghost sm" data-learn-scope="${esc(sc)}">Learn</button></div></div>${chipsHTML(G.verbs)}</div>`;
+    });
+    else h += chipsHTML(T.verbs);
+    return h + "</section>";
+  }).join("");
+}
+$("#scr-library").addEventListener("click", e => {
+  const t = e.target;
+  const pr = t.closest("[data-practise]"); if (pr) { openPractise(verbsInScope(pr.dataset.practise), scopeLabel(pr.dataset.practise)); return; }
+  const ls = t.closest("[data-learn-scope]"); if (ls) { navigate("learn", { scope: ls.dataset.learnScope }); return; }
+  const lv = t.closest("[data-learn-verb]"); if (lv) { navigate("learn", { scope: "all", verb: lv.dataset.learnVerb }); return; }
+  if (t.closest("[data-resume]")) navigate("study");
+});
+
+/* ---------- practise dialog ---------- */
+let practiseTarget = null;
+function practiseCount() { return practiseTarget ? cardsFor(practiseTarget.verbs, settings.practiseContent).length : 0; }
+function syncPractise() {
+  $$('#practiseDlg input[name="pcontent"]').forEach(r => { r.checked = r.value === settings.practiseContent; });
+  $$('#practiseDlg input[name="porder"]').forEach(r => { r.checked = r.value === settings.practiseOrder; });
+  const n = practiseCount();
+  $("#pStart").textContent = `Start (${plural(n, "card")})`;
+  $("#pStart").disabled = !n;
+  const irr = practiseTarget.verbs.some(v => v.keyRows.length);
+  $("#pNote").textContent = settings.practiseContent === "key" && !irr ? "Key forms cards are for irregular verbs only, so these verbs get the main card only."
+    : settings.practiseContent === "key" ? "Regular verbs get the main card only; key forms are for irregular verbs." : "";
+}
+function openPractise(verbs, title) {
+  if (!verbs.length) { toast("No verbs here yet."); return; }
+  practiseTarget = { verbs, title };
+  $("#pTitle").textContent = "Practise: " + title;
+  syncPractise();
+  $("#practiseDlg").showModal();
+}
+$("#practiseDlg").addEventListener("change", e => {
+  if (e.target.name === "pcontent") settings.practiseContent = e.target.value;
+  if (e.target.name === "porder") settings.practiseOrder = e.target.value;
+  saveSettings(); syncPractise();
+});
+$("#pCancel").addEventListener("click", () => $("#practiseDlg").close());
+$("#practiseDlg").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+$("#pStart").addEventListener("click", () => {
+  $("#practiseDlg").close();
+  startSession(cardsFor(practiseTarget.verbs, settings.practiseContent), practiseTarget.title, settings.practiseOrder);
+});
+
+/* =========================================================================
+   LEARN VIEW
+   ========================================================================= */
+let learnScope = "all", learnFromStudy = false;
+const expanded = new Set();
+function verbDetailHTML(v) {
+  const regular = v.type === "regular";
+  let h = `<div class="vhead"><div><div class="vfr" lang="fr">${esc(v.french)}</div><div class="vph">${esc(v.phonetic)}</div><div class="ven">${esc(v.english)}</div>` +
+    `<p class="vmeta">${esc(typeName(v))}${v.auxiliary === "être" ? ", takes être in the passé composé" : ""}</p></div>${playBtn(v.french, "Play")}</div>` +
+    `<div class="vbtns"><button class="ghost sm" data-practise-verb="${esc(v.id)}">Practise this verb</button></div>`;
+  TENSE_KEYS.forEach(t => {
+    const tab = v.tables[t];
+    h += `<div class="ltense"><div class="lthead"><h3>${esc(TENSES[t].name)}</h3><button class="linkbtn sm" data-guide="${esc(t)}">How it works</button>${playBtn(tab.rows.map(r => r.speak).join(". ") + ".", "Play all")}</div>` +
+      (regular && tab.rule ? `<p class="rule">${esc(tab.rule)}</p>` : "") +
+      tableHTML(tab.rows, { en: !regular || tab.rows.some(r => r.en), phon: true, hl: regular && tab.source === "rules" }) + "</div>";
+  });
+  return h;
+}
+function verbRowHTML(v) {
+  const open = expanded.has(v.id);
+  return `<section class="lverb" id="lv-${esc(v.id)}"><button class="lrow" data-toggle="${esc(v.id)}" aria-expanded="${open}"><span class="lname"><span>${esc(v.english)}</span><span class="ldash"> — </span><span class="lfr" lang="fr">${esc(v.french)}</span></span>${v.test ? '<span class="tag">test</span>' : ""}<span class="lchev">${ICON.chev}</span></button><div class="lbody"${open ? "" : " hidden"}>${open ? verbDetailHTML(v) : ""}</div></section>`;
+}
+function renderLearnList() {
+  const list = verbsInScope(learnScope);
+  $("#learnList").innerHTML = list.length ? list.map(verbRowHTML).join("") : '<p class="empty">No verbs here yet. Add them to verbs.js.</p>';
+}
+function renderLearn(st) {
+  st = st || {};
+  if (st.scope) learnScope = st.scope;
+  learnFromStudy = !!st.fromStudy;
+  if (st.verb && BY_ID[st.verb]) {
+    if (!verbsInScope(learnScope).some(v => v.id === st.verb)) learnScope = "all";
+    expanded.add(st.verb);
+  }
+  $("#learnScope").innerHTML = scopeOptions().map(([val, label]) => `<option value="${esc(val)}"${val === learnScope ? " selected" : ""}>${esc(label)}</option>`).join("");
+  const it = curItem();
+  $("#learnBanner").innerHTML = it ? `<div class="banner"><p>Session in progress: card ${session.idx + 1} of ${session.queue.length}.</p><button class="primary sm" data-back-session>Back to your session</button></div>` : "";
+  renderLearnList();
+}
+function toggleVerb(id, open) {
+  const sec = document.getElementById("lv-" + id); if (!sec) return;
+  const btn = $(".lrow", sec), body = $(".lbody", sec);
+  if (open === undefined) open = !expanded.has(id);
+  if (open) { expanded.add(id); if (!body.innerHTML) body.innerHTML = verbDetailHTML(BY_ID[id]); }
+  else expanded.delete(id);
+  body.hidden = !open; btn.setAttribute("aria-expanded", open);
+}
+$("#learnScope").addEventListener("change", e => { learnScope = e.target.value; try { history.replaceState(Object.assign({}, history.state, { screen: "learn", scope: learnScope, verb: null }), ""); } catch (_) {} renderLearnList(); });
+$("#expandAll").addEventListener("click", () => { verbsInScope(learnScope).forEach(v => expanded.add(v.id)); renderLearnList(); });
+$("#collapseAll").addEventListener("click", () => { expanded.clear(); renderLearnList(); });
+$("#scr-learn").addEventListener("click", e => {
+  const t = e.target;
+  const say = t.closest("[data-say]"); if (say) { speak(say.dataset.say, say); return; }
+  const tg = t.closest("[data-toggle]"); if (tg) { toggleVerb(tg.dataset.toggle); return; }
+  const g = t.closest("[data-guide]"); if (g) { navigate("guide", { tense: g.dataset.guide }); return; }
+  const pv = t.closest("[data-practise-verb]"); if (pv) { const v = BY_ID[pv.dataset.practiseVerb]; openPractise([v], v.french); return; }
+  if (t.closest("[data-back-session]")) { if (learnFromStudy) history.back(); else navigate("study"); }
+});
+
+/* =========================================================================
+   TENSE GUIDE
+   ========================================================================= */
+function guideEndings(t) {
+  const gs = Object.keys(RULESX).filter(g => !brokenGroups.has(g));
+  if (!gs.length) return "";
+  const rows = gs.map(g => {
+    const G = RULESX[g], R = G.tenses[t];
+    let text;
+    if (R.from === "auxiliary") text = `avoir or être (présent) + past participle: stem + -${G.participle.fr}`;
+    else {
+      const stemDesc = R.from === "future" ? (G.futureStem.drop ? `the infinitive minus its last ${G.futureStem.drop === 1 ? "letter" : G.futureStem.drop + " letters"}` : "the whole infinitive") : "stem";
+      text = `${stemDesc} + ${PERSONS.map(p => (R.endings[p].fr ? "-" + R.endings[p].fr : "(nothing)")).join(", ")}`;
+    }
+    const ex = VERBS_OK.find(v => v.type === "regular" && v.group === g && v.tables[t] && v.tables[t].source === "rules");
+    return `<tr><th>${esc(G.name)}</th><td>${esc(text)}</td><td>${ex ? `<span class="gex" lang="fr">${esc(ex.tables[t].rows[0].fr)}</span>` : ""}</td></tr>`;
+  });
+  return `<h3>Regular endings</h3><table class="gtable"><tbody>${rows.join("")}</tbody></table>`;
+}
+function renderGuide() {
+  $("#guideList").innerHTML = TENSE_KEYS.map(t => {
+    const T = TENSES[t];
+    return `<section class="gentry" id="g-${esc(t)}"><h2>${esc(T.name)}</h2>` +
+      (filled(T.formation) ? `<h3>How it’s formed</h3><p>${esc(T.formation)}</p>` : "") +
+      (filled(T.use) ? `<h3>When it’s used</h3><p>${esc(T.use)}</p>` : "") + guideEndings(t) + "</section>";
+  }).join("");
+}
+
+/* =========================================================================
+   SETTINGS PAGE
+   ========================================================================= */
+const hasVibrate = "vibrate" in navigator;
+function switchRow(key, label, help, helpId) {
+  return `<div class="srow"><div class="stext"><span class="slabel" id="lbl-${key}">${esc(label)}</span>${help !== null ? `<p class="shelp"${helpId ? ` id="${helpId}"` : ""}>${esc(help)}</p>` : ""}</div><button class="switch" role="switch" aria-labelledby="lbl-${key}" data-setting="${key}"></button></div>`;
+}
+function segRow(key, label, opts, help) {
+  return `<div class="srow col"><span class="slabel" id="lbl-${key}">${esc(label)}</span><div class="seg" role="group" aria-labelledby="lbl-${key}" data-seg="${key}">${opts.map(([v, l]) => `<button data-val="${esc(v)}">${esc(l)}</button>`).join("")}</div>${help ? `<p class="shelp">${esc(help)}</p>` : ""}</div>`;
+}
+function buildSettings() {
+  $("#settingsBody").innerHTML =
+    `<section class="sgroup"><h2>Studying</h2>` +
+    switchRow("autoplay", "Auto-play audio", "Plays the French automatically: on the front when French is shown first, otherwise when the card flips.") +
+    segRow("direction", "Card direction", [["en-fr", "English → French"], ["fr-en", "French → English"], ["mixed", "Mixed"]], "Mixed picks a random direction for each card.") +
+    segRow("phonetics", "Sounds-like (phonetics)", [["always", "Always"], ["tap", "On tap"], ["hidden", "Hidden"]], "Applies to flashcards. The Learn view always shows it.") +
+    switchRow("mic", "Microphone", "", "micHelp") +
+    segRow("repeatAudio", "Play audio", [["1", "Once"], ["2", "Twice"]]) +
+    switchRow("repeatPile", "Repeat missed cards", "Cards you don’t know come back at the end of each round until you know them.") +
+    switchRow("swipe", "Swipe to grade", "On the main card, swipe right for know and left for don’t know.") +
+    (hasVibrate ? switchRow("haptics", "Vibrate when grading", "A short buzz on your phone when you mark a card.") : "") +
+    switchRow("animations", "Card animations", "Turn off for instant card changes.") +
+    switchRow("keyLegend", "Keyboard shortcuts", "On a laptop, shows the keys under the card.") +
+    `</section><section class="sgroup"><h2>Voice</h2>` +
+    `<div class="srow col"><label class="slabel" for="voiceSel">French voice</label><select id="voiceSel"></select><p class="shelp" id="voiceHelp"></p></div>` +
+    `<div class="srow col"><label class="slabel" for="rateIn">Speaking speed: <span id="rateVal"></span></label><input type="range" id="rateIn" min="0.5" max="1.3" step="0.05"><div class="btnrow"><button class="ghost sm" id="testVoice">Test voice</button></div></div>` +
+    `<details class="shelpbox"><summary>Get a better French voice</summary>` +
+    `<p><b>Samsung phone:</b> open Settings and search “Text-to-speech”. Choose Speech Services by Google as the engine, open its settings, then Install voice data › French (France). Reload this page afterwards.</p>` +
+    `<p><b>Windows laptop:</b> Settings › Time &amp; language › Speech › Add voices › French (France), then restart Chrome. Chrome also offers “Google français”, which needs an internet connection.</p></details>` +
+    `</section><section class="sgroup"><h2>Display</h2>` +
+    segRow("theme", "Theme", [["system", "Match device"], ["light", "Light"], ["dark", "Dark"]]) +
+    segRow("textSize", "Text size", [["0", "Small"], ["1", "Normal"], ["2", "Large"], ["3", "Extra large"]]) +
+    `</section><section class="sgroup"><h2>Your data</h2>` +
+    `<p class="shelp">Progress and settings are saved in this browser only, so your laptop and phone each keep their own. To move them, export on one device and import the file on the other.</p>` +
+    `<div class="btnrow wrap" style="margin-top:10px"><button class="primary sm" id="exportBtn">Export progress and settings</button><button class="ghost sm" id="importBtn">Import from a file</button></div>` +
+    `<h3 class="sh3">Reset</h3><div class="btnrow wrap"><button class="ghost sm" data-reset="progress">Reset progress</button><button class="ghost sm" data-reset="settings">Reset settings</button><button class="danger sm" data-reset="all">Reset everything</button></div>` +
+    `</section><section class="sgroup"><h2>About</h2><p class="shelp" id="aboutText"></p></section>`;
+}
+function micHelpText() {
+  if (micState === "unsupported") return "Speech recognition isn’t available in this browser.";
+  if (micState === "blocked") return "Blocked for this site. Allow the microphone in Chrome’s site settings, then reload.";
+  if (micState === "unavailable") return "Speech recognition isn’t available on this device right now.";
+  return "Shows a mic button on cards. Say the French and it shows what it heard. It’s a hint only: you still grade yourself.";
+}
+function syncVoiceUI() {
+  const sel = $("#voiceSel"); if (!sel) return;
+  if (!synth) { sel.innerHTML = "<option>Not available</option>"; sel.disabled = true; $("#voiceHelp").textContent = "This browser can’t play speech."; return; }
+  if (!voices.length) { sel.innerHTML = '<option value="">Device default (French)</option>'; $("#voiceHelp").textContent = "No French voice found yet. Voices can take a few seconds to appear; if none does, see “Get a better French voice” below."; return; }
+  sel.disabled = false;
+  sel.innerHTML = voices.map(v => `<option value="${esc(v.voiceURI)}"${v === voice ? " selected" : ""}>${esc(v.name.replace(/^Microsoft\s+/, ""))} (${esc(v.lang)})${v.localService === false ? ", needs internet" : ""}</option>`).join("");
+  $("#voiceHelp").textContent = `${plural(voices.length, "French voice")} on this device.`;
+}
+function syncSettingsUI() {
+  if (!$("#settingsBody").innerHTML) return;
+  $$("#settingsBody [data-setting]").forEach(b => b.setAttribute("aria-checked", !!settings[b.dataset.setting]));
+  $$("#settingsBody [data-seg]").forEach(g => { const k = g.dataset.seg; $$("button", g).forEach(b => b.setAttribute("aria-pressed", String(settings[k]) === b.dataset.val)); });
+  const micBtn = $('#settingsBody [data-setting="mic"]'); if (micBtn) micBtn.disabled = micState !== "ok";
+  const mh = $("#micHelp"); if (mh) mh.textContent = micHelpText();
+  $("#rateIn").value = settings.rate;
+  $("#rateVal").textContent = settings.rate.toFixed(2) + "×";
+  syncVoiceUI();
+  const tests = VERBS_OK.filter(v => v.test).length;
+  $("#aboutText").textContent = `Version ${APP_VERSION}, saved-data schema ${SCHEMA}. ${plural(VERBS_OK.length, "verb")} loaded${tests ? ` (${tests} marked test)` : ""}, ${plural(TENSE_KEYS.length, "tense")}${PROBLEMS.length ? `, ${plural(PROBLEMS.length, "problem")} in verbs.js (see the Library)` : ""}.`;
+}
+function applyDisplay() {
+  const r = document.documentElement;
+  r.dataset.theme = settings.theme;
+  r.style.setProperty("--scale", SCALE[settings.textSize] || 1);
+  document.body.classList.toggle("no-anim", !settings.animations);
+  document.body.classList.toggle("no-legend", !settings.keyLegend);
+}
+function wireSettings() {
+  const body = $("#settingsBody");
+  body.addEventListener("click", e => {
+    const sw = e.target.closest("[data-setting]");
+    if (sw) { const k = sw.dataset.setting; settings[k] = !settings[k]; if (k === "mic" && !settings.mic) stopListening(); saveSettings(); applyDisplay(); syncSettingsUI(); return; }
+    const sb = e.target.closest("[data-seg] button");
+    if (sb) {
+      const k = sb.closest("[data-seg]").dataset.seg;
+      const val = typeof DEFAULTS[k] === "number" ? Number(sb.dataset.val) : sb.dataset.val;
+      if (!CHOICES[k] || CHOICES[k].includes(val)) { settings[k] = val; saveSettings(); applyDisplay(); syncSettingsUI(); }
+      return;
+    }
+    const rs = e.target.closest("[data-reset]"); if (rs) { doReset(rs.dataset.reset); return; }
+  });
+  $("#voiceSel").addEventListener("change", e => {
+    settings.voice = e.target.value; saveSettings();
+    voice = voices.find(v => v.voiceURI === settings.voice) || voice;
+    speak("Bonjour. Je suis, tu es, il est.");
+  });
+  $("#rateIn").addEventListener("input", e => { settings.rate = Number(e.target.value); $("#rateVal").textContent = settings.rate.toFixed(2) + "×"; });
+  $("#rateIn").addEventListener("change", () => { saveSettings(); speak("Je parle français."); });
+  $("#testVoice").addEventListener("click", e => speak("Bonjour. Je suis, tu es, il est. Nous avons, vous avez, ils ont.", e.currentTarget));
+  $("#exportBtn").addEventListener("click", exportData);
+  $("#importBtn").addEventListener("click", () => { const f = $("#importFile"); f.value = ""; f.click(); });
+  $("#importFile").addEventListener("change", e => { const f = e.target.files && e.target.files[0]; if (f) importData(f); });
+}
+
+/* ---------- confirm / alert dialog ---------- */
+function confirmBox(title, html, okText, danger, noCancel) {
+  return new Promise(res => {
+    const d = $("#confirmDlg");
+    $("#cTitle").textContent = title; $("#cText").innerHTML = html;
+    const ok = $("#cOk"), cancel = $("#cCancel");
+    ok.textContent = okText || "OK"; ok.className = danger ? "danger" : "primary";
+    cancel.hidden = !!noCancel;
+    const fin = v => { ok.onclick = cancel.onclick = d.oncancel = null; if (d.open) d.close(); res(v); };
+    ok.onclick = () => fin(true);
+    cancel.onclick = () => fin(false);
+    d.oncancel = e => { e.preventDefault(); fin(false); };
+    d.showModal();
+  });
+}
+const alertBox = (title, html) => confirmBox(title, html, "OK", false, true);
+
+/* ---------- export / import / reset ---------- */
+function exportData() {
+  const data = { app: "french-verbs", schema: SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress };
+  try {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `french-verbs-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    toast("Backup saved to your downloads.");
+  } catch (e) { alertBox("Export failed", "<p>The backup file couldn’t be created in this browser.</p>"); }
+}
+function validateImport(d) {
+  if (!isObj(d) || d.app !== "french-verbs") return "That file isn’t a backup from this app.";
+  if (typeof d.schema !== "number") return "The backup has no version number.";
+  if (d.schema > SCHEMA) return "The backup was made by a newer version of the app.";
+  if (!isObj(d.settings)) return "The backup has no settings section.";
+  if (!isObj(d.progress) || !isObj(d.progress.verbs)) return "The backup has no progress section.";
+  for (const id of Object.keys(d.progress.verbs)) {
+    const r = d.progress.verbs[id];
+    if (!isObj(r)) return `Progress for “${id}” is damaged.`;
+    for (const k of Object.keys(r)) {
+      const c = r[k];
+      if (!isObj(c)) return `Progress for “${id}” is damaged.`;
+      for (const f of ["seen", "known", "missed"]) if (c[f] !== undefined && (typeof c[f] !== "number" || c[f] < 0)) return `Progress for “${id}” is damaged.`;
+    }
+  }
+  return "";
+}
+async function importData(file) {
+  let text;
+  try { text = await file.text(); } catch (e) { alertBox("Import failed", "<p>The file couldn’t be read. Nothing was changed.</p>"); return; }
+  let d;
+  try { d = JSON.parse(text); } catch (e) { alertBox("Import failed", "<p>That file isn’t a valid backup (it isn’t JSON). Nothing was changed.</p>"); return; }
+  const err = validateImport(d);
+  if (err) { alertBox("Import failed", `<p>${esc(err)} Nothing was changed.</p>`); return; }
+  const ids = Object.keys(d.progress.verbs), inList = ids.filter(id => BY_ID[id]).length;
+  const when = d.exportedAt ? new Date(d.exportedAt) : null;
+  const ok = await confirmBox("Replace your data?",
+    `<p>Backup${when && !isNaN(when) ? " from " + esc(when.toLocaleString()) : ""}: progress for ${plural(ids.length, "verb")} (${inList} in your current list), plus settings.</p><p>This replaces the progress and settings on this device. A copy of the current data is kept in this browser first.</p>`,
+    "Replace", false);
+  if (!ok) return;
+  makeBackup("before-import-settings", lsGet(KEYS.settings));
+  makeBackup("before-import-progress", lsGet(KEYS.progress));
+  settings = cleanSettings(d.settings);
+  progress = { schema: SCHEMA, verbs: d.progress.verbs };
+  saveSettings(); saveProgress(); applyDisplay(); loadVoices(); syncSettingsUI();
+  toast("Imported.");
+}
+async function doReset(kind) {
+  const what = { progress: "This clears your record of known and missed cards for every verb, on this device.", settings: "This puts every setting back to its default.", all: "This clears your progress and puts every setting back to its default, on this device." }[kind];
+  const ok = await confirmBox(kind === "all" ? "Reset everything?" : `Reset ${kind}?`, `<p>${what}</p><p>A backup copy is kept in this browser, but export first if you might want it back.</p>`, "Reset", true);
+  if (!ok) return;
+  if (kind !== "settings") { makeBackup("before-reset-progress", lsGet(KEYS.progress)); progress = { schema: SCHEMA, verbs: {} }; saveProgress(); }
+  if (kind !== "progress") { makeBackup("before-reset-settings", lsGet(KEYS.settings)); settings = Object.assign({}, DEFAULTS); saveSettings(); applyDisplay(); loadVoices(); }
+  syncSettingsUI();
+  toast("Reset done.");
+}
+
+/* =========================================================================
+   NAVIGATION
+   ========================================================================= */
+let currentScreen = "";
+const SCREENS = ["library", "study", "summary", "learn", "guide", "settings"];
+function showScreen(name) {
+  if (currentScreen === "study" && name !== "study") { stopSpeech(); stopListening(); }
+  SCREENS.forEach(s => { $("#scr-" + s).hidden = s !== name; });
+  currentScreen = name;
+  const full = name === "study" || name === "summary";
+  $("#tabs").hidden = full;
+  document.body.classList.toggle("in-study", name === "study");
+  $$("#tabs [data-tab]").forEach(b => b.setAttribute("aria-current", b.dataset.tab === name ? "page" : "false"));
+}
+function navigate(name, extra) {
+  const st = Object.assign({ screen: name }, extra || {});
+  try { history.pushState(st, ""); } catch (e) {}
+  route(st);
+}
+function route(st) {
+  st = st || {};
+  let name = SCREENS.includes(st.screen) ? st.screen : "library";
+  if (name === "study" && !curItem()) name = session && session.done ? "summary" : "library";
+  if (name === "summary" && !(session && session.done)) name = curItem() ? "study" : "library";
+  if (name === "library") renderLibrary();
+  else if (name === "study") renderStudy(false);
+  else if (name === "summary") renderSummary();
+  else if (name === "learn") renderLearn(st);
+  else if (name === "guide") renderGuide();
+  else if (name === "settings") syncSettingsUI();
+  showScreen(name);
+  if (name === "learn" && st.verb && document.getElementById("lv-" + st.verb)) {
+    document.getElementById("lv-" + st.verb).scrollIntoView({ block: "start" });
+  } else if (name === "guide" && st.tense && document.getElementById("g-" + st.tense)) {
+    const el = document.getElementById("g-" + st.tense);
+    el.scrollIntoView({ block: "start" });
+    if (animOn()) { el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); }
+  } else window.scrollTo(0, 0);
+}
+window.addEventListener("popstate", e => route(e.state || { screen: "library" }));
+$("#tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b && b.dataset.tab !== currentScreen) navigate(b.dataset.tab); });
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-dismiss]");
+  if (b) { const i = notices.findIndex(n => n.id === b.dataset.dismiss); if (i >= 0) notices.splice(i, 1); renderNotices(); }
+});
+
+/* =========================================================================
+   START
+   ========================================================================= */
+function showFatal(msg) {
+  const f = $("#fatal");
+  f.hidden = false;
+  f.innerHTML = `<h1>Verbes can’t start</h1><p>${esc(msg)}</p><p>Your saved progress is untouched. Fix the problem and reload the page.</p>`;
+  SCREENS.forEach(s => { $("#scr-" + s).hidden = true; });
+  $("#tabs").hidden = true;
+}
+function init() {
+  settings = loadSettings();
+  progress = loadProgress();
+  applyDisplay();
+  loadData();
+  if (FATAL) { showFatal(FATAL); return; }
+  SECTIONS = buildSections();
+  buildSettings();
+  wireSettings();
+  if (synth) {
+    loadVoices();
+    if (synth.addEventListener) synth.addEventListener("voiceschanged", loadVoices); else synth.onvoiceschanged = loadVoices;
+    [250, 1000, 2500, 5000].forEach(ms => setTimeout(loadVoices, ms));
+  }
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
+  renderNotices();
+  try { history.replaceState({ screen: "library" }, ""); } catch (e) {}
+  route({ screen: "library" });
+  window.addEventListener("error", e => { if (e && e.filename && /verbs\.js/i.test(e.filename)) return; toast("Something went wrong: " + (e.message || "unknown error")); });
+}
+try { init(); }
+catch (e) { showFatal("Something went wrong while starting: " + (e && e.message || e)); }
+
+// Exposed for checking from the browser console.
+window.__verbes = { get verbs() { return VERBS_OK; }, get problems() { return PROBLEMS; }, get settings() { return settings; }, get progress() { return progress; }, matchLevel, norm };
+})();
+</script>
+</body>
+</html>
