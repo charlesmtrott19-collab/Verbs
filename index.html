@@ -469,7 +469,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 /* =========================================================================
    CONSTANTS AND SMALL HELPERS
    ========================================================================= */
-const APP_VERSION = "5.0";
+const APP_VERSION = "5.1";
 const SCHEMA = 1;
 // Storage keys. NEVER rename these: saved progress lives under them.
 const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", backup: "frverbs.backup." };
@@ -1994,7 +1994,8 @@ async function doReset(kind) {
 /* =========================================================================
    DAILY SCHEDULE (spaced repetition). Library practice never touches this.
    ========================================================================= */
-const GAPS = [1, 3, 7, 14, 30, 60, 120], LT_GAP = 180, OFFSETS = [1, 4, 11, 25, 55, 115, 235];
+// Fixed review days after a card is first learnt: 1, 3, 7, 14, 30, 60, 180, then every 180. A miss never moves them.
+const GAPS = [1, 2, 4, 7, 16, 30, 120], LT_GAP = 180, OFFSETS = [1, 3, 7, 14, 30, 60, 180];
 const DEF_COST = { main: 10, tense: 30, keyforms: 20, form: 10, listen: 12 };
 const CARD_TYPES = ["main", "form", "tense", "keyforms", "listen"];
 const CARD_LABEL = { main: "Infinitive / regular verb card", form: "Single form card", tense: "Tense card (table)", keyforms: "Key forms card", listen: "Listening card" };
@@ -2139,16 +2140,17 @@ function entryOf(S, id) {
 }
 // step 0 = new, 1–7 = review steps, 8 = long-term
 function applyResult(e, passed, date) {
-  e.enc = (e.enc || 0) + 1; e.last = passed ? "pass" : "fail"; e.lastDate = date;
-  // Direction alternates: speaking (en-fr) and listening (fr-en). A pass flips it; a fail repeats the one you missed.
-  e.dir = passed ? (e.dir === "fr-en" ? "en-fr" : "fr-en") : (e.dir || "en-fr");
-  if (passed) {
-    if (e.step >= 7) { e.step = 8; e.due = addDays(date, LT_GAP); }
-    else { e.due = addDays(date, GAPS[e.step]); e.step += 1; }
-  } else {
-    e.step = e.step === 0 ? 0 : Math.max(1, e.step - 2);
-    e.due = addDays(date, 1);
-  }
+  // Every card advances once it has been got right. Misses are repeated in the session and never change the schedule,
+  // so `passed` is deliberately ignored. The next review is a fixed number of days after the card was first learnt.
+  const k = e.step;
+  e.enc = (e.enc || 0) + 1; e.last = "pass"; e.lastDate = date;
+  e.dir = e.dir === "fr-en" ? "en-fr" : "fr-en";
+  let nd;
+  if (k >= 8) nd = addDays(isDate(e.due) ? e.due : date, LT_GAP);
+  else if (isDate(e.intro)) nd = addDays(e.intro, k < 7 ? OFFSETS[k] : OFFSETS[6] + LT_GAP);
+  else nd = addDays(date, k < 7 ? GAPS[k] : LT_GAP);
+  if (nd <= date) nd = addDays(date, 1);
+  e.step = Math.min(8, k + 1); e.due = nd;
 }
 function avgCosts() {
   const c = {};
@@ -2262,7 +2264,7 @@ function partLabel(s) {
   const it = s.part === "learn" ? null : curItem();
   return BLOCK_NAME[s.bi || 0] + " · " + PART_LABEL[s.part] + (it ? (it.mode === "listen" ? " · listening" : " · speaking") : "");
 }
-function secondIds(s, bi) { bi = bi === undefined ? (s.bi || 0) : bi; return Object.keys(s.vs).filter(k => unitValid(k) && s.vs[k].blk === bi && (s.vs[k].isNew || s.vs[k].fail)); }
+function secondIds(s, bi) { bi = bi === undefined ? (s.bi || 0) : bi; return Object.keys(s.vs).filter(k => unitValid(k) && s.vs[k].blk === bi && s.vs[k].isNew); }
 function dirFor() { return session && session.mode === "sched" ? "en-fr" : resolveDir(); }
 const homeOf = () => (session && session.mode === "sched" ? "today" : "library");
 
@@ -2362,12 +2364,13 @@ function commitSched(it, wrongKeys) {
   if (timing[tk].length > 400) timing[tk] = timing[tk].slice(-400);
   saveTiming();
   const anyWrong = wrongKeys.length > 0;
-  if (it.first) { if (anyWrong) vs.fail = true; vs.left = 0; finalizeUnit(k); }
+  if (it.first) { if (anyWrong) vs.fail = true; vs.left = 0; }
+  if (!anyWrong) finalizeUnit(k);
   vs.open = Math.max(0, vs.open - 1);
   if (anyWrong) {
     vs.st = "retry";
-    // A wrong card comes back about five cards later, until it is right.
-    s.queue.splice(Math.min(s.idx + 6, s.queue.length), 0, newItem(Object.assign(qSpec(it), { first: false, retry: true })));
+    // A wrong card goes to the back of the pile and comes round again until it is right.
+    s.queue.push(newItem(Object.assign(qSpec(it), { first: false, retry: true })));
     vs.open++;
   }
   if (vs.open === 0) vs.st = "done";
@@ -2380,7 +2383,7 @@ function finalizeUnit(k) {
   const s = session, vs = s.vs[k], e = unitStore({ forms: fsched.forms, verbs: schedule.verbs }, k)[k];
   if (!e || vs.final) return;
   vs.before = e.step;
-  applyResult(e, !vs.fail, s.date);
+  applyResult(e, true, s.date); e.missed = !!vs.fail;
   vs.after = e.step; vs.final = true;
   if (isFormUnit(k)) saveForms(); else saveSchedule();
 }
@@ -2603,7 +2606,7 @@ function simulate(days, passRate, C, start, stopWhenAllIn) {
     p.blocks.forEach((x, bi) => {
       const run = (k, isNew) => {
         const e = unitStore(S, k)[k], c = unitCost(k, C, isNew ? "en-fr" : (e.dir || "en-fr")), pass = rnd() < passRate;
-        secs[bi] += c + (pass ? 0 : c * 0.5) + (settings.secondPass && (isNew || !pass) ? c : 0);
+        secs[bi] += c + (pass ? 0 : c * 0.5) + (settings.secondPass && isNew ? c : 0);
         applyResult(e, pass, d);
       };
       x.reviews.forEach(k => run(k, false)); x.newIds.forEach(k => run(k, true));
@@ -2628,20 +2631,21 @@ function runSim() {
 }
 
 /* ---------- Stats ---------- */
-const ABOUT = `<p>This schedule uses the spacing effect: a memory lasts longer when you review it just as it starts to fade, and each successful review lets the next gap grow. The gaps are 1, 3, 7, 14, 30, 60 and 120 days. After that a card is long-term and gets a check every 180 days.</p>
-<p>The aim is strong long-term memory, not guaranteed 100% recall. Forgetting sometimes is normal: a failed card drops back two steps and returns tomorrow, and must be recalled correctly once more the same day.</p>
+const ABOUT = `<p>This schedule uses the spacing effect: a memory lasts longer when you review it just as it starts to fade, and each successful review lets the next gap grow. Each card is reviewed on fixed days after you first learn it: day 1, 3, 7, 14, 30, 60 and 180, then every 180 days. Those days never move.</p>
+<p>The aim is strong long-term memory, not guaranteed 100% recall. A miss never changes the schedule: a missed card goes to the back of the pile and is repeated until you get it right, so every card you review advances that day. If you are late, the next review is due the following day instead.</p>
 <p>Irregular verbs: every form (and the infinitive) is its own card with its own schedule, so a form you know moves out to months while a weak one keeps coming back. Cards are shuffled across all verbs, tenses and persons, so you can’t follow a pattern. Forms are introduced in importance order: verb by verb, présent first.</p>
 <p>Regular verbs follow rules, so each one has a single card: English to the French infinitive. Full tables are for learning, on the Learn page.</p>
-<p>Each card alternates between two directions: speaking (English shown, you say the French) and listening (audio only, you say the meaning). It starts with speaking, and a pass flips the direction. A miss repeats the same direction. On a listening card, needing the French text or the English counts as struggled. Speaking cards are done first in a session, then listening cards.</p>`;
+<p>Each card alternates between two directions: speaking (English shown, you say the French) and listening (audio only, you say the meaning). It starts with speaking and flips at every review. A miss repeats the card in the same direction until you get it right. On a listening card, needing the French text or the English counts as struggled. Speaking cards are done first in a session, then listening cards.</p>`;
 function renderStats() {
   const C = avgCosts(), cnt = { irr: { new: 0, learning: 0, secure: 0, lt: 0 }, reg: { new: 0, learning: 0, secure: 0, lt: 0 } };
   VERBS_OK.forEach(v => { cnt[v.type === "irregular" ? "irr" : "reg"][verbStatus(v)]++; });
   const nI = VERBS_OK.filter(v => v.type === "irregular").length, nR = VERBS_OK.length - nI;
   const rows = [["Not started", "new"], ["Learning (steps 0–3)", "learning"], ["Secure (steps 4–7)", "secure"], ["Long-term", "lt"]];
   const secs = Object.keys(hist).reduce((n, d) => n + (hist[d].irr ? 1 : 0) + (hist[d].reg ? 1 : 0), 0);
+  const missed = Object.keys(fsched.forms).filter(k => unitValid(k) && fsched.forms[k].missed).length + Object.keys(schedule.verbs).filter(id => BY_ID[id] && BY_ID[id].type === "regular" && schedule.verbs[id].missed).length;
   const status = `<section class="sgroup"><h2>Progress</h2><table class="kv"><thead><tr><th></th><th>Irregular (${nI})</th><th>Regular (${nR})</th></tr></thead><tbody>` +
     rows.map(r => `<tr><th>${r[0]}</th><td>${cnt.irr[r[1]]}</td><td>${cnt.reg[r[1]]}</td></tr>`).join("") +
-    `</tbody></table><p class="shelp">An irregular verb counts at its weakest form. Sections finished: ${secs}.</p></section>`;
+    `</tbody></table><p class="shelp">An irregular verb counts at its weakest form. Sections finished: ${secs}. Missed at last review: ${missed} (information only; it changes no dates).</p></section>`;
   const ord = schedSections();
   const list = `<section class="sgroup"><details class="shelpbox"><summary>All verbs</summary>` +
     VERBS_OK.slice().sort((a, b) => ord.indexOf(a.group) - ord.indexOf(b.group) || a.rankNum - b.rankNum).map(v => `<div class="vrow"><span class="vfr" lang="fr">${esc(v.french)}</span>${dotsHTML(v)}</div>`).join("") + "</details></section>";
@@ -2669,13 +2673,13 @@ function schedSettingsHTML() {
     segRow("maxNewForms", "Most new irregular forms per day", nums([10, 15, 20, 25, 30]), "Introduced verb by verb in rank order: the infinitive, then présent (je to ils), then the other tenses.") +
     segRow("budgetReg", "Regular verbs: daily time budget", nums([5, 10, 15], n => n + " min"), "Regular verbs get one card each: English to the French infinitive.") +
     segRow("maxNew", "Most new regular verbs per day", nums([2, 4, 6, 8, 10, 12])) +
-    switchRow("secondPass", "Second pass", "One more recall of today’s new and failed cards at the end of each block.") +
-    `<p class="shelp">Each card alternates between speaking (English to French) and listening (audio only), starting with speaking. A miss repeats the same direction. Speaking cards come first in a session, then listening cards.</p>` +
+    switchRow("secondPass", "Second pass", "One more recall of today’s new cards at the end of each block.") +
+    `<p class="shelp">Each card alternates between speaking (English to French) and listening (audio only), starting with speaking. A miss goes to the back of the pile, in the same direction, until you get it right. It never moves a due date. Speaking cards come first in a session, then listening cards.</p>` +
     `<div class="srow col"><span class="slabel">Order of regular groups for new verbs</span><p class="shelp">Within each group, verbs are introduced by importance rank. Irregular verbs have their own block.</p><ol class="secorder" id="secOrder"></ol></div>` +
     `</section>`;
 }
 function simHTML() {
-  return `<section class="sgroup"><details class="shelpbox"><summary>Advanced: simulate</summary><p class="shelp">Fast-forwards a copy of your progress to show the daily load. Your real progress is never touched.</p>` +
+  return `<section class="sgroup"><details class="shelpbox"><summary>Advanced: simulate</summary><p class="shelp">Fast-forwards a copy of your progress to show the daily load. A miss only adds retry time; it never moves a due date. Your real progress is never touched.</p>` +
     `<div class="simgrid"><label>Days<select id="simDays"><option>7</option><option selected>30</option><option>90</option><option>180</option><option>365</option></select></label>` +
     `<label>Pass rate (%)<input id="simPass" type="number" min="0" max="100" value="85" inputmode="numeric"></label>` +
     `<label>Speaking infinitive / regular card (s)<input id="simMain" type="number" min="1" max="300" value="10" inputmode="numeric"></label>` +
