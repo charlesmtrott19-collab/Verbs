@@ -3,41 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1c2e6e">
+<meta name="theme-color" content="#1c3f94">
 <title>Verbes</title>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none !important}
 :root{
-  --page:#eceff6; --paper:#fcfcfe; --ink:#1e2234; --muted:#596077; --line:#d5daea;
-  --navy:#1c2e6e; --navy-ink:#ffffff; --navy-soft:#e0e5f5;
-  --seyes:#bcc6ea; --seyes-fine:#e3e8f7; --margin:#d4505f;
-  --know:#1f7448; --know-ink:#ffffff; --know-soft:#dff1e6;
-  --miss:#bd2e44; --miss-soft:#f9e1e5;
-  --end:#7a3cb5; --close:#9a6200; --warn-bg:#fff4d9; --warn-ink:#5e4100;
+  --page:#f5f6f8; --paper:#ffffff; --ink:#1a1d26; --muted:#505767; --line:#d9dde6;
+  --navy:#1c3f94; --navy-ink:#ffffff; --navy-soft:#e8edf8;
+  --know:#1a6b3c; --know-ink:#ffffff; --know-soft:#e6f3ea;
+  --miss:#b3261e; --miss-soft:#fbe7e5;
   --ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --serif:Georgia,"Noto Serif","Droid Serif",Cambria,"Times New Roman",serif;
   --scale:1;
-  --amber:#c27c0e; --grey:#8a90a2; --gold:#c9a227;
   color-scheme:light;
 }
 :root[data-theme="dark"]{
-  --page:#0e1120; --paper:#161a2b; --ink:#e6e8f2; --muted:#9ca3bc; --line:#2b3150;
-  --navy:#aab8ff; --navy-ink:#0e1120; --navy-soft:#232b4c;
-  --seyes:#2d355a; --seyes-fine:#1d2239; --margin:#a8434f;
-  --know:#67c995; --know-ink:#0e1120; --know-soft:#163021;
-  --miss:#ff8c9b; --miss-soft:#3b1a23;
-  --end:#d0a6f6; --close:#ffc46b; --warn-bg:#3a2f12; --warn-ink:#ffdb8f;
-  color-scheme:dark;
+  --page:#0d1018; --paper:#12151f; --ink:#e8eaf0; --muted:#a3abbd; --line:#2a3042;
+    --navy:#8fb0ff; --navy-ink:#0d1018; --navy-soft:#1c2540;
+    --know:#6fcf97; --know-ink:#0d1018; --know-soft:#14291d;
+    --miss:#ff8a80; --miss-soft:#3a1c1f;
+    color-scheme:dark;
 }
 @media (prefers-color-scheme:dark){
   :root[data-theme="system"]{
-    --page:#0e1120; --paper:#161a2b; --ink:#e6e8f2; --muted:#9ca3bc; --line:#2b3150;
-    --navy:#aab8ff; --navy-ink:#0e1120; --navy-soft:#232b4c;
-    --seyes:#2d355a; --seyes-fine:#1d2239; --margin:#a8434f;
-    --know:#67c995; --know-ink:#0e1120; --know-soft:#163021;
-    --miss:#ff8c9b; --miss-soft:#3b1a23;
-    --end:#d0a6f6; --close:#ffc46b; --warn-bg:#3a2f12; --warn-ink:#ffdb8f;
+    --page:#0d1018; --paper:#12151f; --ink:#e8eaf0; --muted:#a3abbd; --line:#2a3042;
+    --navy:#8fb0ff; --navy-ink:#0d1018; --navy-soft:#1c2540;
+    --know:#6fcf97; --know-ink:#0d1018; --know-soft:#14291d;
+    --miss:#ff8a80; --miss-soft:#3a1c1f;
     color-scheme:dark;
   }
 }
@@ -70,15 +63,15 @@ body.no-legend kbd, body.no-legend .legend{display:none}
 .tag{font:600 .7rem var(--ui);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 7px;margin-left:8px;white-space:nowrap}
 
 /* ---------- notices, problems, toast ---------- */
-.notice{display:flex;gap:10px;align-items:flex-start;background:var(--warn-bg);color:var(--warn-ink);border-radius:10px;padding:10px 12px;margin:10px 0}
+.notice{display:flex;gap:10px;align-items:flex-start;background:var(--navy-soft);color:var(--ink);border-radius:10px;padding:10px 12px;margin:10px 0}
 .notice p{margin:0;flex:1}
 .notice .x{background:none;border:0;color:inherit;font-size:1.3rem;line-height:1;padding:2px 6px}
-.problems{background:var(--warn-bg);color:var(--warn-ink);border-radius:10px;padding:10px 14px;margin:10px 0}
+.problems{background:var(--navy-soft);color:var(--ink);border-radius:10px;padding:10px 14px;margin:10px 0}
 .problems summary{font-weight:650;cursor:pointer}
 .problems ul{margin:8px 0 2px;padding-left:20px}
 .problems li{margin:4px 0}
 .toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--page);padding:10px 16px;border-radius:10px;font-weight:600;z-index:60;max-width:90vw;text-align:center}
-.fatal{max-width:640px;margin:40px auto;padding:20px;background:var(--warn-bg);color:var(--warn-ink);border-radius:12px}
+.fatal{max-width:640px;margin:40px auto;padding:20px;background:var(--navy-soft);color:var(--ink);border-radius:12px}
 .fatal h1{font-family:var(--serif);margin-bottom:10px}
 
 /* ---------- tabs ---------- */
@@ -93,7 +86,7 @@ body.no-legend kbd, body.no-legend .legend{display:none}
 .libhead h3{font-size:1.05rem;font-weight:700}
 .libhead.sub{border-bottom:1px solid var(--line);padding-bottom:8px}
 .count{margin:2px 0 0;color:var(--muted);font-size:.88rem}
-.subsec{margin:16px 0 4px 0;padding-left:12px;border-left:2px solid var(--margin)}
+.subsec{margin:16px 0 4px 0;padding-left:12px;border-left:2px solid var(--line)}
 .vlist{list-style:none;margin:8px 0 0;padding:0}
 .vchip{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:2px 12px;padding:10px 4px;background:none;border:0;border-bottom:1px solid var(--line);text-align:left}
 .vchip .vfr{font-family:var(--serif);font-size:1.2rem}
@@ -124,13 +117,8 @@ body.in-study .screen#scr-study{display:flex}
 .qbtn.on{border-color:var(--navy);background:var(--navy-soft)}
 .micnote{margin:8px 2px 0;font-size:.85rem;color:var(--muted)}
 .cardwrap{flex:1;display:flex;flex-direction:column;padding:10px 0 4px;min-height:0}
-.card{flex:1;position:relative;border-radius:6px;padding:16px 16px 22px 56px;touch-action:pan-y;user-select:none;-webkit-user-select:none;
+.card{flex:1;position:relative;border-radius:6px;padding:16px 16px 22px;touch-action:pan-y;user-select:none;-webkit-user-select:none;
   background-color:var(--paper);
-  background-image:
-    linear-gradient(to right,transparent 0 38px,var(--margin) 38px 39.5px,transparent 39.5px),
-    repeating-linear-gradient(to bottom,transparent 0 31px,var(--seyes) 31px 32px),
-    repeating-linear-gradient(to bottom,transparent 0 7px,var(--seyes-fine) 7px 8px);
-  background-attachment:local;
   box-shadow:0 0 0 1px var(--line),0 14px 30px -20px rgba(28,46,110,.45)}
 .card.enter{animation:cardIn .22s ease-out}
 .card.turn{animation:cardTurn .2s ease-out}
@@ -176,7 +164,7 @@ body.no-anim .card{animation:none !important;transition:none !important}
 .hmsg{color:var(--muted)}
 .hb{display:inline-block;font:650 .75rem var(--ui);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle;white-space:nowrap}
 .hb.ok{color:var(--know);background:var(--know-soft)}
-.hb.close{color:var(--close);background:var(--warn-bg)}
+.hb.close{color:var(--ink);background:var(--navy-soft)}
 .hb.no{color:var(--muted);border:1px solid var(--line)}
 .actions{display:flex;gap:10px;padding:10px 0 calc(6px + env(safe-area-inset-bottom));position:sticky;bottom:0;z-index:5;background:var(--page)}
 .act{flex:1;min-height:58px;border-radius:12px;font-size:1.05rem;font-weight:700;border:2px solid transparent}
@@ -198,7 +186,7 @@ body.no-anim .card{animation:none !important;transition:none !important}
 .c-pl{width:48px;text-align:right}
 .c-pl .play{min-height:36px;min-width:36px;padding:0}
 .c-m{width:30px;font-weight:800;color:var(--know);text-align:center}
-.end{color:var(--end);font-weight:700}
+.end{color:var(--navy);font-weight:700}
 .markable tbody tr{cursor:pointer}
 .card .markable tr.wrong td{background:var(--miss-soft)}
 .markable tr.wrong .c-m{color:var(--miss)}
@@ -219,10 +207,6 @@ body.no-anim .card{animation:none !important;transition:none !important}
   .conj .c-ph{grid-area:ph}
   .conj .c-en{grid-area:en}
   .conj .c-pl{grid-area:pl;align-self:center;width:auto}
-  .card{padding-left:40px;background-image:
-    linear-gradient(to right,transparent 0 24px,var(--margin) 24px 25.5px,transparent 25.5px),
-    repeating-linear-gradient(to bottom,transparent 0 31px,var(--seyes) 31px 32px),
-    repeating-linear-gradient(to bottom,transparent 0 7px,var(--seyes-fine) 7px 8px)}
   .cbig{font-size:2rem}
 }
 
@@ -307,7 +291,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 .dots{display:inline-flex;align-items:center;gap:3px;--dot:var(--muted);flex:none}
 .dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--dot);display:inline-block}
 .dots i.on{background:var(--dot)}
-.st-new{--dot:var(--ink);opacity:.6}.st-due{--dot:var(--know)}.st-failed{--dot:var(--miss)}.st-overdue{--dot:var(--amber)}.st-later{--dot:var(--grey)}.st-lt{--dot:var(--gold)}
+.st-new{--dot:var(--muted)}.st-on{--dot:var(--know)}
 .dtext{font-size:.8rem;color:var(--muted);margin-left:6px}
 .lrow .dots{margin:0 4px}
 .todayline{font-family:var(--serif);font-size:1.45rem;line-height:1.3;margin:6px 0 8px}
@@ -339,6 +323,16 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 .cue span{font-family:var(--serif);color:var(--navy)}
 .cplay.big{margin:36px 0 10px}.cplay.big .play{min-height:64px;padding:0 22px;font-size:1.05rem}.cplay.big .play svg{width:28px;height:28px}
 .sprog .ssub{margin-top:4px}
+.day{margin:18px 0 6px}.dayh{display:flex;align-items:baseline;gap:8px;font-size:1.1rem;margin:0 0 6px}.dayh small{color:var(--muted);font-weight:500;font-size:.85rem}
+.sec{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:10px 12px;margin:8px 0}
+.sec.isdone{background:var(--know-soft);border-color:var(--know)}
+.sechead{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:36px}
+.tick{color:var(--know);font-weight:700}
+.vsmall{margin:4px 0 0;font-size:.82rem;color:var(--muted);line-height:1.5}
+.vsmall .linkbtn{font-size:inherit}
+.hist summary{cursor:pointer;font-weight:650;padding:10px 0}
+.vrow{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}.vrow .vfr{flex:1}
+#learnSearch{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--paper);margin-top:8px}
 </style>
 </head>
 <body>
@@ -389,7 +383,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
   <p class="micnote" id="micNote" hidden></p>
   <div class="cardwrap"><article class="card" id="card" aria-live="polite"></article></div>
   <div class="actions" id="actions"></div>
-  <p class="legend"><kbd>Space</kbd>flip <kbd>1</kbd>know <kbd>2</kbd>don’t know <kbd>3</kbd>–<kbd>8</kbd>mark a row <kbd>P</kbd>play <kbd>M</kbd>mic <kbd>U</kbd>undo <kbd>Esc</kbd>back</p>
+  <p class="legend"><kbd>Space</kbd>flip <kbd>1</kbd>know <kbd>2</kbd>don’t know <kbd>U</kbd>undo</p>
 </section>
 
 <!-- ROUND SUMMARY -->
@@ -406,6 +400,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
   <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button></nav>
   <div class="learnctl">
     <label class="sel"><span>Showing</span><select id="learnScope"></select></label>
+    <input type="search" id="learnSearch" placeholder="Search verbs (French or English)" aria-label="Search verbs">
     <div class="btnrow"><button class="ghost sm" id="expandAll">Expand all</button><button class="ghost sm" id="collapseAll">Collapse all</button></div>
   </div>
   <div id="learnList"></div>
@@ -474,11 +469,11 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 /* =========================================================================
    CONSTANTS AND SMALL HELPERS
    ========================================================================= */
-const APP_VERSION = "4.1";
+const APP_VERSION = "5.0";
 const SCHEMA = 1;
 // Storage keys. NEVER rename these: saved progress lives under them.
-const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", backup: "frverbs.backup." };
-const EXPORT_SCHEMA = 3;
+const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", backup: "frverbs.backup." };
+const EXPORT_SCHEMA = 4;
 const TYPE_ORDER = ["irregular", "regular"];
 const TYPE_LABEL = { irregular: "Irregular verbs", regular: "Regular verbs" };
 
@@ -1306,6 +1301,7 @@ function renderStudy(animate) {
   renderActions();
 }
 function renderQuick() {
+  $(".quick").hidden = !!(session && session.mode === "sched");
   const q = (id, on, label, value, title) => { const b = $(id); b.classList.toggle("on", !!on); b.innerHTML = `<small>${label}</small><b>${value}</b>`; b.title = title; };
   q("#qAuto", settings.autoplay, "Auto-play", settings.autoplay ? "On" : "Off", "Auto-play audio on or off");
   q("#qDir", false, "Direction", { "en-fr": "EN→FR", "fr-en": "FR→EN", mixed: "Mixed" }[settings.direction], "Card direction: tap to change");
@@ -1639,7 +1635,7 @@ $("#sumList").addEventListener("click", e => { const b = e.target.closest("[data
    ========================================================================= */
 function chipsHTML(verbs, ss) {
   return '<ul class="vlist">' + verbs.map(v =>
-    `<li><button class="vchip" data-learn-verb="${esc(v.id)}"><span class="vfr" lang="fr">${esc(v.french)}<span class="rank">${esc(v.rank)}</span>${v.test ? '<span class="tag">test</span>' : ""}</span><span class="ven">${esc(v.english)}</span><span class="vstat">${dotsHTML(v, ss)}</span></button></li>`).join("") + "</ul>";
+    `<li><button class="vchip" data-learn-verb="${esc(v.id)}"><span class="vfr" lang="fr">${esc(v.french)}<span class="rank">${esc(v.rank)}</span>${v.test ? '<span class="tag">test</span>' : ""}</span><span class="ven">${esc(v.english)}</span></button></li>`).join("") + "</ul>";
 }
 function renderLibrary() {
   const n = VERBS_OK.length, ss = schedSession();
@@ -1719,10 +1715,12 @@ function verbDetailHTML(v) {
 function verbRowHTML(v, set, prefix, ss) {
   set = set || expanded; prefix = prefix || "lv";
   const open = set.has(v.id);
-  return `<section class="lverb" id="${prefix}-${esc(v.id)}"><button class="lrow" data-toggle="${esc(v.id)}" aria-expanded="${open}"><span class="lname"><span>${esc(v.english)}</span><span class="ldash"> — </span><span class="lfr" lang="fr">${esc(v.french)}</span></span>${dotsHTML(v, ss, true)}${v.test ? '<span class="tag">test</span>' : ""}<span class="lchev">${ICON.chev}</span></button><div class="lbody"${open ? "" : " hidden"}>${open ? verbDetailHTML(v) : ""}</div></section>`;
+  return `<section class="lverb" id="${prefix}-${esc(v.id)}"><button class="lrow" data-toggle="${esc(v.id)}" aria-expanded="${open}"><span class="lname"><span>${esc(v.english)}</span><span class="ldash"> — </span><span class="lfr" lang="fr">${esc(v.french)}</span></span>${v.test ? '<span class="tag">test</span>' : ""}<span class="lchev">${ICON.chev}</span></button><div class="lbody"${open ? "" : " hidden"}>${open ? verbDetailHTML(v) : ""}</div></section>`;
 }
 function renderLearnList() {
-  const list = verbsInScope(learnScope);
+  let list = verbsInScope(learnScope);
+  const q = deacc(norm(($("#learnSearch") && $("#learnSearch").value) || ""));
+  if (q) list = list.filter(v => deacc(norm(v.french + " " + v.english + " " + v.id)).indexOf(q) >= 0);
   const ss = schedSession(), ord = schedSections();
   list.sort((a, b) => ord.indexOf(a.group) - ord.indexOf(b.group) || a.rankNum - b.rankNum);
   $("#learnList").innerHTML = list.length ? list.map(v => verbRowHTML(v, expanded, "lv", ss)).join("") : '<p class="empty">No verbs here yet. Add them to verbs.js.</p>';
@@ -1730,6 +1728,7 @@ function renderLearnList() {
 function renderLearn(st) {
   st = st || {};
   if (st.scope) learnScope = st.scope;
+  if (st.verb && $("#learnSearch")) $("#learnSearch").value = "";
   learnFromStudy = !!st.fromStudy;
   if (st.verb && BY_ID[st.verb]) {
     if (!verbsInScope(learnScope).some(v => v.id === st.verb)) learnScope = "all";
@@ -1908,7 +1907,7 @@ const alertBox = (title, html) => confirmBox(title, html, "OK", false, true);
 function exportData() {
   let sess = null;
   try { sess = JSON.parse(lsGet(KEYS.session) || "null"); } catch (e) {}
-  const data = { app: "french-verbs", schema: EXPORT_SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress, schedule, formsched: fsched, timing, session: sess };
+  const data = { app: "french-verbs", schema: EXPORT_SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress, schedule, formsched: fsched, history: hist, timing, session: sess };
   try {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -1970,6 +1969,7 @@ async function importData(file) {
   if (!isObj(fsched.newLog)) fsched.newLog = {};
   timing = freshTiming();
   if (isObj(d.timing)) CARD_TYPES.forEach(k => { if (Array.isArray(d.timing[k])) timing[k] = d.timing[k].filter(x => typeof x === "number" && x > 0); });
+  hist = cleanHist(d.history); saveHist();
   saveSettings(); saveProgress(); saveSchedule(); saveForms(); saveTiming();
   if (!fsched.migrated) migrateForms();
   if (isObj(d.session) && d.session.schema === 2 && d.session.mode === "sched" && isDate(d.session.date) && Array.isArray(d.session.queue)) lsSet(KEYS.session, JSON.stringify(d.session)); else lsRemove(KEYS.session);
@@ -1984,7 +1984,7 @@ async function doReset(kind) {
   if (kind !== "settings") {
     [["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-reset-" + l, lsGet(k)));
     progress = { schema: SCHEMA, verbs: {} }; schedule = freshSchedule(); fsched = freshForms(); timing = freshTiming();
-    saveProgress(); saveSchedule(); saveForms(); saveTiming(); lsRemove(KEYS.session); session = null;
+    saveProgress(); saveSchedule(); saveForms(); saveTiming(); lsRemove(KEYS.session); session = null; hist = {}; saveHist();
   }
   if (kind !== "progress") { makeBackup("before-reset-settings", lsGet(KEYS.settings)); settings = freshDefaults(); saveSettings(); applyDisplay(); loadVoices(); }
   syncSettingsUI();
@@ -2228,7 +2228,7 @@ function selectNew(bi, date, S, C, rawSoFar) {
   }
   return { ids: out, learn: Array.from(learn), cost };
 }
-function plan(date, S, C) {
+function plan(date, S, C, extraBi) {
   const sp = secondF(), ord = regSections();
   const blocks = [0, 1].map(bi => {
     const keys = bi === 0 ? Object.keys(S.forms).filter(unitValid) : Object.keys(S.verbs).filter(id => BY_ID[id] && BY_ID[id].type === "regular");
@@ -2246,7 +2246,7 @@ function plan(date, S, C) {
     const carryLearn = bi === 0 ? Array.from(new Set(carry.map(unitVerb))).filter(id => !seen.has(id)) : carry.slice();
     const raw = rev.reduce((s, k) => s + unitCost(k, C, entryOfU(S, k).dir || "en-fr"), 0) + carry.reduce((s, k) => s + unitCost(k, C, "en-fr") * sp, 0) + carryLearn.reduce((s, id) => s + learnCost(BY_ID[id]), 0);
     const log = bi === 0 ? S.fNewLog : S.newLog;
-    const sel = Array.isArray(log[date]) ? { ids: [], learn: [], cost: 0 } : selectNew(bi, date, S, C, raw);
+    const sel = (Array.isArray(log[date]) && bi !== extraBi) ? { ids: [], learn: [], cost: 0 } : selectNew(bi, date, S, C, raw);
     return { reviews: rev, newIds: carry.concat(sel.ids), picked: sel.ids, learnIds: carryLearn.concat(sel.learn), sec: (raw + sel.cost) * 1.15 };
   });
   return { blocks, sec: blocks[0].sec + blocks[1].sec };
@@ -2266,20 +2266,21 @@ function secondIds(s, bi) { bi = bi === undefined ? (s.bi || 0) : bi; return Obj
 function dirFor() { return session && session.mode === "sched" ? "en-fr" : resolveDir(); }
 const homeOf = () => (session && session.mode === "sched" ? "today" : "library");
 
-function buildSession() {
-  const date = todayStr(), C = avgCosts(), p = plan(date, curState(), C), [a, b] = p.blocks;
-  a.picked.forEach(k => { fsched.forms[k] = { step: 0, enc: 0, due: date, intro: date }; });
-  b.picked.forEach(id => { schedule.verbs[id] = { step: 0, enc: 0, due: date, intro: date }; });
-  fsched.newLog[date] = (fsched.newLog[date] || []).concat(a.picked);
-  schedule.newLog[date] = (schedule.newLog[date] || []).concat(b.picked);
+function buildSession(bi, extra) {
+  const date = todayStr(), C = avgCosts(), p = plan(date, curState(), C, extra ? bi : -1), x = p.blocks[bi];
+  if (bi === 0) x.picked.forEach(k => { fsched.forms[k] = { step: 0, enc: 0, due: date, intro: date }; });
+  else x.picked.forEach(id => { schedule.verbs[id] = { step: 0, enc: 0, due: date, intro: date }; });
+  const lg = bi === 0 ? fsched.newLog : schedule.newLog;
+  lg[date] = (lg[date] || []).concat(x.picked);
   [fsched.newLog, schedule.newLog].forEach(log => Object.keys(log).forEach(d => { if (!isDate(d) || dayDiff(d, date) > 30) delete log[d]; }));
   saveSchedule(); saveForms();
-  const vs = {}, blocks = p.blocks.map((x, bi) => {
-    x.reviews.forEach(k => { vs[k] = { st: "todo", left: 0, open: 0, fail: false, isNew: false, blk: bi }; });
-    x.newIds.forEach(k => { vs[k] = { st: "todo", left: 0, open: 0, fail: false, isNew: true, blk: bi }; });
-    return { reviewIds: x.reviews, newIds: x.newIds, learnIds: x.learnIds, plannedSec: x.sec };
+  const vs = {}, blocks = p.blocks.map((y, i) => {
+    if (i !== bi) return { reviewIds: [], newIds: [], learnIds: [], plannedSec: 0 };
+    y.reviews.forEach(k => { vs[k] = { st: "todo", left: 0, open: 0, fail: false, isNew: false, blk: i }; });
+    y.newIds.forEach(k => { vs[k] = { st: "todo", left: 0, open: 0, fail: false, isNew: true, blk: i }; });
+    return { reviewIds: y.reviews, newIds: y.newIds, learnIds: y.learnIds, plannedSec: y.sec };
   });
-  return { mode: "sched", schema: 2, date, startedAt: Date.now(), elapsedMs: 0, plannedSec: p.sec, part: "start", bi: 0, blocks, vs,
+  return { mode: "sched", schema: 2, only: bi, date, startedAt: Date.now(), elapsedMs: 0, plannedSec: x.sec, part: "start", bi, blocks, vs,
            queue: [], idx: 0, committed: -1, done: false, undo: [], title: "Today", round: 1 };
 }
 // Runs the irregular block (reviews, learn, test, second pass), then the regular block, then the finish screen.
@@ -2296,7 +2297,7 @@ function nextPart() {
       if (p === "second" && (!settings.secondPass || !secondIds(s, bi).length)) continue;
       s.bi = bi; enterPart(p); return;
     }
-    if (bi >= s.blocks.length - 1) { s.bi = bi; enterPart("done"); return; }
+    if (s.only !== undefined || bi >= s.blocks.length - 1) { s.bi = bi; enterPart("done"); return; }
     bi++; i = 1;
   }
 }
@@ -2317,7 +2318,7 @@ function enterPart(p) {
   // Two passes: speaking first, then listening. Irregular cards are shuffled across verbs, tenses and persons.
   const order = list => (s.bi === 0 ? spread(list) : list);
   s.queue = order(speak).concat(order(listen));
-  if (p === "done") { s.done = true; s.finishedAt = Date.now(); }
+  if (p === "done") { s.done = true; s.finishedAt = Date.now(); recordHist(s); toast("Section complete ✓"); }
   saveSession();
   if (p === "learn" || p === "done") { navigate("today"); return; }
   navigate("study");
@@ -2402,7 +2403,7 @@ function schedCounts(s) {
   Object.keys(s.vs).forEach(id => { if (!unitValid(id) || s.vs[id].blk !== (s.bi || 0)) return; const st = s.vs[id].st; if (st === "done") done++; else if (st === "retry") retry++; else todo++; });
   return { todo, retry, done, total: todo + retry + done };
 }
-function countsHTML(c) { return `<span>To do ${c.todo}</span><span${c.retry ? ' class="c-retry"' : ""}>Retry ${c.retry}</span><span class="c-done">Done ${c.done} ✓</span>`; }
+function countsHTML(c) { return `<span>${c.todo + c.retry} left</span>`; }
 function plannedMin(s) { return Math.max(1, Math.round(s.plannedSec / 60)); }
 function renderSchedTop() {
   const s = session, c = schedCounts(s);
@@ -2431,22 +2432,19 @@ setInterval(() => {
 }, 1000);
 
 /* ---------- tracking dots ---------- */
-function verbState(v, ss) {
-  const e = verbEntry(v), t = todayStr();
-  if (!e) return "new";
-  if (ss && ss.date === t && isObj(ss.vs) && Object.keys(ss.vs).some(k => unitVerb(k) === v.id && ss.vs[k].st === "retry")) return "failed";
-  if (e.due < t) return "overdue";
-  if (e.due === t) return "due";
-  return e.step === 8 ? "lt" : "later";
+function verbStep(v) {
+  if (v.type !== "irregular") { const e = entryOf(schedule, v.id); return e ? { started: true, all: true, step: e.step } : { started: false }; }
+  const S = { forms: fsched.forms, verbs: {} }, us = verbUnits(v);
+  let n = 0, min = 8;
+  us.forEach(k => { const e = entryOfU(S, k); if (e) { n++; if (e.step < min) min = e.step; } });
+  return n ? { started: true, all: n === us.length, step: min } : { started: false };
 }
-function dotsHTML(v, ss, compact) {
-  const e = verbEntry(v), st = verbState(v, ss), n = e ? Math.min(e.step, 7) : 0;
-  let dots = "";
-  for (let i = 0; i < 7; i++) dots += `<i class="${i < n ? "on" : ""}"></i>`;
-  const what = !e ? "New" : e.step === 8 ? "Long-term" : e.step === 0 ? "Learning" : `${n} / 7 to long-term`;
-  const when = st === "due" ? "due today" : st === "overdue" ? "overdue" : st === "failed" ? "retry today" : (st === "later" || st === "lt") ? "next " + fmtDate(e.due) : "";
-  const label = what + (when ? ", " + when : "");
-  return `<span class="dots st-${st}" title="${esc(label)}" aria-label="${esc(label)}">${dots}${compact ? "" : `<span class="dtext">${esc(label)}</span>`}</span>`;
+function verbStatus(v) { const x = verbStep(v); if (!x.started) return "new"; if (x.all && x.step >= 8) return "lt"; return x.all && x.step >= 4 ? "secure" : "learning"; }
+function dotsHTML(v) {
+  const x = verbStep(v), st = verbStatus(v), n = x.started ? Math.min(x.step, 7) : 0;
+  let dots = ""; for (let i = 0; i < 7; i++) dots += `<i class="${i < n ? "on" : ""}"></i>`;
+  const label = { new: "Not started", learning: "Learning", secure: "Secure", lt: "Long-term" }[st];
+  return `<span class="dots ${x.started ? "st-on" : "st-new"}" title="${label}" aria-label="${label}">${dots}<span class="dtext">${label}</span></span>`;
 }
 function curricLine(verbs, name) {
   const started = verbs.filter(v => verbEntry(v)).length;
@@ -2469,46 +2467,111 @@ function learnStepHTML(s) {
     `<div id="todayLearn">${ids.map(id => verbRowHTML(BY_ID[id], todayExpanded, "tv", s)).join("")}</div>` +
     `<button class="primary bigstart" data-today="ready">I’m ready — test me</button>`;
 }
-function finishHTML(s) {
-  const ks = Object.keys(s.vs).filter(unitValid), vs = s.vs;
-  const cnt = bi => { const k = ks.filter(x => vs[x].blk === bi); return { p: k.filter(x => vs[x].final && !vs[x].fail).length, f: k.filter(x => vs[x].fail).length, u: k.filter(x => vs[x].final && vs[x].after > vs[x].before).length }; };
-  const a = cnt(0), b = cnt(1), tp = plan(addDays(todayStr(), 1), curState(), avgCosts()), t0 = tp.blocks[0], t1 = tp.blocks[1];
-  const row = (l, f) => `<tr><th>${l}</th><td>${f(a)}</td><td>${f(b)}</td></tr>`;
-  return `<h2 class="parth">Session complete</h2><table class="kv"><thead><tr><th></th><th>Irregular</th><th>Regular</th></tr></thead><tbody>` +
-    `<tr><th>Time taken</th><td colspan="2">${Math.max(1, mins(s.elapsedMs))} min</td></tr>` +
-    row("Cards passed first time", x => x.p) + row("Cards failed, now cleared", x => x.f) + row("Cards that moved up a step", x => x.u) + `</tbody></table>` +
-    `<p class="todayline">Tomorrow: ${plural(t0.reviews.length + t0.newIds.length, "irregular card")} + ${plural(t1.reviews.length + t1.newIds.length, "regular card")} · about ${Math.max(1, Math.round(tp.sec / 60))} min</p>` +
-    `<button class="ghost" data-today="library">Practise freely in the Library</button>`;
+let hist = {};
+function cleanHist(o) {
+  const out = {}; if (!isObj(o)) return out;
+  Object.keys(o).forEach(d => {
+    if (!isDate(d) || !isObj(o[d])) return;
+    const e = {};
+    ["irr", "reg"].forEach(k => { const x = o[d][k]; if (isObj(x)) e[k] = { new: (Array.isArray(x.new) ? x.new : []).filter(y => Array.isArray(y) && typeof y[0] === "string").map(y => [y[0], (Array.isArray(y[1]) ? y[1] : []).filter(z => typeof z === "string")]) }; });
+    if (e.irr || e.reg) out[d] = e;
+  });
+  return out;
+}
+function loadHist() { try { return cleanHist(JSON.parse(lsGet(KEYS.history) || "{}")); } catch (e) { return {}; } }
+function saveHist() { lsSet(KEYS.history, JSON.stringify(hist)); }
+let paceCache = {};
+const SECN = ["Irregular", "Regular"], SECK = ["irr", "reg"];
+const tenseWord = t => (t === "inf" ? "infinitive" : (TENSES[t] ? TENSES[t].name.toLowerCase() : t));
+function groupForms(keys) {
+  const out = [], idx = {};
+  keys.forEach(k => {
+    const p = k.split("|"), t = p[1] || "inf";
+    if (!BY_ID[p[0]]) return;
+    if (!(p[0] in idx)) { idx[p[0]] = out.length; out.push([p[0], []]); }
+    const a = out[idx[p[0]]][1]; if (a.indexOf(t) < 0) a.push(t);
+  });
+  return out;
+}
+function newOf(bi, keys) { keys = keys.filter(unitValid); return bi === 0 ? groupForms(keys) : Array.from(new Set(keys)).map(id => [id, []]); }
+function histList(e) { return ((e && e.new) || []).filter(x => BY_ID[x[0]]).map(x => [x[0], x[1].filter(t => t === "inf" || TENSES[t])]); }
+function recHist(s, bi) {
+  const b = s.blocks[bi]; if (!b) return;
+  const keys = liveIds(b.newIds);
+  if (!keys.length && !liveIds(b.reviewIds).length) return;
+  const day = hist[s.date] || (hist[s.date] = {}), k = SECK[bi], e = day[k] || (day[k] = { new: [] });
+  newOf(bi, keys).forEach(([id, ts]) => {
+    const f = e.new.find(x => x[0] === id);
+    if (f) ts.forEach(t => { if (f[1].indexOf(t) < 0) f[1].push(t); }); else e.new.push([id, ts]);
+  });
+  saveHist();
+}
+function recordHist(s) { if (s.only === undefined) { recHist(s, 0); recHist(s, 1); } else recHist(s, s.only); }
+function vlinks(list, sep) {
+  return list.map(([id, ts]) => `<button class="linkbtn" data-vlink="${esc(id)}" lang="fr">${esc(BY_ID[id].french)}</button>` + (ts.length ? ` (${ts.map(tenseWord).join(", ")})` : "")).join(sep);
+}
+function secRow(bi, o) {
+  const sep = bi === 0 ? "; " : ", ";
+  let nw = o.list.length ? "New: " + vlinks(o.list, sep) : (!o.done && !o.reviews ? "Nothing due" : "");
+  const meta = [];
+  if (bi === 0 && o.n) meta.push(plural(o.n, "new form"));
+  if (o.reviews) meta.push(plural(o.reviews, "review"));
+  if (o.min) meta.push("about " + o.min + " min");
+  const btn = o.done ? '<span class="tick">✓ Done</span>'
+    : o.state === "start" ? `<button class="primary sm" data-sec="start:${bi}">Start</button>`
+    : o.state === "continue" ? '<button class="primary sm" data-today="continue">Continue</button>'
+    : o.state === "extra" ? `<button class="ghost sm" data-sec="extra:${bi}">Do now</button>` : "";
+  return `<div class="sec${o.done ? " isdone" : ""}"><div class="sechead"><b>${SECN[bi]}</b>${btn}</div><p class="vsmall">${nw}${nw && meta.length ? " · " : ""}${meta.join(" · ")}</p></div>`;
 }
 function renderToday() {
   const t = todayStr(), body = $("#todayBody");
   $("#todayDate").textContent = parseD(t).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
-  const s = schedSession();
-  if (s && !s.done) {
-    if (s.part === "learn") { body.innerHTML = learnStepHTML(s); return; }
-    body.innerHTML = (s.date !== t ? `<div class="notice"><p>This session started on ${esc(fmtDate(s.date))}. Finish it first: it counts for that day. Today’s session comes next.</p></div>` : "") +
-      `<div class="sesshead">${sessHeadHTML(s)}</div><button class="primary bigstart" data-today="continue">Continue</button>`;
-    return;
-  }
-  if (s && s.done && s.date === t) { body.innerHTML = finishHTML(s); return; }
+  const s = schedSession(), prog = !!(s && !s.done);
+  if (prog && s.part === "learn") { body.innerHTML = learnStepHTML(s); return; }
   if (!VERBS_OK.length) { body.innerHTML = '<p class="todayline">No verbs are loaded yet.</p><p class="lede">Add verbs to verbs.js.</p>'; return; }
-  const p = plan(t, curState(), avgCosts()), [a, b] = p.blocks;
-  if (![a, b].some(x => x.reviews.length || x.newIds.length)) {
-    const allIn = VERBS_OK.every(v => introduced(curState(), v));
-    body.innerHTML = `<p class="todayline">Nothing due today.</p><p class="lede">${allIn ? "Every verb has been introduced. Come back tomorrow." : "No new card fits today’s budget without overloading a future day. Come back tomorrow."}</p><button class="ghost" data-today="library">Practise freely in the Library</button>`;
-    return;
+  const C = avgCosts(), p = plan(t, curState(), C), sim = simulate(10, 1, C, t, false).rows;
+  let h = prog && s.date !== t ? `<div class="notice"><p>A session from ${esc(fmtDate(s.date))} is still open. Finish it first: it counts for that day.</p></div>` : "";
+  const today = [0, 1].map(bi => {
+    const x = p.blocks[bi], dn = hist[t] && hist[t][SECK[bi]];
+    if (dn) return secRow(bi, { done: true, list: histList(dn), reviews: 0, min: 0 });
+    if (prog && (s.only === undefined || s.only === bi)) {
+      const b = s.blocks[bi];
+      return secRow(bi, { list: newOf(bi, liveIds(b.newIds)), n: liveIds(b.newIds).length, reviews: liveIds(b.reviewIds).length, min: plannedMin(s), state: "continue" });
+    }
+    const list = newOf(bi, x.newIds), nn = x.newIds.filter(unitValid).length, has = x.reviews.length + list.length > 0;
+    return secRow(bi, { list, n: nn, reviews: x.reviews.length, min: has ? Math.max(1, Math.round(x.sec / 60)) : 0, state: prog ? "" : has ? "start" : "" });
+  });
+  h += `<section class="day"><h2 class="dayh">${esc(fmtDate(t))} <small>Today</small></h2>${today.join("")}</section>`;
+  const extraOK = [0, 1].map(bi => !prog && hist[t] && hist[t][SECK[bi]] && selectNew(bi, t, curState(), C, 0).ids.length > 0);
+  sim.slice(1).forEach((r, i) => {
+    h += `<section class="day"><h2 class="dayh">${esc(fmtDate(r.date))}${i === 0 ? " <small>Tomorrow</small>" : ""}</h2>` +
+      [0, 1].map(bi => secRow(bi, { list: newOf(bi, bi === 0 ? r.pa : r.pb), n: r.pa.length, reviews: 0, min: 0, state: i === 0 && extraOK[bi] ? "extra" : "" })).join("") + "</section>";
+  });
+  const days = Object.keys(hist).filter(isDate).sort().reverse();
+  if (days.length) {
+    h += `<details class="hist"><summary>History (${plural(days.length, "day")})</summary>` + days.map(d => {
+      const e = hist[d], ticks = [0, 1].filter(bi => e[SECK[bi]]).map(bi => "✓ " + SECN[bi]).join("  ");
+      return `<div class="sec isdone"><div class="sechead"><b>${esc(fmtDate(d))}</b><span class="tick">${ticks}</span></div>` +
+        [0, 1].filter(bi => e[SECK[bi]]).map(bi => { const l = histList(e[SECK[bi]]); return l.length ? `<p class="vsmall">${SECN[bi]}: ${vlinks(l, bi === 0 ? "; " : ", ")}</p>` : ""; }).join("") + "</div>";
+    }).join("") + "</details>";
   }
-  const fr = ids => Array.from(new Set(ids.map(unitVerb))).map(id => esc(BY_ID[id].french)).join(", ");
-  const line = (name, x, unit) => `<p class="todayline">${name}: ${plural(x.reviews.length, "review")} + ${x.newIds.length} new ${unit}${x.newIds.length === 1 ? "" : "s"} · about ${Math.max(1, Math.round(x.sec / 60))} min</p>` +
-    (x.newIds.length ? `<p class="lede">New today: <span lang="fr">${fr(x.newIds)}</span></p>` : "");
-  body.innerHTML = line("Irregular", a, "form") + line("Regular", b, "verb") + `<button class="primary bigstart" data-today="start">Start</button>`;
+  body.innerHTML = h;
 }
 $("#scr-today").addEventListener("click", e => {
-  const t = e.target, b = t.closest("[data-today]");
+  const t = e.target;
+  const vl = t.closest("[data-vlink]"); if (vl) { navigate("learn", { scope: "all", verb: vl.dataset.vlink }); return; }
+  const sc = t.closest("[data-sec]");
+  if (sc) {
+    const cur = schedSession();
+    if (cur && !cur.done) { resumeSched(); return; }
+    const a = sc.dataset.sec.split(":");
+    session = buildSession(Number(a[1]), a[0] === "extra"); nextPart();
+    return;
+  }
+  const b = t.closest("[data-today]");
   if (b) {
     const a = b.dataset.today;
-    if (a === "start") { session = buildSession(); nextPart(); }
-    else if (a === "continue") resumeSched();
+    if (a === "continue") resumeSched();
     else if (a === "ready") { session = schedSession(); if (session) enterPart("test"); }
     else if (a === "expand" || a === "collapse") {
       const s = schedSession();
@@ -2526,7 +2589,7 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden && cu
 
 /* ---------- simulation (works on a copy; never saved) ---------- */
 function rng(seed) { let a = seed; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-function simStart() { const t = todayStr(), s = schedSession(); return s && s.date === t && s.done ? addDays(t, 1) : t; }
+function simStart() { const t = todayStr(), h = hist[t]; return h && h.irr && h.reg ? addDays(t, 1) : t; }
 function simulate(days, passRate, C, start, stopWhenAllIn) {
   const S = JSON.parse(JSON.stringify(curState()));
   const rnd = rng(20261018), rows = [];
@@ -2546,7 +2609,7 @@ function simulate(days, passRate, C, start, stopWhenAllIn) {
       x.reviews.forEach(k => run(k, false)); x.newIds.forEach(k => run(k, true));
       x.learnIds.forEach(id => { secs[bi] += learnCost(BY_ID[id]); });
     });
-    rows.push({ date: d, reviews: a.reviews.length + b.reviews.length, added: a.picked.length + b.picked.length, min: (secs[0] + secs[1]) / 60, minI: secs[0] / 60, minR: secs[1] / 60 });
+    rows.push({ date: d, pa: a.picked.slice(), pb: b.picked.slice(), reviews: a.reviews.length + b.reviews.length, added: a.picked.length + b.picked.length, min: (secs[0] + secs[1]) / 60, minI: secs[0] / 60, minR: secs[1] / 60 });
     if (!allIn && VERBS_OK.length && VERBS_OK.every(v => introduced(S, v))) { allIn = d; if (stopWhenAllIn) break; }
     d = addDays(d, 1);
   }
@@ -2571,32 +2634,31 @@ const ABOUT = `<p>This schedule uses the spacing effect: a memory lasts longer w
 <p>Regular verbs follow rules, so each one has a single card: English to the French infinitive. Full tables are for learning, on the Learn page.</p>
 <p>Each card alternates between two directions: speaking (English shown, you say the French) and listening (audio only, you say the meaning). It starts with speaking, and a pass flips the direction. A miss repeats the same direction. On a listening card, needing the French text or the English counts as struggled. Speaking cards are done first in a session, then listening cards.</p>`;
 function renderStats() {
-  const C = avgCosts(), cI = Array(9).fill(0), cR = Array(9).fill(0), SI = { forms: fsched.forms, verbs: {} };
-  let nsI = 0, nsR = 0, totI = 0;
-  VERBS_OK.forEach(v => {
-    if (v.type === "irregular") verbUnits(v).forEach(k => { totI++; const e = entryOfU(SI, k); if (!e) nsI++; else cI[e.step]++; });
-    else { const e = entryOf(schedule, v.id); if (!e) nsR++; else cR[e.step]++; }
-  });
-  const stepTable = (title, cnt, ns) => {
-    const rows = [["Not started", ns], ["Learning (new)", cnt[0]]];
-    for (let k = 1; k <= 7; k++) rows.push([`Step ${k}`, cnt[k]]);
-    rows.push(["Long-term", cnt[8]]);
-    return `<section class="sgroup"><h2>${title}</h2><table class="kv"><tbody>${rows.map(r => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</tbody></table></section>`;
-  };
+  const C = avgCosts(), cnt = { irr: { new: 0, learning: 0, secure: 0, lt: 0 }, reg: { new: 0, learning: 0, secure: 0, lt: 0 } };
+  VERBS_OK.forEach(v => { cnt[v.type === "irregular" ? "irr" : "reg"][verbStatus(v)]++; });
+  const nI = VERBS_OK.filter(v => v.type === "irregular").length, nR = VERBS_OK.length - nI;
+  const rows = [["Not started", "new"], ["Learning (steps 0–3)", "learning"], ["Secure (steps 4–7)", "secure"], ["Long-term", "lt"]];
+  const secs = Object.keys(hist).reduce((n, d) => n + (hist[d].irr ? 1 : 0) + (hist[d].reg ? 1 : 0), 0);
+  const status = `<section class="sgroup"><h2>Progress</h2><table class="kv"><thead><tr><th></th><th>Irregular (${nI})</th><th>Regular (${nR})</th></tr></thead><tbody>` +
+    rows.map(r => `<tr><th>${r[0]}</th><td>${cnt.irr[r[1]]}</td><td>${cnt.reg[r[1]]}</td></tr>`).join("") +
+    `</tbody></table><p class="shelp">An irregular verb counts at its weakest form. Sections finished: ${secs}.</p></section>`;
+  const ord = schedSections();
+  const list = `<section class="sgroup"><details class="shelpbox"><summary>All verbs</summary>` +
+    VERBS_OK.slice().sort((a, b) => ord.indexOf(a.group) - ord.indexOf(b.group) || a.rankNum - b.rankNum).map(v => `<div class="vrow"><span class="vfr" lang="fr">${esc(v.french)}</span>${dotsHTML(v)}</div>`).join("") + "</details></section>";
   const start = simStart(), fc = simulate(7, 1, C, start, false).rows, budget = settings.budgetIrr + settings.budgetReg;
   const maxM = Math.max(budget, ...fc.map(r => r.min));
   const everyIn = VERBS_OK.length && VERBS_OK.every(v => introduced(curState(), v));
-  const allIn = everyIn || !VERBS_OK.length ? null : simulate(1500, 1, C, start, true).allIn;
+  const pk = [Object.keys(fsched.forms).length, Object.keys(schedule.verbs).length, start, settings.budgetIrr, settings.budgetReg, settings.maxNew, settings.maxNewForms, settings.secondPass].join("|");
+  let allIn = null;
+  if (!everyIn && VERBS_OK.length) { if (paceCache.k === pk) allIn = paceCache.v; else { allIn = simulate(1500, 1, C, start, true).allIn; paceCache = { k: pk, v: allIn }; } }
   const pace = !VERBS_OK.length ? "No verbs are loaded yet." : everyIn ? "Every verb has been introduced."
     : allIn ? `At this pace, every card will be introduced by ${esc(parseD(allIn).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" }))}.`
     : "At this pace, introducing every card would take more than four years. A bigger daily budget or more new cards per day would speed it up.";
-  $("#statsBody").innerHTML =
-    stepTable(`Irregular forms by step (${totI} forms)`, cI, nsI) + stepTable("Regular verbs by step", cR, nsR) +
-    `<section class="sgroup"><h2>Next 7 days</h2><p class="shelp">Minutes per day if you pass everything, using your current times. Budget: ${settings.budgetIrr} min irregular + ${settings.budgetReg} min regular.</p>` +
+  $("#statsBody").innerHTML = status + list +
+    `<section class="sgroup"><h2>Next 7 days</h2><p class="shelp">Minutes per day if you pass everything. Budget: ${settings.budgetIrr} min irregular + ${settings.budgetReg} min regular.</p>` +
     fc.map(r => `<div class="fc"><span>${esc(fmtDate(r.date))}</span><div class="barwrap"><div class="bar${r.min > budget ? " over" : ""}" style="width:${Math.max(1, r.min / maxM * 100)}%"></div></div><span>${Math.round(r.minI)} + ${Math.round(r.minR)} min</span></div>`).join("") + "</section>" +
-    `<section class="sgroup"><h2>Your time per card</h2><table class="kv"><tbody>${["main", "form", "listen"].map(k => { const n = timing[k].length; return `<tr><th>${CARD_LABEL[k]}<span class="shelp" style="display:block;font-weight:400">${n >= 50 ? `Your average over the last ${Math.min(n, 200)}` : `Default until you’ve done 50 (${n} so far)`}</span></th><td>${Math.round(C[k])} s</td></tr>`; }).join("")}</tbody></table></section>` +
     `<section class="sgroup"><h2>Pace</h2><p>${pace}</p></section>` +
-    `<section class="sgroup about"><h2>About this schedule</h2>${ABOUT}</section>`;
+    `<section class="sgroup"><details class="shelpbox"><summary>Timing and how the schedule works</summary><table class="kv"><tbody>${["main", "form", "listen"].map(k => { const n = timing[k].length; return `<tr><th>${CARD_LABEL[k]}<span class="shelp" style="display:block;font-weight:400">${n >= 50 ? `Your average over the last ${Math.min(n, 200)}` : `Default until you’ve done 50 (${n} so far)`}</span></th><td>${Math.round(C[k])} s</td></tr>`; }).join("")}</tbody></table>${ABOUT}</details></section>`;
 }
 
 /* ---------- schedule settings ---------- */
@@ -2613,13 +2675,13 @@ function schedSettingsHTML() {
     `</section>`;
 }
 function simHTML() {
-  return `<section class="sgroup"><h2>Simulate</h2><p class="shelp">Fast-forwards a copy of your progress to show the daily load. Your real progress is never touched.</p>` +
+  return `<section class="sgroup"><details class="shelpbox"><summary>Advanced: simulate</summary><p class="shelp">Fast-forwards a copy of your progress to show the daily load. Your real progress is never touched.</p>` +
     `<div class="simgrid"><label>Days<select id="simDays"><option>7</option><option selected>30</option><option>90</option><option>180</option><option>365</option></select></label>` +
     `<label>Pass rate (%)<input id="simPass" type="number" min="0" max="100" value="85" inputmode="numeric"></label>` +
     `<label>Speaking infinitive / regular card (s)<input id="simMain" type="number" min="1" max="300" value="10" inputmode="numeric"></label>` +
     `<label>Speaking form card (s)<input id="simForm" type="number" min="1" max="300" value="10" inputmode="numeric"></label>` +
     `<label>Listening card (s)<input id="simListen" type="number" min="1" max="300" value="12" inputmode="numeric"></label></div>` +
-    `<div class="btnrow" style="margin-top:10px"><button class="primary sm" id="simRun">Run simulation</button></div><div id="simOut"></div></section>`;
+    `<div class="btnrow" style="margin-top:10px"><button class="primary sm" id="simRun">Run simulation</button></div><div id="simOut"></div></details></section>`;
 }
 function syncSchedSettings() {
   if (!$("#secOrder")) return;
@@ -2645,6 +2707,7 @@ function wireSched() {
 let currentScreen = "";
 const SCREENS = ["today", "library", "study", "summary", "learn", "guide", "stats", "settings"];
 const TAB_OF = { today: "today", library: "library", learn: "library", guide: "library", stats: "stats", settings: "settings" };
+document.addEventListener("input", e => { if (e.target && e.target.id === "learnSearch") renderLearnList(); });
 function showScreen(name) {
   if (currentScreen === "study" && name !== "study") { stopSpeech(); stopListening(); }
   SCREENS.forEach(s => { $("#scr-" + s).hidden = s !== name; });
@@ -2704,6 +2767,7 @@ function init() {
   progress = loadProgress();
   schedule = loadSchedule();
   fsched = loadForms();
+  hist = loadHist();
   timing = loadTiming();
   applyDisplay();
   loadData();
