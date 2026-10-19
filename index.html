@@ -193,8 +193,8 @@ body.no-anim .card{animation:none !important;transition:none !important}
 @media (max-width:560px){
   .conj thead{display:none}
   .conj,.conj tbody{display:block}
-  .conj tr{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"m p pl" "m fr pl" "m ph pl" "m en pl";column-gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
-  .conj:not(.markable) tr{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"p pl" "fr pl" "ph pl" "en pl"}
+  .conj tr{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"m p pl" "m fr pl" "m en pl" "m ph pl";column-gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .conj:not(.markable) tr{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"p pl" "fr pl" "en pl" "ph pl"}
   .conj td{display:block;padding:0;border:0}
   .card .conj tr{background:color-mix(in srgb,var(--paper) 86%,transparent)}
   .card .conj td{background:none}
@@ -333,6 +333,17 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 .hist summary{cursor:pointer;font-weight:650;padding:10px 0}
 .vrow{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}.vrow .vfr{flex:1}
 #learnSearch{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--paper);margin-top:8px}
+.gloss{font-weight:400;color:var(--muted);font-size:.82rem}
+.lthead .gloss{flex:1 1 100%;order:5}
+.subs .sub{padding:6px 0;border-bottom:1px solid var(--line)}.subs .sub:last-child{border-bottom:0}
+.sline{display:flex;align-items:center;justify-content:space-between;gap:10px}.sfr{font-size:1.5rem;font-family:var(--serif)}
+.subs .cphon,.subs .cen{margin:2px 0 0}
+.pv{border-bottom:1px solid var(--line)}.pv>summary{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;padding:10px 0;cursor:pointer;list-style:none}
+.pv>summary::-webkit-details-marker{display:none}.pv .fr{font-family:var(--serif);font-size:1.15rem}.pv .ven,.pv .pct{color:var(--muted);font-size:.82rem}
+.pv .pbar{grid-column:1 / -1}.pbar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}.pbar i{display:block;height:100%;background:var(--know)}
+.ptot{margin:10px 0 4px}.prow{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:6px 0 6px 8px;border-top:1px solid var(--line)}
+.prow.off{opacity:.55}.prow small{display:block;color:var(--muted);font-size:.78rem}.prow .pn{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
+.chart{display:flex;align-items:flex-end;gap:2px;height:80px;margin:8px 0}.cbar{flex:1;height:100%;display:flex;align-items:flex-end;background:linear-gradient(var(--line),var(--line)) bottom/100% 1px no-repeat}.cbar i{display:block;width:100%;background:var(--know);border-radius:2px 2px 0 0}
 </style>
 </head>
 <body>
@@ -355,7 +366,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 <!-- LIBRARY -->
 <section class="screen" id="scr-library" hidden>
   <header class="pagehead"><h1>Library</h1><p class="lede" id="libLede"></p></header>
-  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button></nav>
+  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button><button data-tab="progress">Progress</button></nav>
   <p class="libnote">Practice here never changes your schedule, progress or time averages.</p>
   <div class="notices"></div>
   <div id="problems"></div>
@@ -397,7 +408,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 <section class="screen" id="scr-learn" hidden>
   <div id="learnBanner"></div>
   <header class="pagehead"><h1>Learn</h1></header>
-  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button></nav>
+  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button><button data-tab="progress">Progress</button></nav>
   <div class="learnctl">
     <label class="sel"><span>Showing</span><select id="learnScope"></select></label>
     <input type="search" id="learnSearch" placeholder="Search verbs (French or English)" aria-label="Search verbs">
@@ -409,8 +420,15 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 <!-- TENSE GUIDE -->
 <section class="screen" id="scr-guide" hidden>
   <header class="pagehead"><h1>Tense guide</h1><p class="lede">How each tense is formed and when it’s used.</p></header>
-  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button></nav>
+  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button><button data-tab="progress">Progress</button></nav>
   <div id="guideList"></div>
+</section>
+
+<!-- PROGRESS -->
+<section class="screen" id="scr-progress" hidden>
+  <header class="pagehead"><h1>Progress</h1><p class="lede">Reviews done for every verb and form.</p></header>
+  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button><button data-tab="progress">Progress</button></nav>
+  <div id="progressBody"></div>
 </section>
 
 <!-- SETTINGS -->
@@ -469,12 +487,14 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 /* =========================================================================
    CONSTANTS AND SMALL HELPERS
    ========================================================================= */
-const APP_VERSION = "5.1";
+const APP_VERSION = "5.2";
 const SCHEMA = 1;
 // Storage keys. NEVER rename these: saved progress lives under them.
-const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", backup: "frverbs.backup." };
+const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", lastbackup: "frverbs.lastbackup", sync: "frverbs.sync", syncat: "frverbs.syncat", backup: "frverbs.backup." };
 const EXPORT_SCHEMA = 4;
 const TYPE_ORDER = ["irregular", "regular"];
+const GLOSS = { present: "now, or what usually happens", passe_compose: "finished past: I did, I have done", imparfait: "ongoing past: I was doing, I used to do", futur: "future: I will do", conditionnel: "would: I would do, polite requests" };
+const GLOSS_S = { present: "now", passe_compose: "finished past", imparfait: "ongoing past", futur: "future", conditionnel: "would" };
 const TYPE_LABEL = { irregular: "Irregular verbs", regular: "Regular verbs" };
 
 const $ = (s, r) => (r || document).querySelector(s);
@@ -546,7 +566,7 @@ function pruneBackups() {
     for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.indexOf(KEYS.backup) === 0) ks.push(k); }
     const when = k => k.slice(k.lastIndexOf(".") + 1);
     ks.sort((a, b) => (when(a) < when(b) ? 1 : -1));
-    ks.slice(8).forEach(lsRemove);
+    ks.slice(3).forEach(lsRemove);
   } catch (e) {}
 }
 
@@ -559,7 +579,7 @@ const DEFAULTS = {
   budgetMin: 20, maxNew: 8, maxNewIrr: 2, tenseEvery: ["present"], regTables: 2, allowedWrong: 1,
   secondPass: true, schedDir: "en-fr", sectionOrder: ["irregular", "er", "ir", "re"],
   reviewStyle: "prompts", prompts: 3, listening: true,
-  budgetIrr: 20, budgetReg: 10, maxNewForms: 20
+  budgetIrr: 20, budgetReg: 10, maxNewForms: 20, autoBackup: true
 };
 const CHOICES = {
   direction: ["en-fr", "fr-en", "mixed"], phonetics: ["always", "tap", "hidden"], theme: ["system", "light", "dark"],
@@ -779,11 +799,11 @@ function makeRow(v, p, form, phon, en, pre, end) {
     key: p, person: p, label: filled(P.label) ? P.label : p,
     pron, form, pre: pre == null ? form : pre, end: end || "",
     fr: pron + form, phon: (phonPron + phon).trim(), en: en || "",
-    speak: speakPron + stripAgree(form), elided: elide
+    speak: speakPron + stripAgree(form), elided: elide, vowel, fphon: phon
   };
 }
 
-function buildTable(v, t) {
+function buildTable0(v, t) {
   const own = isObj(v.raw.conjugations) && isObj(v.raw.conjugations[t]) ? v.raw.conjugations[t] : null;
   if (own) {
     return {
@@ -816,6 +836,30 @@ function buildTable(v, t) {
     rows: PERSONS.map(p => makeRow(v, p, base + R.endings[p].fr, basePh + R.endings[p].phon, "", base, R.endings[p].fr))
   };
 }
+
+const SUBP = { il: [["il", "eel", ""], ["elle", "el", ""], ["on", "oh(n)", "n"]], ils: [["ils", "eel", "z"], ["elles", "el", "z"]] };
+function agreeSub(x, who) {
+  if (!x || x.indexOf("(e)") < 0) return x || "";
+  return who === "elle" || who === "elles" ? x.replace("(e)", "e") : who === "on" ? x.replace("(e)", "(e)(s)") : x.replace("(e)", "");
+}
+function addSubs(rows) {
+  const nous = rows.find(r => r.key === "nous");
+  rows.forEach(r => {
+    if (r.key === "tu" && /^you\b/i.test(r.en)) r.en += " (informal)";
+    if (r.key === "vous" && /^you\b/i.test(r.en)) r.en += " (formal, or plural)";
+    const defs = SUBP[r.key]; if (!defs) return;
+    r.subs = defs.map(([w, ph, lia]) => {
+      const form = agreeSub(r.form, w), end = agreeSub(r.end, w);
+      let en = r.en;
+      if (r.key === "il") {
+        en = r.en.replace(/^he\/she\/one/i, w === "il" ? "he" : w === "elle" ? "she" : "one");
+        if (w === "on" && en && nous && nous.en) en += " · casual: " + nous.en;
+      }
+      return { key: r.key, label: w, pron: w + " ", form, pre: r.pre, end, fr: w + " " + form, phon: ph + " " + (r.vowel && lia ? lia : "") + r.fphon, en, speak: w + " " + stripAgree(form), elided: false };
+    });
+  });
+}
+function buildTable(v, t) { const tb = buildTable0(v, t); addSubs(tb.rows); return tb; }
 
 function prepareVerb(raw, i) {
   const v = {
@@ -1367,10 +1411,15 @@ function soundAlike(v, it) {
   const fp = r => r.phon.split(" ").slice(1).join(" ");
   return fp(a) === fp(b) ? `<p class="cnote">“${esc(a.fr)}” and “${esc(b.fr)}” sound the same, so either answer is right.</p>` : "";
 }
+function subsHTML(it, r) {
+  const pb = settings.phonetics === "tap" && !it.phonShown ? phonBlock("", it) : "";
+  return '<div class="subs">' + r.subs.map(x => `<div class="sub"><div class="sline"><span class="sfr" lang="fr">${esc(x.fr)}</span>${playBtn(x.speak, "", x.fr)}</div>` +
+    (cardPhonOn(it) ? `<div class="cphon">${esc(x.phon)}</div>` : "") + (x.en ? `<div class="cen">${esc(x.en)}</div>` : "") + "</div>").join("") + pb + "</div>";
+}
 function formHTML(it, v) {
   const r = formRow(it), T = TENSES[it.tense];
   const listenMode = it.mode === "listen";
-  let h = `<div class="ctop"><span>${esc(T.name)}${listenMode ? ", listening" : ""}</span>${it.retry ? '<span class="tag retry">retry</span>' : ""}</div>`;
+  let h = `<div class="ctop"><span>${esc(T.name)}${GLOSS_S[it.tense] ? ` <small class="gloss">· ${esc(GLOSS_S[it.tense])}</small>` : ""}${listenMode ? ", listening" : ""}</span>${it.retry ? '<span class="tag retry">retry</span>' : ""}</div>`;
   if (!it.revealed) {
     if (listenMode) {
       h += listenFront(it, { speak: r.speak, fr: r.fr, phon: r.phon, en: r.en || v.english });
@@ -1384,7 +1433,7 @@ function formHTML(it, v) {
       h += `<div class="cbig fr" lang="fr">${esc(P.label || P.fr)} + ${esc(v.french)}</div><p class="cue">${esc(T.name)}</p><p class="cask">Say just this one form in French, then flip.</p>`;
     }
   } else {
-    h += `<div class="cbig fr" lang="fr">${esc(r.fr)}</div>${phonBlock(r.phon, it)}${r.en ? `<div class="cen">${esc(r.en)}</div>` : `<div class="cen">${esc(v.english)}</div>`}<div class="cplay">${playBtn(r.speak, "Play")}</div>`;
+    if (r.subs) h += subsHTML(it, r); else h += `<div class="cbig fr" lang="fr">${esc(r.fr)}</div>${phonBlock(r.phon, it)}${r.en ? `<div class="cen">${esc(r.en)}</div>` : `<div class="cen">${esc(v.english)}</div>`}<div class="cplay">${playBtn(r.speak, "Play")}</div>`;
     if (listenMode) h += soundAlike(v, it);
     if (it.pending) h += `<p class="verdict ${it.pending}">${it.pending === "known" ? "Marked as known." : "Marked as don’t know. It comes back in a few cards."}</p>`;
     h += fullLink(v);
@@ -1392,21 +1441,22 @@ function formHTML(it, v) {
   return h + micBlock(it);
 }
 function tableHTML(rows, o) {
-  const marks = o.marks || null;
-  let h = `<table class="conj${marks ? " markable" : ""}${o.keyforms ? "" : " persons"}"><thead><tr>` +
+  const marks = o.marks || null, split = !marks && !o.keyforms, showP = !!marks || !!o.keyforms;
+  let h = `<table class="conj${marks ? " markable" : ""}${showP ? "" : " persons"}"><thead><tr>` +
     (marks ? '<th class="c-m"><span class="sr">Your mark</span></th>' : "") +
-    `<th class="c-p">${o.keyforms ? "Tense" : "Person"}</th><th class="c-fr">French</th>` +
-    (o.phon ? '<th class="c-ph">Sounds like</th>' : "") + (o.en ? '<th class="c-en">English</th>' : "") +
+    (showP ? `<th class="c-p">${o.keyforms ? "Tense" : "Person"}</th>` : "") + '<th class="c-fr">French</th>' +
+    (o.en ? '<th class="c-en">English</th>' : "") + (o.phon ? '<th class="c-ph">Sounds like</th>' : "") +
     '<th class="c-pl"><span class="sr">Play</span></th></tr></thead><tbody>';
-  rows.forEach((r, i) => {
-    const wrong = marks && marks.has(r.key);
-    const frHTML = esc(r.pron) + (o.hl && r.end ? esc(r.pre) + `<span class="end">${esc(r.end)}</span>` : esc(r.form));
-    h += `<tr${marks ? ` data-row="${i}" class="${wrong ? "wrong" : "right"}"` : ""}>` +
-      (marks ? `<td class="c-m">${wrong ? "✕" : "✓"}<span class="sr">${wrong ? " marked wrong" : " marked right"}</span></td>` : "") +
-      `<td class="c-p">${esc(r.label)}</td><td class="c-fr" lang="fr">${frHTML}${o.levels ? badge(o.levels[i]) : ""}</td>` +
-      (o.phon ? `<td class="c-ph">${esc(r.phon)}</td>` : "") +
-      (o.en ? `<td class="c-en">${esc(r.en)}</td>` : "") +
-      `<td class="c-pl">${playBtn(r.speak, "", r.fr)}</td></tr>`;
+  rows.forEach((r0, i) => {
+    const wrong = marks && marks.has(r0.key);
+    (split && r0.subs ? r0.subs : [r0]).forEach(r => {
+      const frHTML = esc(r.pron) + (o.hl && r.end ? esc(r.pre) + `<span class="end">${esc(r.end)}</span>` : esc(r.form));
+      h += `<tr${marks ? ` data-row="${i}" class="${wrong ? "wrong" : "right"}"` : ""}>` +
+        (marks ? `<td class="c-m">${wrong ? "✕" : "✓"}<span class="sr">${wrong ? " marked wrong" : " marked right"}</span></td>` : "") +
+        (showP ? `<td class="c-p">${esc(r.label)}</td>` : "") + `<td class="c-fr" lang="fr">${frHTML}${o.levels ? badge(o.levels[i]) : ""}</td>` +
+        (o.en ? `<td class="c-en">${esc(r.en)}</td>` : "") + (o.phon ? `<td class="c-ph">${esc(r.phon)}</td>` : "") +
+        `<td class="c-pl">${playBtn(r.speak, "", r.fr)}</td></tr>`;
+    });
   });
   return h + "</tbody></table>";
 }
@@ -1706,7 +1756,7 @@ function verbDetailHTML(v) {
     `<div class="vbtns"><button class="ghost sm" data-practise-verb="${esc(v.id)}">Practise this verb</button></div>`;
   TENSE_KEYS.forEach(t => {
     const tab = v.tables[t];
-    h += `<div class="ltense"><div class="lthead"><h3>${esc(TENSES[t].name)}</h3><button class="linkbtn sm" data-guide="${esc(t)}">How it works</button>${playBtn(tab.rows.map(r => r.speak).join(". ") + ".", "Play all")}</div>` +
+    h += `<div class="ltense"><div class="lthead"><h3>${esc(TENSES[t].name)}</h3><span class="gloss">${esc(GLOSS[t] || "")}</span><button class="linkbtn sm" data-guide="${esc(t)}">How it works</button>${playBtn(tab.rows.map(r => r.speak).join(". ") + ".", "Play all")}</div>` +
       (regular && tab.rule ? `<p class="rule">${esc(tab.rule)}</p>` : "") +
       tableHTML(tab.rows, { en: !regular || tab.rows.some(r => r.en), phon: true, hl: regular && tab.source === "rules" }) + "</div>";
   });
@@ -1821,10 +1871,10 @@ function buildSettings() {
     segRow("theme", "Theme", [["system", "Match device"], ["light", "Light"], ["dark", "Dark"]]) +
     segRow("textSize", "Text size", [["0", "Small"], ["1", "Normal"], ["2", "Large"], ["3", "Extra large"]]) +
     `</section>` + simHTML() + `<section class="sgroup"><h2>Your data</h2>` +
-    `<p class="shelp">Progress and settings are saved in this browser only, so your laptop and phone each keep their own. To move them, export on one device and import the file on the other.</p>` +
+    switchRow("autoBackup", "Weekly backup to Downloads", "When you finish a section and your last backup is 7 or more days old, the app downloads a backup file. It can only do this while the app is open.") + `<p class="shelp" id="backupInfo"></p>` + `<p class="shelp">Progress and settings are saved in this browser only, so your laptop and phone each keep their own. To move them, export on one device and import the file on the other.</p>` +
     `<div class="btnrow wrap" style="margin-top:10px"><button class="primary sm" id="exportBtn">Export progress and settings</button><button class="ghost sm" id="importBtn">Import from a file</button></div>` +
     `<h3 class="sh3">Reset</h3><div class="btnrow wrap"><button class="ghost sm" data-reset="progress">Reset progress</button><button class="ghost sm" data-reset="settings">Reset settings</button><button class="danger sm" data-reset="all">Reset everything</button></div>` +
-    `</section><section class="sgroup"><h2>About</h2><p class="shelp" id="aboutText"></p></section>`;
+    `</section>` + syncHTML() + `<section class="sgroup"><h2>About</h2><p class="shelp" id="aboutText"></p></section>`;
 }
 function micHelpText() {
   if (micState === "unsupported") return "Speech recognition isn’t available in this browser.";
@@ -1904,7 +1954,10 @@ function confirmBox(title, html, okText, danger, noCancel) {
 const alertBox = (title, html) => confirmBox(title, html, "OK", false, true);
 
 /* ---------- export / import / reset ---------- */
-function exportData() {
+function daysSince(d) { return isDate(d) ? dayDiff(d, todayStr()) : 999; }
+function maybeAutoBackup() { if (settings.autoBackup !== false && daysSince(lsGet(KEYS.lastbackup)) >= 7) exportData(true); }
+function exportData(auto) {
+  auto = auto === true;
   let sess = null;
   try { sess = JSON.parse(lsGet(KEYS.session) || "null"); } catch (e) {}
   const data = { app: "french-verbs", schema: EXPORT_SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress, schedule, formsched: fsched, history: hist, timing, session: sess };
@@ -1915,7 +1968,7 @@ function exportData() {
     a.href = url; a.download = `french-verbs-backup-${todayStr()}.json`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
-    toast("Backup saved to your downloads.");
+    lsSet(KEYS.lastbackup, todayStr()); toast(auto ? "Weekly backup saved to your Downloads folder." : "Backup saved to your downloads.");
   } catch (e) { alertBox("Export failed", "<p>The backup file couldn’t be created in this browser.</p>"); }
 }
 function validateImport(d) {
@@ -2144,7 +2197,7 @@ function applyResult(e, passed, date) {
   // so `passed` is deliberately ignored. The next review is a fixed number of days after the card was first learnt.
   const k = e.step;
   e.enc = (e.enc || 0) + 1; e.last = "pass"; e.lastDate = date;
-  e.dir = e.dir === "fr-en" ? "en-fr" : "fr-en";
+  e.dir = k === 0 ? "en-fr" : (e.dir === "fr-en" ? "en-fr" : "fr-en");
   let nd;
   if (k >= 8) nd = addDays(isDate(e.due) ? e.due : date, LT_GAP);
   else if (isDate(e.intro)) nd = addDays(e.intro, k < 7 ? OFFSETS[k] : OFFSETS[6] + LT_GAP);
@@ -2218,7 +2271,7 @@ function selectNew(bi, date, S, C, rawSoFar) {
       if (bi === 0 ? S.forms[k] : S.verbs[k]) continue;
       if (out.length >= max) break outer;
       const c = unitCost(k, C), c0 = unitCost(k, C, "en-fr"), lc = (bi === 1 || (!started.has(v.id) && !learn.has(v.id))) ? learnCost(v) : 0;
-      const add = lc + c0 * sp;
+      const add = lc + c0 + (sp > 1 ? C.listen : 0);
       if (planned + add * 1.15 > budget) break outer;
       if (!lm) lm = loadMap(S, date, C, bi);
       const fut = OFFSETS.map(off => addDays(date, off));
@@ -2246,7 +2299,7 @@ function plan(date, S, C, extraBi) {
     rev.sort((a, b) => dayDiff(entryOfU(S, b).due, date) - dayDiff(entryOfU(S, a).due, date) || cmp(a, b));
     carry.sort(cmp);
     const carryLearn = bi === 0 ? Array.from(new Set(carry.map(unitVerb))).filter(id => !seen.has(id)) : carry.slice();
-    const raw = rev.reduce((s, k) => s + unitCost(k, C, entryOfU(S, k).dir || "en-fr"), 0) + carry.reduce((s, k) => s + unitCost(k, C, "en-fr") * sp, 0) + carryLearn.reduce((s, id) => s + learnCost(BY_ID[id]), 0);
+    const raw = rev.reduce((s, k) => s + unitCost(k, C, entryOfU(S, k).dir || "en-fr"), 0) + carry.reduce((s, k) => s + unitCost(k, C, "en-fr") + (sp > 1 ? C.listen : 0), 0) + carryLearn.reduce((s, id) => s + learnCost(BY_ID[id]), 0);
     const log = bi === 0 ? S.fNewLog : S.newLog;
     const sel = (Array.isArray(log[date]) && bi !== extraBi) ? { ids: [], learn: [], cost: 0 } : selectNew(bi, date, S, C, raw);
     return { reviews: rev, newIds: carry.concat(sel.ids), picked: sel.ids, learnIds: carryLearn.concat(sel.learn), sec: (raw + sel.cost) * 1.15 };
@@ -2316,11 +2369,11 @@ function enterPart(p) {
   };
   if (p === "reviews") liveIds(b.reviewIds).forEach(add);
   else if (p === "test") liveIds(b.newIds).forEach(add);
-  else if (p === "second") secondIds(s).forEach(k => { const m = s.vs[k].mode || "en-fr"; (m === "listen" ? listen : speak).push(newItem(mk(k, m))); s.vs[k].open = 1; s.vs[k].st = "todo"; });
+  else if (p === "second") secondIds(s).forEach(k => { s.vs[k].mode = "listen"; listen.push(newItem(mk(k, "listen"))); s.vs[k].open = 1; s.vs[k].st = "todo"; });
   // Two passes: speaking first, then listening. Irregular cards are shuffled across verbs, tenses and persons.
   const order = list => (s.bi === 0 ? spread(list) : list);
   s.queue = order(speak).concat(order(listen));
-  if (p === "done") { s.done = true; s.finishedAt = Date.now(); recordHist(s); toast("Section complete ✓"); }
+  if (p === "done") { s.done = true; s.finishedAt = Date.now(); recordHist(s); toast("Section complete ✓"); maybeAutoBackup(); syncNow("done"); }
   saveSession();
   if (p === "learn" || p === "done") { navigate("today"); return; }
   navigate("study");
@@ -2376,7 +2429,7 @@ function commitSched(it, wrongKeys) {
   if (vs.open === 0) vs.st = "done";
   s.committed = s.idx;
   haptic();
-  saveSession();
+  saveSession(); syncSoon();
 }
 // Only the first attempt of the day changes a card's step.
 function finalizeUnit(k) {
@@ -2476,7 +2529,7 @@ function cleanHist(o) {
   Object.keys(o).forEach(d => {
     if (!isDate(d) || !isObj(o[d])) return;
     const e = {};
-    ["irr", "reg"].forEach(k => { const x = o[d][k]; if (isObj(x)) e[k] = { new: (Array.isArray(x.new) ? x.new : []).filter(y => Array.isArray(y) && typeof y[0] === "string").map(y => [y[0], (Array.isArray(y[1]) ? y[1] : []).filter(z => typeof z === "string")]) }; });
+    ["irr", "reg"].forEach(k => { const x = o[d][k]; if (isObj(x)) e[k] = { new: (Array.isArray(x.new) ? x.new : []).filter(y => Array.isArray(y) && typeof y[0] === "string").map(y => [y[0], (Array.isArray(y[1]) ? y[1] : []).filter(z => typeof z === "string")]) }; if (e[k] && typeof x.n === "number") e[k].n = x.n; });
     if (e.irr || e.reg) out[d] = e;
   });
   return out;
@@ -2507,9 +2560,10 @@ function recHist(s, bi) {
     const f = e.new.find(x => x[0] === id);
     if (f) ts.forEach(t => { if (f[1].indexOf(t) < 0) f[1].push(t); }); else e.new.push([id, ts]);
   });
+  e.n = (e.n || 0) + Object.keys(s.vs).filter(k => s.vs[k].blk === bi && s.vs[k].final).length;
   saveHist();
 }
-function recordHist(s) { if (s.only === undefined) { recHist(s, 0); recHist(s, 1); } else recHist(s, s.only); }
+function recordHist(s) { if (s.histDone) return; s.histDone = true; if (s.only === undefined) { recHist(s, 0); recHist(s, 1); } else recHist(s, s.only); }
 function vlinks(list, sep) {
   return list.map(([id, ts]) => `<button class="linkbtn" data-vlink="${esc(id)}" lang="fr">${esc(BY_ID[id].french)}</button>` + (ts.length ? ` (${ts.map(tenseWord).join(", ")})` : "")).join(sep);
 }
@@ -2534,6 +2588,7 @@ function renderToday() {
   if (!VERBS_OK.length) { body.innerHTML = '<p class="todayline">No verbs are loaded yet.</p><p class="lede">Add verbs to verbs.js.</p>'; return; }
   const C = avgCosts(), p = plan(t, curState(), C), sim = simulate(10, 1, C, t, false).rows;
   let h = prog && s.date !== t ? `<div class="notice"><p>A session from ${esc(fmtDate(s.date))} is still open. Finish it first: it counts for that day.</p></div>` : "";
+  { const ds = daysSince(lsGet(KEYS.lastbackup)); if (ds >= 8) h += `<div class="notice"><p>Last backup: ${ds === 999 ? "never" : ds + " days ago"}.</p><button class="primary sm" data-today="backup">Save backup now</button></div>`; }
   const today = [0, 1].map(bi => {
     const x = p.blocks[bi], dn = hist[t] && hist[t][SECK[bi]];
     if (dn) return secRow(bi, { done: true, list: histList(dn), reviews: 0, min: 0 });
@@ -2568,13 +2623,18 @@ $("#scr-today").addEventListener("click", e => {
     const cur = schedSession();
     if (cur && !cur.done) { resumeSched(); return; }
     const a = sc.dataset.sec.split(":");
-    session = buildSession(Number(a[1]), a[0] === "extra"); nextPart();
+    (async () => {
+      if (syncCfg()) { toast("Syncing…"); await Promise.race([syncNow("start"), new Promise(r => setTimeout(r, 8000))]); }
+      const again = schedSession(); if (again && !again.done) { resumeSched(); return; }
+      session = buildSession(Number(a[1]), a[0] === "extra"); nextPart();
+    })();
     return;
   }
   const b = t.closest("[data-today]");
   if (b) {
     const a = b.dataset.today;
-    if (a === "continue") resumeSched();
+    if (a === "backup") { exportData(true); renderToday(); }
+    else if (a === "continue") resumeSched();
     else if (a === "ready") { session = schedSession(); if (session) enterPart("test"); }
     else if (a === "expand" || a === "collapse") {
       const s = schedSession();
@@ -2606,7 +2666,7 @@ function simulate(days, passRate, C, start, stopWhenAllIn) {
     p.blocks.forEach((x, bi) => {
       const run = (k, isNew) => {
         const e = unitStore(S, k)[k], c = unitCost(k, C, isNew ? "en-fr" : (e.dir || "en-fr")), pass = rnd() < passRate;
-        secs[bi] += c + (pass ? 0 : c * 0.5) + (settings.secondPass && isNew ? c : 0);
+        secs[bi] += c + (pass ? 0 : c * 0.5) + (settings.secondPass && isNew ? C.listen : 0);
         applyResult(e, pass, d);
       };
       x.reviews.forEach(k => run(k, false)); x.newIds.forEach(k => run(k, true));
@@ -2635,7 +2695,7 @@ const ABOUT = `<p>This schedule uses the spacing effect: a memory lasts longer w
 <p>The aim is strong long-term memory, not guaranteed 100% recall. A miss never changes the schedule: a missed card goes to the back of the pile and is repeated until you get it right, so every card you review advances that day. If you are late, the next review is due the following day instead.</p>
 <p>Irregular verbs: every form (and the infinitive) is its own card with its own schedule, so a form you know moves out to months while a weak one keeps coming back. Cards are shuffled across all verbs, tenses and persons, so you can’t follow a pattern. Forms are introduced in importance order: verb by verb, présent first.</p>
 <p>Regular verbs follow rules, so each one has a single card: English to the French infinitive. Full tables are for learning, on the Learn page.</p>
-<p>Each card alternates between two directions: speaking (English shown, you say the French) and listening (audio only, you say the meaning). It starts with speaking and flips at every review. A miss repeats the card in the same direction until you get it right. On a listening card, needing the French text or the English counts as struggled. Speaking cards are done first in a session, then listening cards.</p>`;
+<p>Each card alternates between two directions: speaking (English shown, you say the French) and listening (audio only, you say the meaning). A new card is tested speaking, then listening in the second pass. After that it flips at every review, starting with speaking. A miss repeats the card in the same direction until you get it right. On a listening card, needing the French text or the English counts as struggled. Speaking cards are done first in a session, then listening cards.</p>`;
 function renderStats() {
   const C = avgCosts(), cnt = { irr: { new: 0, learning: 0, secure: 0, lt: 0 }, reg: { new: 0, learning: 0, secure: 0, lt: 0 } };
   VERBS_OK.forEach(v => { cnt[v.type === "irregular" ? "irr" : "reg"][verbStatus(v)]++; });
@@ -2665,6 +2725,187 @@ function renderStats() {
     `<section class="sgroup"><details class="shelpbox"><summary>Timing and how the schedule works</summary><table class="kv"><tbody>${["main", "form", "listen"].map(k => { const n = timing[k].length; return `<tr><th>${CARD_LABEL[k]}<span class="shelp" style="display:block;font-weight:400">${n >= 50 ? `Your average over the last ${Math.min(n, 200)}` : `Default until you’ve done 50 (${n} so far)`}</span></th><td>${Math.round(C[k])} s</td></tr>`; }).join("")}</tbody></table>${ABOUT}</details></section>`;
 }
 
+/* ---------- Progress page ---------- */
+let progSort = "done";
+const rdone = e => (e ? Math.min(7, Math.max(0, e.step - 1)) : -1);
+function progDots(n) { let d = ""; for (let i = 0; i < 7; i++) d += `<i class="${i < n ? "on" : ""}"></i>`; return `<span class="dots st-on" aria-hidden="true">${d}</span>`; }
+function verbProgress(v) {
+  const us = v.type === "irregular" ? verbUnits(v) : [v.id], S = { forms: fsched.forms, verbs: schedule.verbs };
+  const es = us.map(k => entryOfU(S, k));
+  const pts = es.reduce((a, e) => a + (e ? Math.min(8, e.step) : 0), 0);
+  return { us, es, started: es.filter(Boolean).length, pct: Math.round(pts / (us.length * 8) * 100) };
+}
+function unitRowHTML(v, k, e) {
+  const p = k.split("|"); let t, sm;
+  if (p.length === 1 || p[1] === "inf") { t = v.french; sm = "infinitive"; }
+  else { const r = v.tables[p[1]].rows.find(x => x.key === p[2]); t = r.fr; sm = TENSES[p[1]].name; }
+  const n = rdone(e), next = !e ? "Not started" : e.step >= 8 ? "Long-term, every 180 days" : "next " + fmtDate(e.due);
+  return `<div class="prow${e ? "" : " off"}"><div><span lang="fr">${esc(t)}</span><small>${esc(sm)}${e && e.missed ? " · ↻ missed last time" : ""}</small></div>${e ? progDots(n) : "<span></span>"}<div class="pn">${e ? n + " of 7" : "–"}<small>${esc(next)}</small></div></div>`;
+}
+function progBody(v) {
+  const x = verbProgress(v);
+  let list = x.us.map((k, i) => ({ k, e: x.es[i], i }));
+  if (progSort === "done") list.sort((a, b) => rdone(b.e) - rdone(a.e) || a.i - b.i);
+  return list.map(o => unitRowHTML(v, o.k, o.e)).join("");
+}
+function activityHTML() {
+  const t = todayStr(), days = [];
+  for (let i = 29; i >= 0; i--) days.push(addDays(t, -i));
+  const val = d => { const e = hist[d]; return e ? ((e.irr ? (e.irr.n || 1) : 0) + (e.reg ? (e.reg.n || 1) : 0)) : 0; };
+  const vals = days.map(val), max = Math.max(1, ...vals);
+  let streak = 0, i = vals[29] ? 29 : 28;
+  for (; i >= 0 && vals[i]; i--) streak++;
+  return `<section class="sgroup"><h2>Last 30 days</h2><div class="chart" role="img" aria-label="Cards completed per day">` +
+    days.map((d, j) => `<div class="cbar" title="${esc(fmtDate(d))}: ${vals[j]} cards"><i style="height:${vals[j] ? Math.max(8, Math.round(vals[j] / max * 100)) : 0}%"></i></div>`).join("") +
+    `</div><p class="shelp">Cards completed per day. Days in a row: ${streak}.</p></section>`;
+}
+function renderProgress() {
+  const tot = { irr: { n: 0, s: 0, d: 0 }, reg: { n: 0, s: 0, d: 0 } }, info = {};
+  VERBS_OK.forEach(v => { const x = verbProgress(v); info[v.id] = x; const t = tot[v.type === "irregular" ? "irr" : "reg"]; t.n += x.us.length; x.es.forEach(e => { if (e) { t.s++; if (e.step >= 8) t.d++; } }); });
+  const bar = (a, b) => `<div class="pbar"><i style="width:${b ? Math.round(a / b * 100) : 0}%"></i></div>`;
+  let h = `<section class="sgroup"><h2>Overall</h2>` + [["Irregular", tot.irr], ["Regular", tot.reg]].map(([n, t]) => `<p class="ptot"><b>${n}:</b> ${t.s.toLocaleString()} of ${t.n.toLocaleString()} cards started, ${t.d.toLocaleString()} through all 7 reviews</p>${bar(t.s, t.n)}`).join("") + "</section>";
+  h += activityHTML();
+  h += `<div class="btnrow" style="margin:8px 0"><button class="ghost sm" id="progSort">Sort forms: ${progSort === "done" ? "most done first" : "natural order"}</button></div>`;
+  schedSections().forEach(g => {
+    const vs = sectionVerbs(g); if (!vs.length) return;
+    h += `<section class="sgroup"><h2>${esc(sectionName(g))}</h2>` + vs.map(v => { const x = info[v.id];
+      return `<details class="pv" data-pv="${esc(v.id)}"><summary><span><span class="fr" lang="fr">${esc(v.french)}</span> <span class="ven">${esc(v.english)}</span></span><span class="pct">${x.started} of ${x.us.length} started</span><div class="pbar"><i style="width:${x.pct}%"></i></div></summary><div class="pbody"></div></details>`; }).join("") + "</section>";
+  });
+  $("#progressBody").innerHTML = h;
+}
+$("#progressBody").addEventListener("toggle", e => {
+  const d = e.target;
+  if (d && d.dataset && d.dataset.pv && d.open && BY_ID[d.dataset.pv]) d.querySelector(".pbody").innerHTML = progBody(BY_ID[d.dataset.pv]);
+}, true);
+$("#progressBody").addEventListener("click", e => { if (e.target.closest("#progSort")) { progSort = progSort === "done" ? "natural" : "done"; renderProgress(); } });
+
+/* ---------- GitHub sync ---------- */
+let syncing = false, syncTimer = null, syncErr = "", syncNotified = false;
+const b64 = x => { const b = new TextEncoder().encode(x); let o = ""; for (let i = 0; i < b.length; i += 0x8000) o += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000)); return btoa(o); };
+const unb64 = x => { const o = atob(x.replace(/\s/g, "")), b = new Uint8Array(o.length); for (let i = 0; i < o.length; i++) b[i] = o.charCodeAt(i); return new TextDecoder().decode(b); };
+function syncCfg() { try { const c = JSON.parse(lsGet(KEYS.sync) || "null"); return isObj(c) && c.user && c.repo && c.token ? c : null; } catch (e) { return null; } }
+const ghUrl = c => `https://api.github.com/repos/${encodeURIComponent(c.user)}/${encodeURIComponent(c.repo)}/contents/${c.path || "frverbs-data.json"}`;
+function ghFetch(c, url, opts) {
+  opts = opts || {};
+  opts.headers = Object.assign({ Authorization: "Bearer " + c.token, Accept: "application/vnd.github+json" }, opts.headers || {});
+  opts.cache = "no-store";
+  return fetch(url, opts);
+}
+const okEntry = e => isObj(e) && Number.isInteger(e.step) && e.step >= 0 && e.step <= 8 && isDate(e.due);
+function better(a, b) {
+  if (!a) return b; if (!b) return a;
+  const ea = a.enc || 0, eb = b.enc || 0;
+  if (ea !== eb) return ea > eb ? a : b;
+  const la = a.lastDate || "", lb = b.lastDate || "";
+  if (la !== lb) return la > lb ? a : b;
+  return (a.step || 0) >= (b.step || 0) ? a : b;
+}
+function mergeUnits(L, R) {
+  const out = {};
+  Object.keys(R || {}).concat(Object.keys(L || {})).forEach(k => { if (k in out) return; const e = better(okEntry(L && L[k]) ? L[k] : null, okEntry(R && R[k]) ? R[k] : null); if (e) out[k] = e; });
+  return out;
+}
+function mergeLogs(L, R) {
+  const out = {};
+  [L, R].forEach(o => { if (!isObj(o)) return; Object.keys(o).forEach(d => { if (!isDate(d) || !Array.isArray(o[d])) return; out[d] = Array.from(new Set((out[d] || []).concat(o[d].filter(x => typeof x === "string")))); }); });
+  return out;
+}
+function mergeHist(L, R) {
+  const out = cleanHist(L), r = cleanHist(R);
+  Object.keys(r).forEach(d => {
+    out[d] = out[d] || {};
+    ["irr", "reg"].forEach(k => {
+      if (!r[d][k]) return;
+      const a = out[d][k]; if (!a) { out[d][k] = r[d][k]; return; }
+      r[d][k].new.forEach(([id, ts]) => { const f = a.new.find(x => x[0] === id); if (f) ts.forEach(t => { if (f[1].indexOf(t) < 0) f[1].push(t); }); else a.new.push([id, ts]); });
+      if (typeof r[d][k].n === "number") a.n = Math.max(a.n || 0, r[d][k].n);
+    });
+  });
+  return out;
+}
+const syncCore = o => [o.forms, o.verbs, o.fNewLog, o.newLog, o.hist];
+const stable = o => JSON.stringify(o, (k, v) => (v && typeof v === "object" && !Array.isArray(v) ? Object.keys(v).sort().reduce((a, x) => (a[x] = v[x], a), {}) : v));
+function syncPayload() { return { app: "french-verbs-sync", v: 1, savedAt: new Date().toISOString(), forms: fsched.forms, verbs: schedule.verbs, fNewLog: fsched.newLog, newLog: schedule.newLog, hist }; }
+function applyRemote(R) {
+  fsched.forms = mergeUnits(fsched.forms, R.forms); schedule.verbs = mergeUnits(schedule.verbs, R.verbs);
+  fsched.newLog = mergeLogs(fsched.newLog, R.fNewLog); schedule.newLog = mergeLogs(schedule.newLog, R.newLog);
+  hist = mergeHist(hist, R.hist);
+  saveForms(); saveSchedule(); saveHist();
+}
+function setSyncStatus(m) { const el = $("#syncStatus"); if (el) el.textContent = m; }
+function syncIdleText() {
+  const c = syncCfg(), at = lsGet(KEYS.syncat);
+  return syncErr ? syncErr : c ? `Connected to ${c.user}/${c.repo}.` + (at ? " Last synced " + new Date(at).toLocaleString() + "." : "") : "Not connected.";
+}
+async function syncNow(why) {
+  const c = syncCfg(); if (!c || syncing) return false;
+  syncing = true; setSyncStatus("Syncing…");
+  try {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const r = await ghFetch(c, ghUrl(c));
+      let sha = null, remote = null;
+      if (r.status === 404) { /* no file yet */ }
+      else if (!r.ok) throw new Error(r.status === 401 || r.status === 403 ? "GitHub refused the token. Check it hasn’t expired and has Contents: Read and write." : "GitHub error " + r.status);
+      else {
+        const j = await r.json(); sha = j.sha;
+        let txt = j.content ? unb64(j.content) : "";
+        if (!txt) { const r2 = await ghFetch(c, ghUrl(c), { headers: { Accept: "application/vnd.github.raw+json" } }); txt = await r2.text(); }
+        try { remote = JSON.parse(txt); } catch (e) { throw new Error("The synced file on GitHub is damaged."); }
+      }
+      if (remote && remote.app === "french-verbs-sync") applyRemote(remote);
+      const mine = syncPayload();
+      if (!(remote && stable(syncCore(remote)) === stable(syncCore(mine)))) {
+        const body = { message: "Verbes sync", content: b64(JSON.stringify(mine)) };
+        if (sha) body.sha = sha;
+        const p = await ghFetch(c, ghUrl(c), { method: "PUT", body: JSON.stringify(body), headers: { "Content-Type": "application/json" } });
+        if (p.status === 409 || p.status === 422) continue;
+        if (!p.ok) throw new Error(p.status === 404 ? "Repository not found, or the token can’t write to it." : p.status === 401 || p.status === 403 ? "GitHub refused the token. Check it has Contents: Read and write." : "GitHub error " + p.status);
+      }
+      lsSet(KEYS.syncat, new Date().toISOString()); syncErr = ""; syncNotified = false;
+      setSyncStatus(syncIdleText());
+      return true;
+    }
+    throw new Error("Two devices wrote at once. Try again.");
+  } catch (e) {
+    syncErr = e instanceof TypeError ? "Offline. Your progress is safe on this device and will sync later." : "Sync failed: " + (e && e.message ? e.message : e);
+    setSyncStatus(syncErr);
+    if (!(e instanceof TypeError) && !syncNotified) { syncNotified = true; addNotice(syncErr + " (Settings > Sync)"); }
+    return false;
+  } finally { syncing = false; }
+}
+function syncSoon() { if (!syncCfg()) return; clearTimeout(syncTimer); syncTimer = setTimeout(() => syncNow("auto"), 20000); }
+function syncHTML() {
+  const f = (id, label, type) => `<div class="srow col"><label class="slabel" for="${id}">${label}</label><input id="${id}" type="${type || "text"}" autocomplete="off" autocapitalize="off" spellcheck="false" style="min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--paper)"></div>`;
+  return `<section class="sgroup"><h2>Sync between devices (GitHub)</h2><p class="shelp">Keeps your progress the same on your laptop and phone, using a private GitHub repository you own. Voice and display settings stay separate on each device. Use one device at a time.</p>` +
+    f("syUser", "GitHub username") + f("syRepo", "Repository name") + f("syToken", "Access token", "password") +
+    `<div class="btnrow wrap" style="margin-top:10px"><button class="primary sm" id="syncSave">Save and sync</button><button class="ghost sm" id="syncNow">Sync now</button><button class="ghost sm" id="syncOff">Disconnect</button></div><p class="shelp" id="syncStatus"></p>` +
+    `<details class="shelpbox"><summary>How to set this up (about 5 minutes)</summary>` +
+    `<p><b>1. Make the repository.</b> On github.com press + then New repository. Name it <b>verbs-data</b>, choose <b>Private</b>, tick <b>Add a README file</b>, then Create repository.</p>` +
+    `<p><b>2. Make a token.</b> Click your profile picture, then Settings, then Developer settings, then Personal access tokens, then Fine-grained tokens, then Generate new token. Name it Verbes and pick the longest expiry allowed. Under Repository access choose <b>Only select repositories</b> and pick verbs-data. Under Repository permissions set <b>Contents</b> to <b>Read and write</b>. Generate the token and copy it now; GitHub shows it only once.</p>` +
+    `<p><b>3. Connect.</b> Type your username, verbs-data and the token above, then press Save and sync. Do the same on your other device.</p>` +
+    `<p>The token stays on that device and is never put in backup files. If a device is lost, delete the token on GitHub. When a token expires, make a new one and paste it here.</p></details></section>`;
+}
+function refreshSyncUI() {
+  const c = syncCfg();
+  if ($("#syUser") && c && !$("#syUser").value) { $("#syUser").value = c.user; $("#syRepo").value = c.repo; $("#syToken").placeholder = "Saved on this device"; }
+  setSyncStatus(syncIdleText());
+  const ds = daysSince(lsGet(KEYS.lastbackup));
+  if ($("#backupInfo")) $("#backupInfo").textContent = "Last backup: " + (ds === 999 ? "never" : ds === 0 ? "today" : ds + " days ago") + ".";
+}
+function wireSync() {
+  $("#settingsBody").addEventListener("click", async e => {
+    if (e.target.closest("#syncSave")) {
+      const old = syncCfg(), user = $("#syUser").value.trim(), repo = $("#syRepo").value.trim(), tok = $("#syToken").value.trim() || (old ? old.token : "");
+      if (!user || !repo || !tok) { setSyncStatus("Fill in the username, repository name and token."); return; }
+      lsSet(KEYS.sync, JSON.stringify({ user, repo, token: tok, path: "frverbs-data.json" })); $("#syToken").value = "";
+      if (await syncNow("save")) toast("Synced.");
+    } else if (e.target.closest("#syncNow")) {
+      if (!syncCfg()) { setSyncStatus("Not connected yet."); return; }
+      if (await syncNow("manual")) toast("Synced.");
+    } else if (e.target.closest("#syncOff")) { lsRemove(KEYS.sync); lsRemove(KEYS.syncat); setSyncStatus("Disconnected. The token was removed from this device."); }
+  });
+}
+
 /* ---------- schedule settings ---------- */
 function schedSettingsHTML() {
   const nums = (a, f) => a.map(n => [String(n), f ? f(n) : String(n)]);
@@ -2673,8 +2914,8 @@ function schedSettingsHTML() {
     segRow("maxNewForms", "Most new irregular forms per day", nums([10, 15, 20, 25, 30]), "Introduced verb by verb in rank order: the infinitive, then présent (je to ils), then the other tenses.") +
     segRow("budgetReg", "Regular verbs: daily time budget", nums([5, 10, 15], n => n + " min"), "Regular verbs get one card each: English to the French infinitive.") +
     segRow("maxNew", "Most new regular verbs per day", nums([2, 4, 6, 8, 10, 12])) +
-    switchRow("secondPass", "Second pass", "One more recall of today’s new cards at the end of each block.") +
-    `<p class="shelp">Each card alternates between speaking (English to French) and listening (audio only), starting with speaking. A miss goes to the back of the pile, in the same direction, until you get it right. It never moves a due date. Speaking cards come first in a session, then listening cards.</p>` +
+    switchRow("secondPass", "Second pass", "One more recall of today’s new cards, as listening, at the end of each section.") +
+    `<p class="shelp">Each card alternates between speaking (English to French) and listening (audio only). A new card is tested speaking and then listening in the second pass; its first review is speaking again. A miss goes to the back of the pile, in the same direction, until you get it right. It never moves a due date. Speaking cards come first in a session, then listening cards.</p>` +
     `<div class="srow col"><span class="slabel">Order of regular groups for new verbs</span><p class="shelp">Within each group, verbs are introduced by importance rank. Irregular verbs have their own block.</p><ol class="secorder" id="secOrder"></ol></div>` +
     `</section>`;
 }
@@ -2692,7 +2933,7 @@ function syncSchedSettings() {
   const ord = regSections();
   $("#secOrder").innerHTML = ord.map((g, i) => `<li><span>${esc(sectionName(g))}</span><button class="ghost sm" data-sec-up="${esc(g)}"${i ? "" : " disabled"}>Move up</button></li>`).join("");
 }
-function syncSettingsUI() { syncSettingsUI0(); syncSchedSettings(); }
+function syncSettingsUI() { syncSettingsUI0(); syncSchedSettings(); refreshSyncUI(); }
 function wireSched() {
   $("#settingsBody").addEventListener("click", e => {
     const up = e.target.closest("[data-sec-up]");
@@ -2709,8 +2950,8 @@ function wireSched() {
    NAVIGATION
    ========================================================================= */
 let currentScreen = "";
-const SCREENS = ["today", "library", "study", "summary", "learn", "guide", "stats", "settings"];
-const TAB_OF = { today: "today", library: "library", learn: "library", guide: "library", stats: "stats", settings: "settings" };
+const SCREENS = ["today", "library", "study", "summary", "learn", "guide", "progress", "stats", "settings"];
+const TAB_OF = { today: "today", library: "library", learn: "library", guide: "library", progress: "library", stats: "stats", settings: "settings" };
 document.addEventListener("input", e => { if (e.target && e.target.id === "learnSearch") renderLearnList(); });
 function showScreen(name) {
   if (currentScreen === "study" && name !== "study") { stopSpeech(); stopListening(); }
@@ -2739,6 +2980,7 @@ function route(st) {
   else if (name === "summary") renderSummary();
   else if (name === "learn") renderLearn(st);
   else if (name === "guide") renderGuide();
+  else if (name === "progress") renderProgress();
   else if (name === "settings") syncSettingsUI();
   showScreen(name);
   if (name === "learn" && st.verb && document.getElementById("lv-" + st.verb)) {
@@ -2781,6 +3023,7 @@ function init() {
   buildSettings();
   wireSettings();
   wireSched();
+  wireSync();
   const raw = loadSessionRaw();
   if (raw) session = restoreSession(raw);
   if (synth) {
@@ -2792,13 +3035,20 @@ function init() {
   renderNotices();
   try { history.replaceState({ screen: "today" }, ""); } catch (e) {}
   route({ screen: "today" });
+  window.addEventListener("storage", e => { if (e.key && e.key.indexOf("frverbs.") === 0 && e.key.indexOf(KEYS.backup) !== 0 && e.key !== KEYS.syncat) addNotice("Verbes seems to be open in another tab. Use one tab at a time, or progress can be overwritten."); });
+  setTimeout(() => { if (synth && !voices.length) addNotice("No French voice found on this device yet. See Settings > Voice for how to add one."); }, 6000);
+  document.addEventListener("visibilitychange", () => {
+    if (!syncCfg()) return;
+    if (document.hidden) syncNow("hide"); else syncNow("show").then(() => { if (currentScreen === "today" && !(session && session.mode === "sched" && !session.done)) renderToday(); });
+  });
+  if (syncCfg()) syncNow("open").then(() => { if (currentScreen === "today") renderToday(); });
   window.addEventListener("error", e => { if (e && e.filename && /verbs\.js/i.test(e.filename)) return; toast("Something went wrong: " + (e.message || "unknown error")); });
 }
 try { init(); }
 catch (e) { showFatal("Something went wrong while starting: " + (e && e.message || e)); }
 
 // Exposed for checking from the browser console.
-window.__verbes = { get verbs() { return VERBS_OK; }, get problems() { return PROBLEMS; }, get settings() { return settings; }, get progress() { return progress; }, get schedule() { return schedule; }, get formsched() { return fsched; }, curState, avgCosts, get session() { return session; }, plan: (d) => plan(d || todayStr(), curState(), avgCosts()), simulate, matchLevel, norm };
+window.__verbes = { get verbs() { return VERBS_OK; }, get problems() { return PROBLEMS; }, get settings() { return settings; }, get progress() { return progress; }, get schedule() { return schedule; }, get formsched() { return fsched; }, curState, avgCosts, get session() { return session; }, plan: (d) => plan(d || todayStr(), curState(), avgCosts()), simulate, syncNow, mergeUnits, renderProgress, matchLevel, norm };
 })();
 </script>
 </body>
