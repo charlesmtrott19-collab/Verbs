@@ -474,11 +474,11 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 /* =========================================================================
    CONSTANTS AND SMALL HELPERS
    ========================================================================= */
-const APP_VERSION = "3.1";
+const APP_VERSION = "4.0";
 const SCHEMA = 1;
 // Storage keys. NEVER rename these: saved progress lives under them.
-const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", backup: "frverbs.backup." };
-const EXPORT_SCHEMA = 2;
+const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", backup: "frverbs.backup." };
+const EXPORT_SCHEMA = 3;
 const TYPE_ORDER = ["irregular", "regular"];
 const TYPE_LABEL = { irregular: "Irregular verbs", regular: "Regular verbs" };
 
@@ -563,12 +563,14 @@ const DEFAULTS = {
   practiseContent: "main", practiseOrder: "order",
   budgetMin: 20, maxNew: 8, maxNewIrr: 2, tenseEvery: ["present"], regTables: 2, allowedWrong: 1,
   secondPass: true, schedDir: "en-fr", sectionOrder: ["irregular", "er", "ir", "re"],
-  reviewStyle: "prompts", prompts: 3, listening: true
+  reviewStyle: "prompts", prompts: 3, listening: true,
+  budgetIrr: 20, budgetReg: 10, maxNewForms: 20
 };
 const CHOICES = {
   direction: ["en-fr", "fr-en", "mixed"], phonetics: ["always", "tap", "hidden"], theme: ["system", "light", "dark"],
   textSize: [0, 1, 2, 3], repeatAudio: [1, 2], practiseContent: ["main", "key", "full"], practiseOrder: ["order", "shuffle"],
   budgetMin: [10, 15, 20, 25, 30, 40, 60], maxNew: [2, 4, 6, 8, 10, 12], maxNewIrr: [0, 1, 2, 3], regTables: [0, 1, 2, 3],
+  budgetIrr: [15, 18, 20], budgetReg: [5, 10, 15], maxNewForms: [10, 15, 20, 25, 30],
   allowedWrong: [0, 1, 2, 3], schedDir: ["en-fr", "follow"], reviewStyle: ["prompts", "tables"], prompts: [2, 3, 4, 5]
 };
 const SCALE = [0.9, 1, 1.15, 1.3];
@@ -1875,7 +1877,7 @@ const alertBox = (title, html) => confirmBox(title, html, "OK", false, true);
 function exportData() {
   let sess = null;
   try { sess = JSON.parse(lsGet(KEYS.session) || "null"); } catch (e) {}
-  const data = { app: "french-verbs", schema: EXPORT_SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress, schedule, timing, session: sess };
+  const data = { app: "french-verbs", schema: EXPORT_SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress, schedule, formsched: fsched, timing, session: sess };
   try {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -1908,6 +1910,10 @@ function validateImport(d) {
       if (!isObj(e) || !Number.isInteger(e.step) || e.step < 0 || e.step > 8 || !isDate(e.due)) return `Schedule entry for “${id}” is damaged.`;
     }
   }
+  if (d.formsched !== undefined && d.formsched !== null) {
+    if (!isObj(d.formsched) || !isObj(d.formsched.forms)) return "The form schedule section is damaged.";
+    for (const k of Object.keys(d.formsched.forms)) { const e = d.formsched.forms[k]; if (!isObj(e) || !Number.isInteger(e.step) || e.step < 0 || e.step > 8 || !isDate(e.due)) return `Form schedule entry “${k}” is damaged.`; }
+  }
   if (d.timing !== undefined && d.timing !== null && !isObj(d.timing)) return "The timing section is damaged.";
   return "";
 }
@@ -1924,15 +1930,18 @@ async function importData(file) {
     `<p>Backup${when && !isNaN(when) ? " from " + esc(when.toLocaleString()) : ""}: schedule for ${plural(sv.length, "verb")} (${sv.filter(id => BY_ID[id]).length} in your current list), plus settings and practice records.</p><p>This replaces everything on this device. A copy of the current data is kept in this browser first.</p>`,
     "Replace", false);
   if (!ok) return;
-  [["settings", KEYS.settings], ["progress", KEYS.progress], ["schedule", KEYS.schedule], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-import-" + l, lsGet(k)));
+  [["settings", KEYS.settings], ["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-import-" + l, lsGet(k)));
   settings = cleanSettings(d.settings);
   progress = { schema: SCHEMA, verbs: d.progress.verbs };
   schedule = isObj(d.schedule) ? d.schedule : freshSchedule();
   if (!isObj(schedule.newLog)) schedule.newLog = {};
+  fsched = isObj(d.formsched) ? d.formsched : freshForms();
+  if (!isObj(fsched.newLog)) fsched.newLog = {};
   timing = freshTiming();
   if (isObj(d.timing)) CARD_TYPES.forEach(k => { if (Array.isArray(d.timing[k])) timing[k] = d.timing[k].filter(x => typeof x === "number" && x > 0); });
-  saveSettings(); saveProgress(); saveSchedule(); saveTiming();
-  if (isObj(d.session) && d.session.mode === "sched" && isDate(d.session.date) && Array.isArray(d.session.queue)) lsSet(KEYS.session, JSON.stringify(d.session)); else lsRemove(KEYS.session);
+  saveSettings(); saveProgress(); saveSchedule(); saveForms(); saveTiming();
+  if (!fsched.migrated) migrateForms();
+  if (isObj(d.session) && d.session.schema === 2 && d.session.mode === "sched" && isDate(d.session.date) && Array.isArray(d.session.queue)) lsSet(KEYS.session, JSON.stringify(d.session)); else lsRemove(KEYS.session);
   session = null;
   applyDisplay(); loadVoices(); syncSettingsUI();
   toast("Imported.");
@@ -1942,9 +1951,9 @@ async function doReset(kind) {
   const ok = await confirmBox(kind === "all" ? "Reset everything?" : `Reset ${kind}?`, `<p>${what}</p><p>A backup copy is kept in this browser, but export first if you might want it back.</p>`, "Reset", true);
   if (!ok) return;
   if (kind !== "settings") {
-    [["progress", KEYS.progress], ["schedule", KEYS.schedule], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-reset-" + l, lsGet(k)));
-    progress = { schema: SCHEMA, verbs: {} }; schedule = freshSchedule(); timing = freshTiming();
-    saveProgress(); saveSchedule(); saveTiming(); lsRemove(KEYS.session); session = null;
+    [["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-reset-" + l, lsGet(k)));
+    progress = { schema: SCHEMA, verbs: {} }; schedule = freshSchedule(); fsched = freshForms(); timing = freshTiming();
+    saveProgress(); saveSchedule(); saveForms(); saveTiming(); lsRemove(KEYS.session); session = null;
   }
   if (kind !== "progress") { makeBackup("before-reset-settings", lsGet(KEYS.settings)); settings = freshDefaults(); saveSettings(); applyDisplay(); loadVoices(); }
   syncSettingsUI();
@@ -1957,7 +1966,7 @@ async function doReset(kind) {
 const GAPS = [1, 3, 7, 14, 30, 60, 120], LT_GAP = 180, OFFSETS = [1, 4, 11, 25, 55, 115, 235];
 const DEF_COST = { main: 10, tense: 30, keyforms: 20, form: 8 };
 const CARD_TYPES = ["main", "form", "tense", "keyforms"];
-const CARD_LABEL = { main: "Main card", form: "Single prompt", tense: "Tense card (table)", keyforms: "Key forms card" };
+const CARD_LABEL = { main: "Infinitive / regular verb card", form: "Single form card", tense: "Tense card (table)", keyforms: "Key forms card" };
 let schedule = { schema: 1, verbs: {}, newLog: {} };
 let timing = { schema: 1, main: [], tense: [], keyforms: [] };
 const todayExpanded = new Set();
@@ -2000,7 +2009,12 @@ function loadSessionRaw() {
   if (raw == null) return null;
   try {
     const o = JSON.parse(raw);
-    if (!isObj(o) || o.mode !== "sched" || !isDate(o.date) || !Array.isArray(o.queue) || !isObj(o.vs)) throw new Error("bad");
+    if (isObj(o) && o.mode === "sched" && o.schema !== 2) {
+      lsRemove(KEYS.session);
+      addNotice("A session from the previous version was closed. Everything you had finished is saved; the rest comes back as new cards.");
+      return null;
+    }
+    if (!isObj(o) || o.mode !== "sched" || !isDate(o.date) || !Array.isArray(o.queue) || !isObj(o.vs) || !Array.isArray(o.blocks)) throw new Error("bad");
     return o;
   } catch (e) {
     const k = makeBackup("session-damaged", raw);
@@ -2011,6 +2025,78 @@ function loadSessionRaw() {
 }
 const saveSchedule = () => lsSet(KEYS.schedule, JSON.stringify(schedule));
 const saveTiming = () => lsSet(KEYS.timing, JSON.stringify(timing));
+
+/* ---------- per-form schedule (irregular verbs): frverbs.formsched ---------- */
+// A "unit" is one scheduled card. Irregular verbs: "id|inf" (the infinitive) and "id|tense|person" (one form).
+// Regular verbs: just the verb id, stored in schedule.verbs as before.
+const freshForms = () => ({ schema: 1, forms: {}, newLog: {}, migrated: false });
+let fsched = freshForms();
+function loadForms() {
+  const o = loadStore(KEYS.formsched, "form schedule", x => isObj(x) && typeof x.schema === "number" && isObj(x.forms), freshForms);
+  if (!isObj(o.newLog)) o.newLog = {};
+  return o;
+}
+const saveForms = () => lsSet(KEYS.formsched, JSON.stringify(fsched));
+const isFormUnit = k => k.indexOf("|") > 0;
+const unitVerb = k => k.split("|")[0];
+function verbUnits(v) {
+  if (v._u) return v._u;
+  const us = [v.id + "|inf"];
+  TENSE_KEYS.forEach(t => { const tab = v.tables && v.tables[t]; if (tab) tab.rows.forEach(r => us.push(v.id + "|" + t + "|" + r.key)); });
+  return (v._u = us);
+}
+function unitValid(k) {
+  const p = k.split("|"), v = BY_ID[p[0]];
+  if (!v) return false;
+  if (p.length === 1) return true;
+  if (v.type !== "irregular") return false;
+  if (p[1] === "inf") return p.length === 2;
+  const tab = v.tables[p[1]];
+  return !!(tab && p.length === 3 && tab.rows.find(r => r.key === p[2]));
+}
+function unitSpec(k, mode) {
+  const p = k.split("|");
+  if (p.length === 1 || p[1] === "inf") return { verbId: p[0], kind: "main" };
+  return { verbId: p[0], kind: "form", tense: p[1], person: p[2], mode: mode || "en-fr" };
+}
+function unitKey(it) {
+  if (it.kind === "main") return BY_ID[it.verbId].type === "irregular" ? it.verbId + "|inf" : it.verbId;
+  return it.verbId + "|" + it.tense + "|" + it.person;
+}
+const unitStore = (S, k) => (isFormUnit(k) ? S.forms : S.verbs);
+function entryOfU(S, k) {
+  const e = unitStore(S, k)[k];
+  return isObj(e) && Number.isInteger(e.step) && e.step >= 0 && e.step <= 8 && isDate(e.due) ? e : null;
+}
+const unitCost = (k, C) => (unitSpec(k).kind === "form" ? C.form : C.main);
+// Whole-verb view for the Library dots and Stats: irregular verbs summarise their forms.
+function verbEntry(v) {
+  if (v.type !== "irregular") return entryOf(schedule, v.id);
+  const us = verbUnits(v), S = { forms: fsched.forms, verbs: {} };
+  let n = 0, sum = 0, due = null, all8 = true;
+  us.forEach(k => { const e = entryOfU(S, k); if (!e) { all8 = false; return; } n++; sum += e.step; if (e.step !== 8) all8 = false; if (!due || e.due < due) due = e.due; });
+  return n ? { step: all8 ? 8 : Math.min(7, Math.floor(sum / us.length)), due, enc: 1 } : null;
+}
+const introduced = (S, v) => (v.type === "irregular" ? verbUnits(v).every(k => S.forms[k]) : !!S.verbs[v.id]);
+// One-off move from the v3.1 per-verb schedule: every form starts at its verb's current step and due date.
+function migrateForms() {
+  if (fsched.migrated) return;
+  let moved = 0;
+  const have = VERBS_OK.filter(v => v.type === "irregular" && entryOf(schedule, v.id));
+  if (have.length) {
+    makeBackup("pre-v4-schedule", JSON.stringify(schedule));
+    have.forEach(v => {
+      const e = schedule.verbs[v.id];
+      verbUnits(v).forEach((k, i) => {
+        if (fsched.forms[k]) return;
+        fsched.forms[k] = { step: e.step, enc: e.enc || 0, due: e.step >= 3 ? addDays(e.due, i % 4) : e.due, intro: isDate(e.intro) ? e.intro : e.due };
+      });
+      moved++;
+    });
+  }
+  fsched.migrated = true; saveForms();
+  if (moved) addNotice(`Version 4 now schedules every irregular form separately. ${plural(moved, "irregular verb")} you had already started carried over with the same step and due date. A backup of your old schedule is kept in this browser.`);
+}
 
 /* ---------- steps, costs and cards ---------- */
 function entryOf(S, id) {
@@ -2038,57 +2124,6 @@ function avgCosts() {
   return c;
 }
 function learnCost(v) { return v.type === "irregular" ? 45 * TENSE_KEYS.length : 60; }
-// The cards a verb gets on encounter e (1 = the day it is learned)
-function encCards(v, e, pick) {
-  const out = [{ verbId: v.id, kind: "main" }];
-  if (settings.reviewStyle === "tables") {
-    const tables = list => list.forEach(t => out.push({ verbId: v.id, kind: "tense", tense: t }));
-    if (v.type === "irregular") {
-      if (e <= 2) tables(TENSE_KEYS);
-      else {
-        const every = TENSE_KEYS.filter(t => settings.tenseEvery.includes(t));
-        tables(every);
-        const kf = TENSE_KEYS.filter(t => !every.includes(t));
-        if (kf.length) out.push({ verbId: v.id, kind: "keyforms", kf });
-      }
-    } else if (e <= settings.regTables) tables(TENSE_KEYS);
-    return out;
-  }
-  // Single prompts: one form at a time, random person, mixed tenses. T0 = the first tense in TENSES (the présent).
-  const T0 = TENSE_KEYS[0], others = TENSE_KEYS.slice(1);
-  let slots = [];
-  if (v.type === "irregular") {
-    if (e <= 2) slots = [T0, T0].concat(others).map(t => ({ t, mode: "en-fr" }));
-    else {
-      const n = settings.prompts;
-      slots.push({ t: T0, mode: "en-fr" });
-      for (let i = 1; i < n; i++) slots.push({ t: null, mode: "en-fr" });
-      if (settings.listening && n >= 2) slots[n - 1].mode = "listen";
-    }
-  } else if (e <= settings.regTables) slots = [{ t: T0, mode: "en-fr" }, { t: null, mode: "en-fr" }, { t: null, mode: "en-fr" }];
-  if (!pick) return out.concat(slots.map(() => ({ verbId: v.id, kind: "form" })));
-  // Choose forms: forms you've missed come up more often; forms asked last time come up less.
-  const ent = entryOf(schedule, v.id), fm = ent && isObj(ent.fm) ? ent.fm : {}, recent = new Set(ent && Array.isArray(ent.recent) ? ent.recent : []);
-  const usedT = new Set(), usedF = new Set(), chosen = [];
-  const pickW = (items, w) => { const ws = items.map(w), tot = ws.reduce((a, b) => a + b, 0); let x = Math.random() * tot; for (let i = 0; i < items.length; i++) { x -= ws[i]; if (x <= 0) return items[i]; } return items[items.length - 1]; };
-  const formW = (t, p) => (1 + 3 * (fm[t + ":" + p] || 0)) * (recent.has(t + ":" + p) ? 0.25 : 1);
-  slots.forEach(sl => {
-    let t = sl.t;
-    if (!t) {
-      let pool = (sl.mode === "listen" ? TENSE_KEYS : others).filter(x => !usedT.has(x));
-      if (!pool.length) pool = sl.mode === "listen" ? TENSE_KEYS.slice() : others.slice();
-      t = pickW(pool, x => 1 + PERSONS.reduce((a, p) => a + (fm[x + ":" + p] || 0), 0));
-    }
-    usedT.add(t);
-    let ps = PERSONS.filter(p => !usedF.has(t + ":" + p));
-    if (!ps.length) ps = PERSONS.slice();
-    const p = pickW(ps, x => formW(t, x));
-    usedF.add(t + ":" + p); chosen.push(t + ":" + p);
-    out.push({ verbId: v.id, kind: "form", tense: t, person: p, mode: sl.mode });
-  });
-  if (ent) { ent.recent = chosen; saveSchedule(); }
-  return out;
-}
 // Shuffle cards so the same verb doesn't come twice in a row where possible.
 function spread(list) {
   const a = shuffled(list);
@@ -2100,7 +2135,6 @@ function spread(list) {
   }
   return a;
 }
-function encCost(v, e, C) { return encCards(v, e).reduce((s, c) => s + C[c.kind], 0); }
 
 /* ---------- sections and ranks ---------- */
 const byRank = (a, b) => a.rankNum - b.rankNum;
@@ -2115,109 +2149,129 @@ const sectionName = g => (g === "irregular" ? "Irregular verbs" : groupLabel(g))
 function sectionVerbs(g) { return VERBS_OK.filter(v => v.group === g).sort(byRank); }
 
 /* ---------- planning ---------- */
+// Two blocks: 0 = irregular (one card per form), 1 = regular (main card only). Each has its own time budget.
+const BLOCK_NAME = ["Irregular verbs", "Regular verbs"];
+const regSections = () => schedSections().filter(g => g !== "irregular");
+const blockBudget = bi => (bi === 0 ? settings.budgetIrr : settings.budgetReg) * 60;
+const secondF = () => (settings.secondPass ? 2 : 1);
+function curState() { return { verbs: schedule.verbs, forms: fsched.forms, newLog: schedule.newLog, fNewLog: fsched.newLog }; }
+function blockVerbs(bi) { return bi === 0 ? sectionVerbs("irregular") : [].concat(...regSections().map(sectionVerbs)); }
 // Projected review load (raw seconds) on each future date, assuming every review passes.
-function loadMap(S, date, C) {
+function loadMap(S, date, C, bi) {
   const m = {}, end = addDays(date, 240);
-  Object.keys(S.verbs).forEach(id => {
-    const v = BY_ID[id], e0 = entryOf(S, id);
-    if (!v || !e0) return;
-    const e = Object.assign({}, e0);
+  const walk = (k, e0) => {
+    const e = Object.assign({}, e0), c = unitCost(k, C);
     let d = e.due < date ? date : e.due, n = 0;
-    while (d <= end && n++ < 12) {
-      if (d > date) m[d] = (m[d] || 0) + encCost(v, (e.enc || 0) + 1, C);
-      applyResult(e, true, d); d = e.due;
-    }
-  });
+    while (d <= end && n++ < 12) { if (d > date) m[d] = (m[d] || 0) + c; applyResult(e, true, d); d = e.due; }
+  };
+  if (bi === 0) Object.keys(S.forms).forEach(k => { if (unitValid(k)) { const e = entryOfU(S, k); if (e) walk(k, e); } });
+  else Object.keys(S.verbs).forEach(id => { const v = BY_ID[id]; if (v && v.type === "regular") { const e = entryOfU(S, id); if (e) walk(id, e); } });
   return m;
 }
-// New verbs: sections in the set order; within a section, strictly by importance rank.
-// The irregular cap moves on to the next section; the time budget or the future-day rule stops for the day.
-function selectNew(date, S, C, rawSoFar) {
-  const budget = settings.budgetMin * 60, cap = 0.9 * budget, out = [];
-  let planned = rawSoFar * 1.15, irr = 0, lm = null;
+// New cards in strict importance order. Irregular: verb by verb (infinitive, then présent je..ils, then the other tenses).
+// Regular: sections in the set order, then rank. The time budget, the daily cap or the future-day rule stops the day.
+function selectNew(bi, date, S, C, rawSoFar) {
+  const budget = blockBudget(bi), cap = 0.9 * budget, max = bi === 0 ? settings.maxNewForms : settings.maxNew;
+  const out = [], learn = new Set(), sp = secondF(), started = new Set(bi === 0 ? Object.keys(S.forms).map(unitVerb) : []);
+  let planned = rawSoFar * 1.15, cost = 0, lm = null;
   outer:
-  for (const g of schedSections()) {
-    for (const v of sectionVerbs(g)) {
-      if (S.verbs[v.id]) continue;
-      if (out.length >= settings.maxNew) break outer;
-      if (v.type === "irregular" && irr >= settings.maxNewIrr) break;
-      const add = (learnCost(v) + encCost(v, 1, C)) * 1.15;
-      if (planned + add > budget) break outer;
-      if (!lm) lm = loadMap(S, date, C);
-      const fut = OFFSETS.map((off, i) => [addDays(date, off), encCost(v, i + 2, C)]);
-      if (fut.some(([d, c]) => ((lm[d] || 0) + c) * 1.15 > cap)) break outer;
-      out.push(v.id); planned += add;
-      if (v.type === "irregular") irr++;
-      fut.forEach(([d, c]) => { lm[d] = (lm[d] || 0) + c; });
+  for (const v of blockVerbs(bi)) {
+    for (const k of (bi === 0 ? verbUnits(v) : [v.id])) {
+      if (bi === 0 ? S.forms[k] : S.verbs[k]) continue;
+      if (out.length >= max) break outer;
+      const c = unitCost(k, C), lc = (bi === 1 || (!started.has(v.id) && !learn.has(v.id))) ? learnCost(v) : 0;
+      const add = lc + c * sp;
+      if (planned + add * 1.15 > budget) break outer;
+      if (!lm) lm = loadMap(S, date, C, bi);
+      const fut = OFFSETS.map(off => addDays(date, off));
+      if (fut.some(d => ((lm[d] || 0) + c) * 1.15 > cap)) break outer;
+      out.push(k); planned += add * 1.15; cost += add;
+      if (lc) learn.add(v.id);
+      fut.forEach(d => { lm[d] = (lm[d] || 0) + c; });
     }
   }
-  return out;
+  return { ids: out, learn: Array.from(learn), cost };
 }
 function plan(date, S, C) {
-  const ord = schedSections(), rev = [], carry = [];
-  Object.keys(S.verbs).forEach(id => {
-    const v = BY_ID[id], e = entryOf(S, id);
-    if (!v || !e || e.due > date) return;
-    ((e.enc || 0) === 0 ? carry : rev).push(id);
+  const sp = secondF(), ord = regSections();
+  const blocks = [0, 1].map(bi => {
+    const keys = bi === 0 ? Object.keys(S.forms).filter(unitValid) : Object.keys(S.verbs).filter(id => BY_ID[id] && BY_ID[id].type === "regular");
+    const rev = [], carry = [], seen = new Set();
+    keys.forEach(k => {
+      const e = entryOfU(S, k); if (!e) return;
+      if ((e.enc || 0) > 0) seen.add(unitVerb(k));
+      if (e.due > date) return;
+      ((e.enc || 0) === 0 ? carry : rev).push(k);
+    });
+    const sec = k => (bi === 0 ? 0 : ord.indexOf(BY_ID[k].group)), rk = k => BY_ID[unitVerb(k)].rankNum;
+    const cmp = (a, b) => sec(a) - sec(b) || rk(a) - rk(b) || (a < b ? -1 : a > b ? 1 : 0);
+    rev.sort((a, b) => dayDiff(entryOfU(S, b).due, date) - dayDiff(entryOfU(S, a).due, date) || cmp(a, b));
+    carry.sort(cmp);
+    const carryLearn = bi === 0 ? Array.from(new Set(carry.map(unitVerb))).filter(id => !seen.has(id)) : carry.slice();
+    const raw = rev.reduce((s, k) => s + unitCost(k, C), 0) + carry.reduce((s, k) => s + unitCost(k, C) * sp, 0) + carryLearn.reduce((s, id) => s + learnCost(BY_ID[id]), 0);
+    const log = bi === 0 ? S.fNewLog : S.newLog;
+    const sel = Array.isArray(log[date]) ? { ids: [], learn: [], cost: 0 } : selectNew(bi, date, S, C, raw);
+    return { reviews: rev, newIds: carry.concat(sel.ids), picked: sel.ids, learnIds: carryLearn.concat(sel.learn), sec: (raw + sel.cost) * 1.15 };
   });
-  const sec = id => ord.indexOf(BY_ID[id].group);
-  rev.sort((a, b) => dayDiff(S.verbs[b].due, date) - dayDiff(S.verbs[a].due, date) || sec(a) - sec(b) || BY_ID[a].rankNum - BY_ID[b].rankNum);
-  carry.sort((a, b) => sec(a) - sec(b) || BY_ID[a].rankNum - BY_ID[b].rankNum);
-  let raw = rev.reduce((s, id) => s + encCost(BY_ID[id], (S.verbs[id].enc || 0) + 1, C), 0)
-          + carry.reduce((s, id) => s + learnCost(BY_ID[id]) + encCost(BY_ID[id], 1, C), 0);
-  const picked = Array.isArray(S.newLog[date]) ? [] : selectNew(date, S, C, raw);
-  picked.forEach(id => { raw += learnCost(BY_ID[id]) + encCost(BY_ID[id], 1, C); });
-  return { reviews: rev, newIds: carry.concat(picked), picked, sec: raw * 1.15 };
+  return { blocks, sec: blocks[0].sec + blocks[1].sec };
 }
 
 /* ---------- the scheduled session ---------- */
-const PART_LABEL = { reviews: "Part 1 — Reviews", learn: "Part 2 — New verbs: learn", test: "Part 2 — New verbs: test", second: "Part 3 — Second pass" };
+const PART_LABEL = { reviews: "Reviews", learn: "New: learn", test: "New: test", second: "Second pass" };
 const PARTS = ["start", "reviews", "learn", "test", "second", "done"];
-const liveIds = list => (list || []).filter(id => BY_ID[id]);
-function secondIds(s) { return Object.keys(s.vs).filter(id => BY_ID[id] && (s.vs[id].isNew || s.vs[id].fail)); }
+const liveIds = list => (list || []).filter(unitValid);
+const blk = s => s.blocks[s.bi || 0] || s.blocks[0];
+function partLabel(s) { return s.part === "start" || s.part === "done" ? "Today" : BLOCK_NAME[s.bi || 0] + " · " + PART_LABEL[s.part]; }
+function secondIds(s, bi) { bi = bi === undefined ? (s.bi || 0) : bi; return Object.keys(s.vs).filter(k => unitValid(k) && s.vs[k].blk === bi && (s.vs[k].isNew || s.vs[k].fail)); }
 function dirFor() { return session && session.mode === "sched" && settings.schedDir === "en-fr" ? "en-fr" : resolveDir(); }
 const homeOf = () => (session && session.mode === "sched" ? "today" : "library");
+// From step 3, about one irregular form card in four is audio only (say the meaning).
+function formMode(k) { const e = isFormUnit(k) ? fsched.forms[k] : null; return settings.listening && e && k.split("|")[1] !== "inf" && e.step >= 3 && Math.random() < 0.25 ? "listen" : "en-fr"; }
 
 function buildSession() {
-  const date = todayStr(), C = avgCosts(), p = plan(date, schedule, C);
-  schedule.newLog[date] = (schedule.newLog[date] || []).concat(p.picked);
-  p.picked.forEach(id => { schedule.verbs[id] = { step: 0, enc: 0, due: date, intro: date }; });
-  Object.keys(schedule.newLog).forEach(d => { if (!isDate(d) || dayDiff(d, date) > 30) delete schedule.newLog[d]; });
-  saveSchedule();
-  const vs = {};
-  p.reviews.forEach(id => { vs[id] = { st: "todo", left: 0, open: 0, enc: (schedule.verbs[id].enc || 0) + 1, fail: false, isNew: false }; });
-  p.newIds.forEach(id => { vs[id] = { st: "todo", left: 0, open: 0, enc: 1, fail: false, isNew: true }; });
-  return { mode: "sched", schema: 1, date, startedAt: Date.now(), elapsedMs: 0, plannedSec: p.sec, part: "start",
-           reviewIds: p.reviews, newIds: p.newIds, vs, queue: [], idx: 0, committed: -1, done: false, undo: [], title: "Today", round: 1 };
+  const date = todayStr(), C = avgCosts(), p = plan(date, curState(), C), [a, b] = p.blocks;
+  a.picked.forEach(k => { fsched.forms[k] = { step: 0, enc: 0, due: date, intro: date }; });
+  b.picked.forEach(id => { schedule.verbs[id] = { step: 0, enc: 0, due: date, intro: date }; });
+  fsched.newLog[date] = (fsched.newLog[date] || []).concat(a.picked);
+  schedule.newLog[date] = (schedule.newLog[date] || []).concat(b.picked);
+  [fsched.newLog, schedule.newLog].forEach(log => Object.keys(log).forEach(d => { if (!isDate(d) || dayDiff(d, date) > 30) delete log[d]; }));
+  saveSchedule(); saveForms();
+  const vs = {}, blocks = p.blocks.map((x, bi) => {
+    x.reviews.forEach(k => { vs[k] = { st: "todo", left: 0, open: 0, fail: false, isNew: false, blk: bi }; });
+    x.newIds.forEach(k => { vs[k] = { st: "todo", left: 0, open: 0, fail: false, isNew: true, blk: bi }; });
+    return { reviewIds: x.reviews, newIds: x.newIds, learnIds: x.learnIds, plannedSec: x.sec };
+  });
+  return { mode: "sched", schema: 2, date, startedAt: Date.now(), elapsedMs: 0, plannedSec: p.sec, part: "start", bi: 0, blocks, vs,
+           queue: [], idx: 0, committed: -1, done: false, undo: [], title: "Today", round: 1 };
 }
+// Runs the irregular block (reviews, learn, test, second pass), then the regular block, then the finish screen.
 function nextPart() {
   const s = session;
-  let i = PARTS.indexOf(s.part) + 1;
-  for (; i < PARTS.length - 1; i++) {
-    const p = PARTS[i];
-    if (p === "reviews" && !liveIds(s.reviewIds).length) continue;
-    if ((p === "learn" || p === "test") && !liveIds(s.newIds).length) continue;
-    if (p === "second" && (!settings.secondPass || !secondIds(s).length)) continue;
-    break;
+  let bi = s.bi || 0, i = PARTS.indexOf(s.part) + 1;
+  for (;;) {
+    const b = s.blocks[bi];
+    for (; i < PARTS.length - 1; i++) {
+      const p = PARTS[i];
+      if (p === "reviews" && !liveIds(b.reviewIds).length) continue;
+      if (p === "learn" && !liveIds(b.learnIds).length) continue;
+      if (p === "test" && !liveIds(b.newIds).length) continue;
+      if (p === "second" && (!settings.secondPass || !secondIds(s, bi).length)) continue;
+      s.bi = bi; enterPart(p); return;
+    }
+    if (bi >= s.blocks.length - 1) { s.bi = bi; enterPart("done"); return; }
+    bi++; i = 1;
   }
-  enterPart(PARTS[i]);
 }
 function enterPart(p) {
-  const s = session;
+  const s = session, b = blk(s);
   s.part = p; s.queue = []; s.idx = 0; s.committed = -1;
-  const mains = [], rest = [];
-  const addVerb = (id, enc) => {
-    const v = BY_ID[id], vs = s.vs[id];
-    if (!v || !vs) return;
-    const cards = encCards(v, enc, true);
-    cards.forEach(c => (c.kind === "main" ? mains : rest).push(newItem(Object.assign(c, { first: true }))));
-    vs.left = cards.length; vs.open = cards.length; vs.fw = 0;
-  };
-  if (p === "reviews") liveIds(s.reviewIds).forEach(id => addVerb(id, s.vs[id].enc));
-  else if (p === "test") liveIds(s.newIds).forEach(id => addVerb(id, 1));
-  else if (p === "second") secondIds(s).forEach(id => { mains.push(newItem({ verbId: id, kind: "main" })); s.vs[id].open = 1; s.vs[id].st = "todo"; });
-  // Main cards first (recall the verb), then the single prompts mixed across verbs, so nothing can be recited in order.
-  s.queue = mains.concat(settings.reviewStyle === "tables" ? rest : spread(rest));
+  const items = [];
+  const add = k => { const vs = s.vs[k]; if (!vs) return; items.push(newItem(Object.assign(unitSpec(k, formMode(k)), { first: true }))); vs.left = 1; vs.open = 1; };
+  if (p === "reviews") liveIds(b.reviewIds).forEach(add);
+  else if (p === "test") liveIds(b.newIds).forEach(add);
+  else if (p === "second") secondIds(s).forEach(k => { items.push(newItem(unitSpec(k, "en-fr"))); s.vs[k].open = 1; s.vs[k].st = "todo"; });
+  // Irregular cards are fully shuffled across verbs, tenses and persons, so no pattern can help.
+  s.queue = s.bi === 0 ? spread(items) : items;
   if (p === "done") { s.done = true; s.finishedAt = Date.now(); }
   saveSession();
   if (p === "learn" || p === "done") { navigate("today"); return; }
@@ -2251,9 +2305,9 @@ function resumeSched() {
   presentCurrent(true);
 }
 function commitSched(it, wrongKeys) {
-  const s = session, id = it.verbId;
-  const vs = s.vs[id] || (s.vs[id] = { st: "todo", left: 0, open: 1, enc: 1, fail: false, isNew: false });
-  s.undo.push({ data: JSON.stringify(sessionData(s)), id, entry: schedule.verbs[id] ? JSON.stringify(schedule.verbs[id]) : null, kind: it.kind });
+  const s = session, k = unitKey(it), st = unitStore({ forms: fsched.forms, verbs: schedule.verbs }, k);
+  const vs = s.vs[k] || (s.vs[k] = { st: "todo", left: 0, open: 1, fail: false, isNew: false, blk: s.bi || 0 });
+  s.undo.push({ data: JSON.stringify(sessionData(s)), id: k, entry: st[k] ? JSON.stringify(st[k]) : null, kind: it.kind });
   if (s.undo.length > 30) s.undo.shift();
   if (!Array.isArray(timing[it.kind])) timing[it.kind] = [];
   const secs = Math.min(120, Math.max(1, (Date.now() - (it.t0 || Date.now())) / 1000));
@@ -2261,52 +2315,36 @@ function commitSched(it, wrongKeys) {
   if (timing[it.kind].length > 400) timing[it.kind] = timing[it.kind].slice(-400);
   saveTiming();
   const anyWrong = wrongKeys.length > 0;
-  // Remember exactly which forms you miss, so they come up more often.
-  const e = schedule.verbs[id];
-  if (anyWrong && e && it.kind !== "main") {
-    if (!isObj(e.fm)) e.fm = {};
-    const keys = it.kind === "form" ? [it.tense + ":" + it.person] : it.kind === "tense" ? wrongKeys.map(k => it.tense + ":" + k) : wrongKeys.map(t => t + ":" + PERSONS[0]);
-    keys.forEach(k => { e.fm[k] = (e.fm[k] || 0) + 1; });
-    saveSchedule();
-  }
-  if (it.first) {
-    if (it.kind === "main") { if (anyWrong) vs.fail = true; }
-    else if (it.kind === "form") { if (anyWrong) { vs.fw = (vs.fw || 0) + 1; if (vs.fw > settings.allowedWrong) vs.fail = true; } }
-    else if (wrongKeys.length > settings.allowedWrong) vs.fail = true;
-    vs.left = Math.max(0, vs.left - 1);
-    if (vs.left === 0) finalizeVerb(id);
-  }
+  if (it.first) { if (anyWrong) vs.fail = true; vs.left = 0; finalizeUnit(k); }
   vs.open = Math.max(0, vs.open - 1);
   if (anyWrong) {
     vs.st = "retry";
-    // Retry only what you missed: a missed table row comes back as that single form.
-    const specs = (it.kind === "tense" || it.kind === "keyforms")
-      ? wrongKeys.map(k => ({ verbId: id, kind: "form", tense: it.kind === "tense" ? it.tense : k, person: it.kind === "tense" ? k : PERSONS[0], mode: "en-fr", first: false, retry: true }))
-      : [Object.assign(qSpec(it), { first: false, retry: true })];
-    let at = Math.min(s.idx + 6, s.queue.length);
-    specs.forEach(sp => { s.queue.splice(at++, 0, newItem(sp)); vs.open++; });
+    // A wrong card comes back about five cards later, until it is right.
+    s.queue.splice(Math.min(s.idx + 6, s.queue.length), 0, newItem(Object.assign(qSpec(it), { first: false, retry: true })));
+    vs.open++;
   }
   if (vs.open === 0) vs.st = "done";
   s.committed = s.idx;
   haptic();
   saveSession();
 }
-// Only the first attempt of the day changes a verb's step.
-function finalizeVerb(id) {
-  const s = session, vs = s.vs[id], e = schedule.verbs[id];
+// Only the first attempt of the day changes a card's step.
+function finalizeUnit(k) {
+  const s = session, vs = s.vs[k], e = unitStore({ forms: fsched.forms, verbs: schedule.verbs }, k)[k];
   if (!e || vs.final) return;
   vs.before = e.step;
   applyResult(e, !vs.fail, s.date);
   vs.after = e.step; vs.final = true;
-  saveSchedule();
+  if (isFormUnit(k)) saveForms(); else saveSchedule();
 }
 function undoSched() {
   const s = session, u = s.undo.pop();
   if (!u) return;
   stopSpeech(); stopListening();
-  if (u.entry) schedule.verbs[u.id] = JSON.parse(u.entry); else delete schedule.verbs[u.id];
+  const st = unitStore({ forms: fsched.forms, verbs: schedule.verbs }, u.id);
+  if (u.entry) st[u.id] = JSON.parse(u.entry); else delete st[u.id];
   if (Array.isArray(timing[u.kind])) timing[u.kind].pop();
-  saveSchedule(); saveTiming();
+  saveSchedule(); saveForms(); saveTiming();
   const d = JSON.parse(u.data); d.committed = -1;
   const r = restoreSession(d); r.undo = s.undo; session = r;
   saveSession();
@@ -2315,21 +2353,21 @@ function undoSched() {
 }
 function schedCounts(s) {
   let todo = 0, retry = 0, done = 0;
-  Object.keys(s.vs).forEach(id => { if (!BY_ID[id]) return; const st = s.vs[id].st; if (st === "done") done++; else if (st === "retry") retry++; else todo++; });
+  Object.keys(s.vs).forEach(id => { if (!unitValid(id) || s.vs[id].blk !== (s.bi || 0)) return; const st = s.vs[id].st; if (st === "done") done++; else if (st === "retry") retry++; else todo++; });
   return { todo, retry, done, total: todo + retry + done };
 }
 function countsHTML(c) { return `<span>To do ${c.todo}</span><span${c.retry ? ' class="c-retry"' : ""}>Retry ${c.retry}</span><span class="c-done">Done ${c.done} ✓</span>`; }
 function plannedMin(s) { return Math.max(1, Math.round(s.plannedSec / 60)); }
 function renderSchedTop() {
   const s = session, c = schedCounts(s);
-  $("#sTitle").textContent = PART_LABEL[s.part] || "Today";
+  $("#sTitle").textContent = partLabel(s);
   $("#sScore").innerHTML = `<span>${mins(s.elapsedMs)} / ${plannedMin(s)} min</span>`;
   $("#sFill").style.width = (c.total ? c.done / c.total * 100 : 0) + "%";
   const sub = $("#sSub"); sub.hidden = false; sub.innerHTML = countsHTML(c);
 }
 function sessHeadHTML(s) {
   const c = schedCounts(s);
-  return `<div class="sprog-text"><b>${esc(PART_LABEL[s.part] || "Today")}</b><span>${mins(s.elapsedMs)} / ${plannedMin(s)} min</span></div>` +
+  return `<div class="sprog-text"><b>${esc(partLabel(s))}</b><span>${mins(s.elapsedMs)} / ${plannedMin(s)} min</span></div>` +
     `<div class="track"><div class="fill" style="width:${c.total ? c.done / c.total * 100 : 0}%"></div></div><div class="ssub">${countsHTML(c)}</div>`;
 }
 // Elapsed time counts only while a scheduled card or the Learn step is on screen.
@@ -2348,15 +2386,15 @@ setInterval(() => {
 
 /* ---------- tracking dots ---------- */
 function verbState(v, ss) {
-  const e = entryOf(schedule, v.id), t = todayStr();
+  const e = verbEntry(v), t = todayStr();
   if (!e) return "new";
-  if (ss && ss.date === t && ss.vs[v.id] && ss.vs[v.id].st === "retry") return "failed";
+  if (ss && ss.date === t && isObj(ss.vs) && Object.keys(ss.vs).some(k => unitVerb(k) === v.id && ss.vs[k].st === "retry")) return "failed";
   if (e.due < t) return "overdue";
   if (e.due === t) return "due";
   return e.step === 8 ? "lt" : "later";
 }
 function dotsHTML(v, ss, compact) {
-  const e = entryOf(schedule, v.id), st = verbState(v, ss), n = e ? Math.min(e.step, 7) : 0;
+  const e = verbEntry(v), st = verbState(v, ss), n = e ? Math.min(e.step, 7) : 0;
   let dots = "";
   for (let i = 0; i < 7; i++) dots += `<i class="${i < n ? "on" : ""}"></i>`;
   const what = !e ? "New" : e.step === 8 ? "Long-term" : e.step === 0 ? "Learning" : `${n} / 7 to long-term`;
@@ -2365,14 +2403,14 @@ function dotsHTML(v, ss, compact) {
   return `<span class="dots st-${st}" title="${esc(label)}" aria-label="${esc(label)}">${dots}${compact ? "" : `<span class="dtext">${esc(label)}</span>`}</span>`;
 }
 function curricLine(verbs, name) {
-  const started = verbs.filter(v => entryOf(schedule, v.id)).length;
-  const lt = verbs.filter(v => { const e = entryOf(schedule, v.id); return e && e.step === 8; }).length;
+  const started = verbs.filter(v => verbEntry(v)).length;
+  const lt = verbs.filter(v => { const e = verbEntry(v); return e && e.step === 8; }).length;
   return `${name}: ${started} of ${verbs.length} started · ${lt} long-term`;
 }
 
 /* ---------- Today screen ---------- */
 function learnStepHTML(s) {
-  const ids = liveIds(s.newIds), groups = {};
+  const ids = liveIds(blk(s).learnIds), groups = {};
   ids.forEach(id => { const g = BY_ID[id].group; (groups[g] = groups[g] || []).push(id); });
   const heads = Object.keys(groups).map(g => {
     const all = sectionVerbs(g), pos = groups[g].map(id => all.findIndex(v => v.id === id) + 1).sort((a, b) => a - b);
@@ -2386,17 +2424,14 @@ function learnStepHTML(s) {
     `<button class="primary bigstart" data-today="ready">I’m ready — test me</button>`;
 }
 function finishHTML(s) {
-  const ids = Object.keys(s.vs).filter(id => BY_ID[id]), vs = s.vs;
-  const passed = ids.filter(id => vs[id].final && !vs[id].fail).length;
-  const failed = ids.filter(id => vs[id].fail).length;
-  const up = ids.filter(id => vs[id].final && vs[id].after > vs[id].before).length;
-  const tp = plan(addDays(todayStr(), 1), schedule, avgCosts());
-  return `<h2 class="parth">Session complete</h2><table class="kv"><tbody>` +
-    `<tr><th>Time taken</th><td>${Math.max(1, mins(s.elapsedMs))} min</td></tr>` +
-    `<tr><th>Verbs passed first time</th><td>${passed}</td></tr>` +
-    `<tr><th>Verbs failed, now cleared</th><td>${failed}</td></tr>` +
-    `<tr><th>Verbs that moved up a step</th><td>${up}</td></tr></tbody></table>` +
-    `<p class="todayline">Tomorrow: ${plural(tp.reviews.length + tp.newIds.length, "verb")} · about ${Math.max(1, Math.round(tp.sec / 60))} min</p>` +
+  const ks = Object.keys(s.vs).filter(unitValid), vs = s.vs;
+  const cnt = bi => { const k = ks.filter(x => vs[x].blk === bi); return { p: k.filter(x => vs[x].final && !vs[x].fail).length, f: k.filter(x => vs[x].fail).length, u: k.filter(x => vs[x].final && vs[x].after > vs[x].before).length }; };
+  const a = cnt(0), b = cnt(1), tp = plan(addDays(todayStr(), 1), curState(), avgCosts()), t0 = tp.blocks[0], t1 = tp.blocks[1];
+  const row = (l, f) => `<tr><th>${l}</th><td>${f(a)}</td><td>${f(b)}</td></tr>`;
+  return `<h2 class="parth">Session complete</h2><table class="kv"><thead><tr><th></th><th>Irregular</th><th>Regular</th></tr></thead><tbody>` +
+    `<tr><th>Time taken</th><td colspan="2">${Math.max(1, mins(s.elapsedMs))} min</td></tr>` +
+    row("Cards passed first time", x => x.p) + row("Cards failed, now cleared", x => x.f) + row("Cards that moved up a step", x => x.u) + `</tbody></table>` +
+    `<p class="todayline">Tomorrow: ${plural(t0.reviews.length + t0.newIds.length, "irregular card")} + ${plural(t1.reviews.length + t1.newIds.length, "regular card")} · about ${Math.max(1, Math.round(tp.sec / 60))} min</p>` +
     `<button class="ghost" data-today="library">Practise freely in the Library</button>`;
 }
 function renderToday() {
@@ -2411,15 +2446,16 @@ function renderToday() {
   }
   if (s && s.done && s.date === t) { body.innerHTML = finishHTML(s); return; }
   if (!VERBS_OK.length) { body.innerHTML = '<p class="todayline">No verbs are loaded yet.</p><p class="lede">Add verbs to verbs.js.</p>'; return; }
-  const p = plan(t, schedule, avgCosts()), nR = p.reviews.length, nN = p.newIds.length;
-  if (!nR && !nN) {
-    const allIn = VERBS_OK.every(v => entryOf(schedule, v.id));
-    body.innerHTML = `<p class="todayline">Nothing due today.</p><p class="lede">${allIn ? "Every verb has been introduced. Come back tomorrow." : "No new verb fits today’s budget without overloading a future day. Come back tomorrow."}</p><button class="ghost" data-today="library">Practise freely in the Library</button>`;
+  const p = plan(t, curState(), avgCosts()), [a, b] = p.blocks;
+  if (![a, b].some(x => x.reviews.length || x.newIds.length)) {
+    const allIn = VERBS_OK.every(v => introduced(curState(), v));
+    body.innerHTML = `<p class="todayline">Nothing due today.</p><p class="lede">${allIn ? "Every verb has been introduced. Come back tomorrow." : "No new card fits today’s budget without overloading a future day. Come back tomorrow."}</p><button class="ghost" data-today="library">Practise freely in the Library</button>`;
     return;
   }
-  body.innerHTML = `<p class="todayline">Today: ${plural(nR, "review")} + ${nN} new · about ${Math.max(1, Math.round(p.sec / 60))} min</p>` +
-    (nN ? `<p class="lede">New today: <span lang="fr">${p.newIds.map(id => esc(BY_ID[id].french)).join(", ")}</span></p>` : "") +
-    `<button class="primary bigstart" data-today="start">Start</button>`;
+  const fr = ids => Array.from(new Set(ids.map(unitVerb))).map(id => esc(BY_ID[id].french)).join(", ");
+  const line = (name, x, unit) => `<p class="todayline">${name}: ${plural(x.reviews.length, "review")} + ${x.newIds.length} new ${unit}${x.newIds.length === 1 ? "" : "s"} · about ${Math.max(1, Math.round(x.sec / 60))} min</p>` +
+    (x.newIds.length ? `<p class="lede">New today: <span lang="fr">${fr(x.newIds)}</span></p>` : "");
+  body.innerHTML = line("Irregular", a, "form") + line("Regular", b, "verb") + `<button class="primary bigstart" data-today="start">Start</button>`;
 }
 $("#scr-today").addEventListener("click", e => {
   const t = e.target, b = t.closest("[data-today]");
@@ -2430,7 +2466,7 @@ $("#scr-today").addEventListener("click", e => {
     else if (a === "ready") { session = schedSession(); if (session) enterPart("test"); }
     else if (a === "expand" || a === "collapse") {
       const s = schedSession();
-      if (a === "expand" && s) liveIds(s.newIds).forEach(id => todayExpanded.add(id)); else todayExpanded.clear();
+      if (a === "expand" && s) liveIds(blk(s).learnIds).forEach(id => todayExpanded.add(id)); else todayExpanded.clear();
       renderToday();
     } else if (a === "library") navigate("library");
     return;
@@ -2446,24 +2482,26 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden && cu
 function rng(seed) { let a = seed; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function simStart() { const t = todayStr(), s = schedSession(); return s && s.date === t && s.done ? addDays(t, 1) : t; }
 function simulate(days, passRate, C, start, stopWhenAllIn) {
-  const S = JSON.parse(JSON.stringify(schedule));
-  if (!isObj(S.newLog)) S.newLog = {};
+  const S = JSON.parse(JSON.stringify(curState()));
   const rnd = rng(20261018), rows = [];
   let d = start, allIn = null;
   for (let i = 0; i < days; i++) {
-    const p = plan(d, S, C);
-    S.newLog[d] = (S.newLog[d] || []).concat(p.picked);
-    p.picked.forEach(id => { S.verbs[id] = { step: 0, enc: 0, due: d, intro: d }; });
-    let sec = 0;
-    const run = (id, isNew) => {
-      const v = BY_ID[id], e = S.verbs[id], cost = encCost(v, (e.enc || 0) + 1, C), pass = rnd() < passRate;
-      sec += cost + (isNew ? learnCost(v) : 0) + (pass ? 0 : cost * 0.5) + (settings.secondPass && (isNew || !pass) ? C.main : 0);
-      applyResult(e, pass, d);
-    };
-    p.reviews.forEach(id => run(id, false));
-    p.newIds.forEach(id => run(id, true));
-    rows.push({ date: d, reviews: p.reviews.length, added: p.picked.length, min: sec / 60 });
-    if (!allIn && VERBS_OK.length && VERBS_OK.every(v => S.verbs[v.id])) { allIn = d; if (stopWhenAllIn) break; }
+    const p = plan(d, S, C), [a, b] = p.blocks;
+    a.picked.forEach(k => { S.forms[k] = { step: 0, enc: 0, due: d, intro: d }; });
+    b.picked.forEach(id => { S.verbs[id] = { step: 0, enc: 0, due: d, intro: d }; });
+    S.fNewLog[d] = (S.fNewLog[d] || []).concat(a.picked); S.newLog[d] = (S.newLog[d] || []).concat(b.picked);
+    const secs = [0, 0];
+    p.blocks.forEach((x, bi) => {
+      const run = (k, isNew) => {
+        const e = unitStore(S, k)[k], c = unitCost(k, C), pass = rnd() < passRate;
+        secs[bi] += c + (pass ? 0 : c * 0.5) + (settings.secondPass && (isNew || !pass) ? c : 0);
+        applyResult(e, pass, d);
+      };
+      x.reviews.forEach(k => run(k, false)); x.newIds.forEach(k => run(k, true));
+      x.learnIds.forEach(id => { secs[bi] += learnCost(BY_ID[id]); });
+    });
+    rows.push({ date: d, reviews: a.reviews.length + b.reviews.length, added: a.picked.length + b.picked.length, min: (secs[0] + secs[1]) / 60, minI: secs[0] / 60, minR: secs[1] / 60 });
+    if (!allIn && VERBS_OK.length && VERBS_OK.every(v => introduced(S, v))) { allIn = d; if (stopWhenAllIn) break; }
     d = addDays(d, 1);
   }
   return { rows, allIn };
@@ -2471,40 +2509,46 @@ function simulate(days, passRate, C, start, stopWhenAllIn) {
 function runSim() {
   const num = (id, lo, hi, d) => { const x = Number($(id).value); return isFinite(x) && $(id).value !== "" ? Math.min(hi, Math.max(lo, x)) : d; };
   const days = Number($("#simDays").value) || 30, pass = num("#simPass", 0, 100, 85) / 100;
-  const C = { main: num("#simMain", 1, 300, 10), form: num("#simForm", 1, 300, 8), tense: num("#simTense", 1, 300, 30), keyforms: num("#simKey", 1, 300, 20) };
+  const C = { main: num("#simMain", 1, 300, 10), form: num("#simForm", 1, 300, 8), tense: 30, keyforms: 20 };
   const r = simulate(days, pass, C, simStart(), false);
   const m = r.rows.map(x => x.min), avg = m.reduce((a, b) => a + b, 0) / (m.length || 1), max = Math.max(0, ...m);
   const added = r.rows.reduce((a, x) => a + x.added, 0);
-  $("#simOut").innerHTML = `<p class="shelp">Average ${avg.toFixed(1)} min a day, busiest day ${max.toFixed(1)} min, ${plural(added, "new verb")} introduced${r.allIn ? `; every verb introduced by ${esc(fmtDate(r.allIn))}` : ""}. Your real progress was not changed.</p>` +
-    `<div class="simtable"><table class="simt"><thead><tr><th>Date</th><th>Reviews</th><th>New</th><th>Minutes</th></tr></thead><tbody>` +
-    r.rows.map(x => `<tr><td>${esc(fmtDate(x.date))}</td><td>${x.reviews}</td><td>${x.added}</td><td>${x.min.toFixed(1)}</td></tr>`).join("") + "</tbody></table></div>";
+  $("#simOut").innerHTML = `<p class="shelp">Average ${avg.toFixed(1)} min a day, busiest day ${max.toFixed(1)} min, ${plural(added, "new card")} introduced${r.allIn ? `; every verb introduced by ${esc(fmtDate(r.allIn))}` : ""}. Your real progress was not changed.</p>` +
+    `<div class="simtable"><table class="simt"><thead><tr><th>Date</th><th>Reviews</th><th>New</th><th>Irreg min</th><th>Reg min</th></tr></thead><tbody>` +
+    r.rows.map(x => `<tr><td>${esc(fmtDate(x.date))}</td><td>${x.reviews}</td><td>${x.added}</td><td>${x.minI.toFixed(1)}</td><td>${x.minR.toFixed(1)}</td></tr>`).join("") + "</tbody></table></div>";
 }
 
 /* ---------- Stats ---------- */
-const ABOUT = `<p>This schedule uses the spacing effect: a memory lasts longer when you review it just as it starts to fade, and each successful review lets the next gap grow. The gaps are 1, 3, 7, 14, 30, 60 and 120 days. After that a verb is long-term and gets a check every 180 days.</p>
-<p>The aim is strong long-term memory, not guaranteed 100% recall. Forgetting sometimes is normal: a failed verb drops back two steps and returns tomorrow.</p>
-<p>A failed verb must be recalled correctly once more the same day, so the last thing you practise is the right answer, not the mistake.</p>
-<p>Scheduled sessions go from English to French because producing the French is the harder skill, and the one you need to speak. Recognising French is easier, so it would make your progress look better than it is.</p>
-<p>Verbs are tested one form at a time, in a random person and tense, mixed with other verbs. Reciting a table in order is not the same as producing the one form you need mid-sentence, so the order is never predictable. Full tables are for learning, on the Learn page. Forms you miss come up more often, and one prompt per review is listening practice.</p>`;
+const ABOUT = `<p>This schedule uses the spacing effect: a memory lasts longer when you review it just as it starts to fade, and each successful review lets the next gap grow. The gaps are 1, 3, 7, 14, 30, 60 and 120 days. After that a card is long-term and gets a check every 180 days.</p>
+<p>The aim is strong long-term memory, not guaranteed 100% recall. Forgetting sometimes is normal: a failed card drops back two steps and returns tomorrow, and must be recalled correctly once more the same day.</p>
+<p>Irregular verbs: every form (and the infinitive) is its own card with its own schedule, so a form you know moves out to months while a weak one keeps coming back. Cards are shuffled across all verbs, tenses and persons, so you can’t follow a pattern. Forms are introduced in importance order: verb by verb, présent first.</p>
+<p>Regular verbs follow rules, so each one has a single card: English to the French infinitive. Full tables are for learning, on the Learn page.</p>
+<p>Scheduled cards go from English to French because producing the French is the harder skill, and the one you need to speak. Some irregular cards play the French with no text and ask for the meaning.</p>`;
 function renderStats() {
-  const C = avgCosts(), cnt = Array(9).fill(0);
-  let notStarted = 0;
-  VERBS_OK.forEach(v => { const e = entryOf(schedule, v.id); if (!e) notStarted++; else cnt[e.step]++; });
-  const rows = [["Not started", notStarted], ["Learning (new)", cnt[0]]];
-  for (let k = 1; k <= 7; k++) rows.push([`Step ${k}`, cnt[k]]);
-  rows.push(["Long-term", cnt[8]]);
-  const start = simStart(), fc = simulate(7, 1, C, start, false).rows, budget = settings.budgetMin;
+  const C = avgCosts(), cI = Array(9).fill(0), cR = Array(9).fill(0), SI = { forms: fsched.forms, verbs: {} };
+  let nsI = 0, nsR = 0, totI = 0;
+  VERBS_OK.forEach(v => {
+    if (v.type === "irregular") verbUnits(v).forEach(k => { totI++; const e = entryOfU(SI, k); if (!e) nsI++; else cI[e.step]++; });
+    else { const e = entryOf(schedule, v.id); if (!e) nsR++; else cR[e.step]++; }
+  });
+  const stepTable = (title, cnt, ns) => {
+    const rows = [["Not started", ns], ["Learning (new)", cnt[0]]];
+    for (let k = 1; k <= 7; k++) rows.push([`Step ${k}`, cnt[k]]);
+    rows.push(["Long-term", cnt[8]]);
+    return `<section class="sgroup"><h2>${title}</h2><table class="kv"><tbody>${rows.map(r => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</tbody></table></section>`;
+  };
+  const start = simStart(), fc = simulate(7, 1, C, start, false).rows, budget = settings.budgetIrr + settings.budgetReg;
   const maxM = Math.max(budget, ...fc.map(r => r.min));
-  const everyIn = VERBS_OK.length && VERBS_OK.every(v => entryOf(schedule, v.id));
+  const everyIn = VERBS_OK.length && VERBS_OK.every(v => introduced(curState(), v));
   const allIn = everyIn || !VERBS_OK.length ? null : simulate(1500, 1, C, start, true).allIn;
   const pace = !VERBS_OK.length ? "No verbs are loaded yet." : everyIn ? "Every verb has been introduced."
-    : allIn ? `At this pace, all ${VERBS_OK.length} verbs will be introduced by ${esc(parseD(allIn).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" }))}.`
-    : "At this pace, introducing every verb would take more than four years. A bigger daily budget or more new verbs per day would speed it up.";
+    : allIn ? `At this pace, every card will be introduced by ${esc(parseD(allIn).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" }))}.`
+    : "At this pace, introducing every card would take more than four years. A bigger daily budget or more new cards per day would speed it up.";
   $("#statsBody").innerHTML =
-    `<section class="sgroup"><h2>Verbs by step</h2><table class="kv"><tbody>${rows.map(r => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</tbody></table></section>` +
-    `<section class="sgroup"><h2>Next 7 days</h2><p class="shelp">Minutes per day if you pass everything, using your current times. Budget: ${budget} min.</p>` +
-    fc.map(r => `<div class="fc"><span>${esc(fmtDate(r.date))}</span><div class="barwrap"><div class="bar${r.min > budget ? " over" : ""}" style="width:${Math.max(1, r.min / maxM * 100)}%"></div></div><span>${Math.round(r.min)} min</span></div>`).join("") + "</section>" +
-    `<section class="sgroup"><h2>Your time per card</h2><table class="kv"><tbody>${CARD_TYPES.map(k => { const n = timing[k].length; return `<tr><th>${CARD_LABEL[k]}<span class="shelp" style="display:block;font-weight:400">${n >= 50 ? `Your average over the last ${Math.min(n, 200)}` : `Default until you’ve done 50 (${n} so far)`}</span></th><td>${Math.round(C[k])} s</td></tr>`; }).join("")}</tbody></table></section>` +
+    stepTable(`Irregular forms by step (${totI} forms)`, cI, nsI) + stepTable("Regular verbs by step", cR, nsR) +
+    `<section class="sgroup"><h2>Next 7 days</h2><p class="shelp">Minutes per day if you pass everything, using your current times. Budget: ${settings.budgetIrr} min irregular + ${settings.budgetReg} min regular.</p>` +
+    fc.map(r => `<div class="fc"><span>${esc(fmtDate(r.date))}</span><div class="barwrap"><div class="bar${r.min > budget ? " over" : ""}" style="width:${Math.max(1, r.min / maxM * 100)}%"></div></div><span>${Math.round(r.minI)} + ${Math.round(r.minR)} min</span></div>`).join("") + "</section>" +
+    `<section class="sgroup"><h2>Your time per card</h2><table class="kv"><tbody>${["main", "form"].map(k => { const n = timing[k].length; return `<tr><th>${CARD_LABEL[k]}<span class="shelp" style="display:block;font-weight:400">${n >= 50 ? `Your average over the last ${Math.min(n, 200)}` : `Default until you’ve done 50 (${n} so far)`}</span></th><td>${Math.round(C[k])} s</td></tr>`; }).join("")}</tbody></table></section>` +
     `<section class="sgroup"><h2>Pace</h2><p>${pace}</p></section>` +
     `<section class="sgroup about"><h2>About this schedule</h2>${ABOUT}</section>`;
 }
@@ -2513,51 +2557,38 @@ function renderStats() {
 function schedSettingsHTML() {
   const nums = (a, f) => a.map(n => [String(n), f ? f(n) : String(n)]);
   return `<section class="sgroup"><h2>Daily schedule</h2>` +
-    segRow("reviewStyle", "How verbs are tested", [["prompts", "One form at a time (recommended)"], ["tables", "Whole tables"]], "One form at a time asks for a single form in a random person and tense, mixed across verbs, so reciting the table can’t help you. Full tables are still on the Learn page and in the Library.") +
-    segRow("prompts", "Prompts per review, from the 3rd encounter", nums([2, 3, 4, 5]), "One is always in the présent. On the first two encounters an irregular verb gets one prompt per tense, plus a second présent.") +
-    switchRow("listening", "Listening prompt", "One prompt per review plays the French with no text, and you say what it means.") +
-    segRow("budgetMin", "Daily time budget", nums([10, 15, 20, 25, 30, 40, 60], n => n + " min"), "Reviews always come first and are never capped. New verbs are added only while they fit.") +
-    segRow("maxNew", "Most new verbs per day", nums([2, 4, 6, 8, 10, 12])) +
-    segRow("maxNewIrr", "Most new irregular verbs per day", nums([0, 1, 2, 3]), "When this limit is reached, the remaining new-verb places go to the next section.") +
-    `<div class="srow col"><span class="slabel">Whole-tables style only: full table at every review</span><p class="shelp">The first two encounters always use full tables. After that, tenses switched off here are tested together on one key forms card.</p><div id="tenseEveryList"></div></div>` +
-    segRow("regTables", "Regular verbs: full tables in the first", nums([0, 1, 2, 3], n => n === 1 ? "1 encounter" : n + " encounters"), "After that, regular verbs get the main card only.") +
-    segRow("allowedWrong", "Wrong forms allowed for a pass", nums([0, 1, 2, 3]), "Counts wrong prompts per verb (or wrong rows per table). The main card must always be right.") +
-    switchRow("secondPass", "Second pass", "One more recall of today’s new and failed verbs at the end of each session.") +
+    segRow("budgetIrr", "Irregular verbs: daily time budget", nums([15, 18, 20], n => n + " min"), "Every form of every irregular verb is its own card. Reviews always come first and are never capped. New forms are added only while they fit.") +
+    segRow("maxNewForms", "Most new irregular forms per day", nums([10, 15, 20, 25, 30]), "Introduced verb by verb in rank order: the infinitive, then présent (je to ils), then the other tenses.") +
+    segRow("budgetReg", "Regular verbs: daily time budget", nums([5, 10, 15], n => n + " min"), "Regular verbs get one card each: English to the French infinitive.") +
+    segRow("maxNew", "Most new regular verbs per day", nums([2, 4, 6, 8, 10, 12])) +
+    switchRow("listening", "Listening cards", "From step 3, about one irregular form card in four plays the French with no text, and you say what it means.") +
+    switchRow("secondPass", "Second pass", "One more recall of today’s new and failed cards at the end of each block.") +
     segRow("schedDir", "Scheduled direction", [["en-fr", "English → French (recommended)"], ["follow", "Follow my direction setting"]]) +
     `<p class="shelp warnline" id="schedDirWarn" hidden>French → English passes are easier, so your progress will look better than it really is.</p>` +
-    `<div class="srow col"><span class="slabel">Order of sections for new verbs</span><p class="shelp">Within each section, verbs are introduced by importance rank.</p><ol class="secorder" id="secOrder"></ol></div>` +
+    `<div class="srow col"><span class="slabel">Order of regular groups for new verbs</span><p class="shelp">Within each group, verbs are introduced by importance rank. Irregular verbs have their own block.</p><ol class="secorder" id="secOrder"></ol></div>` +
     `</section>`;
 }
 function simHTML() {
   return `<section class="sgroup"><h2>Simulate</h2><p class="shelp">Fast-forwards a copy of your progress to show the daily load. Your real progress is never touched.</p>` +
     `<div class="simgrid"><label>Days<select id="simDays"><option>7</option><option selected>30</option><option>90</option><option>180</option><option>365</option></select></label>` +
     `<label>Pass rate (%)<input id="simPass" type="number" min="0" max="100" value="85" inputmode="numeric"></label>` +
-    `<label>Main card (s)<input id="simMain" type="number" min="1" max="300" value="10" inputmode="numeric"></label>` +
-    `<label>Single prompt (s)<input id="simForm" type="number" min="1" max="300" value="8" inputmode="numeric"></label>` +
-    `<label>Tense card (s)<input id="simTense" type="number" min="1" max="300" value="30" inputmode="numeric"></label>` +
-    `<label>Key forms card (s)<input id="simKey" type="number" min="1" max="300" value="20" inputmode="numeric"></label></div>` +
+    `<label>Infinitive / regular card (s)<input id="simMain" type="number" min="1" max="300" value="10" inputmode="numeric"></label>` +
+    `<label>Single form card (s)<input id="simForm" type="number" min="1" max="300" value="8" inputmode="numeric"></label></div>` +
     `<div class="btnrow" style="margin-top:10px"><button class="primary sm" id="simRun">Run simulation</button></div><div id="simOut"></div></section>`;
 }
 function syncSchedSettings() {
-  const tl = $("#tenseEveryList"); if (!tl) return;
-  tl.innerHTML = TENSE_KEYS.map(t => `<div class="srow"><span class="stext">${esc(TENSES[t].name)}</span><button class="switch" role="switch" aria-label="${esc(TENSES[t].name)}: full table at every review" data-tense-every="${esc(t)}" aria-checked="${settings.tenseEvery.includes(t)}"></button></div>`).join("");
-  $("#schedDirWarn").hidden = settings.schedDir !== "follow";
-  const ord = schedSections();
+  const w = $("#schedDirWarn"); if (!w) return;
+  w.hidden = settings.schedDir !== "follow";
+  const ord = regSections();
   $("#secOrder").innerHTML = ord.map((g, i) => `<li><span>${esc(sectionName(g))}</span><button class="ghost sm" data-sec-up="${esc(g)}"${i ? "" : " disabled"}>Move up</button></li>`).join("");
 }
 function syncSettingsUI() { syncSettingsUI0(); syncSchedSettings(); }
 function wireSched() {
   $("#settingsBody").addEventListener("click", e => {
-    const te = e.target.closest("[data-tense-every]");
-    if (te) {
-      const t = te.dataset.tenseEvery;
-      settings.tenseEvery = settings.tenseEvery.includes(t) ? settings.tenseEvery.filter(x => x !== t) : settings.tenseEvery.concat(t);
-      saveSettings(); syncSchedSettings(); return;
-    }
     const up = e.target.closest("[data-sec-up]");
     if (up) {
-      const ord = schedSections(), i = ord.indexOf(up.dataset.secUp);
-      if (i > 0) { const x = ord[i - 1]; ord[i - 1] = ord[i]; ord[i] = x; settings.sectionOrder = ord; saveSettings(); syncSchedSettings(); }
+      const ord = regSections(), i = ord.indexOf(up.dataset.secUp);
+      if (i > 0) { const x = ord[i - 1]; ord[i - 1] = ord[i]; ord[i] = x; settings.sectionOrder = ["irregular"].concat(ord); saveSettings(); syncSchedSettings(); }
       return;
     }
     if (e.target.closest("#simRun")) runSim();
@@ -2628,10 +2659,12 @@ function init() {
   settings = loadSettings();
   progress = loadProgress();
   schedule = loadSchedule();
+  fsched = loadForms();
   timing = loadTiming();
   applyDisplay();
   loadData();
   if (FATAL) { showFatal(FATAL); return; }
+  migrateForms();
   SECTIONS = buildSections();
   buildSettings();
   wireSettings();
@@ -2653,7 +2686,7 @@ try { init(); }
 catch (e) { showFatal("Something went wrong while starting: " + (e && e.message || e)); }
 
 // Exposed for checking from the browser console.
-window.__verbes = { get verbs() { return VERBS_OK; }, get problems() { return PROBLEMS; }, get settings() { return settings; }, get progress() { return progress; }, get schedule() { return schedule; }, get session() { return session; }, plan: (d) => plan(d || todayStr(), schedule, avgCosts()), simulate, matchLevel, norm };
+window.__verbes = { get verbs() { return VERBS_OK; }, get problems() { return PROBLEMS; }, get settings() { return settings; }, get progress() { return progress; }, get schedule() { return schedule; }, get formsched() { return fsched; }, curState, avgCosts, get session() { return session; }, plan: (d) => plan(d || todayStr(), curState(), avgCosts()), simulate, matchLevel, norm };
 })();
 </script>
 </body>
