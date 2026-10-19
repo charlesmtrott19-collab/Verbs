@@ -487,7 +487,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 /* =========================================================================
    CONSTANTS AND SMALL HELPERS
    ========================================================================= */
-const APP_VERSION = "5.2";
+const APP_VERSION = "5.3";
 const SCHEMA = 1;
 // Storage keys. NEVER rename these: saved progress lives under them.
 const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", lastbackup: "frverbs.lastbackup", sync: "frverbs.sync", syncat: "frverbs.syncat", backup: "frverbs.backup." };
@@ -842,20 +842,35 @@ function agreeSub(x, who) {
   if (!x || x.indexOf("(e)") < 0) return x || "";
   return who === "elle" || who === "elles" ? x.replace("(e)", "e") : who === "on" ? x.replace("(e)", "(e)(s)") : x.replace("(e)", "");
 }
+const SUBJ_RE = /^(I|you|he|she|one|we|they)\b/i;
+const escL = x => esc(x).replace(/\n/g, "<br>");
+// "I was / have been" -> ["I was", "I have been"]: one option per line, subject repeated.
+function enAlts(en) {
+  if (!en) return [];
+  const parts = en.split(" / ").map(x => x.trim()).filter(Boolean), m = SUBJ_RE.exec(parts[0]), subj = m ? m[1] : "";
+  return parts.map((p, i) => (i === 0 || !subj || SUBJ_RE.test(p) ? p : subj + " " + p));
+}
 function addSubs(rows) {
   const nous = rows.find(r => r.key === "nous");
   rows.forEach(r => {
-    if (r.key === "tu" && /^you\b/i.test(r.en)) r.en += " (informal)";
-    if (r.key === "vous" && /^you\b/i.test(r.en)) r.en += " (formal, or plural)";
+    let L = r.key === "il" ? enAlts((r.en || "").replace(/^he\/she\/one/i, "he")) : enAlts(r.en);
+    const nousL = r.key === "il" && nous ? enAlts(nous.en) : [];
+    if (r.key === "tu") L = L.map(x => x + " (informal)");
+    if (r.key === "vous") L = L.map(x => x + " (formal, or plural)");
+    const Lp = r.key === "il" ? L.map(x => x.replace("himself/herself", "himself")) : L;
+    r.en = Lp.join("\n"); r.enL = Lp;
+    if (r.key === "il") r.label = "il · elle · on";
+    if (r.key === "ils") r.label = "ils · elles";
     const defs = SUBP[r.key]; if (!defs) return;
     r.subs = defs.map(([w, ph, lia]) => {
       const form = agreeSub(r.form, w), end = agreeSub(r.end, w);
-      let en = r.en;
+      let lines = L;
       if (r.key === "il") {
-        en = r.en.replace(/^he\/she\/one/i, w === "il" ? "he" : w === "elle" ? "she" : "one");
-        if (w === "on" && en && nous && nous.en) en += " · casual: " + nous.en;
+        const sw = w === "il" ? "he" : w === "elle" ? "she" : "one";
+        lines = L.map(x => x.replace(/^he\b/, sw).replace("himself/herself", sw === "he" ? "himself" : sw === "she" ? "herself" : "oneself"));
+        if (w === "on") lines = lines.concat(nousL.map(x => "casual: " + x));
       }
-      return { key: r.key, label: w, pron: w + " ", form, pre: r.pre, end, fr: w + " " + form, phon: ph + " " + (r.vowel && lia ? lia : "") + r.fphon, en, speak: w + " " + stripAgree(form), elided: false };
+      return { key: r.key, label: w, pron: w + " ", form, pre: r.pre, end, fr: w + " " + form, phon: ph + " " + (r.vowel && lia ? lia : "") + r.fphon, en: lines.join("\n"), speak: w + " " + stripAgree(form), elided: false };
     });
   });
 }
@@ -863,7 +878,7 @@ function buildTable(v, t) { const tb = buildTable0(v, t); addSubs(tb.rows); retu
 
 function prepareVerb(raw, i) {
   const v = {
-    id: raw.id, type: raw.type, group: raw.group, english: raw.english.trim(), french: raw.french.trim(),
+    id: raw.id, type: raw.type, group: raw.group, english: raw.english.trim().replace(/^to go \/ come home$/, "to go home, to come home"), french: raw.french.trim(),
     phonetic: raw.phonetic.trim(), auxiliary: raw.auxiliary || "avoir", stemPhon: raw.stemPhon || "",
     hAspire: !!raw.hAspire, test: !!raw.test, order: i, raw, tables: {}, keyRows: [],
     rank: raw.rank, rankNum: parseFloat(raw.rank.slice(1))
@@ -1262,7 +1277,6 @@ function afterReveal(it) { if (settings.autoplay && it.dir === "en-fr" && !isLis
 function gradeMain(knew, viaSwipe) {
   const it = curItem(); if (!it || busy) return;
   if (it.pending) { advance(it.pending === "known" ? 1 : -1); return; }
-  if (knew && it.mode === "listen" && (it.stage || 0) > 0 && !it.revealed) return;
   stopListening();
   commit(it, knew ? [] : [it.kind === "form" ? it.person : "main"]);
   if (it.revealed || viaSwipe) { advance(knew ? 1 : -1); return; }
@@ -1305,9 +1319,8 @@ function onFlip() {
   const it = curItem(); if (!it || busy || tooSoon()) return;
   if (isSingle(it)) {
     if (it.pending) { advance(it.pending === "known" ? 1 : -1); return; }
-    if (it.mode === "listen" && !it.revealed) {
-      if ((it.stage || 0) < 2) { it.stage = (it.stage || 0) + 1; renderStudy(false); turnCard(); }
-      else gradeMain(false, true);
+    if (it.mode === "listen") {
+      if (!it.revealed) { it.revealed = true; shownAt = performance.now(); renderStudy(false); turnCard(); }
       return;
     }
     it.revealed = !it.revealed;
@@ -1394,14 +1407,9 @@ function heardHTML(it) {
   }
   return `<span class="hmsg">Heard:</span> ${said}${verdict}${listening ? ' <span class="hmsg">Listening…</span>' : ""}`;
 }
-// Listening cards: audio only. Then, if you need clues: the French text, then the English. Any clue counts as struggled.
+// Listening cards: audio only. Press Show answer to check, then choose Know or Don't know.
 function listenFront(it, d) {
-  const st = it.stage || 0;
-  let h = `<div class="cplay big">${playBtn(d.speak, "Play again")}</div>`;
-  if (st >= 1) h += `<div class="cbig fr" lang="fr">${esc(d.fr)}</div>${phonBlock(d.phon, it)}`;
-  if (st >= 2) h += `<div class="cen">${esc(d.en)}</div>`;
-  h += `<p class="cask">${st === 0 ? "Listen. Say what it means (verb, tense, person), then press Know or Don’t know." : st === 1 ? "Text shown, so this counts as struggled. Show the English, or press Don’t know." : "This counts as struggled. Press Next."}</p>`;
-  return h;
+  return `<div class="cplay big">${playBtn(d.speak, "Play again")}</div><p class="cask">Listen and say what it means (verb, tense, person). Press Show answer to check, then choose Know or Don’t know.</p>`;
 }
 // il / ils often sound identical; say so on the card.
 function soundAlike(v, it) {
@@ -1409,12 +1417,12 @@ function soundAlike(v, it) {
   const tab = v.tables[it.tense], a = tab && tab.rows.find(r => r.key === "il"), b = tab && tab.rows.find(r => r.key === "ils");
   if (!a || !b) return "";
   const fp = r => r.phon.split(" ").slice(1).join(" ");
-  return fp(a) === fp(b) ? `<p class="cnote">“${esc(a.fr)}” and “${esc(b.fr)}” sound the same, so either answer is right.</p>` : "";
+  return fp(a) === fp(b) ? `<p class="cnote">“${esc(a.subs ? a.subs[0].fr : a.fr)}” and “${esc(b.subs ? b.subs[0].fr : b.fr)}” sound the same, so either answer is right.</p>` : "";
 }
-function subsHTML(it, r) {
+function subsHTML(it, r, noEn) {
   const pb = settings.phonetics === "tap" && !it.phonShown ? phonBlock("", it) : "";
   return '<div class="subs">' + r.subs.map(x => `<div class="sub"><div class="sline"><span class="sfr" lang="fr">${esc(x.fr)}</span>${playBtn(x.speak, "", x.fr)}</div>` +
-    (cardPhonOn(it) ? `<div class="cphon">${esc(x.phon)}</div>` : "") + (x.en ? `<div class="cen">${esc(x.en)}</div>` : "") + "</div>").join("") + pb + "</div>";
+    (cardPhonOn(it) ? `<div class="cphon">${esc(x.phon)}</div>` : "") + (x.en && !noEn ? `<div class="cen">${escL(x.en)}</div>` : "") + "</div>").join("") + pb + "</div>";
 }
 function formHTML(it, v) {
   const r = formRow(it), T = TENSES[it.tense];
@@ -1425,15 +1433,15 @@ function formHTML(it, v) {
       h += listenFront(it, { speak: r.speak, fr: r.fr, phon: r.phon, en: r.en || v.english });
       if ((it.stage || 0) >= 1) h += soundAlike(v, it);
     } else if (it.dir === "fr-en") {
-      h += `<div class="cbig fr" lang="fr">${esc(r.fr)}</div>${phonBlock(r.phon, it)}<div class="cplay">${playBtn(r.speak, "Play")}</div><p class="cask">What does it mean? Then flip.</p>`;
+      h += r.subs ? subsHTML(it, r, true) + '<p class="cask">What does it mean? Then flip.</p>' : `<div class="cbig fr" lang="fr">${esc(r.fr)}</div>${phonBlock(r.phon, it)}<div class="cplay">${playBtn(r.speak, "Play")}</div><p class="cask">What does it mean? Then flip.</p>`;
     } else if (r.en) {
-      h += `<div class="cbig en">${esc(r.en)}</div><p class="cue"><span lang="fr">${esc(v.french)}</span> · ${esc(T.name)}</p><p class="cask">Say just this one form in French, then flip.</p>`;
+      h += `<div class="cbig en">${escL(r.en)}</div><p class="cue"><span lang="fr">${esc(v.french)}</span> · ${esc(T.name)}</p><p class="cask">Say just this one form in French, then flip.</p>`;
     } else {
       const P = PRONOUNS[it.person];
-      h += `<div class="cbig fr" lang="fr">${esc(P.label || P.fr)} + ${esc(v.french)}</div><p class="cue">${esc(T.name)}</p><p class="cask">Say just this one form in French, then flip.</p>`;
+      h += `<div class="cbig fr" lang="fr">${r.subs ? r.subs.map(x => esc(x.label + " + " + v.french)).join("<br>") : esc(P.label || P.fr) + " + " + esc(v.french)}</div><p class="cue">${esc(T.name)}</p><p class="cask">Say just this one form in French, then flip.</p>`;
     }
   } else {
-    if (r.subs) h += subsHTML(it, r); else h += `<div class="cbig fr" lang="fr">${esc(r.fr)}</div>${phonBlock(r.phon, it)}${r.en ? `<div class="cen">${esc(r.en)}</div>` : `<div class="cen">${esc(v.english)}</div>`}<div class="cplay">${playBtn(r.speak, "Play")}</div>`;
+    if (r.subs) h += subsHTML(it, r); else h += `<div class="cbig fr" lang="fr">${esc(r.fr)}</div>${phonBlock(r.phon, it)}${r.en ? `<div class="cen">${escL(r.en)}</div>` : `<div class="cen">${esc(v.english)}</div>`}<div class="cplay">${playBtn(r.speak, "Play")}</div>`;
     if (listenMode) h += soundAlike(v, it);
     if (it.pending) h += `<p class="verdict ${it.pending}">${it.pending === "known" ? "Marked as known." : "Marked as don’t know. It comes back in a few cards."}</p>`;
     h += fullLink(v);
@@ -1449,12 +1457,13 @@ function tableHTML(rows, o) {
     '<th class="c-pl"><span class="sr">Play</span></th></tr></thead><tbody>';
   rows.forEach((r0, i) => {
     const wrong = marks && marks.has(r0.key);
+    const multi = !!(marks && r0.subs);
     (split && r0.subs ? r0.subs : [r0]).forEach(r => {
-      const frHTML = esc(r.pron) + (o.hl && r.end ? esc(r.pre) + `<span class="end">${esc(r.end)}</span>` : esc(r.form));
+      const frHTML = multi ? r0.subs.map(x => esc(x.pron + x.form)).join("<br>") : esc(r.pron) + (o.hl && r.end ? esc(r.pre) + `<span class="end">${esc(r.end)}</span>` : esc(r.form));
       h += `<tr${marks ? ` data-row="${i}" class="${wrong ? "wrong" : "right"}"` : ""}>` +
         (marks ? `<td class="c-m">${wrong ? "✕" : "✓"}<span class="sr">${wrong ? " marked wrong" : " marked right"}</span></td>` : "") +
         (showP ? `<td class="c-p">${esc(r.label)}</td>` : "") + `<td class="c-fr" lang="fr">${frHTML}${o.levels ? badge(o.levels[i]) : ""}</td>` +
-        (o.en ? `<td class="c-en">${esc(r.en)}</td>` : "") + (o.phon ? `<td class="c-ph">${esc(r.phon)}</td>` : "") +
+        (o.en ? `<td class="c-en">${escL(r.en)}</td>` : "") + (o.phon ? `<td class="c-ph">${multi ? r0.subs.map(x => esc(x.phon)).join("<br>") : esc(r.phon)}</td>` : "") +
         `<td class="c-pl">${playBtn(r.speak, "", r.fr)}</td></tr>`;
     });
   });
@@ -1517,10 +1526,7 @@ function renderActions() {
   const it = curItem(); if (!it) return;
   let h;
   if (isSingle(it) && it.mode === "listen" && !it.pending && !it.revealed) {
-    const st = it.stage || 0, miss = '<button class="act miss" data-act="dont">Don’t know<kbd>2</kbd></button>';
-    h = st === 0 ? miss + '<button class="act reveal" data-act="clue">Show French text<kbd>Space</kbd></button><button class="act know" data-act="know">Know<kbd>1</kbd></button>'
-      : st === 1 ? miss + '<button class="act reveal" data-act="clue">Show English<kbd>Space</kbd></button>'
-      : '<button class="act next" data-act="next">Next<kbd>Space</kbd></button>';
+    h = '<button class="act miss" data-act="dont">Don’t know<kbd>2</kbd></button><button class="act reveal" data-act="clue">Show answer<kbd>Space</kbd></button><button class="act know" data-act="know">Know<kbd>1</kbd></button>';
   } else if (isSingle(it)) {
     h = it.pending ? '<button class="act next" data-act="next">Next<kbd>Space</kbd></button>'
       : '<button class="act miss" data-act="dont">Don’t know<kbd>2</kbd></button><button class="act know" data-act="know">Know<kbd>1</kbd></button>';
@@ -2695,7 +2701,7 @@ const ABOUT = `<p>This schedule uses the spacing effect: a memory lasts longer w
 <p>The aim is strong long-term memory, not guaranteed 100% recall. A miss never changes the schedule: a missed card goes to the back of the pile and is repeated until you get it right, so every card you review advances that day. If you are late, the next review is due the following day instead.</p>
 <p>Irregular verbs: every form (and the infinitive) is its own card with its own schedule, so a form you know moves out to months while a weak one keeps coming back. Cards are shuffled across all verbs, tenses and persons, so you can’t follow a pattern. Forms are introduced in importance order: verb by verb, présent first.</p>
 <p>Regular verbs follow rules, so each one has a single card: English to the French infinitive. Full tables are for learning, on the Learn page.</p>
-<p>Each card alternates between two directions: speaking (English shown, you say the French) and listening (audio only, you say the meaning). A new card is tested speaking, then listening in the second pass. After that it flips at every review, starting with speaking. A miss repeats the card in the same direction until you get it right. On a listening card, needing the French text or the English counts as struggled. Speaking cards are done first in a session, then listening cards.</p>`;
+<p>Each card alternates between two directions: speaking (English shown, you say the French) and listening (audio only, you say the meaning). A new card is tested speaking, then listening in the second pass. After that it flips at every review, starting with speaking. A miss repeats the card in the same direction until you get it right. On a listening card you press Show answer to see the French and English, then choose Know or Don’t know. Speaking cards are done first in a session, then listening cards.</p>`;
 function renderStats() {
   const C = avgCosts(), cnt = { irr: { new: 0, learning: 0, secure: 0, lt: 0 }, reg: { new: 0, learning: 0, secure: 0, lt: 0 } };
   VERBS_OK.forEach(v => { cnt[v.type === "irregular" ? "irr" : "reg"][verbStatus(v)]++; });
@@ -2738,7 +2744,7 @@ function verbProgress(v) {
 function unitRowHTML(v, k, e) {
   const p = k.split("|"); let t, sm;
   if (p.length === 1 || p[1] === "inf") { t = v.french; sm = "infinitive"; }
-  else { const r = v.tables[p[1]].rows.find(x => x.key === p[2]); t = r.fr; sm = TENSES[p[1]].name; }
+  else { const r = v.tables[p[1]].rows.find(x => x.key === p[2]); t = r.subs ? r.subs.map(x => x.fr).join(" · ") : r.fr; sm = TENSES[p[1]].name; }
   const n = rdone(e), next = !e ? "Not started" : e.step >= 8 ? "Long-term, every 180 days" : "next " + fmtDate(e.due);
   return `<div class="prow${e ? "" : " off"}"><div><span lang="fr">${esc(t)}</span><small>${esc(sm)}${e && e.missed ? " · ↻ missed last time" : ""}</small></div>${e ? progDots(n) : "<span></span>"}<div class="pn">${e ? n + " of 7" : "–"}<small>${esc(next)}</small></div></div>`;
 }
@@ -3048,7 +3054,7 @@ try { init(); }
 catch (e) { showFatal("Something went wrong while starting: " + (e && e.message || e)); }
 
 // Exposed for checking from the browser console.
-window.__verbes = { get verbs() { return VERBS_OK; }, get problems() { return PROBLEMS; }, get settings() { return settings; }, get progress() { return progress; }, get schedule() { return schedule; }, get formsched() { return fsched; }, curState, avgCosts, get session() { return session; }, plan: (d) => plan(d || todayStr(), curState(), avgCosts()), simulate, syncNow, mergeUnits, renderProgress, matchLevel, norm };
+window.__verbes = { get verbs() { return VERBS_OK; }, get problems() { return PROBLEMS; }, get settings() { return settings; }, get progress() { return progress; }, get schedule() { return schedule; }, get formsched() { return fsched; }, curState, avgCosts, get session() { return session; }, plan: (d) => plan(d || todayStr(), curState(), avgCosts()), simulate, formHTML, mainHTML, tableHTML, syncNow, mergeUnits, renderProgress, matchLevel, norm };
 })();
 </script>
 </body>
