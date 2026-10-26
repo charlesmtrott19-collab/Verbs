@@ -358,6 +358,11 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 .rven{margin-top:2px}
 .rvbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
 .rvtag{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:var(--miss-soft);color:var(--miss);font-size:.75rem;font-weight:700;vertical-align:middle;white-space:nowrap}
+.aifix{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 134px);z-index:60;white-space:nowrap;min-height:40px;max-width:calc(100% - 20px);padding:0 14px;border-radius:999px;border:1.5px solid var(--navy);background:var(--paper);color:var(--navy);font:inherit;font-size:.9rem;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,.18);cursor:pointer}
+.aifix[hidden]{display:none}
+.aichips{display:flex;flex-wrap:wrap;gap:8px}
+.aichips button{min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;cursor:pointer}
+.aichips button[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:var(--navy-ink);font-weight:600}
 </style>
 </head>
 <body>
@@ -485,6 +490,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 
 <input type="file" id="importFile" accept=".json,application/json" hidden>
 
+<button id="aiFix" class="aifix" hidden>Sounded wrong? Try another voice</button>
 <script>
   // Catch errors inside verbs.js so the app can say what went wrong.
   window.__verbsErrors = [];
@@ -502,10 +508,10 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 /* =========================================================================
    CONSTANTS AND SMALL HELPERS
    ========================================================================= */
-const APP_VERSION = "5.5";
+const APP_VERSION = "6.0";
 const SCHEMA = 1;
 // Storage keys. NEVER rename these: saved progress lives under them.
-const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", lastbackup: "frverbs.lastbackup", sync: "frverbs.sync", syncat: "frverbs.syncat", review: "frverbs.review", backup: "frverbs.backup." };
+const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", lastbackup: "frverbs.lastbackup", sync: "frverbs.sync", syncat: "frverbs.syncat", review: "frverbs.review", aikey: "frverbs.aikey", aibad: "frverbs.aibad", aistats: "frverbs.aistats", backup: "frverbs.backup." };
 const EXPORT_SCHEMA = 4;
 const TYPE_ORDER = ["irregular", "regular"];
 const GLOSS = { present: "now, or what usually happens", passe_compose: "finished past: I did, I have done", imparfait: "ongoing past: I was doing, I used to do", futur: "future: I will do", conditionnel: "would: I would do, polite requests" };
@@ -585,6 +591,11 @@ function pruneBackups() {
   } catch (e) {}
 }
 
+/* ---------- AI voices: fixed choices (the six that passed the listening test) ---------- */
+const AI_VOICES = ["cedar", "coral", "echo", "marin", "onyx", "shimmer"];
+const AI_MODEL = "gpt-4o-mini-tts", AI_URL = "https://api.openai.com/v1/audio/speech";
+const AI_INSTR_FR = "Speak clear, natural French as a native speaker from Paris would, at an even, unhurried pace, like a teacher modelling a verb form for a learner. Read the text exactly as written, with correct liaisons, and add nothing.";
+const AI_INSTR_EN = "Speak clear, natural British English at an even, unhurried pace, like a teacher giving the English meaning of a French verb form. Read the text exactly as written and add nothing.";
 /* ---------- settings ---------- */
 const DEFAULTS = {
   autoplay: true, direction: "en-fr", phonetics: "always", mic: true,
@@ -595,14 +606,15 @@ const DEFAULTS = {
   secondPass: true, schedDir: "en-fr", sectionOrder: ["irregular", "er", "ir", "re"],
   reviewStyle: "prompts", prompts: 3, listening: true,
   budgetIrr: 20, budgetReg: 10, maxNewForms: 20, autoBackup: true,
-  lapse: "on", reviewTarget: 7
+  lapse: "on", reviewTarget: 7,
+  aiVoices: true, aiPool: AI_VOICES.slice(), aiSpeed: 1, aiInstr: AI_INSTR_FR
 };
 const CHOICES = {
   direction: ["en-fr", "fr-en", "mixed"], phonetics: ["always", "tap", "hidden"], theme: ["system", "light", "dark"],
   textSize: [0, 1, 2, 3], repeatAudio: [1, 2], practiseContent: ["main", "key", "full"], practiseOrder: ["order", "shuffle"],
   budgetMin: [10, 15, 20, 25, 30, 40, 60], maxNew: [2, 4, 6, 8, 10, 12], maxNewIrr: [0, 1, 2, 3], regTables: [0, 1, 2, 3],
   budgetIrr: [15, 18, 20], budgetReg: [5, 10, 15], maxNewForms: [10, 15, 20, 25, 30],
-  allowedWrong: [0, 1, 2, 3], schedDir: ["en-fr", "follow"], reviewStyle: ["prompts", "tables"], prompts: [2, 3, 4, 5], lapse: ["off", "gentle", "on"], reviewTarget: [3, 5, 7]
+  allowedWrong: [0, 1, 2, 3], schedDir: ["en-fr", "follow"], reviewStyle: ["prompts", "tables"], prompts: [2, 3, 4, 5], lapse: ["off", "gentle", "on"], reviewTarget: [3, 5, 7], aiSpeed: [0.8, 0.9, 1]
 };
 const SCALE = [0.9, 1, 1.15, 1.3];
 function freshDefaults() { return JSON.parse(JSON.stringify(DEFAULTS)); }
@@ -620,6 +632,9 @@ function cleanSettings(o) {
     else if (typeof d === "boolean") { if (typeof v === "boolean") s[k] = v; }
     else if (typeof d === "string") { if (typeof v === "string") s[k] = v; }
   });
+  s.aiPool = s.aiPool.filter(x => AI_VOICES.includes(x));
+  if (!s.aiPool.length) s.aiPool = AI_VOICES.slice();
+  if (!s.aiInstr.trim() || s.aiInstr.length > 1000) s.aiInstr = AI_INSTR_FR;
   return s;
 }
 function loadSettings() {
@@ -1015,30 +1030,69 @@ function markClip(i) {
 }
 function stopSpeech() {
   speakTok++; clearTimeout(safetyT);
-  if (synth) { try { synth.cancel(); } catch (e) {} }
+  stopAudioNow();
   markClip(null); clipScope = null;
   setPlaying(null);
 }
-// `text` is one string, or a list of clips spoken one after another (Play all). Repeat-audio repeats the whole list.
-function speak(text, btn) {
-  if (!synth) { toast("This browser can’t play speech."); return; }
-  const lines = (Array.isArray(text) ? text : [text]).filter(x => x && (typeof x === "string" || x.t));
+const normLines = text => (Array.isArray(text) ? text : [text]).filter(x => x && (typeof x === "string" || x.t))
+  .map(x => (typeof x === "string" ? { t: x, lang: "fr" } : { t: x.t, lang: x.lang === "en" ? "en" : "fr" }));
+// Silences whatever is playing, browser or AI, without changing the token.
+function stopAudioNow() {
+  clearTimeout(safetyT);
+  if (synth) { try { synth.cancel(); } catch (e) {} }
+  if (aiAudio) { try { aiAudio.pause(); } catch (e) {} }
+  if (aiCurRes) { const f = aiCurRes; aiCurRes = null; f(false); }
+}
+// `text` is one string, or a list of clips (strings, or {t, lang:"en"}) spoken one after another (Play all). Repeat-audio repeats the list.
+// `it` is the card, so one card keeps one AI voice. `force` is a voice name, or null for the browser voice only.
+function speak(text, btn, it, force) {
+  const lines = normLines(text);
   if (!lines.length) return;
+  if (!synth && !aiConfigured()) { toast("This browser can’t play speech."); return; }
   if (listening) stopListening();
-  if (!voice) loadVoices();
+  if (synth && !voice) loadVoices();
   const tok = ++speakTok, times = settings.repeatAudio === 2 ? 2 : 1, queue = lines.length > 1;
-  let n = 0, i = 0;
+  stopAudioNow();
   markClip(null);
   clipScope = queue && btn ? btn.closest(".ltense, .rvsec, #card") : null;
-  try { synth.cancel(); if (synth.paused) synth.resume(); } catch (e) {}
   setPlaying(btn);
-  const once = () => {
-    if (tok !== speakTok) return;
-    const L = lines[i], line = typeof L === "string" ? L : L.t, en = typeof L === "object" && L.lang === "en";
-    markClip(queue ? i : null);
-    const u = new SpeechSynthesisUtterance(line);
+  let vname = "";
+  if (force !== null && aiActive()) vname = force || (it ? (it.aiVoice || (it.aiVoice = pickVoice(lines))) : pickVoice(lines));
+  speakRun(tok, lines, times, queue, vname).catch(() => {}).then(() => { if (tok === speakTok) { markClip(null); setPlaying(null); } });
+}
+async function speakRun(tok, lines, times, queue, vname) {
+  for (let n = 0; n < times; n++) {
+    for (let i = 0; i < lines.length; i++) {
+      if (tok !== speakTok) return;
+      if (vname) for (let j = i; j < Math.min(lines.length, i + 5); j++) aiPrefetch(vname, lines[j]); // keep a few clips ahead
+      markClip(queue ? i : null);
+      await playLine(lines[i], vname, tok);
+      if (tok !== speakTok) return;
+      if (i + 1 < lines.length) await new Promise(r => setTimeout(r, 400));
+    }
+    if (n + 1 < times) await new Promise(r => setTimeout(r, 450));
+  }
+}
+async function playLine(L, vname, tok) {
+  if (vname && aiActive()) {
+    try {
+      const blob = await aiClip(vname, L.lang, L.t);
+      if (tok !== speakTok) return;
+      aiCur = { voice: vname, lang: L.lang, text: L.t }; showFix();
+      const ok = await aiPlayBlob(blob);
+      if (ok || tok !== speakTok) return;
+    } catch (e) { if (tok !== speakTok) return; }
+  }
+  aiCur = null; hideFix();
+  if (tok !== speakTok) return;
+  await browserLine(L);
+}
+function browserLine(L) {
+  return new Promise(res => {
+    if (!synth) { res(); return; }
+    const u = new SpeechSynthesisUtterance(L.t);
     utterRef = u; // keep a reference so Chrome doesn't drop the events
-    if (en) {
+    if (L.lang === "en") {
       const ev = enVoice();
       u.lang = ev ? ev.lang.replace("_", "-") : "en-GB";
       if (ev) u.voice = ev;
@@ -1047,21 +1101,195 @@ function speak(text, btn) {
       if (voice) u.voice = voice;
     }
     u.rate = settings.rate; u.pitch = 1;
-    let finished = false;
-    const done = () => {
-      if (finished || tok !== speakTok) return;
-      finished = true; clearTimeout(safetyT);
-      if (++i < lines.length) { setTimeout(once, 400); return; }
-      i = 0; n++;
-      if (n < times) setTimeout(once, 450); else { markClip(null); setPlaying(null); }
-    };
-    u.onend = done;
-    u.onerror = e => { if (e && (e.error === "interrupted" || e.error === "canceled")) return; done(); };
+    let fin = false;
+    const done = () => { if (fin) return; fin = true; clearTimeout(safetyT); res(); };
+    u.onend = done; u.onerror = done;
     clearTimeout(safetyT);
-    safetyT = setTimeout(done, 5000 + line.length * 120 / settings.rate);
+    safetyT = setTimeout(done, 5000 + L.t.length * 120 / settings.rate);
     try { synth.speak(u); } catch (e) { done(); }
-  };
-  once();
+  });
+}
+
+/* =========================================================================
+   AI VOICES (OpenAI text to speech). The key lives only on this device: never in the code, a backup or the sync file.
+   Each clip is made once and kept on this device (IndexedDB), so a repeat is free and instant. Any failure falls back to the browser voice.
+   ========================================================================= */
+const aiCfg = { cap: 150 * 1024 * 1024, dayCap: 1500, timeout: 12000 };
+class AiError extends Error { constructor(kind, msg, detail) { super(msg || kind); this.kind = kind; this.detail = detail || ""; } }
+let aiBroken = "", aiOfflineUntil = 0, aiNotified = 0, aiLastVoice = "", aiCur = null, aiCurRes = null, aiFixT = null, aiBad = null;
+let aiAudio = null; try { aiAudio = new Audio(); } catch (e) {}
+const aiKey = () => (lsGet(KEYS.aikey) || "").trim();
+const aiConfigured = () => !!(settings.aiVoices && aiKey());
+function aiStats() { try { const o = JSON.parse(lsGet(KEYS.aistats) || "null"); if (isObj(o)) return o; } catch (e) {} return { date: "", today: 0, total: 0, secs: 0 }; }
+const aiToday = () => { const o = aiStats(); return o.date === todayStr() ? o.today : 0; };
+function aiCount(text) {
+  const o = aiStats(), t = todayStr();
+  if (o.date !== t) { o.date = t; o.today = 0; }
+  o.today++; o.total = (o.total || 0) + 1; o.secs = (o.secs || 0) + Math.max(0.8, text.length * 0.08);
+  lsSet(KEYS.aistats, JSON.stringify(o));
+}
+const aiActive = () => aiConfigured() && !aiBroken && Date.now() >= aiOfflineUntil && aiToday() < aiCfg.dayCap;
+const aiPool = () => { const p = (settings.aiPool || []).filter(v => AI_VOICES.includes(v)); return p.length ? p : AI_VOICES.slice(); };
+function badMap() { if (!aiBad) { try { aiBad = JSON.parse(lsGet(KEYS.aibad) || "{}") || {}; } catch (e) { aiBad = {}; } if (!isObj(aiBad)) aiBad = {}; } return aiBad; }
+const badVoices = (lang, text) => badMap()[lang + "|" + text] || [];
+function badAdd(lang, text, v) { const m = badMap(), k = lang + "|" + text; m[k] = (m[k] || []).filter(x => x !== v).concat(v); lsSet(KEYS.aibad, JSON.stringify(m)); }
+const aiHash = x => { let h = 5381; for (let i = 0; i < x.length; i++) h = ((h << 5) + h + x.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
+const aiInstrFor = lang => (lang === "en" ? AI_INSTR_EN : settings.aiInstr);
+const aiCacheKey = (voice, lang, text) => [voice, settings.aiSpeed, aiHash(aiInstrFor(lang)), lang, text].join("|");
+
+const aiDB = {
+  db: null, keys: new Map(), bytes: 0, ready: null, pruning: false,
+  open() {
+    if (this.ready) return this.ready;
+    this.ready = new Promise(res => {
+      let rq; try { rq = indexedDB.open("frverbs-audio", 1); } catch (e) { res(false); return; }
+      rq.onupgradeneeded = () => { try { rq.result.createObjectStore("clips", { keyPath: "k" }); } catch (e) {} };
+      rq.onsuccess = () => { this.db = rq.result; this.scan().then(() => res(true)); };
+      rq.onerror = rq.onblocked = () => res(false);
+    });
+    return this.ready;
+  },
+  scan() {
+    return new Promise(res => {
+      this.keys = new Map(); this.bytes = 0;
+      try {
+        const rq = this.db.transaction("clips").objectStore("clips").openCursor();
+        rq.onsuccess = () => { const c = rq.result; if (c) { this.keys.set(c.value.k, { size: c.value.size || 0, t: c.value.t || 0 }); this.bytes += c.value.size || 0; c.continue(); } else res(); };
+        rq.onerror = () => res();
+      } catch (e) { res(); }
+    });
+  },
+  get(k) {
+    return new Promise(res => {
+      if (!this.db) { res(null); return; }
+      try { const rq = this.db.transaction("clips").objectStore("clips").get(k); rq.onsuccess = () => res(rq.result || null); rq.onerror = () => res(null); } catch (e) { res(null); }
+    });
+  },
+  put(rec) {
+    return new Promise(res => {
+      if (!this.db) { res(false); return; }
+      try {
+        const t = this.db.transaction("clips", "readwrite"); t.objectStore("clips").put(rec);
+        t.oncomplete = () => { const old = this.keys.get(rec.k); if (old) this.bytes -= old.size; this.keys.set(rec.k, { size: rec.size, t: rec.t }); this.bytes += rec.size; res(true); };
+        t.onerror = t.onabort = () => res(false);
+      } catch (e) { res(false); }
+    });
+  },
+  del(k) {
+    return new Promise(res => {
+      if (!this.db) { res(); return; }
+      try {
+        const t = this.db.transaction("clips", "readwrite"); t.objectStore("clips").delete(k);
+        t.oncomplete = () => { const m = this.keys.get(k); if (m) { this.bytes -= m.size; this.keys.delete(k); } res(); };
+        t.onerror = t.onabort = () => res();
+      } catch (e) { res(); }
+    });
+  },
+  clear() {
+    return new Promise(res => {
+      if (!this.db) { res(); return; }
+      try { const t = this.db.transaction("clips", "readwrite"); t.objectStore("clips").clear(); t.oncomplete = () => { this.keys = new Map(); this.bytes = 0; res(); }; t.onerror = t.onabort = () => res(); } catch (e) { res(); }
+    });
+  },
+  // Oldest clips go first once the saved audio passes its limit.
+  async prune() {
+    if (this.bytes <= aiCfg.cap || this.pruning) return;
+    this.pruning = true;
+    const old = Array.from(this.keys.entries()).sort((a, b) => a[1].t - b[1].t);
+    for (const [k] of old) { if (this.bytes <= aiCfg.cap * 0.8) break; await this.del(k); }
+    this.pruning = false;
+  }
+};
+
+const aiInflight = new Map(), aiWaiters = []; let aiRunning = 0;
+const aiAcquire = () => new Promise(res => { if (aiRunning < 3) { aiRunning++; res(); } else aiWaiters.push(res); });
+const aiRelease = () => { const n = aiWaiters.shift(); if (n) n(); else aiRunning--; };
+function aiFailure(status, detail) {
+  if (status === 401) { aiBroken = "OpenAI didn’t accept the key."; return new AiError("auth", aiBroken, detail); }
+  if (status === 403) { aiBroken = "The key isn’t allowed to use gpt-4o-mini-tts. Allow the model in the project’s Limits, and set the key’s Model capabilities to Write."; return new AiError("perm", aiBroken, detail); }
+  if (status === 429 && /quota|billing|credit|budget|exceeded your current/i.test(detail)) { aiBroken = "OpenAI says you are out of credit or over the project’s monthly budget."; return new AiError("credit", aiBroken, detail); }
+  aiOfflineUntil = Date.now() + (status === 429 ? 20000 : 30000);
+  return new AiError(status === 429 ? "rate" : "server", status === 429 ? "OpenAI is busy." : "OpenAI had a problem.", detail);
+}
+function aiNote(e) {
+  if (!(e instanceof AiError) || e.kind === "off") return;
+  const now = Date.now(); syncAiUI();
+  if (now - aiNotified < 5 * 60000) return;
+  aiNotified = now; toast(e.message + " Using the browser voice for now.");
+}
+// Resolves to an audio Blob: from the saved audio if it is there, otherwise from OpenAI.
+function aiClip(voice, lang, text, opts) {
+  const k = aiCacheKey(voice, lang, text), fresh = !!(opts && opts.fresh);
+  if (!fresh && aiInflight.has(k)) return aiInflight.get(k);
+  const p = (async () => {
+    await aiDB.open();
+    if (!fresh) { const hit = await aiDB.get(k); if (hit && hit.blob) return hit.blob; }
+    if (!aiActive()) throw new AiError("off");
+    await aiAcquire();
+    try {
+      const body = { model: AI_MODEL, voice, input: text, response_format: "mp3", instructions: aiInstrFor(lang) };
+      if (settings.aiSpeed !== 1) body.speed = settings.aiSpeed;
+      const ctl = typeof AbortController !== "undefined" ? new AbortController() : null, to = setTimeout(() => { if (ctl) ctl.abort(); }, aiCfg.timeout);
+      let res;
+      try { res = await fetch(AI_URL, { method: "POST", headers: { "Authorization": "Bearer " + aiKey(), "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined }); }
+      catch (e) { aiOfflineUntil = Date.now() + 45000; throw new AiError("net", "Couldn’t reach OpenAI."); }
+      finally { clearTimeout(to); }
+      if (!res.ok) { let detail = ""; try { const j = await res.json(); detail = (j && j.error && j.error.message) || ""; } catch (e) {} throw aiFailure(res.status, detail); }
+      const blob = await res.blob();
+      aiCount(text);
+      await aiDB.put({ k, blob, size: blob.size, t: Date.now() });
+      aiDB.prune();
+      return blob;
+    } finally { aiRelease(); }
+  })();
+  if (!fresh) { aiInflight.set(k, p); p.then(() => aiInflight.delete(k), () => aiInflight.delete(k)); }
+  p.catch(aiNote);
+  return p;
+}
+function aiPrefetch(voice, L) { if (aiActive()) aiClip(voice, L.lang, L.t).catch(() => {}); }
+function pickVoice(lines) {
+  const ok = aiPool().filter(v => !lines.some(L => badVoices(L.lang, L.t).includes(v))), cand = ok.length ? ok : aiPool();
+  const cached = cand.filter(v => lines.every(L => aiDB.keys.has(aiCacheKey(v, L.lang, L.t))));
+  let from = cached.length && Math.random() < 0.65 ? cached : cand; // mostly reuse a voice that is already saved, sometimes try another
+  if (from.length > 1) { const alt = from.filter(v => v !== aiLastVoice); if (alt.length) from = alt; }
+  const v = from[Math.floor(Math.random() * from.length)]; aiLastVoice = v; return v;
+}
+function aiPlayBlob(blob) {
+  return new Promise(res => {
+    if (!aiAudio) { res(false); return; }
+    let url = ""; try { url = URL.createObjectURL(blob); } catch (e) { res(false); return; }
+    const fin = ok => { if (aiCurRes === fin) aiCurRes = null; aiAudio.onended = aiAudio.onerror = null; try { URL.revokeObjectURL(url); } catch (e) {} res(ok); };
+    aiCurRes = fin;
+    aiAudio.onended = () => fin(true); aiAudio.onerror = () => fin(false);
+    try { aiAudio.src = url; const pr = aiAudio.play(); if (pr && pr.catch) pr.catch(() => fin(false)); } catch (e) { fin(false); }
+  });
+}
+// Reads ahead in a session so the next few cards' audio is ready before you reach them.
+function aiPrefetchAhead() {
+  if (!aiActive() || !session || !session.queue) return;
+  for (let j = session.idx; j < Math.min(session.queue.length, session.idx + 7); j++) {
+    const it = session.queue[j]; if (!it) continue;
+    let lines; try { lines = normLines(speakText(it)); } catch (e) { continue; }
+    if (!lines.length) continue;
+    if (!it.aiVoice) it.aiVoice = pickVoice(lines);
+    lines.slice(0, 3).forEach(L => aiPrefetch(it.aiVoice, L));
+  }
+}
+function showFix() { const el = $("#aiFix"); if (!el) return; el.hidden = false; clearTimeout(aiFixT); aiFixT = setTimeout(hideFix, 10000); }
+function hideFix() { const el = $("#aiFix"); if (el) el.hidden = true; clearTimeout(aiFixT); }
+// "Sounded wrong": remember that this voice is bad for this form, delete its clip, and play the form in another voice.
+async function aiFix() {
+  const c = aiCur; hideFix(); if (!c) return;
+  badAdd(c.lang, c.text, c.voice);
+  await aiDB.del(aiCacheKey(c.voice, c.lang, c.text));
+  const left = aiPool().filter(v => !badVoices(c.lang, c.text).includes(v));
+  stopSpeech();
+  const it = curItem();
+  if (!left.length) { toast("No other voice is left for this one, so it uses the browser voice."); speak([{ t: c.text, lang: c.lang }], undefined, undefined, null); return; }
+  const v = left[Math.floor(Math.random() * left.length)];
+  if (it && it.aiVoice === c.voice) it.aiVoice = v;
+  toast("Trying " + v + " instead.");
+  speak([{ t: c.text, lang: c.lang }], undefined, undefined, v);
 }
 function speakText(it) {
   const v = BY_ID[it.verbId];
@@ -1248,7 +1476,8 @@ function presentCurrent(animate) {
   if (!it.dir) it.dir = it.mode === "listen" ? "fr-en" : dirFor();
   it.t0 = Date.now();
   renderStudy(animate);
-  if (frontAudio(it) && !it.revealed) speak(speakText(it), $("#card .cplay .play"));
+  if (frontAudio(it) && !it.revealed) speak(speakText(it), $("#card .cplay .play"), it);
+  aiPrefetchAhead();
 }
 function haptic() { if (settings.haptics && navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} } }
 
@@ -1305,7 +1534,7 @@ function advance(dir) {
   if (next) {
     if (!next.dir) next.dir = next.mode === "listen" ? "fr-en" : dirFor();
     next.t0 = Date.now();
-    if (frontAudio(next)) speak(speakText(next));
+    if (frontAudio(next)) speak(speakText(next), undefined, next);
   }
   const finish = () => { if (!next) { if (session.mode === "sched") nextPart(); else endRound(); } else renderStudy(true); };
   if (dir && animOn()) flyOut(dir, finish); else finish();
@@ -1317,7 +1546,7 @@ function flyOut(dir, then) {
   requestAnimationFrame(() => { card.style.transform = `translateX(${dir * 120}%) rotate(${dir * 9}deg)`; card.style.opacity = "0"; });
   setTimeout(() => { busy = false; card.classList.remove("fly"); then(); }, 210);
 }
-function afterReveal(it) { if (settings.autoplay && it.dir === "en-fr" && !isListen(it)) speak(speakText(it), $("#card .cplay .play")); }
+function afterReveal(it) { if (settings.autoplay && it.dir === "en-fr" && !isListen(it)) speak(speakText(it), $("#card .cplay .play"), it); }
 
 function gradeMain(knew, viaSwipe) {
   const it = curItem(); if (!it || busy) return;
@@ -1610,7 +1839,7 @@ $("#card").addEventListener("click", e => {
   const it = curItem(); if (!it) return;
   const t = e.target;
   const say = t.closest("[data-say]");
-  if (say) { say.blur(); speak(sayArg(say), say); return; }
+  if (say) { say.blur(); speak(sayArg(say), say, it); return; }
   if (t.closest("[data-mic]")) { t.closest("[data-mic]").blur(); toggleMic(); return; }
   const full = t.closest("[data-full]");
   if (full) { openFullVerb(full.dataset.full); return; }
@@ -1638,7 +1867,7 @@ $("#qDir").addEventListener("click", e => {
   const it = curItem();
   if (it && !it.revealed && !it.pending) {
     it.dir = dirFor(); renderStudy(false);
-    if (settings.autoplay && it.dir === "fr-en") speak(speakText(it), $("#card .cplay .play"));
+    if (settings.autoplay && it.dir === "fr-en") speak(speakText(it), $("#card .cplay .play"), it);
   } else renderQuick();
 });
 $("#qPhon").addEventListener("click", e => {
@@ -1702,7 +1931,7 @@ document.addEventListener("keydown", e => {
   else if (k === "2") { e.preventDefault(); if (!e.repeat) onDont(); }
   else if (/^[3-8]$/.test(k)) { e.preventDefault(); toggleRow(Number(k) - 3); }
   else if (k === "Enter") { if (e.target.closest && e.target.closest("button")) return; e.preventDefault(); if (!e.repeat) onNext(); }
-  else if (k === "p" || k === "P") { e.preventDefault(); speak(speakText(it), $("#card .cplay .play")); }
+  else if (k === "p" || k === "P") { e.preventDefault(); speak(speakText(it), $("#card .cplay .play"), it); }
   else if (k === "m" || k === "M") { e.preventDefault(); toggleMic(); }
   else if (k === "u" || k === "U" || k === "Backspace") { e.preventDefault(); undo(); }
   else if (k === "Escape") { e.preventDefault(); navigate(homeOf()); }
@@ -1932,7 +2161,8 @@ function buildSettings() {
     (hasVibrate ? switchRow("haptics", "Vibrate when grading", "A short buzz on your phone when you mark a card.") : "") +
     switchRow("animations", "Card animations", "Turn off for instant card changes.") +
     switchRow("keyLegend", "Keyboard shortcuts", "On a laptop, shows the keys under the card.") +
-    `</section><section class="sgroup"><h2>Voice</h2>` +
+    `</section>` + aiSettingsHTML() + `<section class="sgroup"><h2>Browser voice</h2>` +
+    `<p class="shelp">Used when AI voices are off, offline or unavailable.</p>` +
     `<div class="srow col"><label class="slabel" for="voiceSel">French voice</label><select id="voiceSel"></select><p class="shelp" id="voiceHelp"></p></div>` +
     `<div class="srow col"><label class="slabel" for="rateIn">Speaking speed: <span id="rateVal"></span></label><input type="range" id="rateIn" min="0.5" max="1.3" step="0.05"><div class="btnrow"><button class="ghost sm" id="testVoice">Test voice</button></div></div>` +
     `<details class="shelpbox"><summary>Get a better French voice</summary>` +
@@ -1997,11 +2227,11 @@ function wireSettings() {
   $("#voiceSel").addEventListener("change", e => {
     settings.voice = e.target.value; saveSettings();
     voice = voices.find(v => v.voiceURI === settings.voice) || voice;
-    speak("Bonjour. Je suis, tu es, il est.");
+    speak("Bonjour. Je suis, tu es, il est.", undefined, undefined, null);
   });
   $("#rateIn").addEventListener("input", e => { settings.rate = Number(e.target.value); $("#rateVal").textContent = settings.rate.toFixed(2) + "×"; });
-  $("#rateIn").addEventListener("change", () => { saveSettings(); speak("Je parle français."); });
-  $("#testVoice").addEventListener("click", e => speak("Bonjour. Je suis, tu es, il est. Nous avons, vous avez, ils ont.", e.currentTarget));
+  $("#rateIn").addEventListener("change", () => { saveSettings(); speak("Je parle français.", undefined, undefined, null); });
+  $("#testVoice").addEventListener("click", e => speak("Bonjour. Je suis, tu es, il est. Nous avons, vous avez, ils ont.", e.currentTarget, undefined, null));
   $("#exportBtn").addEventListener("click", exportData);
   $("#importBtn").addEventListener("click", () => { const f = $("#importFile"); f.value = ""; f.click(); });
   $("#importFile").addEventListener("change", e => { const f = e.target.files && e.target.files[0]; if (f) importData(f); });
@@ -3159,7 +3389,67 @@ function syncSchedSettings() {
   const ord = regSections();
   $("#secOrder").innerHTML = ord.map((g, i) => `<li><span>${esc(sectionName(g))}</span><button class="ghost sm" data-sec-up="${esc(g)}"${i ? "" : " disabled"}>Move up</button></li>`).join("");
 }
-function syncSettingsUI() { syncSettingsUI0(); syncSchedSettings(); refreshSyncUI(); }
+function aiSettingsHTML() {
+  const field = "min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--paper);color:var(--ink);font:inherit";
+  return `<section class="sgroup"><h2>AI voices</h2><p class="shelp">Natural voices from OpenAI, shuffled between cards. Each clip is made once and kept on this device, so hearing it again costs nothing. If anything goes wrong, the browser voice takes over.</p>` +
+    switchRow("aiVoices", "Use AI voices", null) +
+    `<div class="srow col"><label class="slabel" for="aiKeyIn">OpenAI API key</label><input id="aiKeyIn" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-…" style="${field}">` +
+    `<div class="btnrow wrap" style="margin-top:10px"><button class="primary sm" id="aiKeySave">Save and test</button><button class="ghost sm" id="aiKeyRemove">Remove key</button></div>` +
+    `<p class="shelp" id="aiStatus" role="status" aria-live="polite"></p><p class="shelp">The key stays on this device. It is never put in backups, never synced and not in the app’s code. Set it up once on each device. Reset does not remove it.</p></div>` +
+    `<div class="srow col"><span class="slabel" id="lbl-aiPool">Voices to shuffle</span><div class="aichips" id="aiPool" role="group" aria-labelledby="lbl-aiPool">${AI_VOICES.map(v => `<button data-ai-voice="${v}" aria-pressed="true">${v}</button>`).join("")}</div><p class="shelp">Keep at least one. With one voice, every card uses it.</p></div>` +
+    segRow("aiSpeed", "Speed", [["0.8", "Slow"], ["0.9", "Slightly slow"], ["1", "Normal"]], "You tested Normal. A change makes new clips; clips already saved are kept.") +
+    `<details class="shelpbox"><summary>Voice instructions</summary><label class="slabel" for="aiInstrIn" style="display:block;margin-top:8px">How the French voice should speak</label><textarea id="aiInstrIn" rows="5" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit"></textarea><div class="btnrow" style="margin-top:8px"><button class="ghost sm" id="aiInstrReset">Use the tested wording</button></div><p class="shelp">English meanings use fixed wording.</p></details>` +
+    `<div class="srow col"><span class="slabel">Saved audio</span><p class="shelp" id="aiCacheInfo"></p><div class="btnrow"><button class="ghost sm" id="aiCacheClear">Clear saved audio</button></div></div></section>`;
+}
+function syncAiUI() {
+  if (!$("#aiStatus")) return;
+  const key = aiKey(), st = aiStats(), cost = (st.secs || 0) / 60 * 0.015;
+  let t;
+  if (!key) t = "No key saved on this device, so the browser voice is used.";
+  else if (aiBroken) t = aiBroken + " Fix it, then press Save and test.";
+  else if (!settings.aiVoices) t = "Key saved. AI voices are switched off.";
+  else if (Date.now() < aiOfflineUntil) t = "OpenAI isn’t reachable right now. The browser voice is covering, and AI voices retry shortly.";
+  else t = `Ready. ${plural(aiToday(), "clip")} made today, ${st.total || 0} in total, about $${cost.toFixed(2)}.`;
+  $("#aiStatus").textContent = aiStatusOverride || t;
+  $$("#aiPool button").forEach(b => b.setAttribute("aria-pressed", String(aiPool().includes(b.dataset.aiVoice))));
+  const ta = $("#aiInstrIn"); if (ta && document.activeElement !== ta) ta.value = settings.aiInstr;
+  $("#aiCacheInfo").textContent = `${plural(aiDB.keys.size, "clip")} kept on this device, ${(aiDB.bytes / 1048576).toFixed(1)} MB of ${Math.round(aiCfg.cap / 1048576)} MB. The oldest are removed first.`;
+}
+let aiStatusOverride = "";
+function wireAi() {
+  const root = $("#settingsBody");
+  root.addEventListener("click", async e => {
+    const t = e.target;
+    if (t.closest("#aiKeySave")) {
+      const k = $("#aiKeyIn").value.trim();
+      if (!k) { aiStatusOverride = "Paste your key first."; syncAiUI(); return; }
+      lsSet(KEYS.aikey, k); $("#aiKeyIn").value = ""; aiBroken = ""; aiOfflineUntil = 0; aiNotified = 0;
+      settings.aiVoices = true; saveSettings(); syncSettingsUI();
+      aiStatusOverride = "Testing…"; syncAiUI();
+      try {
+        const v = aiPool()[0], blob = await aiClip(v, "fr", "Bonjour. Je suis, tu es, il est.", { fresh: true });
+        aiStatusOverride = "The key works. You should hear a short sample."; syncAiUI();
+        await aiPlayBlob(blob);
+      } catch (err) { aiStatusOverride = (err.message || "That didn’t work.") + (err.detail ? " OpenAI said: " + err.detail : ""); }
+      setTimeout(() => { aiStatusOverride = ""; syncAiUI(); }, 6000); syncAiUI();
+    } else if (t.closest("#aiKeyRemove")) {
+      lsRemove(KEYS.aikey); aiBroken = ""; aiStatusOverride = "Key removed from this device."; syncAiUI(); setTimeout(() => { aiStatusOverride = ""; syncAiUI(); }, 4000);
+    } else if (t.closest("[data-ai-voice]")) {
+      const v = t.closest("[data-ai-voice]").dataset.aiVoice, cur = aiPool();
+      if (cur.includes(v) && cur.length === 1) { toast("Keep at least one voice."); return; }
+      settings.aiPool = cur.includes(v) ? cur.filter(x => x !== v) : cur.concat(v); saveSettings(); syncAiUI();
+    } else if (t.closest("#aiInstrReset")) {
+      settings.aiInstr = AI_INSTR_FR; saveSettings(); syncAiUI();
+    } else if (t.closest("#aiCacheClear")) {
+      if (await confirmBox("Clear saved audio?", "<p>This deletes the audio clips kept on this device. They are made again, one at a time, as you need them.</p>", "Clear", true)) { await aiDB.clear(); syncAiUI(); toast("Saved audio cleared."); }
+    }
+  });
+  root.addEventListener("change", e => {
+    if (e.target.id === "aiInstrIn") { const v = e.target.value.trim(); settings.aiInstr = v && v.length <= 1000 ? v : AI_INSTR_FR; saveSettings(); syncAiUI(); }
+  });
+  $("#aiFix").addEventListener("click", aiFix);
+}
+function syncSettingsUI() { syncSettingsUI0(); syncSchedSettings(); refreshSyncUI(); syncAiUI(); }
 function wireSched() {
   $("#settingsBody").addEventListener("click", e => {
     const up = e.target.closest("[data-sec-up]");
@@ -3252,6 +3542,7 @@ function init() {
   wireSettings();
   wireSched();
   wireSync();
+  wireAi(); aiDB.open().then(syncAiUI);
   const raw = loadSessionRaw();
   if (raw) session = restoreSession(raw);
   if (synth) {
