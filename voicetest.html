@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1c3f94">
+<title>Voice test</title>
+<style>
+:root{
+  --page:#f5f6f8; --paper:#ffffff; --ink:#1a1d26; --muted:#505767; --line:#d9dde6;
+  --navy:#1c3f94; --navy-ink:#ffffff; --navy-soft:#e8edf8;
+  --know:#1a6b3c; --know-ink:#ffffff; --know-soft:#e6f3ea;
+  --miss:#b3261e; --miss-soft:#fbe7e5;
+  --ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --page:#0d1018; --paper:#12151f; --ink:#e8eaf0; --muted:#a3abbd; --line:#2a3042;
+    --navy:#8fb0ff; --navy-ink:#0d1018; --navy-soft:#1c2540;
+    --know:#6fcf97; --know-ink:#0d1018; --know-soft:#14291d;
+    --miss:#ff8a80; --miss-soft:#3a1c1f;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--page);color:var(--ink);font:16px/1.5 var(--ui);
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) calc(88px + env(safe-area-inset-bottom,0px)) env(safe-area-inset-left,0px)}
+main{max-width:660px;margin:0 auto;padding:16px}
+h1{font-size:1.6rem;line-height:1.2;margin:8px 0 6px}
+h2{font-size:1.15rem;margin:0 0 10px}
+p{margin:0 0 10px}
+.lede{color:var(--muted)}
+section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+label{display:block;font-weight:600;margin:0 0 6px}
+input[type=password],input[type=text],textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--page);
+  border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}
+textarea{min-height:110px;resize:vertical}
+.check{display:flex;align-items:center;gap:10px;font-weight:400;margin:10px 0}
+.check input{width:20px;height:20px;flex:none}
+.btn{font:inherit;font-weight:600;min-height:44px;min-width:44px;padding:0 14px;border-radius:999px;
+  border:1.5px solid var(--navy);background:var(--paper);color:var(--navy);cursor:pointer}
+.btn:hover{background:var(--navy-soft)}
+.btn.primary{background:var(--navy);color:var(--navy-ink)}
+.btn.primary:hover{opacity:.92}
+.btn:disabled{opacity:.5;cursor:default}
+.btn[aria-pressed=true].keep{background:var(--know);border-color:var(--know);color:var(--know-ink)}
+.btn[aria-pressed=true].drop{background:var(--miss);border-color:var(--miss);color:#fff}
+.btn.keep{border-color:var(--know);color:var(--know)}
+.btn.drop{border-color:var(--miss);color:var(--miss)}
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.msg{margin:10px 0 0;min-height:1.4em;font-size:.95rem}
+.msg.bad{color:var(--miss)}
+.msg.good{color:var(--know)}
+.small{font-size:.85rem;color:var(--muted)}
+details{margin-top:12px}
+summary{cursor:pointer;font-weight:600;min-height:32px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.chip{font:inherit;min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--page);color:var(--ink);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:var(--navy-ink);font-weight:600}
+.chip.now{box-shadow:0 0 0 3px var(--navy-soft);border-color:var(--navy)}
+.phrasebar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:10px;
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:0 0 12px}
+.phrasebar .now{flex:1;font-size:1.3rem;font-weight:600;min-width:0;overflow-wrap:anywhere}
+ul.voices{list-style:none;margin:0;padding:0}
+.voice{border-top:1px solid var(--line);padding:12px 4px;border-radius:8px}
+.voice:first-child{border-top:0}
+.voice[data-state=playing],.voice[data-state=loading]{background:var(--navy-soft)}
+.vhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:8px}
+.vhead strong{font-size:1.05rem}
+.vstat{font-size:.9rem;color:var(--muted)}
+.voice[data-state=error] .vstat{color:var(--miss)}
+.vbtns{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.vbtns .btn{padding:0 12px}
+.vbtns .verdict{display:flex;gap:6px;margin-left:auto}
+.base .vhead strong{font-weight:600}
+.summary pre{white-space:pre-wrap;background:var(--page);border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;font:inherit;font-size:.95rem}
+.stopbar{position:fixed;left:0;right:0;bottom:0;display:none;justify-content:center;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+  background:var(--paper);border-top:1px solid var(--line)}
+.stopbar.on{display:flex}
+.stopbar .btn{min-width:200px;border-color:var(--miss);color:var(--miss)}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Voice test</h1>
+    <p class="lede">Listen to OpenAI’s French voices on the forms that are easiest to get wrong, and keep the ones that sound like a real French speaker. This page is separate from your verb app and never touches your progress.</p>
+  </header>
+
+  <section aria-labelledby="h-setup">
+    <h2 id="h-setup">Your key</h2>
+    <label for="key">OpenAI API key</label>
+    <input id="key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-…">
+    <label class="check" for="remember"><input type="checkbox" id="remember"> Remember the key on this device</label>
+    <div class="row">
+      <button class="btn primary" id="checkKey">Check key</button>
+      <button class="btn" id="forget">Forget key</button>
+    </div>
+    <p class="msg" id="keyMsg" role="status" aria-live="polite"></p>
+    <p class="small">The key stays in this browser and goes only to OpenAI. It is not saved in this file or sent anywhere else. Delete this page from your repo when you have finished testing.</p>
+    <details>
+      <summary>Voice instructions and speed</summary>
+      <label for="instr" style="margin-top:10px">How the voice should speak</label>
+      <textarea id="instr"></textarea>
+      <label for="speed" style="margin-top:10px">Speed</label>
+      <select id="speed">
+        <option value="0.8">0.8, slow</option>
+        <option value="0.9">0.9</option>
+        <option value="1" selected>1.0, normal</option>
+        <option value="1.1">1.1</option>
+      </select>
+      <p class="small" style="margin-top:8px">Changing these makes new clips, which costs a little more. Clips you have already heard are reused until you change them.</p>
+    </details>
+  </section>
+
+  <section aria-labelledby="h-phrase">
+    <h2 id="h-phrase">The forms</h2>
+    <p class="small">These are chosen because voices often stumble on them: liaisons (ils ont against ils sont), silent endings, and short forms with little context.</p>
+    <div class="chips" id="chips" role="group" aria-label="Choose a form"></div>
+    <label for="custom">Or type your own</label>
+    <div class="row">
+      <input id="custom" type="text" maxlength="200" placeholder="for example: nous finissons" style="flex:1;min-width:180px">
+      <button class="btn" id="useCustom">Use it</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-voices">
+    <h2 id="h-voices">Voices</h2>
+    <div class="phrasebar">
+      <button class="btn" id="prev" aria-label="Previous form">‹</button>
+      <div class="now" id="nowPhrase" lang="fr" aria-live="polite"></div>
+      <button class="btn" id="next" aria-label="Next form">›</button>
+    </div>
+    <div class="row" style="margin-bottom:8px">
+      <button class="btn primary" id="compare">Compare all voices on this form</button>
+    </div>
+    <p class="small">Play runs the chosen form in that voice. All 12 runs every form in that voice, so you can judge it in one go. Mark each voice Keep or Drop as you go.</p>
+    <ul class="voices" id="voices"></ul>
+  </section>
+
+  <section class="summary" aria-labelledby="h-sum">
+    <h2 id="h-sum">Your picks</h2>
+    <p id="verdictLine" role="status" aria-live="polite"></p>
+    <pre id="resultText"></pre>
+    <div class="row"><button class="btn primary" id="copy">Copy results</button><span class="msg" id="copyMsg" role="status" aria-live="polite" style="margin:0"></span></div>
+    <p class="small" style="margin-top:10px">Paste the copied text into the chat. It includes the instructions and speed you used, so the app can match them.</p>
+  </section>
+
+  <p class="small" id="cost" role="status"></p>
+</main>
+
+<div class="stopbar" id="stopbar"><button class="btn" id="stop">Stop</button></div>
+
+<script>
+(function () {
+"use strict";
+
+const MODEL = "gpt-4o-mini-tts";
+const ENDPOINT = "https://api.openai.com/v1/audio/speech";
+const VOICES = ["alloy", "ash", "ballad", "cedar", "coral", "echo", "fable", "marin", "nova", "onyx", "sage", "shimmer", "verse"];
+const PHRASES = ["ils ont", "ils sont", "elles étaient", "j'ai eu", "nous allions", "vous êtes", "il est allé", "elle est allée", "je serais", "nous avons mangé", "ils auront", "tu as"];
+const DEFAULT_INSTR = "Speak clear, natural French as a native speaker from Paris would, at an even, unhurried pace, like a teacher modelling a verb form for a learner. Read the text exactly as written, with correct liaisons, and add nothing.";
+const PRICE_PER_MIN = 0.015; // dollars of audio per minute, a rough figure for the cost line
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const show = s => String(s).replace(/'/g, "’");
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+};
+
+class TestError extends Error { constructor(msg, detail) { super(msg); this.detail = detail || ""; } }
+
+let phrase = PHRASES[0], runId = 0, curAudio = null, clips = 0, seconds = 0;
+const cache = new Map();
+let verdicts = {};
+try { verdicts = JSON.parse(store.get("frvoicetest.verdicts") || "{}") || {}; } catch (e) { verdicts = {}; }
+
+/* ---------- setup ---------- */
+$("#instr").value = store.get("frvoicetest.instr") || DEFAULT_INSTR;
+const sp = store.get("frvoicetest.speed"); if (sp) $("#speed").value = sp;
+const savedKey = store.get("frvoicetest.key");
+if (savedKey) { $("#key").value = savedKey; $("#remember").checked = true; }
+$("#instr").addEventListener("change", () => store.set("frvoicetest.instr", $("#instr").value));
+$("#speed").addEventListener("change", () => store.set("frvoicetest.speed", $("#speed").value));
+
+const getKey = () => $("#key").value.trim();
+function syncKeyStorage() {
+  if ($("#remember").checked && getKey()) store.set("frvoicetest.key", getKey()); else store.del("frvoicetest.key");
+}
+$("#remember").addEventListener("change", syncKeyStorage);
+$("#forget").addEventListener("click", () => {
+  $("#key").value = ""; $("#remember").checked = false; store.del("frvoicetest.key");
+  setKeyMsg("Key removed from this page and this device.", "good");
+});
+function setKeyMsg(t, kind) { const m = $("#keyMsg"); m.textContent = t || ""; m.className = "msg" + (kind ? " " + kind : ""); }
+
+/* ---------- phrases ---------- */
+function drawChips(nowIdx) {
+  $("#chips").innerHTML = PHRASES.map((p, i) =>
+    `<button class="chip${i === nowIdx ? " now" : ""}" data-i="${i}" lang="fr" aria-pressed="${p === phrase}">${esc(show(p))}</button>`).join("");
+}
+function setPhrase(p) {
+  phrase = p; $("#nowPhrase").textContent = show(p); drawChips(-1);
+}
+$("#chips").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) setPhrase(PHRASES[+b.dataset.i]); });
+function step(d) {
+  let i = PHRASES.indexOf(phrase); if (i < 0) i = d > 0 ? -1 : 0;
+  setPhrase(PHRASES[(i + d + PHRASES.length) % PHRASES.length]);
+}
+$("#prev").addEventListener("click", () => step(-1));
+$("#next").addEventListener("click", () => step(1));
+function useCustom() { const v = $("#custom").value.trim(); if (v) setPhrase(v); }
+$("#useCustom").addEventListener("click", useCustom);
+$("#custom").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); useCustom(); } });
+
+/* ---------- voice list ---------- */
+function rowHTML(v) {
+  return `<li class="voice" data-voice="${esc(v)}" data-state="idle"><div class="vhead"><strong>${esc(v)}</strong><span class="vstat" role="status"></span></div>` +
+    `<div class="vbtns"><button class="btn primary" data-act="one" aria-label="Play ${esc(v)}">Play</button><button class="btn" data-act="all" aria-label="Play all 12 forms in ${esc(v)}">All 12</button>` +
+    `<span class="verdict" role="group" aria-label="Verdict for ${esc(v)}"><button class="btn keep" data-act="keep" aria-pressed="${verdicts[v] === "keep"}">Keep</button><button class="btn drop" data-act="drop" aria-pressed="${verdicts[v] === "drop"}">Drop</button></span></div></li>`;
+}
+function baseHTML() {
+  return `<li class="voice base" data-voice="browser" data-state="idle"><div class="vhead"><strong>Your app’s current voice</strong><span class="vstat" role="status">the Chrome voice, for comparison</span></div>` +
+    `<div class="vbtns"><button class="btn primary" data-act="one" aria-label="Play the current app voice">Play</button><button class="btn" data-act="all" aria-label="Play all 12 forms in the current app voice">All 12</button></div></li>`;
+}
+$("#voices").innerHTML = baseHTML() + VOICES.map(rowHTML).join("");
+const rowOf = v => document.querySelector(`.voice[data-voice="${v}"]`);
+function setRow(v, state, text) {
+  const r = rowOf(v); if (!r) return;
+  r.dataset.state = state;
+  r.querySelector(".vstat").textContent = text == null ? "" : text;
+}
+function resetRows() {
+  document.querySelectorAll(".voice").forEach(r => {
+    r.dataset.state = "idle";
+    r.querySelector(".vstat").textContent = r.dataset.voice === "browser" ? "the Chrome voice, for comparison" : "";
+  });
+  drawChips(-1);
+}
+
+/* ---------- verdicts and summary ---------- */
+function drawVerdicts() {
+  VOICES.forEach(v => {
+    const r = rowOf(v); if (!r) return;
+    r.querySelector(".keep").setAttribute("aria-pressed", String(verdicts[v] === "keep"));
+    r.querySelector(".drop").setAttribute("aria-pressed", String(verdicts[v] === "drop"));
+  });
+  const keep = VOICES.filter(v => verdicts[v] === "keep"), drop = VOICES.filter(v => verdicts[v] === "drop");
+  const und = VOICES.filter(v => !verdicts[v]);
+  $("#verdictLine").textContent = keep.length >= 4
+    ? `${keep.length} voices kept. That is enough to build the voices into the app.`
+    : `${keep.length} voice${keep.length === 1 ? "" : "s"} kept so far. You need at least 4 for the app’s voice shuffle to work well. If fewer than 4 sound good, say so and we will test a French-native provider next.`;
+  $("#resultText").textContent =
+    `Voice test results (${MODEL})\nKeep: ${keep.join(", ") || "none"}\nDrop: ${drop.join(", ") || "none"}\nNot yet judged: ${und.join(", ") || "none"}\n` +
+    `Speed: ${$("#speed").value}\nInstructions: ${$("#instr").value.trim() || "(none)"}`;
+}
+function setVerdict(v, val) {
+  verdicts[v] = verdicts[v] === val ? undefined : val;
+  if (!verdicts[v]) delete verdicts[v];
+  store.set("frvoicetest.verdicts", JSON.stringify(verdicts));
+  drawVerdicts();
+}
+["#instr", "#speed"].forEach(s => $(s).addEventListener("change", drawVerdicts));
+$("#copy").addEventListener("click", async () => {
+  const t = $("#resultText").textContent, m = $("#copyMsg");
+  try { await navigator.clipboard.writeText(t); m.textContent = "Copied."; }
+  catch (e) {
+    const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); m.textContent = "Copied."; } catch (e2) { m.textContent = "Select the text above and copy it by hand."; }
+    ta.remove();
+  }
+});
+
+/* ---------- OpenAI audio ---------- */
+function explain(status) {
+  if (status === 401) return "OpenAI did not accept the key. Check that you copied all of it, starting with sk-.";
+  if (status === 403) return "This key is not allowed to use gpt-4o-mini-tts. In the project’s Limits, allow the model. In the key’s permissions, set Model capabilities to Write.";
+  if (status === 404) return "OpenAI could not find that model or voice for this key.";
+  if (status === 429) return "OpenAI says you are out of credit, over the project’s monthly budget, or going too fast. Check Billing and the project’s Limits.";
+  if (status >= 500) return "OpenAI had a problem on its side. Try again in a minute.";
+  return "OpenAI refused the request (error " + status + ").";
+}
+function durationOf(url) {
+  return new Promise(res => {
+    let done = false; const fin = d => { if (!done) { done = true; res(d); } };
+    try {
+      const a = new Audio(); a.preload = "metadata";
+      a.onloadedmetadata = () => fin(isFinite(a.duration) && a.duration > 0 ? a.duration : 1.5);
+      a.onerror = () => fin(1.5);
+      a.src = url;
+    } catch (e) { fin(1.5); }
+    setTimeout(() => fin(1.5), 3000);
+  });
+}
+function updateCost() {
+  $("#cost").textContent = clips
+    ? `This visit: ${clips} clip${clips === 1 ? "" : "s"} made, about $${(seconds / 60 * PRICE_PER_MIN).toFixed(3)}. Your project budget is capped at $5.`
+    : "";
+}
+function getClip(voice, text) {
+  const key = getKey();
+  if (!key) return Promise.reject(new TestError("Paste your API key first."));
+  const instr = $("#instr").value.trim(), speed = Number($("#speed").value) || 1;
+  const ck = [voice, speed, instr, text].join("|");
+  if (cache.has(ck)) return cache.get(ck);
+  const p = (async () => {
+    const body = { model: MODEL, voice, input: text, response_format: "mp3" };
+    if (instr) body.instructions = instr;
+    if (speed !== 1) body.speed = speed;
+    let res;
+    try {
+      res = await fetch(ENDPOINT, { method: "POST", headers: { "Authorization": "Bearer " + key, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    } catch (e) { throw new TestError("Could not reach OpenAI. Check your connection and try again."); }
+    if (!res.ok) {
+      let detail = ""; try { const j = await res.json(); detail = (j && j.error && j.error.message) || ""; } catch (e) {}
+      throw new TestError(explain(res.status), detail);
+    }
+    const url = URL.createObjectURL(await res.blob());
+    const dur = await durationOf(url);
+    clips++; seconds += dur; updateCost();
+    return { url, dur };
+  })();
+  cache.set(ck, p); p.catch(() => cache.delete(ck));
+  return p;
+}
+function playUrl(url) {
+  return new Promise(res => {
+    const a = new Audio(url); curAudio = a;
+    const fin = () => { if (curAudio === a) curAudio = null; res(); };
+    a.onended = fin; a.onerror = fin;
+    const pr = a.play(); if (pr && pr.catch) pr.catch(fin);
+  });
+}
+function speakBrowser(text) {
+  return new Promise(res => {
+    const s = window.speechSynthesis;
+    if (!s || !window.SpeechSynthesisUtterance) { res(); return; }
+    const u = new SpeechSynthesisUtterance(text);
+    const vs = (s.getVoices() || []).filter(v => /^fr/i.test(v.lang));
+    const pick = vs.find(v => /^fr[-_]fr/i.test(v.lang)) || vs[0];
+    if (pick) u.voice = pick;
+    u.lang = pick ? pick.lang : "fr-FR"; u.rate = Number($("#speed").value) || 1;
+    let fin = false; const done = () => { if (!fin) { fin = true; res(); } };
+    u.onend = done; u.onerror = done; setTimeout(done, 6000);
+    try { s.cancel(); s.speak(u); } catch (e) { done(); }
+  });
+}
+
+/* ---------- running things ---------- */
+function stopAll() {
+  runId++;
+  if (curAudio) { try { curAudio.pause(); } catch (e) {} curAudio = null; }
+  try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+  resetRows();
+}
+function busy(on) { $("#stopbar").classList.toggle("on", on); }
+function run(fn) {
+  stopAll(); const my = runId; busy(true);
+  fn(my).catch(err => {
+    if (my !== runId) return;
+    const msg = err instanceof TestError ? err.message : "Something went wrong: " + (err && err.message || err);
+    const full = err && err.detail ? msg + " OpenAI said: " + err.detail : msg;
+    setKeyMsg(full, "bad");
+    document.querySelectorAll(".voice[data-state=loading],.voice[data-state=playing]").forEach(r => { r.dataset.state = "error"; r.querySelector(".vstat").textContent = msg; });
+  }).finally(() => { if (my === runId) { busy(false); document.querySelectorAll(".voice").forEach(r => { if (r.dataset.state === "playing" || r.dataset.state === "loading") { r.dataset.state = "idle"; r.querySelector(".vstat").textContent = r.dataset.voice === "browser" ? "the Chrome voice, for comparison" : ""; } }); drawChips(-1); } });
+}
+async function playOne(voice, text, my, label) {
+  if (voice === "browser") {
+    setRow(voice, "playing", label || show(text));
+    await speakBrowser(text);
+    return;
+  }
+  setRow(voice, "loading", "Making the clip…");
+  const c = await getClip(voice, text);
+  if (my !== runId) return;
+  setRow(voice, "playing", label || show(text));
+  await playUrl(c.url);
+}
+async function playAllForms(voice, my) {
+  for (let i = 0; i < PHRASES.length; i++) {
+    if (my !== runId) return;
+    drawChips(i);
+    if (voice !== "browser") {
+      getClip(voice, PHRASES[i]).catch(() => {});
+      if (i + 1 < PHRASES.length) getClip(voice, PHRASES[i + 1]).catch(() => {}); // fetch the next one while this plays
+    }
+    await playOne(voice, PHRASES[i], my, `${i + 1} of ${PHRASES.length}: ${show(PHRASES[i])}`);
+    if (my !== runId) return;
+    await sleep(450);
+  }
+}
+$("#voices").addEventListener("click", e => {
+  const b = e.target.closest("button[data-act]"); if (!b) return;
+  const voice = b.closest(".voice").dataset.voice, act = b.dataset.act;
+  if (act === "keep" || act === "drop") { setVerdict(voice, act); return; }
+  if (voice !== "browser" && !getKey()) { setKeyMsg("Paste your API key first.", "bad"); $("#key").focus(); return; }
+  syncKeyStorage(); setKeyMsg("");
+  if (act === "one") run(my => playOne(voice, phrase, my));
+  else if (act === "all") run(my => playAllForms(voice, my));
+});
+$("#compare").addEventListener("click", () => {
+  if (!getKey()) { setKeyMsg("Paste your API key first.", "bad"); $("#key").focus(); return; }
+  syncKeyStorage(); setKeyMsg("");
+  run(async my => {
+    const order = ["browser"].concat(VOICES);
+    for (let i = 0; i < order.length; i++) {
+      if (my !== runId) return;
+      const nxt = order[i + 1]; if (nxt && nxt !== "browser") getClip(nxt, phrase).catch(() => {});
+      await playOne(order[i], phrase, my);
+      if (my !== runId) return;
+      await sleep(350);
+    }
+  });
+});
+$("#stop").addEventListener("click", () => { stopAll(); busy(false); });
+$("#checkKey").addEventListener("click", async () => {
+  if (!getKey()) { setKeyMsg("Paste your API key first.", "bad"); $("#key").focus(); return; }
+  syncKeyStorage(); stopAll(); busy(false); setKeyMsg("Checking…");
+  const my = runId;
+  try {
+    const c = await getClip("alloy", "Bonjour.");
+    if (my !== runId) return;
+    setKeyMsg("The key works. You should hear a short “Bonjour”.", "good");
+    await playUrl(c.url);
+  } catch (err) {
+    const msg = err instanceof TestError ? err.message : "Something went wrong: " + (err && err.message || err);
+    setKeyMsg(err && err.detail ? msg + " OpenAI said: " + err.detail : msg, "bad");
+  }
+});
+
+setPhrase(PHRASES[0]); drawVerdicts();
+})();
+</script>
+</body>
+</html>
