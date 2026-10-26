@@ -344,6 +344,20 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 .ptot{margin:10px 0 4px}.prow{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:6px 0 6px 8px;border-top:1px solid var(--line)}
 .prow.off{opacity:.55}.prow small{display:block;color:var(--muted);font-size:.78rem}.prow .pn{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
 .chart{display:flex;align-items:flex-end;gap:2px;height:80px;margin:8px 0}.cbar{flex:1;height:100%;display:flex;align-items:flex-end;background:linear-gradient(var(--line),var(--line)) bottom/100% 1px no-repeat}.cbar i{display:block;width:100%;background:var(--know);border-radius:2px 2px 0 0}
+.conj tr.speaking td,.card .conj tr.speaking td{background:var(--navy-soft)}
+@media (max-width:560px){
+  .conj tr.speaking,.card .conj tr.speaking{background:var(--navy-soft)}
+  .conj tr.speaking td,.card .conj tr.speaking td{background:none}
+}
+.rvlist{list-style:none;margin:10px 0 0;padding:0}
+.rvrow{padding:12px 8px;border-top:1px solid var(--line);border-radius:8px}
+.rvrow:first-child{border-top:0}
+.rvrow.speaking{background:var(--navy-soft)}
+.rvfr{font-family:var(--serif);font-size:1.3rem;line-height:1.3}
+.rvmeta{font-size:.85rem;color:var(--muted)}
+.rven{margin-top:2px}
+.rvbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.rvtag{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:var(--miss-soft);color:var(--miss);font-size:.75rem;font-weight:700;vertical-align:middle;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -371,6 +385,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
   <div class="notices"></div>
   <div id="problems"></div>
   <div id="resume"></div>
+  <div id="reviewSec"></div>
   <div id="sections"></div>
 </section>
 
@@ -487,10 +502,10 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 /* =========================================================================
    CONSTANTS AND SMALL HELPERS
    ========================================================================= */
-const APP_VERSION = "5.3";
+const APP_VERSION = "5.5";
 const SCHEMA = 1;
 // Storage keys. NEVER rename these: saved progress lives under them.
-const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", lastbackup: "frverbs.lastbackup", sync: "frverbs.sync", syncat: "frverbs.syncat", backup: "frverbs.backup." };
+const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", lastbackup: "frverbs.lastbackup", sync: "frverbs.sync", syncat: "frverbs.syncat", review: "frverbs.review", backup: "frverbs.backup." };
 const EXPORT_SCHEMA = 4;
 const TYPE_ORDER = ["irregular", "regular"];
 const GLOSS = { present: "now, or what usually happens", passe_compose: "finished past: I did, I have done", imparfait: "ongoing past: I was doing, I used to do", futur: "future: I will do", conditionnel: "would: I would do, polite requests" };
@@ -579,14 +594,15 @@ const DEFAULTS = {
   budgetMin: 20, maxNew: 8, maxNewIrr: 2, tenseEvery: ["present"], regTables: 2, allowedWrong: 1,
   secondPass: true, schedDir: "en-fr", sectionOrder: ["irregular", "er", "ir", "re"],
   reviewStyle: "prompts", prompts: 3, listening: true,
-  budgetIrr: 20, budgetReg: 10, maxNewForms: 20, autoBackup: true
+  budgetIrr: 20, budgetReg: 10, maxNewForms: 20, autoBackup: true,
+  lapse: "on", reviewTarget: 7
 };
 const CHOICES = {
   direction: ["en-fr", "fr-en", "mixed"], phonetics: ["always", "tap", "hidden"], theme: ["system", "light", "dark"],
   textSize: [0, 1, 2, 3], repeatAudio: [1, 2], practiseContent: ["main", "key", "full"], practiseOrder: ["order", "shuffle"],
   budgetMin: [10, 15, 20, 25, 30, 40, 60], maxNew: [2, 4, 6, 8, 10, 12], maxNewIrr: [0, 1, 2, 3], regTables: [0, 1, 2, 3],
   budgetIrr: [15, 18, 20], budgetReg: [5, 10, 15], maxNewForms: [10, 15, 20, 25, 30],
-  allowedWrong: [0, 1, 2, 3], schedDir: ["en-fr", "follow"], reviewStyle: ["prompts", "tables"], prompts: [2, 3, 4, 5]
+  allowedWrong: [0, 1, 2, 3], schedDir: ["en-fr", "follow"], reviewStyle: ["prompts", "tables"], prompts: [2, 3, 4, 5], lapse: ["off", "gentle", "on"], reviewTarget: [3, 5, 7]
 };
 const SCALE = [0.9, 1, 1.15, 1.3];
 function freshDefaults() { return JSON.parse(JSON.stringify(DEFAULTS)); }
@@ -983,37 +999,66 @@ function setPlaying(btn) {
   playingBtn = btn || null;
   if (playingBtn) playingBtn.classList.add("playing");
 }
+let clipScope = null;
+function enVoice() {
+  let all = [];
+  try { all = synth.getVoices() || []; } catch (e) {}
+  return all.find(v => /^en[-_]gb/i.test(v.lang || "")) || all.find(v => /^en/i.test(v.lang || "")) || null;
+}
+function markClip(i) {
+  if (!clipScope) return;
+  clipScope.querySelectorAll("tr.speaking,li.speaking").forEach(r => r.classList.remove("speaking"));
+  if (i == null) return;
+  const hit = Array.from(clipScope.querySelectorAll("tr[data-clips],li[data-clips]")).filter(r => (" " + r.dataset.clips + " ").indexOf(" " + i + " ") >= 0);
+  hit.forEach(r => r.classList.add("speaking"));
+  if (hit[0] && hit[0].scrollIntoView) { try { hit[0].scrollIntoView({ block: "nearest", behavior: animOn() ? "smooth" : "auto" }); } catch (e) {} }
+}
 function stopSpeech() {
   speakTok++; clearTimeout(safetyT);
   if (synth) { try { synth.cancel(); } catch (e) {} }
+  markClip(null); clipScope = null;
   setPlaying(null);
 }
+// `text` is one string, or a list of clips spoken one after another (Play all). Repeat-audio repeats the whole list.
 function speak(text, btn) {
   if (!synth) { toast("This browser can’t play speech."); return; }
-  if (!text) return;
+  const lines = (Array.isArray(text) ? text : [text]).filter(x => x && (typeof x === "string" || x.t));
+  if (!lines.length) return;
   if (listening) stopListening();
   if (!voice) loadVoices();
-  const tok = ++speakTok, times = settings.repeatAudio === 2 ? 2 : 1;
-  let n = 0;
+  const tok = ++speakTok, times = settings.repeatAudio === 2 ? 2 : 1, queue = lines.length > 1;
+  let n = 0, i = 0;
+  markClip(null);
+  clipScope = queue && btn ? btn.closest(".ltense, .rvsec, #card") : null;
   try { synth.cancel(); if (synth.paused) synth.resume(); } catch (e) {}
   setPlaying(btn);
   const once = () => {
     if (tok !== speakTok) return;
-    const u = new SpeechSynthesisUtterance(text);
+    const L = lines[i], line = typeof L === "string" ? L : L.t, en = typeof L === "object" && L.lang === "en";
+    markClip(queue ? i : null);
+    const u = new SpeechSynthesisUtterance(line);
     utterRef = u; // keep a reference so Chrome doesn't drop the events
-    u.lang = voice ? voice.lang.replace("_", "-") : "fr-FR";
-    if (voice) u.voice = voice;
+    if (en) {
+      const ev = enVoice();
+      u.lang = ev ? ev.lang.replace("_", "-") : "en-GB";
+      if (ev) u.voice = ev;
+    } else {
+      u.lang = voice ? voice.lang.replace("_", "-") : "fr-FR";
+      if (voice) u.voice = voice;
+    }
     u.rate = settings.rate; u.pitch = 1;
     let finished = false;
     const done = () => {
       if (finished || tok !== speakTok) return;
-      finished = true; clearTimeout(safetyT); n++;
-      if (n < times) setTimeout(once, 450); else setPlaying(null);
+      finished = true; clearTimeout(safetyT);
+      if (++i < lines.length) { setTimeout(once, 400); return; }
+      i = 0; n++;
+      if (n < times) setTimeout(once, 450); else { markClip(null); setPlaying(null); }
     };
     u.onend = done;
     u.onerror = e => { if (e && (e.error === "interrupted" || e.error === "canceled")) return; done(); };
     clearTimeout(safetyT);
-    safetyT = setTimeout(done, 5000 + text.length * 120 / settings.rate);
+    safetyT = setTimeout(done, 5000 + line.length * 120 / settings.rate);
     try { synth.speak(u); } catch (e) { done(); }
   };
   once();
@@ -1022,7 +1067,7 @@ function speakText(it) {
   const v = BY_ID[it.verbId];
   if (it.kind === "main") return v.french;
   if (it.kind === "form") { const r = formRow(it); return r ? r.speak : ""; }
-  return rowsOf(it).map(r => r.speak).join(". ") + ".";
+  return clipsOf(rowsOf(it));
 }
 
 /* =========================================================================
@@ -1386,6 +1431,22 @@ function phonBlock(text, it) {
 function playBtn(text, label, aria) {
   return `<button class="play" data-say="${esc(text)}" aria-label="Play ${esc(aria || label || text)}">${ICON.play}${label ? `<span>${esc(label)}</span>` : ""}</button>`;
 }
+// Every spoken line of a set of rows, in order. A row with sub-lines (il · elle · on, ils · elles) gives one clip per
+// sub-line, so Play all says all nine forms instead of only the first of each row.
+function clipsOf(rows) {
+  const out = [];
+  rows.forEach(r => { if (r.subs) r.subs.forEach(x => out.push(x.speak)); else out.push(r.speak); });
+  return out.filter(Boolean);
+}
+function playAllBtn(rows, label) { return playClipsBtn(clipsOf(rows), label); }
+function playClipsBtn(clips, label, aria) {
+  const plain = clips.map(c => (typeof c === "string" ? c : c.t));
+  return `<button class="play" data-say="${esc(plain.join(". ") + ".")}" data-clips="${esc(JSON.stringify(clips))}" aria-label="Play ${esc(aria || label)}">${ICON.play}${label ? `<span>${esc(label)}</span>` : ""}</button>`;
+}
+function sayArg(el) {
+  if (el.dataset.clips) { try { const a = JSON.parse(el.dataset.clips); if (Array.isArray(a) && a.length) return a; } catch (e) {} }
+  return el.dataset.say;
+}
 function fullLink(v) { return `<p><button class="linkbtn" data-full="${esc(v.id)}">Show full verb</button></p>`; }
 function micBlock(it) {
   if (!settings.mic || micState !== "ok" || (session && session.mode === "sched")) return "";
@@ -1455,14 +1516,17 @@ function tableHTML(rows, o) {
     (showP ? `<th class="c-p">${o.keyforms ? "Tense" : "Person"}</th>` : "") + '<th class="c-fr">French</th>' +
     (o.en ? '<th class="c-en">English</th>' : "") + (o.phon ? '<th class="c-ph">Sounds like</th>' : "") +
     '<th class="c-pl"><span class="sr">Play</span></th></tr></thead><tbody>';
+  let ci = 0;
   rows.forEach((r0, i) => {
     const wrong = marks && marks.has(r0.key);
     const multi = !!(marks && r0.subs);
     (split && r0.subs ? r0.subs : [r0]).forEach(r => {
       const frHTML = multi ? r0.subs.map(x => esc(x.pron + x.form)).join("<br>") : esc(r.pron) + (o.hl && r.end ? esc(r.pre) + `<span class="end">${esc(r.end)}</span>` : esc(r.form));
-      h += `<tr${marks ? ` data-row="${i}" class="${wrong ? "wrong" : "right"}"` : ""}>` +
+      const nClip = split ? 1 : (r0.subs ? r0.subs.length : 1), clipIds = Array.from({ length: nClip }, (_, k) => ci + k).join(" ");
+      ci += nClip;
+      h += `<tr${marks ? ` data-row="${i}" class="${wrong ? "wrong" : "right"}"` : ""} data-clips="${clipIds}">` +
         (marks ? `<td class="c-m">${wrong ? "✕" : "✓"}<span class="sr">${wrong ? " marked wrong" : " marked right"}</span></td>` : "") +
-        (showP ? `<td class="c-p">${esc(r.label)}</td>` : "") + `<td class="c-fr" lang="fr">${frHTML}${o.levels ? badge(o.levels[i]) : ""}</td>` +
+        (showP ? `<td class="c-p">${esc(r.label)}</td>` : "") + `<td class="c-fr" lang="fr">${frHTML}${o.levels ? badge(o.levels[i]) : ""}${o.review && o.review.has(r0.key) ? '<span class="rvtag">to review</span>' : ""}</td>` +
         (o.en ? `<td class="c-en">${escL(r.en)}</td>` : "") + (o.phon ? `<td class="c-ph">${multi ? r0.subs.map(x => esc(x.phon)).join("<br>") : esc(r.phon)}</td>` : "") +
         `<td class="c-pl">${playBtn(r.speak, "", r.fr)}</td></tr>`;
     });
@@ -1489,7 +1553,7 @@ function multiHTML(it, v) {
   const title = it.kind === "keyforms" ? "Key forms" : TENSES[it.tense].name;
   const regular = v.type === "regular";
   const levels = rowLevels(it, rows);
-  const playAll = playBtn(rows.map(r => r.speak).join(". ") + ".", "Play all");
+  const playAll = playAllBtn(rows, "Play all");
   let h = `<div class="ctop"><span>${esc(typeName(v))}</span>${v.test ? '<span class="tag">test</span>' : ""}${it.retry ? '<span class="tag retry">retry</span>' : ""}</div>` +
     `<h2 class="mtitle"><span class="fr" lang="fr">${esc(v.french)}</span><span class="mtense">${esc(title)}</span></h2><p class="msub">${esc(v.english)}</p>`;
   if (!it.revealed) {
@@ -1546,7 +1610,7 @@ $("#card").addEventListener("click", e => {
   const it = curItem(); if (!it) return;
   const t = e.target;
   const say = t.closest("[data-say]");
-  if (say) { say.blur(); speak(say.dataset.say, say); return; }
+  if (say) { say.blur(); speak(sayArg(say), say); return; }
   if (t.closest("[data-mic]")) { t.closest("[data-mic]").blur(); toggleMic(); return; }
   const full = t.closest("[data-full]");
   if (full) { openFullVerb(full.dataset.full); return; }
@@ -1694,6 +1758,7 @@ function chipsHTML(verbs, ss) {
     `<li><button class="vchip" data-learn-verb="${esc(v.id)}"><span class="vfr" lang="fr">${esc(v.french)}<span class="rank">${esc(v.rank)}</span>${v.test ? '<span class="tag">test</span>' : ""}</span><span class="ven">${esc(v.english)}</span></button></li>`).join("") + "</ul>";
 }
 function renderLibrary() {
+  renderReviewSec();
   const n = VERBS_OK.length, ss = schedSession();
   $("#libLede").textContent = n ? `${plural(n, "verb")}. Browse and practise freely, in any direction.` : "No verbs are loaded yet. Add them to verbs.js.";
   $("#problems").innerHTML = PROBLEMS.length ? `<details class="problems" open><summary>${plural(PROBLEMS.length, "problem")} in verbs.js. These parts were skipped; everything else loaded.</summary><ul>${PROBLEMS.map(p => `<li><b>${esc(p.where)}</b>: ${esc(p.errs.join("; "))}.</li>`).join("")}</ul></details>` : "";
@@ -1758,13 +1823,13 @@ const expanded = new Set();
 function verbDetailHTML(v) {
   const regular = v.type === "regular";
   let h = `<div class="vhead"><div><div class="vfr" lang="fr">${esc(v.french)}</div><div class="vph">${esc(v.phonetic)}</div><div class="ven">${esc(v.english)}</div>` +
-    `<p class="vmeta">${esc(typeName(v))}, importance ${esc(v.rank)}${v.auxiliary === "être" ? ", takes être in the passé composé" : ""}</p></div>${playBtn(v.french, "Play")}</div>` +
+    `<p class="vmeta">${esc(typeName(v))}, importance ${esc(v.rank)}${v.auxiliary === "être" ? ", takes être in the passé composé" : ""}${reviewHasVerb(v) ? '<span class="rvtag">to review</span>' : ""}</p></div>${playBtn(v.french, "Play")}</div>` +
     `<div class="vbtns"><button class="ghost sm" data-practise-verb="${esc(v.id)}">Practise this verb</button></div>`;
   TENSE_KEYS.forEach(t => {
     const tab = v.tables[t];
-    h += `<div class="ltense"><div class="lthead"><h3>${esc(TENSES[t].name)}</h3><span class="gloss">${esc(GLOSS[t] || "")}</span><button class="linkbtn sm" data-guide="${esc(t)}">How it works</button>${playBtn(tab.rows.map(r => r.speak).join(". ") + ".", "Play all")}</div>` +
+    h += `<div class="ltense"><div class="lthead"><h3>${esc(TENSES[t].name)}</h3><span class="gloss">${esc(GLOSS[t] || "")}</span><button class="linkbtn sm" data-guide="${esc(t)}">How it works</button>${playAllBtn(tab.rows, "Play all")}</div>` +
       (regular && tab.rule ? `<p class="rule">${esc(tab.rule)}</p>` : "") +
-      tableHTML(tab.rows, { en: !regular || tab.rows.some(r => r.en), phon: true, hl: regular && tab.source === "rules" }) + "</div>";
+      tableHTML(tab.rows, { en: !regular || tab.rows.some(r => r.en), phon: true, hl: regular && tab.source === "rules", review: reviewMarks(v.id, t) }) + "</div>";
   });
   return h;
 }
@@ -1809,7 +1874,7 @@ $("#expandAll").addEventListener("click", () => { verbsInScope(learnScope).forEa
 $("#collapseAll").addEventListener("click", () => { expanded.clear(); renderLearnList(); });
 $("#scr-learn").addEventListener("click", e => {
   const t = e.target;
-  const say = t.closest("[data-say]"); if (say) { speak(say.dataset.say, say); return; }
+  const say = t.closest("[data-say]"); if (say) { speak(sayArg(say), say); return; }
   const tg = t.closest("[data-toggle]"); if (tg) { toggleVerb(tg.dataset.toggle); return; }
   const g = t.closest("[data-guide]"); if (g) { navigate("guide", { tense: g.dataset.guide }); return; }
   const pv = t.closest("[data-practise-verb]"); if (pv) { const v = BY_ID[pv.dataset.practiseVerb]; openPractise([v], v.french); return; }
@@ -1966,7 +2031,7 @@ function exportData(auto) {
   auto = auto === true;
   let sess = null;
   try { sess = JSON.parse(lsGet(KEYS.session) || "null"); } catch (e) {}
-  const data = { app: "french-verbs", schema: EXPORT_SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress, schedule, formsched: fsched, history: hist, timing, session: sess };
+  const data = { app: "french-verbs", schema: EXPORT_SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress, schedule, formsched: fsched, review, history: hist, timing, session: sess };
   try {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -2003,6 +2068,7 @@ function validateImport(d) {
     if (!isObj(d.formsched) || !isObj(d.formsched.forms)) return "The form schedule section is damaged.";
     for (const k of Object.keys(d.formsched.forms)) { const e = d.formsched.forms[k]; if (!isObj(e) || !Number.isInteger(e.step) || e.step < 0 || e.step > 8 || !isDate(e.due)) return `Form schedule entry “${k}” is damaged.`; }
   }
+  if (d.review !== undefined && d.review !== null && (!isObj(d.review) || !isObj(d.review.items))) return "The to-review section is damaged.";
   if (d.timing !== undefined && d.timing !== null && !isObj(d.timing)) return "The timing section is damaged.";
   return "";
 }
@@ -2019,31 +2085,33 @@ async function importData(file) {
     `<p>Backup${when && !isNaN(when) ? " from " + esc(when.toLocaleString()) : ""}: schedule for ${plural(sv.length, "verb")} (${sv.filter(id => BY_ID[id]).length} in your current list), plus settings and practice records.</p><p>This replaces everything on this device. A copy of the current data is kept in this browser first.</p>`,
     "Replace", false);
   if (!ok) return;
-  [["settings", KEYS.settings], ["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-import-" + l, lsGet(k)));
+  [["settings", KEYS.settings], ["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched], ["review", KEYS.review], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-import-" + l, lsGet(k)));
   settings = cleanSettings(d.settings);
   progress = { schema: SCHEMA, verbs: d.progress.verbs };
   schedule = isObj(d.schedule) ? d.schedule : freshSchedule();
   if (!isObj(schedule.newLog)) schedule.newLog = {};
   fsched = isObj(d.formsched) ? d.formsched : freshForms();
   if (!isObj(fsched.newLog)) fsched.newLog = {};
+  review = isObj(d.review) ? cleanReview(d.review) : freshReview();
   timing = freshTiming();
   if (isObj(d.timing)) CARD_TYPES.forEach(k => { if (Array.isArray(d.timing[k])) timing[k] = d.timing[k].filter(x => typeof x === "number" && x > 0); });
   hist = cleanHist(d.history); saveHist();
-  saveSettings(); saveProgress(); saveSchedule(); saveForms(); saveTiming();
+  saveSettings(); saveProgress(); saveSchedule(); saveForms(); saveReview(); saveTiming();
   if (!fsched.migrated) migrateForms();
+  reviewSeed(); reviewPrune();
   if (isObj(d.session) && d.session.schema === 2 && d.session.mode === "sched" && isDate(d.session.date) && Array.isArray(d.session.queue)) lsSet(KEYS.session, JSON.stringify(d.session)); else lsRemove(KEYS.session);
   session = null;
   applyDisplay(); loadVoices(); syncSettingsUI();
   toast("Imported.");
 }
 async function doReset(kind) {
-  const what = { progress: "This clears your schedule, every verb’s step, your time averages and your practice records, on this device.", settings: "This puts every setting back to its default.", all: "This clears your schedule, time averages and practice records, and puts every setting back to its default, on this device." }[kind];
+  const what = { progress: "This clears your schedule, every verb’s step, your time averages, your practice records and your To review list, on this device.", settings: "This puts every setting back to its default.", all: "This clears your schedule, time averages, practice records and your To review list, and puts every setting back to its default, on this device." }[kind];
   const ok = await confirmBox(kind === "all" ? "Reset everything?" : `Reset ${kind}?`, `<p>${what}</p><p>A backup copy is kept in this browser, but export first if you might want it back.</p>`, "Reset", true);
   if (!ok) return;
   if (kind !== "settings") {
-    [["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-reset-" + l, lsGet(k)));
-    progress = { schema: SCHEMA, verbs: {} }; schedule = freshSchedule(); fsched = freshForms(); timing = freshTiming();
-    saveProgress(); saveSchedule(); saveForms(); saveTiming(); lsRemove(KEYS.session); session = null; hist = {}; saveHist();
+    [["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched], ["review", KEYS.review], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-reset-" + l, lsGet(k)));
+    progress = { schema: SCHEMA, verbs: {} }; schedule = freshSchedule(); fsched = freshForms(); timing = freshTiming(); review = freshReview(); review.seeded = true;
+    saveProgress(); saveSchedule(); saveForms(); saveReview(); saveTiming(); lsRemove(KEYS.session); session = null; hist = {}; saveHist();
   }
   if (kind !== "progress") { makeBackup("before-reset-settings", lsGet(KEYS.settings)); settings = freshDefaults(); saveSettings(); applyDisplay(); loadVoices(); }
   syncSettingsUI();
@@ -2053,7 +2121,7 @@ async function doReset(kind) {
 /* =========================================================================
    DAILY SCHEDULE (spaced repetition). Library practice never touches this.
    ========================================================================= */
-// Fixed review days after a card is first learnt: 1, 3, 7, 14, 30, 60, 180, then every 180. A miss never moves them.
+// Fixed review days after a card is first learnt: 1, 3, 7, 14, 30, 60, 180, then every 180. A first-attempt miss on a later review sends the card back down the ladder (see lapseStep).
 const GAPS = [1, 2, 4, 7, 16, 30, 120], LT_GAP = 180, OFFSETS = [1, 3, 7, 14, 30, 60, 180];
 const DEF_COST = { main: 10, tense: 30, keyforms: 20, form: 10, listen: 12 };
 const CARD_TYPES = ["main", "form", "tense", "keyforms", "listen"];
@@ -2128,6 +2196,134 @@ function loadForms() {
   return o;
 }
 const saveForms = () => lsSet(KEYS.formsched, JSON.stringify(fsched));
+
+/* ---------- To review: cards missed at their first try, read aloud until ticked off. Key: frverbs.review ---------- */
+// Never changes the schedule. Items: { on: date missed, reads, done: date ticked off or "", u: last change in ms }, or { rm: true, u } once removed.
+const freshReview = () => ({ schema: 1, items: {}, seeded: false });
+let review = freshReview();
+const REVIEW_KEEP_DAYS = 30;
+function cleanReview(o) {
+  const r = freshReview(); if (!isObj(o)) return r;
+  r.seeded = !!o.seeded;
+  if (isObj(o.items)) Object.keys(o.items).forEach(k => {
+    const x = o.items[k]; if (!isObj(x)) return;
+    const u = Number.isFinite(x.u) ? x.u : 0;
+    if (x.rm === true) { r.items[k] = { rm: true, u }; return; }
+    if (!isDate(x.on)) return;
+    r.items[k] = { on: x.on, reads: Number.isInteger(x.reads) && x.reads >= 0 ? Math.min(x.reads, 99) : 0, done: isDate(x.done) ? x.done : "", u };
+  });
+  return r;
+}
+function loadReview() { return cleanReview(loadStore(KEYS.review, "to-review list", x => isObj(x) && isObj(x.items), freshReview)); }
+const saveReview = () => lsSet(KEYS.review, JSON.stringify(review));
+const reviewTarget = () => settings.reviewTarget || 7;
+function reviewPrune() {
+  const today = todayStr(), cut = Date.now() - REVIEW_KEEP_DAYS * 86400000; let n = 0;
+  Object.keys(review.items).forEach(k => {
+    const x = review.items[k];
+    if ((x.rm && x.u < cut) || (x.done && dayDiff(x.done, today) > REVIEW_KEEP_DAYS)) { delete review.items[k]; n++; }
+  });
+  if (n) saveReview();
+}
+function reviewTouch(k, patch) { review.items[k] = Object.assign({}, review.items[k], patch, { u: Date.now() }); saveReview(); syncSoon(); }
+function reviewAdd(k, date) { if (!unitValid(k)) return; review.items[k] = { on: date, reads: 0, done: "", u: Date.now() }; saveReview(); }
+function reviewRead(k) {
+  const x = review.items[k]; if (!x || x.rm || x.done) return;
+  const reads = x.reads + 1;
+  reviewTouch(k, { reads, done: reads >= reviewTarget() ? todayStr() : "" });
+}
+function reviewBack(k) { const x = review.items[k]; if (x && !x.rm) reviewTouch(k, { reads: 0, done: "" }); }
+function reviewRemove(k) { if (review.items[k]) { review.items[k] = { rm: true, u: Date.now() }; saveReview(); syncSoon(); } }
+function reviewActive() {
+  const it = review.items;
+  return Object.keys(it).filter(k => !it[k].rm && !it[k].done && unitValid(k))
+    .sort((a, b) => it[b].on.localeCompare(it[a].on) || (it[b].u - it[a].u) || (a < b ? -1 : 1));
+}
+function reviewDoneList() {
+  const it = review.items;
+  return Object.keys(it).filter(k => !it[k].rm && it[k].done && unitValid(k)).sort((a, b) => it[b].done.localeCompare(it[a].done) || (a < b ? -1 : 1));
+}
+// First run of v5.5: carry over cards whose latest review was a miss in the last two weeks.
+function reviewSeed() {
+  if (review.seeded) return;
+  const today = todayStr(); let n = 0;
+  const take = (k, e) => {
+    if (e && e.missed === true && isDate(e.lastDate) && dayDiff(e.lastDate, today) <= 14 && unitValid(k) && !review.items[k]) { review.items[k] = { on: e.lastDate, reads: 0, done: "", u: Date.now() }; n++; }
+  };
+  Object.keys(fsched.forms).forEach(k => take(k, fsched.forms[k]));
+  Object.keys(schedule.verbs).forEach(id => { if (BY_ID[id] && BY_ID[id].type === "regular") take(id, schedule.verbs[id]); });
+  review.seeded = true; saveReview();
+  if (n) addNotice(`${plural(n, "card")} you missed in the last two weeks ${n === 1 ? "was" : "were"} added to To review, in the Library.`);
+}
+function mergeReview(L, R) {
+  const out = {};
+  [L, R].forEach(o => { if (!isObj(o)) return; Object.keys(o).forEach(k => { const x = o[k]; if (!isObj(x)) return; if (!out[k] || (x.u || 0) > (out[k].u || 0)) out[k] = x; }); });
+  return out;
+}
+function reviewMarks(vid, t) {
+  const set = new Set();
+  Object.keys(review.items).forEach(k => { const x = review.items[k]; if (x.rm || x.done) return; const p = k.split("|"); if (p.length === 3 && p[0] === vid && p[1] === t) set.add(p[2]); });
+  return set;
+}
+function reviewHasVerb(v) { const x = review.items[v.type === "irregular" ? v.id + "|inf" : v.id]; return !!(x && !x.rm && !x.done); }
+function reviewItem(k) {
+  const p = k.split("|"), v = BY_ID[p[0]]; if (!v) return null;
+  if (p.length === 1 || p[1] === "inf") return { fr: v.french, meta: p.length === 1 ? "regular verb" : "infinitive", en: v.english, say: [v.french], enSay: v.english };
+  const tab = v.tables[p[1]], r = tab && tab.rows.find(x => x.key === p[2]); if (!r) return null;
+  // English: one line per meaning. il · elle · on gives "he is / she is / one is"; a repeated meaning (ils · elles) shows once.
+  let lines = r.subs ? Array.from(new Set(r.subs.map(x => String(x.en || "").split("\n")[0]).filter(Boolean))) : (r.enL && r.enL.length ? r.enL.slice() : String(r.en || "").split("\n").filter(Boolean));
+  if (!lines.length) lines = [v.english];
+  return { fr: r.subs ? r.subs.map(x => x.fr).join(" · ") : r.fr, meta: v.french + " · " + TENSES[p[1]].name, en: lines.join("\n"), say: clipsOf([r]), enSay: lines.join(". ") };
+}
+// French clips then one English clip per card. `spans` maps each card to the clip numbers it covers, for the row highlight.
+function reviewClips(keys) {
+  const clips = [], spans = {};
+  keys.forEach(k => {
+    const it = reviewItem(k); if (!it) return;
+    const a = clips.length;
+    it.say.forEach(t => clips.push(t));
+    if (it.enSay) clips.push({ t: it.enSay, lang: "en" });
+    spans[k] = Array.from({ length: clips.length - a }, (_, i) => a + i).join(" ");
+  });
+  return { clips, spans };
+}
+function reviewRowHTML(k, spans, done) {
+  const it = reviewItem(k), x = review.items[k]; if (!it) return "";
+  return `<li class="rvrow"${spans && spans[k] ? ` data-clips="${spans[k]}"` : ""}><div class="rvtxt"><div class="rvfr" lang="fr">${esc(it.fr)}</div><div class="rvmeta">${esc(it.meta)} · missed ${esc(fmtDate(x.on))}</div><div class="rven">${escL(it.en)}</div></div>` +
+    `<div class="rvbtns">${playClipsBtn(it.say, "Play", "Play " + it.fr)}` +
+    (done ? `<button class="ghost sm" data-rback="${esc(k)}">Put back</button>`
+      : `<button class="primary sm" data-rread="${esc(k)}" aria-label="Count one read aloud of ${esc(it.fr)}">Read ${x.reads}/${reviewTarget()}</button><button class="linkbtn sm" data-rrem="${esc(k)}">Remove</button>`) + `</div></li>`;
+}
+function reviewHTML() {
+  const act = reviewActive(), dn = reviewDoneList(), n = reviewTarget(), sp = reviewClips(act).spans;
+  let h = `<section class="lib rvsec" id="rvsec"><div class="libhead"><div><h2>To review</h2><p class="count">${act.length ? `${plural(act.length, "card")} you missed. Read each aloud ${n} times, tapping Read each time, and it moves to Done.` : "Nothing to review. Cards you miss at their first try in a scheduled session appear here."}</p></div>` +
+    (act.length ? `<div class="btnrow"><button class="play" data-rplayall aria-label="Play all to review, French then English">${ICON.play}<span>Play all</span></button><button class="ghost sm" data-rclear>Clear list</button></div>` : "") + "</div>";
+  if (act.length) h += `<ul class="rvlist">${act.map(k => reviewRowHTML(k, sp, false)).join("")}</ul>`;
+  if (dn.length) h += `<details class="shelpbox"><summary>Done (${dn.length}), kept for ${REVIEW_KEEP_DAYS} days</summary><ul class="rvlist">${dn.map(k => reviewRowHTML(k, null, true)).join("")}</ul></details>`;
+  return h + "</section>";
+}
+function renderReviewSec() { const el = $("#reviewSec"); if (el) el.innerHTML = reviewHTML(); }
+let lastRead = { k: "", t: 0 };
+$("#reviewSec").addEventListener("click", async e => {
+  const t = e.target;
+  const say = t.closest("[data-say]"); if (say) { speak(sayArg(say), say); return; }
+  const pa = t.closest("[data-rplayall]"); if (pa) { const c = reviewClips(reviewActive()).clips; if (c.length) speak(c, pa); return; }
+  const rd = t.closest("[data-rread]");
+  if (rd) {
+    const k = rd.dataset.rread, now = Date.now();
+    if (lastRead.k === k && now - lastRead.t < 600) return; // a double tap counts once
+    lastRead = { k, t: now };
+    stopSpeech(); reviewRead(k); renderReviewSec(); return;
+  }
+  const rm = t.closest("[data-rrem]"); if (rm) { stopSpeech(); reviewRemove(rm.dataset.rrem); renderReviewSec(); return; }
+  const bk = t.closest("[data-rback]"); if (bk) { reviewBack(bk.dataset.rback); renderReviewSec(); return; }
+  if (t.closest("[data-rclear]")) {
+    const act = reviewActive();
+    if (await confirmBox("Clear To review?", `<p>This removes ${plural(act.length, "card")} from the list. They come back only if you miss them again. Your schedule is not affected.</p>`, "Clear", true)) {
+      stopSpeech(); act.forEach(reviewRemove); renderReviewSec();
+    }
+  }
+});
 const isFormUnit = k => k.indexOf("|") > 0;
 const unitVerb = k => k.split("|")[0];
 function verbUnits(v) {
@@ -2198,11 +2394,28 @@ function entryOf(S, id) {
   return isObj(e) && Number.isInteger(e.step) && e.step >= 0 && e.step <= 8 && isDate(e.due) ? e : null;
 }
 // step 0 = new, 1–7 = review steps, 8 = long-term
+// The step a card drops back to after a first-attempt miss on review step k (0 means no penalty).
+// New cards (step 0) and the first, 1-day review (step 1) are exempt: they are still being learnt.
+// On: reviews at 3, 7, 14 and 30 days go back to the 1-day step; 60 days, 180 days and long-term go back to the 7-day step.
+// Gentle: one step back. Off: a miss never moves a due date.
+function lapseStep(k) {
+  const m = settings.lapse;
+  if (m === "off" || !(k >= 2)) return 0;
+  if (m === "gentle") return k - 1;
+  return k <= 5 ? 1 : 4;
+}
+// Put a card back on ladder step s: its next review is GAPS[s-1] days after `date`, and the later steps follow from there.
+function relapse(e, s, date) {
+  e.step = s; e.intro = addDays(date, s >= 2 ? -OFFSETS[s - 2] : 0); e.due = addDays(date, GAPS[s - 1]);
+}
 function applyResult(e, passed, date) {
-  // Every card advances once it has been got right. Misses are repeated in the session and never change the schedule,
-  // so `passed` is deliberately ignored. The next review is a fixed number of days after the card was first learnt.
+  // `passed` means the card was right at its first attempt of the day. Retries the same day are not counted by the caller.
+  // A pass advances the card. A miss either sends it back down the ladder (lapseStep) or, for exempt cards, advances it as before.
   const k = e.step;
-  e.enc = (e.enc || 0) + 1; e.last = "pass"; e.lastDate = date;
+  e.enc = (e.enc || 0) + 1; e.lastDate = date;
+  const back = passed ? 0 : lapseStep(k);
+  if (back) { e.last = "miss"; relapse(e, back, date); return; }
+  e.last = "pass";
   e.dir = k === 0 ? "en-fr" : (e.dir === "fr-en" ? "en-fr" : "fr-en");
   let nd;
   if (k >= 8) nd = addDays(isDate(e.due) ? e.due : date, LT_GAP);
@@ -2415,7 +2628,7 @@ function commitSched(it, wrongKeys) {
   const s = session, k = unitKey(it), st = unitStore({ forms: fsched.forms, verbs: schedule.verbs }, k);
   const vs = s.vs[k] || (s.vs[k] = { st: "todo", left: 0, open: 1, fail: false, isNew: false, blk: s.bi || 0 });
   const tk = it.mode === "listen" ? "listen" : it.kind;
-  s.undo.push({ data: JSON.stringify(sessionData(s)), id: k, entry: st[k] ? JSON.stringify(st[k]) : null, kind: tk });
+  s.undo.push({ data: JSON.stringify(sessionData(s)), id: k, entry: st[k] ? JSON.stringify(st[k]) : null, kind: tk, rev: review.items[k] ? JSON.stringify(review.items[k]) : null });
   if (s.undo.length > 30) s.undo.shift();
   if (!Array.isArray(timing[tk])) timing[tk] = [];
   const secs = Math.min(120, Math.max(1, (Date.now() - (it.t0 || Date.now())) / 1000));
@@ -2424,6 +2637,7 @@ function commitSched(it, wrongKeys) {
   saveTiming();
   const anyWrong = wrongKeys.length > 0;
   if (it.first) { if (anyWrong) vs.fail = true; vs.left = 0; }
+  if (it.first && anyWrong) reviewAdd(k, s.date);
   if (!anyWrong) finalizeUnit(k);
   vs.open = Math.max(0, vs.open - 1);
   if (anyWrong) {
@@ -2442,7 +2656,7 @@ function finalizeUnit(k) {
   const s = session, vs = s.vs[k], e = unitStore({ forms: fsched.forms, verbs: schedule.verbs }, k)[k];
   if (!e || vs.final) return;
   vs.before = e.step;
-  applyResult(e, true, s.date); e.missed = !!vs.fail;
+  applyResult(e, !vs.fail, s.date); e.missed = !!vs.fail;
   vs.after = e.step; vs.final = true;
   if (isFormUnit(k)) saveForms(); else saveSchedule();
 }
@@ -2452,6 +2666,7 @@ function undoSched() {
   stopSpeech(); stopListening();
   const st = unitStore({ forms: fsched.forms, verbs: schedule.verbs }, u.id);
   if (u.entry) st[u.id] = JSON.parse(u.entry); else delete st[u.id];
+  if ("rev" in u) { if (u.rev) review.items[u.id] = JSON.parse(u.rev); else delete review.items[u.id]; saveReview(); }
   if (Array.isArray(timing[u.kind])) timing[u.kind].pop();
   saveSchedule(); saveForms(); saveTiming();
   const d = JSON.parse(u.data); d.committed = -1;
@@ -2595,6 +2810,7 @@ function renderToday() {
   const C = avgCosts(), p = plan(t, curState(), C), sim = simulate(10, 1, C, t, false).rows;
   let h = prog && s.date !== t ? `<div class="notice"><p>A session from ${esc(fmtDate(s.date))} is still open. Finish it first: it counts for that day.</p></div>` : "";
   { const ds = daysSince(lsGet(KEYS.lastbackup)); if (ds >= 8) h += `<div class="notice"><p>Last backup: ${ds === 999 ? "never" : ds + " days ago"}.</p><button class="primary sm" data-today="backup">Save backup now</button></div>`; }
+  { const nr = reviewActive().length; if (nr) h += `<div class="notice"><p>To review: ${plural(nr, "card")} you missed. Read them aloud in the Library.</p><button class="ghost sm" data-today="review">Open</button></div>`; }
   const today = [0, 1].map(bi => {
     const x = p.blocks[bi], dn = hist[t] && hist[t][SECK[bi]];
     if (dn) return secRow(bi, { done: true, list: histList(dn), reviews: 0, min: 0 });
@@ -2647,9 +2863,10 @@ $("#scr-today").addEventListener("click", e => {
       if (a === "expand" && s) liveIds(blk(s).learnIds).forEach(id => todayExpanded.add(id)); else todayExpanded.clear();
       renderToday();
     } else if (a === "library") navigate("library");
+    else if (a === "review") { navigate("library"); setTimeout(() => { const el = $("#reviewSec"); if (el && el.scrollIntoView) el.scrollIntoView({ block: "start" }); }, 60); }
     return;
   }
-  const say = t.closest("[data-say]"); if (say) { speak(say.dataset.say, say); return; }
+  const say = t.closest("[data-say]"); if (say) { speak(sayArg(say), say); return; }
   const tg = t.closest("[data-toggle]"); if (tg) { toggleVerbIn($("#todayLearn"), todayExpanded, "tv", tg.dataset.toggle); return; }
   const g = t.closest("[data-guide]"); if (g) { navigate("guide", { tense: g.dataset.guide }); return; }
   const pv = t.closest("[data-practise-verb]"); if (pv) { const v = BY_ID[pv.dataset.practiseVerb]; openPractise([v], v.french); }
@@ -2698,7 +2915,7 @@ function runSim() {
 
 /* ---------- Stats ---------- */
 const ABOUT = `<p>This schedule uses the spacing effect: a memory lasts longer when you review it just as it starts to fade, and each successful review lets the next gap grow. Each card is reviewed on fixed days after you first learn it: day 1, 3, 7, 14, 30, 60 and 180, then every 180 days. Those days never move.</p>
-<p>The aim is strong long-term memory, not guaranteed 100% recall. A miss never changes the schedule: a missed card goes to the back of the pile and is repeated until you get it right, so every card you review advances that day. If you are late, the next review is due the following day instead.</p>
+<p>The aim is strong long-term memory, not guaranteed 100% recall. A miss is repeated at the back of the pile until you get it right, but only your first try of the day counts toward the schedule. Miss a card on a review of 3 days or longer and it goes back down the ladder (to the 1-day step, or to the 7-day step for cards at 60 days or more) and climbs again; the miss rule can be changed in Settings. New cards and the first 1-day review are never penalised. If you are late, the next review is due the following day instead.</p>
 <p>Irregular verbs: every form (and the infinitive) is its own card with its own schedule, so a form you know moves out to months while a weak one keeps coming back. Cards are shuffled across all verbs, tenses and persons, so you can’t follow a pattern. Forms are introduced in importance order: verb by verb, présent first.</p>
 <p>Regular verbs follow rules, so each one has a single card: English to the French infinitive. Full tables are for learning, on the Learn page.</p>
 <p>Each card alternates between two directions: speaking (English shown, you say the French) and listening (audio only, you say the meaning). A new card is tested speaking, then listening in the second pass. After that it flips at every review, starting with speaking. A miss repeats the card in the same direction until you get it right. On a listening card you press Show answer to see the French and English, then choose Know or Don’t know. Speaking cards are done first in a session, then listening cards.</p>`;
@@ -2711,7 +2928,7 @@ function renderStats() {
   const missed = Object.keys(fsched.forms).filter(k => unitValid(k) && fsched.forms[k].missed).length + Object.keys(schedule.verbs).filter(id => BY_ID[id] && BY_ID[id].type === "regular" && schedule.verbs[id].missed).length;
   const status = `<section class="sgroup"><h2>Progress</h2><table class="kv"><thead><tr><th></th><th>Irregular (${nI})</th><th>Regular (${nR})</th></tr></thead><tbody>` +
     rows.map(r => `<tr><th>${r[0]}</th><td>${cnt.irr[r[1]]}</td><td>${cnt.reg[r[1]]}</td></tr>`).join("") +
-    `</tbody></table><p class="shelp">An irregular verb counts at its weakest form. Sections finished: ${secs}. Missed at last review: ${missed} (information only; it changes no dates).</p></section>`;
+    `</tbody></table><p class="shelp">An irregular verb counts at its weakest form. Sections finished: ${secs}. Missed at last review: ${missed} (the next review follows the miss rule in Settings).</p></section>`;
   const ord = schedSections();
   const list = `<section class="sgroup"><details class="shelpbox"><summary>All verbs</summary>` +
     VERBS_OK.slice().sort((a, b) => ord.indexOf(a.group) - ord.indexOf(b.group) || a.rankNum - b.rankNum).map(v => `<div class="vrow"><span class="vfr" lang="fr">${esc(v.french)}</span>${dotsHTML(v)}</div>`).join("") + "</details></section>";
@@ -2829,13 +3046,14 @@ function mergeHist(L, R) {
   });
   return out;
 }
-const syncCore = o => [o.forms, o.verbs, o.fNewLog, o.newLog, o.hist];
+const syncCore = o => [o.forms, o.verbs, o.fNewLog, o.newLog, o.hist, o.review && o.review.items];
 const stable = o => JSON.stringify(o, (k, v) => (v && typeof v === "object" && !Array.isArray(v) ? Object.keys(v).sort().reduce((a, x) => (a[x] = v[x], a), {}) : v));
-function syncPayload() { return { app: "french-verbs-sync", v: 1, savedAt: new Date().toISOString(), forms: fsched.forms, verbs: schedule.verbs, fNewLog: fsched.newLog, newLog: schedule.newLog, hist }; }
+function syncPayload() { return { app: "french-verbs-sync", v: 1, savedAt: new Date().toISOString(), forms: fsched.forms, verbs: schedule.verbs, fNewLog: fsched.newLog, newLog: schedule.newLog, hist, review: { items: review.items, seeded: review.seeded } }; }
 function applyRemote(R) {
   fsched.forms = mergeUnits(fsched.forms, R.forms); schedule.verbs = mergeUnits(schedule.verbs, R.verbs);
   fsched.newLog = mergeLogs(fsched.newLog, R.fNewLog); schedule.newLog = mergeLogs(schedule.newLog, R.newLog);
   hist = mergeHist(hist, R.hist);
+  if (isObj(R.review)) { const rr = cleanReview(R.review); review.items = mergeReview(review.items, rr.items); review.seeded = review.seeded || rr.seeded; reviewPrune(); saveReview(); }
   saveForms(); saveSchedule(); saveHist();
 }
 function setSyncStatus(m) { const el = $("#syncStatus"); if (el) el.textContent = m; }
@@ -2921,12 +3139,14 @@ function schedSettingsHTML() {
     segRow("budgetReg", "Regular verbs: daily time budget", nums([5, 10, 15], n => n + " min"), "Regular verbs get one card each: English to the French infinitive.") +
     segRow("maxNew", "Most new regular verbs per day", nums([2, 4, 6, 8, 10, 12])) +
     switchRow("secondPass", "Second pass", "One more recall of today’s new cards, as listening, at the end of each section.") +
-    `<p class="shelp">Each card alternates between speaking (English to French) and listening (audio only). A new card is tested speaking and then listening in the second pass; its first review is speaking again. A miss goes to the back of the pile, in the same direction, until you get it right. It never moves a due date. Speaking cards come first in a session, then listening cards.</p>` +
+    segRow("lapse", "When you miss a card at a review", [["off", "Off"], ["gentle", "Gentle"], ["on", "On"]], "On: miss a card at its first try on a review of 3 to 30 days and it goes back to the 1-day step; at 60 days or more it goes back to the 7-day step. Then it climbs again. Gentle: it drops back one step. Off: a miss never changes a date. New cards and the first 1-day review are never penalised, and only your first try of the day counts.") +
+    segRow("reviewTarget", "Reads to clear a To review card", nums([3, 5, 7], n => n + " times"), "Cards you miss appear under To review in the Library. Read one aloud this many times, tapping Read each time, and it moves to Done. This never changes your schedule.") +
+    `<p class="shelp">Each card alternates between speaking (English to French) and listening (audio only). A new card is tested speaking and then listening in the second pass; its first review is speaking again. A miss goes to the back of the pile, in the same direction, until you get it right. Only your first try of the day counts toward the schedule. Speaking cards come first in a session, then listening cards.</p>` +
     `<div class="srow col"><span class="slabel">Order of regular groups for new verbs</span><p class="shelp">Within each group, verbs are introduced by importance rank. Irregular verbs have their own block.</p><ol class="secorder" id="secOrder"></ol></div>` +
     `</section>`;
 }
 function simHTML() {
-  return `<section class="sgroup"><details class="shelpbox"><summary>Advanced: simulate</summary><p class="shelp">Fast-forwards a copy of your progress to show the daily load. A miss only adds retry time; it never moves a due date. Your real progress is never touched.</p>` +
+  return `<section class="sgroup"><details class="shelpbox"><summary>Advanced: simulate</summary><p class="shelp">Fast-forwards a copy of your progress to show the daily load. A miss adds retry time and, with the miss rule on, sends the card back down the ladder. Your real progress is never touched.</p>` +
     `<div class="simgrid"><label>Days<select id="simDays"><option>7</option><option selected>30</option><option>90</option><option>180</option><option>365</option></select></label>` +
     `<label>Pass rate (%)<input id="simPass" type="number" min="0" max="100" value="85" inputmode="numeric"></label>` +
     `<label>Speaking infinitive / regular card (s)<input id="simMain" type="number" min="1" max="300" value="10" inputmode="numeric"></label>` +
@@ -3019,12 +3239,14 @@ function init() {
   progress = loadProgress();
   schedule = loadSchedule();
   fsched = loadForms();
+  review = loadReview();
   hist = loadHist();
   timing = loadTiming();
   applyDisplay();
   loadData();
   if (FATAL) { showFatal(FATAL); return; }
   migrateForms();
+  reviewSeed(); reviewPrune();
   SECTIONS = buildSections();
   buildSettings();
   wireSettings();
