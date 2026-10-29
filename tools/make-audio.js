@@ -7,6 +7,7 @@
 //                                                              record again the clips flagged "Sounded wrong?"
 // Options: --voices marin,cedar (default)   --full (every line a play button can say, not only the cards)
 //          --yes (no question)   --prune (delete clips the app no longer uses)   --dir <folder> (default: audio/)
+//          --limit 230 (only the first 230 card lines, in the order the app introduces them)
 //
 // Safe to stop (Ctrl+C) and run again: finished clips are kept and skipped. Each clip is written to
 // audio/<voice>/<file id>.mp3; audio/manifest.json tells the app which lines have clips. Commit the audio/ folder.
@@ -42,6 +43,7 @@ function parseArgs(argv) {
     else if (a === "--prune") o.prune = true;
     else if (a === "--regen") o.regen = argv[++i];
     else if (a === "--dir") o.dir = path.resolve(argv[++i]);
+    else if (a === "--limit") { o.limit = parseInt(argv[++i], 10); if (!(o.limit > 0)) throw new Error("--limit needs a number of lines"); }
     else throw new Error("Unknown option " + a + ". See the top of tools/make-audio.js.");
   }
   const bad = o.voices.filter(v => !VOICES.includes(v));
@@ -52,7 +54,22 @@ function parseArgs(argv) {
 async function appLines(scope) {
   const { loadApp } = require(path.join(ROOT, "tests", "lib", "load-app"));
   const app = await loadApp();
-  try { return JSON.parse(JSON.stringify(app.internals.allClipLines(scope))); } finally { app.close(); }
+  try { return JSON.parse(JSON.stringify(scope === "order" ? studyOrder(app) : app.internals.allClipLines(scope))); } finally { app.close(); }
+}
+// The card lines in the order a new learner meets them: the app's own simulator (a year, every answer right) gives the
+// order cards are introduced; each card brings its lines (a key card: all six persons). Lines it never reaches go last.
+function studyOrder(app) {
+  const I = app.internals, V = app.verbes, out = [], seen = new Set();
+  const add = (t, lang) => { const k = lang + "|" + t; if (t && !seen.has(k)) { seen.add(k); out.push({ t, lang }); } };
+  const rows = V.simulate(365, 1, V.avgCosts(), new Date().toISOString().slice(0, 10), false).rows;
+  rows.forEach(r => r.pa.concat(r.pb).forEach(k => {
+    const sp = I.unitSpec(k), v = V.verbs.find(x => x.id === sp.verbId);
+    if (!v || sp.pat) return;   // pattern cards ask regular tables, which are not in the card scope
+    if (sp.kind === "main") { add(I.speakText(I.newItem(sp)), "fr"); if (Number.isInteger(sp.xi)) return; }
+    else (sp.key ? v.tables[sp.tense].rows.map(x => x.key) : [sp.person]).forEach(p => add(I.speakText(I.newItem(Object.assign({}, sp, { person: p }))), "fr"));
+  }));
+  I.allClipLines("cards").forEach(L => add(L.t, L.lang));
+  return out;
 }
 
 const readJSON = f => { try { return JSON.parse(fs.readFileSync(f, "utf8")); } catch (e) { return null; } };
@@ -100,7 +117,9 @@ async function run(argv, deps = {}) {
   const rev = Object.assign({}, old.rev || {});
   const voices = Array.from(new Set(o.voices.concat(Array.isArray(old.voices) ? old.voices : [])));
   const full = deps.lines ? deps.lines.full : await appLines("full");
-  const target = deps.lines ? (o.full ? deps.lines.full : deps.lines.cards) : (o.full ? full : await appLines("cards"));
+  let target = deps.lines ? (o.full ? deps.lines.full : deps.lines.cards) : (o.full ? full : await appLines("cards"));
+  // --limit N: only the first N card lines in study order (record the rest later; nothing is recorded twice).
+  if (o.limit && !o.full) target = (deps.lines ? target : await appLines("order")).slice(0, o.limit);
 
   // Regeneration: each flagged clip that is still current gets a new revision (so a new file id), and its old file goes.
   if (o.regen) {
