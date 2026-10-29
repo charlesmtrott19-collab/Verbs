@@ -422,7 +422,7 @@ function schedSettingsHTML() {
     segRow("maxNewForms", "Most new irregular forms per day", nums([10, 15, 20, 25, 30]), "Introduced verb by verb in rank order: the infinitive, then présent (je to ils), then the other tenses.") +
 
     segRow("maxNew", "Most new regular verbs per day", nums([2, 4, 6, 8, 10, 12])) +
-    switchRow("secondPass", "Second pass", "One more recall of today’s new cards, as listening, at the end of each section.") +
+    switchRow("secondPass", "Second pass", "At the end of each section, one more go at today’s new cards (as listening) and at every card you missed or marked Hard. Practice only: it never changes when a card is next due.") +
     segRow("lapse", "When you miss a card at a review", [["gentle", "Gentle"], ["on", "In proportion"]], "In proportion: the card drops back to a gap about a quarter of the one it failed at (after a gap of 2–4 days: back to 1 day; 7 days: 2 days; 16 days: 7 days; 30 days: 16 days; 120 days or more: 30 days), then climbs again. Gentle: it drops back one step. Either way, a miss on a new card or at its 1-day review keeps it where it is, due tomorrow. Only your first try of the day counts.") +
 
     `<p class="shelp">Each card alternates between speaking (English to French) and listening (audio only). A new card is tested speaking and then listening in the second pass; its first review is speaking again. A miss goes to the back of the pile, in the same direction, until you get it right. Only your first try of the day counts toward the schedule. Speaking cards come first in a session, then listening cards.</p>` +

@@ -19,14 +19,14 @@ weaknesses drive what comes back; it must be reliable for months, and progress m
   It replaces the Claude Doc (Claude Code cannot read it). handover/ is gitignored.
 
 ## Commands
-- `npm install` once. `npm test`: 91 pass, 4 skipped (the 4 need a real export).
+- `npm install` once. `npm test`: 96 pass, 4 skipped (the 4 need a real export).
 - `VERBES_EXPORT=/path/outside/repo/backup.json npm test`: real-data checks. The backup must never enter the repo.
 - `npm run validate` (0 errors, 0 warnings required). `npm run export-forms && python3 tests/reference_check.py`
   (needs `pip install mlconjug3`; 0 mismatches required).
 - `node tests/make-golden.js` only for intended changes; report the before/after difference.
 
 ## Rules (used for every phase so far)
-- No code outside the phase being built. One APP_VERSION bump per phase (next: 6.11).
+- No code outside the phase being built. One APP_VERSION bump per phase (next: 6.12).
 - Read only the functions you change. Exact-text edits in one pass, then the full suite once.
 - Every behaviour change gets tests. Tests named "CURRENT (Phase n changes)" are updated in the phase that changes them.
 - Saved data: back up first (makeBundle), migrations safe to run twice, check with tests/real-export.test.js.
@@ -35,6 +35,6 @@ weaknesses drive what comes back; it must be reliable for months, and progress m
 - After each phase: a short status note under that phase in handover/ROADMAP.md, update its "Implementation progress"
   line, and one git commit named "Phase N (vX.Y): ...". Do not push unless Charles asks.
 
-## State (29 Oct 2026, v6.10)
-Done: Phases 0–10 (6 = v6.8, 8 = v6.9, 10 = v6.10); real-export checks pass. Pending: recording the audio
+## State (29 Oct 2026, v6.11)
+Done: Phases 0–10 (6 = v6.8, 8 = v6.9, 10 = v6.10), v6.11 feedback fixes; audio: first 230 card lines in 6 voices; real-export checks pass. Pending: recording the audio
 (OPENAI_API_KEY not yet set); pushing to GitHub; Phase 11 (optional, after 6 weeks of log). Node and Git are in C:\Program Files (add to PATH). Session A notes and departures are under each phase in handover/ROADMAP.md.

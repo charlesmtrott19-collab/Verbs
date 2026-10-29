@@ -174,17 +174,39 @@ function reviewClips(keys) {
   return { clips, spans };
 }
 function reviewRowHTML(k, spans, done) {
-  const it = reviewItem(k), x = review.items[k]; if (!it) return "";
+  const it = reviewItem(k), x = review.items[k]; if (!it || !x) return "";
   return `<li class="rvrow"${spans && spans[k] ? ` data-clips="${spans[k]}"` : ""}><div class="rvtxt"><div class="rvfr" lang="fr">${esc(it.fr)}</div><div class="rvmeta">${esc(it.meta)} · missed ${esc(fmtDate(x.on))}</div><div class="rven">${escL(it.en)}</div></div>` +
     `<div class="rvbtns">${playClipsBtn(it.say, "Play", "Play " + it.fr)}` +
     (done ? `<button class="ghost sm" data-rback="${esc(k)}">Put back</button>`
       : `<span class="rvprog">Right on ${(x.rd || []).length} of ${REVIEW_RIGHT_DAYS} days</span><button class="linkbtn sm" data-rrem="${esc(k)}">Remove</button>`) + `</div></li>`;
 }
+// v6.11: To review grouped by verb, then tense, each one collapsible. A tense shows its full table (English, Play all)
+// with the missed persons marked, then the cards themselves (progress, Remove).
+function reviewGroupsHTML(keys, sp) {
+  const byVerb = new Map();
+  keys.forEach(k => { const id = unitVerb(k); if (!BY_ID[id]) return; if (!byVerb.has(id)) byVerb.set(id, []); byVerb.get(id).push(k); });
+  const tenseOf = k => { const p = k.split("|"); return p.length === 3 ? p[1] : p[1] === "inf" || p.length === 1 ? "inf" : p[1]; };
+  const tname = t => (t === "inf" ? "Infinitive" : t === "x" ? "Expressions" : TENSES[t] ? TENSES[t].name : t);
+  return Array.from(byVerb.entries()).sort((a, b) => BY_ID[a[0]].rankNum - BY_ID[b[0]].rankNum || (BY_ID[a[0]].type < BY_ID[b[0]].type ? -1 : 1)).map(([id, ks]) => {
+    const v = BY_ID[id], groups = new Map();
+    ks.forEach(k => { const t = tenseOf(k); if (!groups.has(t)) groups.set(t, []); groups.get(t).push(k); });
+    const order = ["inf", "x"].concat(TENSE_KEYS);
+    const inner = Array.from(groups.entries()).sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0])).map(([t, gk]) => {
+      const tab = TENSES[t] && v.tables[t], persons = gk.map(k => k.split("|")[2]).filter(Boolean);
+      const label = tname(t) + (persons.length ? ` (${persons.map(p => (PRONOUNS[p] && PRONOUNS[p].fr) || p).join(", ")})` : "");
+      return `<details class="rvtense"><summary>${esc(label)}</summary>` +
+        (tab ? `<div class="ctablehead"><span>${esc(v.french)} · ${esc(TENSES[t].name)}</span>${playAllBtn(tab.rows, "Play all")}</div>${tableHTML(tab.rows, { en: true, review: new Set(persons) })}` : "") +
+        `<ul class="rvlist">${gk.map(k => reviewRowHTML(k, sp, false)).join("")}</ul></details>`;
+    }).join("");
+    return `<details class="rvverb"><summary><span class="lfr" lang="fr">${esc(v.french)}</span> <span class="count">${esc(v.gloss || v.english)} · ${plural(ks.length, "card")}</span></summary>` +
+      `<div class="btnrow"><button class="ghost sm" data-rverb="${esc(id)}">Review this verb</button></div>${inner}</details>`;
+  }).join("");
+}
 function reviewHTML() {
   const act = reviewActive(), dn = reviewDoneList(), sp = reviewClips(act).spans;
   let h = `<section class="lib rvsec" id="rvsec"><div class="libhead"><div><h2>To review</h2><p class="count">${act.length ? `${plural(act.length, "card")} you missed. Review them: see or hear each one, say it, then check. A card clears once you get it right on ${REVIEW_RIGHT_DAYS} different days.` : "Nothing to review. Cards you miss in your daily session appear here."}</p></div>` +
     (act.length ? `<div class="btnrow"><button class="primary sm" data-rstart>Review now</button><button class="play" data-rplayall aria-label="Play all to review, French then English">${ICON.play}<span>Play all</span></button><button class="ghost sm" data-rclear>Clear list</button></div>` : "") + "</div>";
-  if (act.length) h += `<ul class="rvlist">${act.map(k => reviewRowHTML(k, sp, false)).join("")}</ul>`;
+  if (act.length) h += reviewGroupsHTML(act, sp);
   if (dn.length) h += `<details class="shelpbox"><summary>Done (${dn.length}), kept for ${REVIEW_KEEP_DAYS} days</summary><ul class="rvlist">${dn.map(k => reviewRowHTML(k, null, true)).join("")}</ul></details>`;
   return h + "</section>";
 }
@@ -194,6 +216,8 @@ $("#reviewSec").addEventListener("click", async e => {
   const t = e.target;
   const say = t.closest("[data-say]"); if (say) { speak(sayArg(say), say); return; }
   if (t.closest("[data-rstart]")) { startReviewSession(); return; }
+  const rv = t.closest("[data-rverb]");
+  if (rv) { const ks = reviewActive().filter(k => unitVerb(k) === rv.dataset.rverb); if (ks.length) { startSession(ks.map(k => unitSpec(k)), "To review: " + BY_ID[rv.dataset.rverb].french, "shuffle"); if (session) session.toReview = true; } return; }
   const pa = t.closest("[data-rplayall]"); if (pa) { const c = reviewClips(reviewActive()).clips; if (c.length) speak(c, pa); return; }
   const rd = t.closest("[data-rread]");
   if (rd) {
@@ -546,7 +570,9 @@ function partLabel(s) {
   const it = s.part === "learn" ? null : curItem();
   return BLOCK_NAME[s.bi || 0] + " · " + PART_LABEL[s.part] + (it ? (it.mode === "listen" ? " · listening" : " · speaking") : "");
 }
-function secondIds(s, bi) { bi = bi === undefined ? (s.bi || 0) : bi; return Object.keys(s.vs).filter(k => unitValid(k) && s.vs[k].blk === bi && s.vs[k].isNew); }
+// The second pass (v6.11): today's new cards, plus every card missed or graded Hard at its first try. It is practice:
+// only the first try of the day sets the schedule, so nothing here moves a card.
+function secondIds(s, bi) { bi = bi === undefined ? (s.bi || 0) : bi; return Object.keys(s.vs).filter(k => unitValid(k) && s.vs[k].blk === bi && (s.vs[k].isNew || s.vs[k].fail || s.vs[k].hard)); }
 function dirFor() { return session && session.mode === "sched" ? "en-fr" : resolveDir(); }
 const homeOf = () => (session && session.mode === "sched" ? "today" : "library");
 
@@ -605,7 +631,8 @@ function enterPart(p) {
   };
   if (p === "reviews") liveIds(b.reviewIds).forEach(add);
   else if (p === "test") liveIds(b.newIds).forEach(add);
-  else if (p === "second") secondIds(s).forEach(k => { s.vs[k].mode = "listen"; listen.push(newItem(mk(k, "listen"))); s.vs[k].open = 1; s.vs[k].st = "todo"; });
+  // New cards come back for listening; missed and Hard cards in the direction they were first asked.
+  else if (p === "second") secondIds(s).forEach(k => { const m = s.vs[k].isNew ? "listen" : (s.vs[k].mode || "en-fr"); s.vs[k].mode = m; (m === "listen" ? listen : speak).push(newItem(mk(k, m))); s.vs[k].open = 1; s.vs[k].st = "todo"; });
   // Two passes: speaking first, then listening. Irregular cards are shuffled across verbs, tenses and persons.
   const order = list => (s.bi === 0 ? spread(list) : list);
   s.queue = order(speak).concat(order(listen));
@@ -794,8 +821,17 @@ function verbStatus(v) {
     label: complete ? "Complete" : core ? "Core secure" : ST_LABEL[status] };
 }
 const stTag = (s, extra) => `<span class="stag st-${s}">${esc(ST_LABEL[s])}</span>${extra || ""}`;
+// v6.11: each ring fills in quarters so early progress shows: Learning ¼ (cards on the 1–2 day steps) or ½ (4–7 days),
+// Reviewing ¾, Retained and Mastered full (Mastered darker). The status labels themselves are unchanged.
+function ringFill(st, t) {
+  const s = st.tenses[t];
+  if (s === "new") return 0;
+  if (s !== "learning") return s === "reviewing" ? 3 : 4;
+  const es = st.cards.filter(c => c.e && (st.cards.length === 1 || c.k.split("|")[1] === t)).map(c => c.e.step);
+  return es.length && es.reduce((a, b) => a + b, 0) / es.length >= 3 ? 2 : 1;
+}
 function tenseDots(st) {
-  return `<span class="tdots">${TENSE_KEYS.map(t => `<i class="sd sd-${st.tenses[t]}" title="${esc(TENSES[t].name)}: ${ST_LABEL[st.tenses[t]]}"></i>`).join("")}</span><span class="sr">${esc(TENSE_KEYS.map(t => TENSES[t].name + " " + ST_LABEL[st.tenses[t]]).join(", "))}</span>`;
+  return `<span class="tdots">${TENSE_KEYS.map(t => `<i class="sd sd-${st.tenses[t]} sf${ringFill(st, t)}" title="${esc(TENSES[t].name)}: ${ST_LABEL[st.tenses[t]]}"></i>`).join("")}</span><span class="sr">${esc(TENSE_KEYS.map(t => TENSES[t].name + " " + ST_LABEL[st.tenses[t]]).join(", "))}</span>`;
 }
 // Plain-language reason for a verb's next review, and the last 10 first attempts (practice included, labelled).
 function verbReason(v, st) {

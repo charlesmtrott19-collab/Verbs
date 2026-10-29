@@ -2870,7 +2870,7 @@
      "label": "je",
      "fr": "je parle",
      "phon": "zhuh parl",
-     "en": "",
+     "en": "I speak",
      "speak": "je parle",
      "subs": []
     },
@@ -2879,7 +2879,7 @@
      "label": "tu",
      "fr": "tu parles",
      "phon": "tew parl",
-     "en": "",
+     "en": "you speak (informal)",
      "speak": "tu parles",
      "subs": []
     },
@@ -2888,28 +2888,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on parle",
      "phon": "eel/el/oh(n) parl",
-     "en": "",
+     "en": "he speaks",
      "speak": "il parle",
      "subs": [
       {
        "label": "il",
        "fr": "il parle",
        "phon": "eel parl",
-       "en": "",
+       "en": "he speaks",
        "speak": "il parle"
       },
       {
        "label": "elle",
        "fr": "elle parle",
        "phon": "el parl",
-       "en": "",
+       "en": "she speaks",
        "speak": "elle parle"
       },
       {
        "label": "on",
        "fr": "on parle",
        "phon": "oh(n) parl",
-       "en": "",
+       "en": "one speaks\ncasual: we speak",
        "speak": "on parle"
       }
      ]
@@ -2919,7 +2919,7 @@
      "label": "nous",
      "fr": "nous parlons",
      "phon": "noo parl-oh(n)",
-     "en": "",
+     "en": "we speak",
      "speak": "nous parlons",
      "subs": []
     },
@@ -2928,7 +2928,7 @@
      "label": "vous",
      "fr": "vous parlez",
      "phon": "voo parl-ay",
-     "en": "",
+     "en": "you speak (formal, or plural)",
      "speak": "vous parlez",
      "subs": []
     },
@@ -2937,21 +2937,21 @@
      "label": "ils · elles",
      "fr": "ils/elles parlent",
      "phon": "eel/el parl",
-     "en": "",
+     "en": "they speak",
      "speak": "ils parlent",
      "subs": [
       {
        "label": "ils",
        "fr": "ils parlent",
        "phon": "eel parl",
-       "en": "",
+       "en": "they speak",
        "speak": "ils parlent"
       },
       {
        "label": "elles",
        "fr": "elles parlent",
        "phon": "el parl",
-       "en": "",
+       "en": "they speak",
        "speak": "elles parlent"
       }
      ]
@@ -2963,7 +2963,7 @@
      "label": "je",
      "fr": "j'ai parlé",
      "phon": "zhay parl-ay",
-     "en": "",
+     "en": "I spoke\nI have spoken",
      "speak": "j'ai parlé",
      "subs": []
     },
@@ -2972,7 +2972,7 @@
      "label": "tu",
      "fr": "tu as parlé",
      "phon": "tew ah parl-ay",
-     "en": "",
+     "en": "you spoke (informal)\nyou have spoken (informal)",
      "speak": "tu as parlé",
      "subs": []
     },
@@ -2981,28 +2981,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on a parlé",
      "phon": "eel/el/oh(n) ah parl-ay",
-     "en": "",
+     "en": "he spoke\nhe has spoken",
      "speak": "il a parlé",
      "subs": [
       {
        "label": "il",
        "fr": "il a parlé",
        "phon": "eel ah parl-ay",
-       "en": "",
+       "en": "he spoke\nhe has spoken",
        "speak": "il a parlé"
       },
       {
        "label": "elle",
        "fr": "elle a parlé",
        "phon": "el ah parl-ay",
-       "en": "",
+       "en": "she spoke\nshe has spoken",
        "speak": "elle a parlé"
       },
       {
        "label": "on",
        "fr": "on a parlé",
        "phon": "oh(n) nah parl-ay",
-       "en": "",
+       "en": "one spoke\none has spoken\ncasual: we spoke\ncasual: we have spoken",
        "speak": "on a parlé"
       }
      ]
@@ -3012,7 +3012,7 @@
      "label": "nous",
      "fr": "nous avons parlé",
      "phon": "noo zah-voh(n) parl-ay",
-     "en": "",
+     "en": "we spoke\nwe have spoken",
      "speak": "nous avons parlé",
      "subs": []
     },
@@ -3021,7 +3021,7 @@
      "label": "vous",
      "fr": "vous avez parlé",
      "phon": "voo zah-vay parl-ay",
-     "en": "",
+     "en": "you spoke (formal, or plural)\nyou have spoken (formal, or plural)",
      "speak": "vous avez parlé",
      "subs": []
     },
@@ -3030,21 +3030,21 @@
      "label": "ils · elles",
      "fr": "ils/elles ont parlé",
      "phon": "eel/el zoh(n) parl-ay",
-     "en": "",
+     "en": "they spoke\nthey have spoken",
      "speak": "ils ont parlé",
      "subs": [
       {
        "label": "ils",
        "fr": "ils ont parlé",
        "phon": "eel zoh(n) parl-ay",
-       "en": "",
+       "en": "they spoke\nthey have spoken",
        "speak": "ils ont parlé"
       },
       {
        "label": "elles",
        "fr": "elles ont parlé",
        "phon": "el zoh(n) parl-ay",
-       "en": "",
+       "en": "they spoke\nthey have spoken",
        "speak": "elles ont parlé"
       }
      ]
@@ -3056,7 +3056,7 @@
      "label": "je",
      "fr": "je parlais",
      "phon": "zhuh parl-eh",
-     "en": "",
+     "en": "I spoke\nI used to speak",
      "speak": "je parlais",
      "subs": []
     },
@@ -3065,7 +3065,7 @@
      "label": "tu",
      "fr": "tu parlais",
      "phon": "tew parl-eh",
-     "en": "",
+     "en": "you spoke (informal)\nyou used to speak (informal)",
      "speak": "tu parlais",
      "subs": []
     },
@@ -3074,28 +3074,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on parlait",
      "phon": "eel/el/oh(n) parl-eh",
-     "en": "",
+     "en": "he spoke\nhe used to speak",
      "speak": "il parlait",
      "subs": [
       {
        "label": "il",
        "fr": "il parlait",
        "phon": "eel parl-eh",
-       "en": "",
+       "en": "he spoke\nhe used to speak",
        "speak": "il parlait"
       },
       {
        "label": "elle",
        "fr": "elle parlait",
        "phon": "el parl-eh",
-       "en": "",
+       "en": "she spoke\nshe used to speak",
        "speak": "elle parlait"
       },
       {
        "label": "on",
        "fr": "on parlait",
        "phon": "oh(n) parl-eh",
-       "en": "",
+       "en": "one spoke\none used to speak\ncasual: we spoke\ncasual: we used to speak",
        "speak": "on parlait"
       }
      ]
@@ -3105,7 +3105,7 @@
      "label": "nous",
      "fr": "nous parlions",
      "phon": "noo parl-yoh(n)",
-     "en": "",
+     "en": "we spoke\nwe used to speak",
      "speak": "nous parlions",
      "subs": []
     },
@@ -3114,7 +3114,7 @@
      "label": "vous",
      "fr": "vous parliez",
      "phon": "voo parl-yay",
-     "en": "",
+     "en": "you spoke (formal, or plural)\nyou used to speak (formal, or plural)",
      "speak": "vous parliez",
      "subs": []
     },
@@ -3123,21 +3123,21 @@
      "label": "ils · elles",
      "fr": "ils/elles parlaient",
      "phon": "eel/el parl-eh",
-     "en": "",
+     "en": "they spoke\nthey used to speak",
      "speak": "ils parlaient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils parlaient",
        "phon": "eel parl-eh",
-       "en": "",
+       "en": "they spoke\nthey used to speak",
        "speak": "ils parlaient"
       },
       {
        "label": "elles",
        "fr": "elles parlaient",
        "phon": "el parl-eh",
-       "en": "",
+       "en": "they spoke\nthey used to speak",
        "speak": "elles parlaient"
       }
      ]
@@ -3149,7 +3149,7 @@
      "label": "je",
      "fr": "je parlerai",
      "phon": "zhuh parl-uh-ray",
-     "en": "",
+     "en": "I will speak",
      "speak": "je parlerai",
      "subs": []
     },
@@ -3158,7 +3158,7 @@
      "label": "tu",
      "fr": "tu parleras",
      "phon": "tew parl-uh-rah",
-     "en": "",
+     "en": "you will speak (informal)",
      "speak": "tu parleras",
      "subs": []
     },
@@ -3167,28 +3167,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on parlera",
      "phon": "eel/el/oh(n) parl-uh-rah",
-     "en": "",
+     "en": "he will speak",
      "speak": "il parlera",
      "subs": [
       {
        "label": "il",
        "fr": "il parlera",
        "phon": "eel parl-uh-rah",
-       "en": "",
+       "en": "he will speak",
        "speak": "il parlera"
       },
       {
        "label": "elle",
        "fr": "elle parlera",
        "phon": "el parl-uh-rah",
-       "en": "",
+       "en": "she will speak",
        "speak": "elle parlera"
       },
       {
        "label": "on",
        "fr": "on parlera",
        "phon": "oh(n) parl-uh-rah",
-       "en": "",
+       "en": "one will speak\ncasual: we will speak",
        "speak": "on parlera"
       }
      ]
@@ -3198,7 +3198,7 @@
      "label": "nous",
      "fr": "nous parlerons",
      "phon": "noo parl-uh-roh(n)",
-     "en": "",
+     "en": "we will speak",
      "speak": "nous parlerons",
      "subs": []
     },
@@ -3207,7 +3207,7 @@
      "label": "vous",
      "fr": "vous parlerez",
      "phon": "voo parl-uh-ray",
-     "en": "",
+     "en": "you will speak (formal, or plural)",
      "speak": "vous parlerez",
      "subs": []
     },
@@ -3216,21 +3216,21 @@
      "label": "ils · elles",
      "fr": "ils/elles parleront",
      "phon": "eel/el parl-uh-roh(n)",
-     "en": "",
+     "en": "they will speak",
      "speak": "ils parleront",
      "subs": [
       {
        "label": "ils",
        "fr": "ils parleront",
        "phon": "eel parl-uh-roh(n)",
-       "en": "",
+       "en": "they will speak",
        "speak": "ils parleront"
       },
       {
        "label": "elles",
        "fr": "elles parleront",
        "phon": "el parl-uh-roh(n)",
-       "en": "",
+       "en": "they will speak",
        "speak": "elles parleront"
       }
      ]
@@ -3242,7 +3242,7 @@
      "label": "je",
      "fr": "je parlerais",
      "phon": "zhuh parl-uh-reh",
-     "en": "",
+     "en": "I would speak",
      "speak": "je parlerais",
      "subs": []
     },
@@ -3251,7 +3251,7 @@
      "label": "tu",
      "fr": "tu parlerais",
      "phon": "tew parl-uh-reh",
-     "en": "",
+     "en": "you would speak (informal)",
      "speak": "tu parlerais",
      "subs": []
     },
@@ -3260,28 +3260,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on parlerait",
      "phon": "eel/el/oh(n) parl-uh-reh",
-     "en": "",
+     "en": "he would speak",
      "speak": "il parlerait",
      "subs": [
       {
        "label": "il",
        "fr": "il parlerait",
        "phon": "eel parl-uh-reh",
-       "en": "",
+       "en": "he would speak",
        "speak": "il parlerait"
       },
       {
        "label": "elle",
        "fr": "elle parlerait",
        "phon": "el parl-uh-reh",
-       "en": "",
+       "en": "she would speak",
        "speak": "elle parlerait"
       },
       {
        "label": "on",
        "fr": "on parlerait",
        "phon": "oh(n) parl-uh-reh",
-       "en": "",
+       "en": "one would speak\ncasual: we would speak",
        "speak": "on parlerait"
       }
      ]
@@ -3291,7 +3291,7 @@
      "label": "nous",
      "fr": "nous parlerions",
      "phon": "noo parl-uh-ryoh(n)",
-     "en": "",
+     "en": "we would speak",
      "speak": "nous parlerions",
      "subs": []
     },
@@ -3300,7 +3300,7 @@
      "label": "vous",
      "fr": "vous parleriez",
      "phon": "voo parl-uh-ryay",
-     "en": "",
+     "en": "you would speak (formal, or plural)",
      "speak": "vous parleriez",
      "subs": []
     },
@@ -3309,21 +3309,21 @@
      "label": "ils · elles",
      "fr": "ils/elles parleraient",
      "phon": "eel/el parl-uh-reh",
-     "en": "",
+     "en": "they would speak",
      "speak": "ils parleraient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils parleraient",
        "phon": "eel parl-uh-reh",
-       "en": "",
+       "en": "they would speak",
        "speak": "ils parleraient"
       },
       {
        "label": "elles",
        "fr": "elles parleraient",
        "phon": "el parl-uh-reh",
-       "en": "",
+       "en": "they would speak",
        "speak": "elles parleraient"
       }
      ]
@@ -3346,7 +3346,7 @@
      "label": "je",
      "fr": "je finis",
      "phon": "zhuh fee-nee",
-     "en": "",
+     "en": "I finish",
      "speak": "je finis",
      "subs": []
     },
@@ -3355,7 +3355,7 @@
      "label": "tu",
      "fr": "tu finis",
      "phon": "tew fee-nee",
-     "en": "",
+     "en": "you finish (informal)",
      "speak": "tu finis",
      "subs": []
     },
@@ -3364,28 +3364,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on finit",
      "phon": "eel/el/oh(n) fee-nee",
-     "en": "",
+     "en": "he finishes",
      "speak": "il finit",
      "subs": [
       {
        "label": "il",
        "fr": "il finit",
        "phon": "eel fee-nee",
-       "en": "",
+       "en": "he finishes",
        "speak": "il finit"
       },
       {
        "label": "elle",
        "fr": "elle finit",
        "phon": "el fee-nee",
-       "en": "",
+       "en": "she finishes",
        "speak": "elle finit"
       },
       {
        "label": "on",
        "fr": "on finit",
        "phon": "oh(n) fee-nee",
-       "en": "",
+       "en": "one finishes\ncasual: we finish",
        "speak": "on finit"
       }
      ]
@@ -3395,7 +3395,7 @@
      "label": "nous",
      "fr": "nous finissons",
      "phon": "noo fee-nee-soh(n)",
-     "en": "",
+     "en": "we finish",
      "speak": "nous finissons",
      "subs": []
     },
@@ -3404,7 +3404,7 @@
      "label": "vous",
      "fr": "vous finissez",
      "phon": "voo fee-nee-say",
-     "en": "",
+     "en": "you finish (formal, or plural)",
      "speak": "vous finissez",
      "subs": []
     },
@@ -3413,21 +3413,21 @@
      "label": "ils · elles",
      "fr": "ils/elles finissent",
      "phon": "eel/el fee-neess",
-     "en": "",
+     "en": "they finish",
      "speak": "ils finissent",
      "subs": [
       {
        "label": "ils",
        "fr": "ils finissent",
        "phon": "eel fee-neess",
-       "en": "",
+       "en": "they finish",
        "speak": "ils finissent"
       },
       {
        "label": "elles",
        "fr": "elles finissent",
        "phon": "el fee-neess",
-       "en": "",
+       "en": "they finish",
        "speak": "elles finissent"
       }
      ]
@@ -3439,7 +3439,7 @@
      "label": "je",
      "fr": "j'ai fini",
      "phon": "zhay fee-nee",
-     "en": "",
+     "en": "I finished\nI have finished",
      "speak": "j'ai fini",
      "subs": []
     },
@@ -3448,7 +3448,7 @@
      "label": "tu",
      "fr": "tu as fini",
      "phon": "tew ah fee-nee",
-     "en": "",
+     "en": "you finished (informal)\nyou have finished (informal)",
      "speak": "tu as fini",
      "subs": []
     },
@@ -3457,28 +3457,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on a fini",
      "phon": "eel/el/oh(n) ah fee-nee",
-     "en": "",
+     "en": "he finished\nhe has finished",
      "speak": "il a fini",
      "subs": [
       {
        "label": "il",
        "fr": "il a fini",
        "phon": "eel ah fee-nee",
-       "en": "",
+       "en": "he finished\nhe has finished",
        "speak": "il a fini"
       },
       {
        "label": "elle",
        "fr": "elle a fini",
        "phon": "el ah fee-nee",
-       "en": "",
+       "en": "she finished\nshe has finished",
        "speak": "elle a fini"
       },
       {
        "label": "on",
        "fr": "on a fini",
        "phon": "oh(n) nah fee-nee",
-       "en": "",
+       "en": "one finished\none has finished\ncasual: we finished\ncasual: we have finished",
        "speak": "on a fini"
       }
      ]
@@ -3488,7 +3488,7 @@
      "label": "nous",
      "fr": "nous avons fini",
      "phon": "noo zah-voh(n) fee-nee",
-     "en": "",
+     "en": "we finished\nwe have finished",
      "speak": "nous avons fini",
      "subs": []
     },
@@ -3497,7 +3497,7 @@
      "label": "vous",
      "fr": "vous avez fini",
      "phon": "voo zah-vay fee-nee",
-     "en": "",
+     "en": "you finished (formal, or plural)\nyou have finished (formal, or plural)",
      "speak": "vous avez fini",
      "subs": []
     },
@@ -3506,21 +3506,21 @@
      "label": "ils · elles",
      "fr": "ils/elles ont fini",
      "phon": "eel/el zoh(n) fee-nee",
-     "en": "",
+     "en": "they finished\nthey have finished",
      "speak": "ils ont fini",
      "subs": [
       {
        "label": "ils",
        "fr": "ils ont fini",
        "phon": "eel zoh(n) fee-nee",
-       "en": "",
+       "en": "they finished\nthey have finished",
        "speak": "ils ont fini"
       },
       {
        "label": "elles",
        "fr": "elles ont fini",
        "phon": "el zoh(n) fee-nee",
-       "en": "",
+       "en": "they finished\nthey have finished",
        "speak": "elles ont fini"
       }
      ]
@@ -3532,7 +3532,7 @@
      "label": "je",
      "fr": "je finissais",
      "phon": "zhuh fee-nee-seh",
-     "en": "",
+     "en": "I finished\nI used to finish",
      "speak": "je finissais",
      "subs": []
     },
@@ -3541,7 +3541,7 @@
      "label": "tu",
      "fr": "tu finissais",
      "phon": "tew fee-nee-seh",
-     "en": "",
+     "en": "you finished (informal)\nyou used to finish (informal)",
      "speak": "tu finissais",
      "subs": []
     },
@@ -3550,28 +3550,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on finissait",
      "phon": "eel/el/oh(n) fee-nee-seh",
-     "en": "",
+     "en": "he finished\nhe used to finish",
      "speak": "il finissait",
      "subs": [
       {
        "label": "il",
        "fr": "il finissait",
        "phon": "eel fee-nee-seh",
-       "en": "",
+       "en": "he finished\nhe used to finish",
        "speak": "il finissait"
       },
       {
        "label": "elle",
        "fr": "elle finissait",
        "phon": "el fee-nee-seh",
-       "en": "",
+       "en": "she finished\nshe used to finish",
        "speak": "elle finissait"
       },
       {
        "label": "on",
        "fr": "on finissait",
        "phon": "oh(n) fee-nee-seh",
-       "en": "",
+       "en": "one finished\none used to finish\ncasual: we finished\ncasual: we used to finish",
        "speak": "on finissait"
       }
      ]
@@ -3581,7 +3581,7 @@
      "label": "nous",
      "fr": "nous finissions",
      "phon": "noo fee-nee-syoh(n)",
-     "en": "",
+     "en": "we finished\nwe used to finish",
      "speak": "nous finissions",
      "subs": []
     },
@@ -3590,7 +3590,7 @@
      "label": "vous",
      "fr": "vous finissiez",
      "phon": "voo fee-nee-syay",
-     "en": "",
+     "en": "you finished (formal, or plural)\nyou used to finish (formal, or plural)",
      "speak": "vous finissiez",
      "subs": []
     },
@@ -3599,21 +3599,21 @@
      "label": "ils · elles",
      "fr": "ils/elles finissaient",
      "phon": "eel/el fee-nee-seh",
-     "en": "",
+     "en": "they finished\nthey used to finish",
      "speak": "ils finissaient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils finissaient",
        "phon": "eel fee-nee-seh",
-       "en": "",
+       "en": "they finished\nthey used to finish",
        "speak": "ils finissaient"
       },
       {
        "label": "elles",
        "fr": "elles finissaient",
        "phon": "el fee-nee-seh",
-       "en": "",
+       "en": "they finished\nthey used to finish",
        "speak": "elles finissaient"
       }
      ]
@@ -3625,7 +3625,7 @@
      "label": "je",
      "fr": "je finirai",
      "phon": "zhuh fee-nee-ray",
-     "en": "",
+     "en": "I will finish",
      "speak": "je finirai",
      "subs": []
     },
@@ -3634,7 +3634,7 @@
      "label": "tu",
      "fr": "tu finiras",
      "phon": "tew fee-nee-rah",
-     "en": "",
+     "en": "you will finish (informal)",
      "speak": "tu finiras",
      "subs": []
     },
@@ -3643,28 +3643,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on finira",
      "phon": "eel/el/oh(n) fee-nee-rah",
-     "en": "",
+     "en": "he will finish",
      "speak": "il finira",
      "subs": [
       {
        "label": "il",
        "fr": "il finira",
        "phon": "eel fee-nee-rah",
-       "en": "",
+       "en": "he will finish",
        "speak": "il finira"
       },
       {
        "label": "elle",
        "fr": "elle finira",
        "phon": "el fee-nee-rah",
-       "en": "",
+       "en": "she will finish",
        "speak": "elle finira"
       },
       {
        "label": "on",
        "fr": "on finira",
        "phon": "oh(n) fee-nee-rah",
-       "en": "",
+       "en": "one will finish\ncasual: we will finish",
        "speak": "on finira"
       }
      ]
@@ -3674,7 +3674,7 @@
      "label": "nous",
      "fr": "nous finirons",
      "phon": "noo fee-nee-roh(n)",
-     "en": "",
+     "en": "we will finish",
      "speak": "nous finirons",
      "subs": []
     },
@@ -3683,7 +3683,7 @@
      "label": "vous",
      "fr": "vous finirez",
      "phon": "voo fee-nee-ray",
-     "en": "",
+     "en": "you will finish (formal, or plural)",
      "speak": "vous finirez",
      "subs": []
     },
@@ -3692,21 +3692,21 @@
      "label": "ils · elles",
      "fr": "ils/elles finiront",
      "phon": "eel/el fee-nee-roh(n)",
-     "en": "",
+     "en": "they will finish",
      "speak": "ils finiront",
      "subs": [
       {
        "label": "ils",
        "fr": "ils finiront",
        "phon": "eel fee-nee-roh(n)",
-       "en": "",
+       "en": "they will finish",
        "speak": "ils finiront"
       },
       {
        "label": "elles",
        "fr": "elles finiront",
        "phon": "el fee-nee-roh(n)",
-       "en": "",
+       "en": "they will finish",
        "speak": "elles finiront"
       }
      ]
@@ -3718,7 +3718,7 @@
      "label": "je",
      "fr": "je finirais",
      "phon": "zhuh fee-nee-reh",
-     "en": "",
+     "en": "I would finish",
      "speak": "je finirais",
      "subs": []
     },
@@ -3727,7 +3727,7 @@
      "label": "tu",
      "fr": "tu finirais",
      "phon": "tew fee-nee-reh",
-     "en": "",
+     "en": "you would finish (informal)",
      "speak": "tu finirais",
      "subs": []
     },
@@ -3736,28 +3736,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on finirait",
      "phon": "eel/el/oh(n) fee-nee-reh",
-     "en": "",
+     "en": "he would finish",
      "speak": "il finirait",
      "subs": [
       {
        "label": "il",
        "fr": "il finirait",
        "phon": "eel fee-nee-reh",
-       "en": "",
+       "en": "he would finish",
        "speak": "il finirait"
       },
       {
        "label": "elle",
        "fr": "elle finirait",
        "phon": "el fee-nee-reh",
-       "en": "",
+       "en": "she would finish",
        "speak": "elle finirait"
       },
       {
        "label": "on",
        "fr": "on finirait",
        "phon": "oh(n) fee-nee-reh",
-       "en": "",
+       "en": "one would finish\ncasual: we would finish",
        "speak": "on finirait"
       }
      ]
@@ -3767,7 +3767,7 @@
      "label": "nous",
      "fr": "nous finirions",
      "phon": "noo fee-nee-ryoh(n)",
-     "en": "",
+     "en": "we would finish",
      "speak": "nous finirions",
      "subs": []
     },
@@ -3776,7 +3776,7 @@
      "label": "vous",
      "fr": "vous finiriez",
      "phon": "voo fee-nee-ryay",
-     "en": "",
+     "en": "you would finish (formal, or plural)",
      "speak": "vous finiriez",
      "subs": []
     },
@@ -3785,21 +3785,21 @@
      "label": "ils · elles",
      "fr": "ils/elles finiraient",
      "phon": "eel/el fee-nee-reh",
-     "en": "",
+     "en": "they would finish",
      "speak": "ils finiraient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils finiraient",
        "phon": "eel fee-nee-reh",
-       "en": "",
+       "en": "they would finish",
        "speak": "ils finiraient"
       },
       {
        "label": "elles",
        "fr": "elles finiraient",
        "phon": "el fee-nee-reh",
-       "en": "",
+       "en": "they would finish",
        "speak": "elles finiraient"
       }
      ]
@@ -3822,7 +3822,7 @@
      "label": "je",
      "fr": "je vends",
      "phon": "zhuh vah(n)",
-     "en": "",
+     "en": "I sell",
      "speak": "je vends",
      "subs": []
     },
@@ -3831,7 +3831,7 @@
      "label": "tu",
      "fr": "tu vends",
      "phon": "tew vah(n)",
-     "en": "",
+     "en": "you sell (informal)",
      "speak": "tu vends",
      "subs": []
     },
@@ -3840,28 +3840,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on vend",
      "phon": "eel/el/oh(n) vah(n)",
-     "en": "",
+     "en": "he sells",
      "speak": "il vend",
      "subs": [
       {
        "label": "il",
        "fr": "il vend",
        "phon": "eel vah(n)",
-       "en": "",
+       "en": "he sells",
        "speak": "il vend"
       },
       {
        "label": "elle",
        "fr": "elle vend",
        "phon": "el vah(n)",
-       "en": "",
+       "en": "she sells",
        "speak": "elle vend"
       },
       {
        "label": "on",
        "fr": "on vend",
        "phon": "oh(n) vah(n)",
-       "en": "",
+       "en": "one sells\ncasual: we sell",
        "speak": "on vend"
       }
      ]
@@ -3871,7 +3871,7 @@
      "label": "nous",
      "fr": "nous vendons",
      "phon": "noo vah(n)-doh(n)",
-     "en": "",
+     "en": "we sell",
      "speak": "nous vendons",
      "subs": []
     },
@@ -3880,7 +3880,7 @@
      "label": "vous",
      "fr": "vous vendez",
      "phon": "voo vah(n)-day",
-     "en": "",
+     "en": "you sell (formal, or plural)",
      "speak": "vous vendez",
      "subs": []
     },
@@ -3889,21 +3889,21 @@
      "label": "ils · elles",
      "fr": "ils/elles vendent",
      "phon": "eel/el vah(n)-d",
-     "en": "",
+     "en": "they sell",
      "speak": "ils vendent",
      "subs": [
       {
        "label": "ils",
        "fr": "ils vendent",
        "phon": "eel vah(n)-d",
-       "en": "",
+       "en": "they sell",
        "speak": "ils vendent"
       },
       {
        "label": "elles",
        "fr": "elles vendent",
        "phon": "el vah(n)-d",
-       "en": "",
+       "en": "they sell",
        "speak": "elles vendent"
       }
      ]
@@ -3915,7 +3915,7 @@
      "label": "je",
      "fr": "j'ai vendu",
      "phon": "zhay vah(n)-dew",
-     "en": "",
+     "en": "I sold\nI have sold",
      "speak": "j'ai vendu",
      "subs": []
     },
@@ -3924,7 +3924,7 @@
      "label": "tu",
      "fr": "tu as vendu",
      "phon": "tew ah vah(n)-dew",
-     "en": "",
+     "en": "you sold (informal)\nyou have sold (informal)",
      "speak": "tu as vendu",
      "subs": []
     },
@@ -3933,28 +3933,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on a vendu",
      "phon": "eel/el/oh(n) ah vah(n)-dew",
-     "en": "",
+     "en": "he sold\nhe has sold",
      "speak": "il a vendu",
      "subs": [
       {
        "label": "il",
        "fr": "il a vendu",
        "phon": "eel ah vah(n)-dew",
-       "en": "",
+       "en": "he sold\nhe has sold",
        "speak": "il a vendu"
       },
       {
        "label": "elle",
        "fr": "elle a vendu",
        "phon": "el ah vah(n)-dew",
-       "en": "",
+       "en": "she sold\nshe has sold",
        "speak": "elle a vendu"
       },
       {
        "label": "on",
        "fr": "on a vendu",
        "phon": "oh(n) nah vah(n)-dew",
-       "en": "",
+       "en": "one sold\none has sold\ncasual: we sold\ncasual: we have sold",
        "speak": "on a vendu"
       }
      ]
@@ -3964,7 +3964,7 @@
      "label": "nous",
      "fr": "nous avons vendu",
      "phon": "noo zah-voh(n) vah(n)-dew",
-     "en": "",
+     "en": "we sold\nwe have sold",
      "speak": "nous avons vendu",
      "subs": []
     },
@@ -3973,7 +3973,7 @@
      "label": "vous",
      "fr": "vous avez vendu",
      "phon": "voo zah-vay vah(n)-dew",
-     "en": "",
+     "en": "you sold (formal, or plural)\nyou have sold (formal, or plural)",
      "speak": "vous avez vendu",
      "subs": []
     },
@@ -3982,21 +3982,21 @@
      "label": "ils · elles",
      "fr": "ils/elles ont vendu",
      "phon": "eel/el zoh(n) vah(n)-dew",
-     "en": "",
+     "en": "they sold\nthey have sold",
      "speak": "ils ont vendu",
      "subs": [
       {
        "label": "ils",
        "fr": "ils ont vendu",
        "phon": "eel zoh(n) vah(n)-dew",
-       "en": "",
+       "en": "they sold\nthey have sold",
        "speak": "ils ont vendu"
       },
       {
        "label": "elles",
        "fr": "elles ont vendu",
        "phon": "el zoh(n) vah(n)-dew",
-       "en": "",
+       "en": "they sold\nthey have sold",
        "speak": "elles ont vendu"
       }
      ]
@@ -4008,7 +4008,7 @@
      "label": "je",
      "fr": "je vendais",
      "phon": "zhuh vah(n)-deh",
-     "en": "",
+     "en": "I sold\nI used to sell",
      "speak": "je vendais",
      "subs": []
     },
@@ -4017,7 +4017,7 @@
      "label": "tu",
      "fr": "tu vendais",
      "phon": "tew vah(n)-deh",
-     "en": "",
+     "en": "you sold (informal)\nyou used to sell (informal)",
      "speak": "tu vendais",
      "subs": []
     },
@@ -4026,28 +4026,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on vendait",
      "phon": "eel/el/oh(n) vah(n)-deh",
-     "en": "",
+     "en": "he sold\nhe used to sell",
      "speak": "il vendait",
      "subs": [
       {
        "label": "il",
        "fr": "il vendait",
        "phon": "eel vah(n)-deh",
-       "en": "",
+       "en": "he sold\nhe used to sell",
        "speak": "il vendait"
       },
       {
        "label": "elle",
        "fr": "elle vendait",
        "phon": "el vah(n)-deh",
-       "en": "",
+       "en": "she sold\nshe used to sell",
        "speak": "elle vendait"
       },
       {
        "label": "on",
        "fr": "on vendait",
        "phon": "oh(n) vah(n)-deh",
-       "en": "",
+       "en": "one sold\none used to sell\ncasual: we sold\ncasual: we used to sell",
        "speak": "on vendait"
       }
      ]
@@ -4057,7 +4057,7 @@
      "label": "nous",
      "fr": "nous vendions",
      "phon": "noo vah(n)-dyoh(n)",
-     "en": "",
+     "en": "we sold\nwe used to sell",
      "speak": "nous vendions",
      "subs": []
     },
@@ -4066,7 +4066,7 @@
      "label": "vous",
      "fr": "vous vendiez",
      "phon": "voo vah(n)-dyay",
-     "en": "",
+     "en": "you sold (formal, or plural)\nyou used to sell (formal, or plural)",
      "speak": "vous vendiez",
      "subs": []
     },
@@ -4075,21 +4075,21 @@
      "label": "ils · elles",
      "fr": "ils/elles vendaient",
      "phon": "eel/el vah(n)-deh",
-     "en": "",
+     "en": "they sold\nthey used to sell",
      "speak": "ils vendaient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils vendaient",
        "phon": "eel vah(n)-deh",
-       "en": "",
+       "en": "they sold\nthey used to sell",
        "speak": "ils vendaient"
       },
       {
        "label": "elles",
        "fr": "elles vendaient",
        "phon": "el vah(n)-deh",
-       "en": "",
+       "en": "they sold\nthey used to sell",
        "speak": "elles vendaient"
       }
      ]
@@ -4101,7 +4101,7 @@
      "label": "je",
      "fr": "je vendrai",
      "phon": "zhuh vah(n)-dray",
-     "en": "",
+     "en": "I will sell",
      "speak": "je vendrai",
      "subs": []
     },
@@ -4110,7 +4110,7 @@
      "label": "tu",
      "fr": "tu vendras",
      "phon": "tew vah(n)-drah",
-     "en": "",
+     "en": "you will sell (informal)",
      "speak": "tu vendras",
      "subs": []
     },
@@ -4119,28 +4119,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on vendra",
      "phon": "eel/el/oh(n) vah(n)-drah",
-     "en": "",
+     "en": "he will sell",
      "speak": "il vendra",
      "subs": [
       {
        "label": "il",
        "fr": "il vendra",
        "phon": "eel vah(n)-drah",
-       "en": "",
+       "en": "he will sell",
        "speak": "il vendra"
       },
       {
        "label": "elle",
        "fr": "elle vendra",
        "phon": "el vah(n)-drah",
-       "en": "",
+       "en": "she will sell",
        "speak": "elle vendra"
       },
       {
        "label": "on",
        "fr": "on vendra",
        "phon": "oh(n) vah(n)-drah",
-       "en": "",
+       "en": "one will sell\ncasual: we will sell",
        "speak": "on vendra"
       }
      ]
@@ -4150,7 +4150,7 @@
      "label": "nous",
      "fr": "nous vendrons",
      "phon": "noo vah(n)-droh(n)",
-     "en": "",
+     "en": "we will sell",
      "speak": "nous vendrons",
      "subs": []
     },
@@ -4159,7 +4159,7 @@
      "label": "vous",
      "fr": "vous vendrez",
      "phon": "voo vah(n)-dray",
-     "en": "",
+     "en": "you will sell (formal, or plural)",
      "speak": "vous vendrez",
      "subs": []
     },
@@ -4168,21 +4168,21 @@
      "label": "ils · elles",
      "fr": "ils/elles vendront",
      "phon": "eel/el vah(n)-droh(n)",
-     "en": "",
+     "en": "they will sell",
      "speak": "ils vendront",
      "subs": [
       {
        "label": "ils",
        "fr": "ils vendront",
        "phon": "eel vah(n)-droh(n)",
-       "en": "",
+       "en": "they will sell",
        "speak": "ils vendront"
       },
       {
        "label": "elles",
        "fr": "elles vendront",
        "phon": "el vah(n)-droh(n)",
-       "en": "",
+       "en": "they will sell",
        "speak": "elles vendront"
       }
      ]
@@ -4194,7 +4194,7 @@
      "label": "je",
      "fr": "je vendrais",
      "phon": "zhuh vah(n)-dreh",
-     "en": "",
+     "en": "I would sell",
      "speak": "je vendrais",
      "subs": []
     },
@@ -4203,7 +4203,7 @@
      "label": "tu",
      "fr": "tu vendrais",
      "phon": "tew vah(n)-dreh",
-     "en": "",
+     "en": "you would sell (informal)",
      "speak": "tu vendrais",
      "subs": []
     },
@@ -4212,28 +4212,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on vendrait",
      "phon": "eel/el/oh(n) vah(n)-dreh",
-     "en": "",
+     "en": "he would sell",
      "speak": "il vendrait",
      "subs": [
       {
        "label": "il",
        "fr": "il vendrait",
        "phon": "eel vah(n)-dreh",
-       "en": "",
+       "en": "he would sell",
        "speak": "il vendrait"
       },
       {
        "label": "elle",
        "fr": "elle vendrait",
        "phon": "el vah(n)-dreh",
-       "en": "",
+       "en": "she would sell",
        "speak": "elle vendrait"
       },
       {
        "label": "on",
        "fr": "on vendrait",
        "phon": "oh(n) vah(n)-dreh",
-       "en": "",
+       "en": "one would sell\ncasual: we would sell",
        "speak": "on vendrait"
       }
      ]
@@ -4243,7 +4243,7 @@
      "label": "nous",
      "fr": "nous vendrions",
      "phon": "noo vah(n)-dree-yoh(n)",
-     "en": "",
+     "en": "we would sell",
      "speak": "nous vendrions",
      "subs": []
     },
@@ -4252,7 +4252,7 @@
      "label": "vous",
      "fr": "vous vendriez",
      "phon": "voo vah(n)-dree-yay",
-     "en": "",
+     "en": "you would sell (formal, or plural)",
      "speak": "vous vendriez",
      "subs": []
     },
@@ -4261,21 +4261,21 @@
      "label": "ils · elles",
      "fr": "ils/elles vendraient",
      "phon": "eel/el vah(n)-dreh",
-     "en": "",
+     "en": "they would sell",
      "speak": "ils vendraient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils vendraient",
        "phon": "eel vah(n)-dreh",
-       "en": "",
+       "en": "they would sell",
        "speak": "ils vendraient"
       },
       {
        "label": "elles",
        "fr": "elles vendraient",
        "phon": "el vah(n)-dreh",
-       "en": "",
+       "en": "they would sell",
        "speak": "elles vendraient"
       }
      ]
@@ -4298,7 +4298,7 @@
      "label": "je",
      "fr": "j'arrive",
      "phon": "zhah-reev",
-     "en": "",
+     "en": "I arrive",
      "speak": "j'arrive",
      "subs": []
     },
@@ -4307,7 +4307,7 @@
      "label": "tu",
      "fr": "tu arrives",
      "phon": "tew ah-reev",
-     "en": "",
+     "en": "you arrive (informal)",
      "speak": "tu arrives",
      "subs": []
     },
@@ -4316,28 +4316,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on arrive",
      "phon": "eel/el/oh(n) ah-reev",
-     "en": "",
+     "en": "he arrives",
      "speak": "il arrive",
      "subs": [
       {
        "label": "il",
        "fr": "il arrive",
        "phon": "eel ah-reev",
-       "en": "",
+       "en": "he arrives",
        "speak": "il arrive"
       },
       {
        "label": "elle",
        "fr": "elle arrive",
        "phon": "el ah-reev",
-       "en": "",
+       "en": "she arrives",
        "speak": "elle arrive"
       },
       {
        "label": "on",
        "fr": "on arrive",
        "phon": "oh(n) nah-reev",
-       "en": "",
+       "en": "one arrives\ncasual: we arrive",
        "speak": "on arrive"
       }
      ]
@@ -4347,7 +4347,7 @@
      "label": "nous",
      "fr": "nous arrivons",
      "phon": "noo zah-reev-oh(n)",
-     "en": "",
+     "en": "we arrive",
      "speak": "nous arrivons",
      "subs": []
     },
@@ -4356,7 +4356,7 @@
      "label": "vous",
      "fr": "vous arrivez",
      "phon": "voo zah-reev-ay",
-     "en": "",
+     "en": "you arrive (formal, or plural)",
      "speak": "vous arrivez",
      "subs": []
     },
@@ -4365,21 +4365,21 @@
      "label": "ils · elles",
      "fr": "ils/elles arrivent",
      "phon": "eel/el zah-reev",
-     "en": "",
+     "en": "they arrive",
      "speak": "ils arrivent",
      "subs": [
       {
        "label": "ils",
        "fr": "ils arrivent",
        "phon": "eel zah-reev",
-       "en": "",
+       "en": "they arrive",
        "speak": "ils arrivent"
       },
       {
        "label": "elles",
        "fr": "elles arrivent",
        "phon": "el zah-reev",
-       "en": "",
+       "en": "they arrive",
        "speak": "elles arrivent"
       }
      ]
@@ -4391,7 +4391,7 @@
      "label": "je",
      "fr": "je suis arrivé(e)",
      "phon": "zhuh swee ah-reev-ay",
-     "en": "",
+     "en": "I arrived\nI have arrived",
      "speak": "je suis arrivé",
      "subs": []
     },
@@ -4400,7 +4400,7 @@
      "label": "tu",
      "fr": "tu es arrivé(e)",
      "phon": "tew eh ah-reev-ay",
-     "en": "",
+     "en": "you arrived (informal)\nyou have arrived (informal)",
      "speak": "tu es arrivé",
      "subs": []
     },
@@ -4409,28 +4409,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on est arrivé(e)",
      "phon": "eel/el/oh(n) eh ah-reev-ay",
-     "en": "",
+     "en": "he arrived\nhe has arrived",
      "speak": "il est arrivé",
      "subs": [
       {
        "label": "il",
        "fr": "il est arrivé",
        "phon": "eel eh ah-reev-ay",
-       "en": "",
+       "en": "he arrived\nhe has arrived",
        "speak": "il est arrivé"
       },
       {
        "label": "elle",
        "fr": "elle est arrivée",
        "phon": "el eh ah-reev-ay",
-       "en": "",
+       "en": "she arrived\nshe has arrived",
        "speak": "elle est arrivée"
       },
       {
        "label": "on",
        "fr": "on est arrivé(e)(s)",
        "phon": "oh(n) neh ah-reev-ay",
-       "en": "",
+       "en": "one arrived\none has arrived\ncasual: we arrived\ncasual: we have arrived",
        "speak": "on est arrivé"
       }
      ]
@@ -4440,7 +4440,7 @@
      "label": "nous",
      "fr": "nous sommes arrivé(e)s",
      "phon": "noo sum ah-reev-ay",
-     "en": "",
+     "en": "we arrived\nwe have arrived",
      "speak": "nous sommes arrivés",
      "subs": []
     },
@@ -4449,7 +4449,7 @@
      "label": "vous",
      "fr": "vous êtes arrivé(e)(s)",
      "phon": "voo zet ah-reev-ay",
-     "en": "",
+     "en": "you arrived (formal, or plural)\nyou have arrived (formal, or plural)",
      "speak": "vous êtes arrivé",
      "subs": []
     },
@@ -4458,21 +4458,21 @@
      "label": "ils · elles",
      "fr": "ils/elles sont arrivé(e)s",
      "phon": "eel/el soh(n) ah-reev-ay",
-     "en": "",
+     "en": "they arrived\nthey have arrived",
      "speak": "ils sont arrivés",
      "subs": [
       {
        "label": "ils",
        "fr": "ils sont arrivés",
        "phon": "eel soh(n) ah-reev-ay",
-       "en": "",
+       "en": "they arrived\nthey have arrived",
        "speak": "ils sont arrivés"
       },
       {
        "label": "elles",
        "fr": "elles sont arrivées",
        "phon": "el soh(n) ah-reev-ay",
-       "en": "",
+       "en": "they arrived\nthey have arrived",
        "speak": "elles sont arrivées"
       }
      ]
@@ -4484,7 +4484,7 @@
      "label": "je",
      "fr": "j'arrivais",
      "phon": "zhah-reev-eh",
-     "en": "",
+     "en": "I arrived\nI used to arrive",
      "speak": "j'arrivais",
      "subs": []
     },
@@ -4493,7 +4493,7 @@
      "label": "tu",
      "fr": "tu arrivais",
      "phon": "tew ah-reev-eh",
-     "en": "",
+     "en": "you arrived (informal)\nyou used to arrive (informal)",
      "speak": "tu arrivais",
      "subs": []
     },
@@ -4502,28 +4502,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on arrivait",
      "phon": "eel/el/oh(n) ah-reev-eh",
-     "en": "",
+     "en": "he arrived\nhe used to arrive",
      "speak": "il arrivait",
      "subs": [
       {
        "label": "il",
        "fr": "il arrivait",
        "phon": "eel ah-reev-eh",
-       "en": "",
+       "en": "he arrived\nhe used to arrive",
        "speak": "il arrivait"
       },
       {
        "label": "elle",
        "fr": "elle arrivait",
        "phon": "el ah-reev-eh",
-       "en": "",
+       "en": "she arrived\nshe used to arrive",
        "speak": "elle arrivait"
       },
       {
        "label": "on",
        "fr": "on arrivait",
        "phon": "oh(n) nah-reev-eh",
-       "en": "",
+       "en": "one arrived\none used to arrive\ncasual: we arrived\ncasual: we used to arrive",
        "speak": "on arrivait"
       }
      ]
@@ -4533,7 +4533,7 @@
      "label": "nous",
      "fr": "nous arrivions",
      "phon": "noo zah-reev-yoh(n)",
-     "en": "",
+     "en": "we arrived\nwe used to arrive",
      "speak": "nous arrivions",
      "subs": []
     },
@@ -4542,7 +4542,7 @@
      "label": "vous",
      "fr": "vous arriviez",
      "phon": "voo zah-reev-yay",
-     "en": "",
+     "en": "you arrived (formal, or plural)\nyou used to arrive (formal, or plural)",
      "speak": "vous arriviez",
      "subs": []
     },
@@ -4551,21 +4551,21 @@
      "label": "ils · elles",
      "fr": "ils/elles arrivaient",
      "phon": "eel/el zah-reev-eh",
-     "en": "",
+     "en": "they arrived\nthey used to arrive",
      "speak": "ils arrivaient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils arrivaient",
        "phon": "eel zah-reev-eh",
-       "en": "",
+       "en": "they arrived\nthey used to arrive",
        "speak": "ils arrivaient"
       },
       {
        "label": "elles",
        "fr": "elles arrivaient",
        "phon": "el zah-reev-eh",
-       "en": "",
+       "en": "they arrived\nthey used to arrive",
        "speak": "elles arrivaient"
       }
      ]
@@ -4577,7 +4577,7 @@
      "label": "je",
      "fr": "j'arriverai",
      "phon": "zhah-reev-uh-ray",
-     "en": "",
+     "en": "I will arrive",
      "speak": "j'arriverai",
      "subs": []
     },
@@ -4586,7 +4586,7 @@
      "label": "tu",
      "fr": "tu arriveras",
      "phon": "tew ah-reev-uh-rah",
-     "en": "",
+     "en": "you will arrive (informal)",
      "speak": "tu arriveras",
      "subs": []
     },
@@ -4595,28 +4595,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on arrivera",
      "phon": "eel/el/oh(n) ah-reev-uh-rah",
-     "en": "",
+     "en": "he will arrive",
      "speak": "il arrivera",
      "subs": [
       {
        "label": "il",
        "fr": "il arrivera",
        "phon": "eel ah-reev-uh-rah",
-       "en": "",
+       "en": "he will arrive",
        "speak": "il arrivera"
       },
       {
        "label": "elle",
        "fr": "elle arrivera",
        "phon": "el ah-reev-uh-rah",
-       "en": "",
+       "en": "she will arrive",
        "speak": "elle arrivera"
       },
       {
        "label": "on",
        "fr": "on arrivera",
        "phon": "oh(n) nah-reev-uh-rah",
-       "en": "",
+       "en": "one will arrive\ncasual: we will arrive",
        "speak": "on arrivera"
       }
      ]
@@ -4626,7 +4626,7 @@
      "label": "nous",
      "fr": "nous arriverons",
      "phon": "noo zah-reev-uh-roh(n)",
-     "en": "",
+     "en": "we will arrive",
      "speak": "nous arriverons",
      "subs": []
     },
@@ -4635,7 +4635,7 @@
      "label": "vous",
      "fr": "vous arriverez",
      "phon": "voo zah-reev-uh-ray",
-     "en": "",
+     "en": "you will arrive (formal, or plural)",
      "speak": "vous arriverez",
      "subs": []
     },
@@ -4644,21 +4644,21 @@
      "label": "ils · elles",
      "fr": "ils/elles arriveront",
      "phon": "eel/el zah-reev-uh-roh(n)",
-     "en": "",
+     "en": "they will arrive",
      "speak": "ils arriveront",
      "subs": [
       {
        "label": "ils",
        "fr": "ils arriveront",
        "phon": "eel zah-reev-uh-roh(n)",
-       "en": "",
+       "en": "they will arrive",
        "speak": "ils arriveront"
       },
       {
        "label": "elles",
        "fr": "elles arriveront",
        "phon": "el zah-reev-uh-roh(n)",
-       "en": "",
+       "en": "they will arrive",
        "speak": "elles arriveront"
       }
      ]
@@ -4670,7 +4670,7 @@
      "label": "je",
      "fr": "j'arriverais",
      "phon": "zhah-reev-uh-reh",
-     "en": "",
+     "en": "I would arrive",
      "speak": "j'arriverais",
      "subs": []
     },
@@ -4679,7 +4679,7 @@
      "label": "tu",
      "fr": "tu arriverais",
      "phon": "tew ah-reev-uh-reh",
-     "en": "",
+     "en": "you would arrive (informal)",
      "speak": "tu arriverais",
      "subs": []
     },
@@ -4688,28 +4688,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on arriverait",
      "phon": "eel/el/oh(n) ah-reev-uh-reh",
-     "en": "",
+     "en": "he would arrive",
      "speak": "il arriverait",
      "subs": [
       {
        "label": "il",
        "fr": "il arriverait",
        "phon": "eel ah-reev-uh-reh",
-       "en": "",
+       "en": "he would arrive",
        "speak": "il arriverait"
       },
       {
        "label": "elle",
        "fr": "elle arriverait",
        "phon": "el ah-reev-uh-reh",
-       "en": "",
+       "en": "she would arrive",
        "speak": "elle arriverait"
       },
       {
        "label": "on",
        "fr": "on arriverait",
        "phon": "oh(n) nah-reev-uh-reh",
-       "en": "",
+       "en": "one would arrive\ncasual: we would arrive",
        "speak": "on arriverait"
       }
      ]
@@ -4719,7 +4719,7 @@
      "label": "nous",
      "fr": "nous arriverions",
      "phon": "noo zah-reev-uh-ryoh(n)",
-     "en": "",
+     "en": "we would arrive",
      "speak": "nous arriverions",
      "subs": []
     },
@@ -4728,7 +4728,7 @@
      "label": "vous",
      "fr": "vous arriveriez",
      "phon": "voo zah-reev-uh-ryay",
-     "en": "",
+     "en": "you would arrive (formal, or plural)",
      "speak": "vous arriveriez",
      "subs": []
     },
@@ -4737,21 +4737,21 @@
      "label": "ils · elles",
      "fr": "ils/elles arriveraient",
      "phon": "eel/el zah-reev-uh-reh",
-     "en": "",
+     "en": "they would arrive",
      "speak": "ils arriveraient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils arriveraient",
        "phon": "eel zah-reev-uh-reh",
-       "en": "",
+       "en": "they would arrive",
        "speak": "ils arriveraient"
       },
       {
        "label": "elles",
        "fr": "elles arriveraient",
        "phon": "el zah-reev-uh-reh",
-       "en": "",
+       "en": "they would arrive",
        "speak": "elles arriveraient"
       }
      ]
@@ -4774,7 +4774,7 @@
      "label": "je",
      "fr": "j'étudie",
      "phon": "zhay-tew-dee",
-     "en": "",
+     "en": "I study",
      "speak": "j'étudie",
      "subs": []
     },
@@ -4783,7 +4783,7 @@
      "label": "tu",
      "fr": "tu étudies",
      "phon": "tew ay-tew-dee",
-     "en": "",
+     "en": "you study (informal)",
      "speak": "tu étudies",
      "subs": []
     },
@@ -4792,28 +4792,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on étudie",
      "phon": "eel/el/oh(n) ay-tew-dee",
-     "en": "",
+     "en": "he studies",
      "speak": "il étudie",
      "subs": [
       {
        "label": "il",
        "fr": "il étudie",
        "phon": "eel ay-tew-dee",
-       "en": "",
+       "en": "he studies",
        "speak": "il étudie"
       },
       {
        "label": "elle",
        "fr": "elle étudie",
        "phon": "el ay-tew-dee",
-       "en": "",
+       "en": "she studies",
        "speak": "elle étudie"
       },
       {
        "label": "on",
        "fr": "on étudie",
        "phon": "oh(n) nay-tew-dee",
-       "en": "",
+       "en": "one studies\ncasual: we study",
        "speak": "on étudie"
       }
      ]
@@ -4823,7 +4823,7 @@
      "label": "nous",
      "fr": "nous étudions",
      "phon": "noo zay-tew-dee-oh(n)",
-     "en": "",
+     "en": "we study",
      "speak": "nous étudions",
      "subs": []
     },
@@ -4832,7 +4832,7 @@
      "label": "vous",
      "fr": "vous étudiez",
      "phon": "voo zay-tew-dee-ay",
-     "en": "",
+     "en": "you study (formal, or plural)",
      "speak": "vous étudiez",
      "subs": []
     },
@@ -4841,21 +4841,21 @@
      "label": "ils · elles",
      "fr": "ils/elles étudient",
      "phon": "eel/el zay-tew-dee",
-     "en": "",
+     "en": "they study",
      "speak": "ils étudient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils étudient",
        "phon": "eel zay-tew-dee",
-       "en": "",
+       "en": "they study",
        "speak": "ils étudient"
       },
       {
        "label": "elles",
        "fr": "elles étudient",
        "phon": "el zay-tew-dee",
-       "en": "",
+       "en": "they study",
        "speak": "elles étudient"
       }
      ]
@@ -4867,7 +4867,7 @@
      "label": "je",
      "fr": "j'ai étudié",
      "phon": "zhay ay-tew-dee-ay",
-     "en": "",
+     "en": "I studied\nI have studied",
      "speak": "j'ai étudié",
      "subs": []
     },
@@ -4876,7 +4876,7 @@
      "label": "tu",
      "fr": "tu as étudié",
      "phon": "tew ah ay-tew-dee-ay",
-     "en": "",
+     "en": "you studied (informal)\nyou have studied (informal)",
      "speak": "tu as étudié",
      "subs": []
     },
@@ -4885,28 +4885,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on a étudié",
      "phon": "eel/el/oh(n) ah ay-tew-dee-ay",
-     "en": "",
+     "en": "he studied\nhe has studied",
      "speak": "il a étudié",
      "subs": [
       {
        "label": "il",
        "fr": "il a étudié",
        "phon": "eel ah ay-tew-dee-ay",
-       "en": "",
+       "en": "he studied\nhe has studied",
        "speak": "il a étudié"
       },
       {
        "label": "elle",
        "fr": "elle a étudié",
        "phon": "el ah ay-tew-dee-ay",
-       "en": "",
+       "en": "she studied\nshe has studied",
        "speak": "elle a étudié"
       },
       {
        "label": "on",
        "fr": "on a étudié",
        "phon": "oh(n) nah ay-tew-dee-ay",
-       "en": "",
+       "en": "one studied\none has studied\ncasual: we studied\ncasual: we have studied",
        "speak": "on a étudié"
       }
      ]
@@ -4916,7 +4916,7 @@
      "label": "nous",
      "fr": "nous avons étudié",
      "phon": "noo zah-voh(n) ay-tew-dee-ay",
-     "en": "",
+     "en": "we studied\nwe have studied",
      "speak": "nous avons étudié",
      "subs": []
     },
@@ -4925,7 +4925,7 @@
      "label": "vous",
      "fr": "vous avez étudié",
      "phon": "voo zah-vay ay-tew-dee-ay",
-     "en": "",
+     "en": "you studied (formal, or plural)\nyou have studied (formal, or plural)",
      "speak": "vous avez étudié",
      "subs": []
     },
@@ -4934,21 +4934,21 @@
      "label": "ils · elles",
      "fr": "ils/elles ont étudié",
      "phon": "eel/el zoh(n) ay-tew-dee-ay",
-     "en": "",
+     "en": "they studied\nthey have studied",
      "speak": "ils ont étudié",
      "subs": [
       {
        "label": "ils",
        "fr": "ils ont étudié",
        "phon": "eel zoh(n) ay-tew-dee-ay",
-       "en": "",
+       "en": "they studied\nthey have studied",
        "speak": "ils ont étudié"
       },
       {
        "label": "elles",
        "fr": "elles ont étudié",
        "phon": "el zoh(n) ay-tew-dee-ay",
-       "en": "",
+       "en": "they studied\nthey have studied",
        "speak": "elles ont étudié"
       }
      ]
@@ -4960,7 +4960,7 @@
      "label": "je",
      "fr": "j'étudiais",
      "phon": "zhay-tew-dee-eh",
-     "en": "",
+     "en": "I studied\nI used to study",
      "speak": "j'étudiais",
      "subs": []
     },
@@ -4969,7 +4969,7 @@
      "label": "tu",
      "fr": "tu étudiais",
      "phon": "tew ay-tew-dee-eh",
-     "en": "",
+     "en": "you studied (informal)\nyou used to study (informal)",
      "speak": "tu étudiais",
      "subs": []
     },
@@ -4978,28 +4978,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on étudiait",
      "phon": "eel/el/oh(n) ay-tew-dee-eh",
-     "en": "",
+     "en": "he studied\nhe used to study",
      "speak": "il étudiait",
      "subs": [
       {
        "label": "il",
        "fr": "il étudiait",
        "phon": "eel ay-tew-dee-eh",
-       "en": "",
+       "en": "he studied\nhe used to study",
        "speak": "il étudiait"
       },
       {
        "label": "elle",
        "fr": "elle étudiait",
        "phon": "el ay-tew-dee-eh",
-       "en": "",
+       "en": "she studied\nshe used to study",
        "speak": "elle étudiait"
       },
       {
        "label": "on",
        "fr": "on étudiait",
        "phon": "oh(n) nay-tew-dee-eh",
-       "en": "",
+       "en": "one studied\none used to study\ncasual: we studied\ncasual: we used to study",
        "speak": "on étudiait"
       }
      ]
@@ -5009,7 +5009,7 @@
      "label": "nous",
      "fr": "nous étudiions",
      "phon": "noo zay-tew-dee-yoh(n)",
-     "en": "",
+     "en": "we studied\nwe used to study",
      "speak": "nous étudiions",
      "subs": []
     },
@@ -5018,7 +5018,7 @@
      "label": "vous",
      "fr": "vous étudiiez",
      "phon": "voo zay-tew-dee-yay",
-     "en": "",
+     "en": "you studied (formal, or plural)\nyou used to study (formal, or plural)",
      "speak": "vous étudiiez",
      "subs": []
     },
@@ -5027,21 +5027,21 @@
      "label": "ils · elles",
      "fr": "ils/elles étudiaient",
      "phon": "eel/el zay-tew-dee-eh",
-     "en": "",
+     "en": "they studied\nthey used to study",
      "speak": "ils étudiaient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils étudiaient",
        "phon": "eel zay-tew-dee-eh",
-       "en": "",
+       "en": "they studied\nthey used to study",
        "speak": "ils étudiaient"
       },
       {
        "label": "elles",
        "fr": "elles étudiaient",
        "phon": "el zay-tew-dee-eh",
-       "en": "",
+       "en": "they studied\nthey used to study",
        "speak": "elles étudiaient"
       }
      ]
@@ -5053,7 +5053,7 @@
      "label": "je",
      "fr": "j'étudierai",
      "phon": "zhay-tew-dee-uh-ray",
-     "en": "",
+     "en": "I will study",
      "speak": "j'étudierai",
      "subs": []
     },
@@ -5062,7 +5062,7 @@
      "label": "tu",
      "fr": "tu étudieras",
      "phon": "tew ay-tew-dee-uh-rah",
-     "en": "",
+     "en": "you will study (informal)",
      "speak": "tu étudieras",
      "subs": []
     },
@@ -5071,28 +5071,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on étudiera",
      "phon": "eel/el/oh(n) ay-tew-dee-uh-rah",
-     "en": "",
+     "en": "he will study",
      "speak": "il étudiera",
      "subs": [
       {
        "label": "il",
        "fr": "il étudiera",
        "phon": "eel ay-tew-dee-uh-rah",
-       "en": "",
+       "en": "he will study",
        "speak": "il étudiera"
       },
       {
        "label": "elle",
        "fr": "elle étudiera",
        "phon": "el ay-tew-dee-uh-rah",
-       "en": "",
+       "en": "she will study",
        "speak": "elle étudiera"
       },
       {
        "label": "on",
        "fr": "on étudiera",
        "phon": "oh(n) nay-tew-dee-uh-rah",
-       "en": "",
+       "en": "one will study\ncasual: we will study",
        "speak": "on étudiera"
       }
      ]
@@ -5102,7 +5102,7 @@
      "label": "nous",
      "fr": "nous étudierons",
      "phon": "noo zay-tew-dee-uh-roh(n)",
-     "en": "",
+     "en": "we will study",
      "speak": "nous étudierons",
      "subs": []
     },
@@ -5111,7 +5111,7 @@
      "label": "vous",
      "fr": "vous étudierez",
      "phon": "voo zay-tew-dee-uh-ray",
-     "en": "",
+     "en": "you will study (formal, or plural)",
      "speak": "vous étudierez",
      "subs": []
     },
@@ -5120,21 +5120,21 @@
      "label": "ils · elles",
      "fr": "ils/elles étudieront",
      "phon": "eel/el zay-tew-dee-uh-roh(n)",
-     "en": "",
+     "en": "they will study",
      "speak": "ils étudieront",
      "subs": [
       {
        "label": "ils",
        "fr": "ils étudieront",
        "phon": "eel zay-tew-dee-uh-roh(n)",
-       "en": "",
+       "en": "they will study",
        "speak": "ils étudieront"
       },
       {
        "label": "elles",
        "fr": "elles étudieront",
        "phon": "el zay-tew-dee-uh-roh(n)",
-       "en": "",
+       "en": "they will study",
        "speak": "elles étudieront"
       }
      ]
@@ -5146,7 +5146,7 @@
      "label": "je",
      "fr": "j'étudierais",
      "phon": "zhay-tew-dee-uh-reh",
-     "en": "",
+     "en": "I would study",
      "speak": "j'étudierais",
      "subs": []
     },
@@ -5155,7 +5155,7 @@
      "label": "tu",
      "fr": "tu étudierais",
      "phon": "tew ay-tew-dee-uh-reh",
-     "en": "",
+     "en": "you would study (informal)",
      "speak": "tu étudierais",
      "subs": []
     },
@@ -5164,28 +5164,28 @@
      "label": "il · elle · on",
      "fr": "il/elle/on étudierait",
      "phon": "eel/el/oh(n) ay-tew-dee-uh-reh",
-     "en": "",
+     "en": "he would study",
      "speak": "il étudierait",
      "subs": [
       {
        "label": "il",
        "fr": "il étudierait",
        "phon": "eel ay-tew-dee-uh-reh",
-       "en": "",
+       "en": "he would study",
        "speak": "il étudierait"
       },
       {
        "label": "elle",
        "fr": "elle étudierait",
        "phon": "el ay-tew-dee-uh-reh",
-       "en": "",
+       "en": "she would study",
        "speak": "elle étudierait"
       },
       {
        "label": "on",
        "fr": "on étudierait",
        "phon": "oh(n) nay-tew-dee-uh-reh",
-       "en": "",
+       "en": "one would study\ncasual: we would study",
        "speak": "on étudierait"
       }
      ]
@@ -5195,7 +5195,7 @@
      "label": "nous",
      "fr": "nous étudierions",
      "phon": "noo zay-tew-dee-uh-ryoh(n)",
-     "en": "",
+     "en": "we would study",
      "speak": "nous étudierions",
      "subs": []
     },
@@ -5204,7 +5204,7 @@
      "label": "vous",
      "fr": "vous étudieriez",
      "phon": "voo zay-tew-dee-uh-ryay",
-     "en": "",
+     "en": "you would study (formal, or plural)",
      "speak": "vous étudieriez",
      "subs": []
     },
@@ -5213,21 +5213,21 @@
      "label": "ils · elles",
      "fr": "ils/elles étudieraient",
      "phon": "eel/el zay-tew-dee-uh-reh",
-     "en": "",
+     "en": "they would study",
      "speak": "ils étudieraient",
      "subs": [
       {
        "label": "ils",
        "fr": "ils étudieraient",
        "phon": "eel zay-tew-dee-uh-reh",
-       "en": "",
+       "en": "they would study",
        "speak": "ils étudieraient"
       },
       {
        "label": "elles",
        "fr": "elles étudieraient",
        "phon": "el zay-tew-dee-uh-reh",
-       "en": "",
+       "en": "they would study",
        "speak": "elles étudieraient"
       }
      ]

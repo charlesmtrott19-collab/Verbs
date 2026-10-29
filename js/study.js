@@ -305,8 +305,9 @@ function formHTML(it, v) {
   } else {
     if (r.subs) h += subsHTML(it, r); else h += `<div class="cbig fr" lang="fr">${esc(r.fr)}</div>${phonBlock(r.phon, it)}${r.en ? `<div class="cen">${escL(r.en)}</div>` : `<div class="cen">${esc(v.english)}</div>`}<div class="cplay">${playBtn(r.speak, "Play")}</div>`;
     if (listenMode) h += soundAlike(v, it);
-    // Key and pattern cards show the whole tense with the asked person highlighted, so each review re-exposes the pattern.
-    if (it.key || it.pat) h += tableHTML(v.tables[it.tense].rows, { ask: it.person });
+    // Every form card shows the whole tense, with English and Play all, the asked person highlighted (v6.11).
+    const rows = v.tables[it.tense].rows;
+    h += `<div class="ctable"><div class="ctablehead"><span>${esc(v.french)} · ${esc(T.name)}</span>${playAllBtn(rows, "Play all")}</div>${tableHTML(rows, { ask: it.person, en: true })}</div>`;
     if (it.pending) h += `<p class="verdict ${it.pending}">${it.pending === "known" ? "Marked as known." : "Marked as don’t know. It comes back in a few cards."}</p>`;
     h += fullLink(v);
   }

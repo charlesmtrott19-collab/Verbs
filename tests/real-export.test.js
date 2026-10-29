@@ -67,7 +67,9 @@ test("CURRENT (Phase 6 changes) 14-day forecast of existing cards drops against 
   assert.ok(after < before, `before ${before}, after ${after}`);
 });
 
-test("Phase 6 migration (2C): one key card per started tense, weakest step, nothing due before today", { skip }, async t => {
+// Only meaningful on a backup made before v6.8: later backups already hold key cards that have since been studied.
+const migrated = data && Object.keys(data.formsched.forms).some(k => k.endsWith("|*"));
+test("Phase 6 migration (2C): one key card per started tense, weakest step, nothing due before today", { skip: skip || (migrated && "this backup is already on the card model (v6.8+)") }, async t => {
   const app = await loadApp({ localStorage: exportToStorage(data) });
   try {
     const I = app.internals, F = plain(app.verbes.formsched.forms), old = data.formsched.forms;

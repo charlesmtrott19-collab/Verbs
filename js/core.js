@@ -4,7 +4,7 @@
 /* =========================================================================
    CONSTANTS AND SMALL HELPERS
    ========================================================================= */
-const APP_VERSION = "6.10";
+const APP_VERSION = "6.11";
 const SCHEMA = 1;
 // Storage keys. NEVER rename these: saved progress lives under them.
 const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", lastbackup: "frverbs.lastbackup", sync: "frverbs.sync", syncat: "frverbs.syncat", review: "frverbs.review", aikey: "frverbs.aikey", aibad: "frverbs.aibad", aistats: "frverbs.aistats", clipcache: "frverbs.clipcache", backup: "frverbs.backup." };

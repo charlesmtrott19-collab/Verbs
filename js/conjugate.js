@@ -112,7 +112,44 @@ function addSubs(rows, v) {
     });
   });
 }
-function buildTable(v, t) { const tb = buildTable0(v, t); addSubs(tb.rows, v); return tb; }
+function buildTable(v, t) { const tb = buildTable0(v, t); if (v.type === "regular") tb.rows.forEach(r => { if (!r.en) r.en = enRegular(v, t, r.key); }); addSubs(tb.rows, v); return tb; }
+
+/* ---------- English for regular verbs (v6.11) ----------
+   Built from the verb's first English meaning ("to look for" -> "he looks for", "I looked / have looked for"), in the same
+   shape as the irregular verbs' data. Irregular English verbs come from EN_IRR (past, participle); everything else by rule. */
+const EN_IRR = { be: ["was", "been"], begin: ["began", "begun"], buy: ["bought", "bought"], choose: ["chose", "chosen"], cost: ["cost", "cost"],
+  do: ["did", "done"], draw: ["drew", "drawn"], eat: ["ate", "eaten"], fall: ["fell", "fallen"], feed: ["fed", "fed"], find: ["found", "found"],
+  get: ["got", "got"], give: ["gave", "given"], go: ["went", "gone"], grow: ["grew", "grown"], hang: ["hung", "hung"], have: ["had", "had"],
+  hear: ["heard", "heard"], keep: ["kept", "kept"], leave: ["left", "left"], lend: ["lent", "lent"], lose: ["lost", "lost"], meet: ["met", "met"],
+  pay: ["paid", "paid"], put: ["put", "put"], sell: ["sold", "sold"], show: ["showed", "shown"], sing: ["sang", "sung"], speak: ["spoke", "spoken"],
+  spend: ["spent", "spent"], swim: ["swam", "swum"], take: ["took", "taken"], teach: ["taught", "taught"], tell: ["told", "told"],
+  think: ["thought", "thought"], throw: ["threw", "thrown"], wake: ["woke", "woken"], wear: ["wore", "worn"] };
+const EN_DOUBLE = new Set(["chat", "regret", "skip", "stop", "travel", "prefer", "plan", "shop", "drop", "admit"]);
+const EN_SUBJ = { je: "I", tu: "you", il: "he/she/one", nous: "we", vous: "you", ils: "they" };
+const en3 = h => (h === "have" ? "has" : /(s|sh|ch|x|z|o)$/.test(h) ? h + "es" : /[^aeiou]y$/.test(h) ? h.slice(0, -1) + "ies" : h + "s");
+function enPast(h) {
+  if (EN_IRR[h]) return EN_IRR[h];
+  const p = /e$/.test(h) ? h + "d" : /[^aeiou]y$/.test(h) ? h.slice(0, -1) + "ied" : EN_DOUBLE.has(h) ? h + h.slice(-1) + "ed" : h + "ed";
+  return [p, p];
+}
+function enRegular(v, t, p) {
+  const g = String(v.gloss || "").split(/,|;| \/ /)[0].replace(/\([^)]*\)/g, "").replace(/^\s*to\s+/, "").replace(/\s+/g, " ").trim();
+  if (!g) return "";
+  const sp = g.indexOf(" "), h = sp < 0 ? g : g.slice(0, sp), rest = sp < 0 ? "" : g.slice(sp);
+  const s = v.impersonal ? "it" : EN_SUBJ[p], third = p === "il", sing1 = p === "je";
+  const [past, pp] = enPast(h);
+  const be = (pres) => (pres ? (sing1 ? "am" : third ? "is" : "are") : (sing1 || third ? "was" : "were"));
+  const pres = h === "be" ? be(true) : third ? en3(h) : h, pst = h === "be" ? be(false) : past;
+  const have = third ? "has" : "have";
+  const out = {
+    present: `${s} ${pres}${rest}`,
+    passe_compose: `${s} ${pst}${rest} / ${have} ${pp}${rest}`,
+    imparfait: `${s} ${pst}${rest} / used to ${h}${rest}`,
+    futur: `${s} will ${h}${rest}`,
+    conditionnel: `${s} would ${h}${rest}`
+  }[t];
+  return out || "";
+}
 
 function prepareVerb(raw, i) {
   const en = raw.english.trim().replace(/^to go \/ come home$/, "to go home, to come home"), G = RULESX[raw.group];
