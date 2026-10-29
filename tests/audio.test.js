@@ -48,14 +48,17 @@ test("acceptance: every card of a session has a recorded clip, fetched only from
   try {
     const I = app.internals;
     await I.loadManifest();
-    // Every card the scheduler can put in a session (2,977), speaking or listening, has a clip in both voices.
+    // Every card the scheduler can put in a session (1,136 since v6.8), speaking or listening, has a clip in both
+    // voices; a key card in every person it can ask. Pattern cards (regular tables) use the browser voice.
     const keys = new Set();
     app.verbes.verbs.forEach(v => (v.type === "irregular" ? I.verbUnits(v) : [v.id]).forEach(k => keys.add(k)));
-    assert.equal(keys.size, 2977);
+    assert.equal(keys.size, 1136);
     for (const k of keys) {
-      const p = k.split("|"), it = I.newItem(p.length === 1 || p[1] === "inf" ? { verbId: p[0], kind: "main" } : { verbId: p[0], kind: "form", tense: p[1], person: p[2] });
-      const t = I.speakText(it);
-      assert.deepEqual(plain(I.voicesFor("fr", t)), ["marin", "cedar"], k);
+      const sp = I.unitSpec(k), v = app.verbes.verbs.find(x => x.id === sp.verbId);
+      for (const person of sp.key ? v.tables[sp.tense].rows.map(r => r.key) : [sp.person]) {
+        const t = I.speakText(I.newItem(Object.assign({}, sp, { person })));
+        assert.deepEqual(plain(I.voicesFor("fr", t)), ["marin", "cedar"], k + " " + person);
+      }
     }
     const t = I.speakText(I.newItem({ verbId: "etre", kind: "form", tense: "present", person: "je" }));
     const blob = await I.aiClip("marin", "fr", t);

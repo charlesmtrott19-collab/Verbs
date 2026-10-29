@@ -20,7 +20,8 @@ const HOOK_NAMES = ["applyResult", "lapseStep", "relapse", "addDays", "dayDiff",
   "LADDER", "GOOD_FACTOR", "HARD_FACTOR", "MAX_GAP", "LAPSE_TO", "REVIEW_CAP", "capReviews", "riskOf", "migrateSched", "curState", "soundAlike", "reviewRecall", "REG_MIN",
   "verbDetailHTML", "mainHTML", "newItem", "schedSections", "sectionVerbs", "familyText",
   "allClipLines", "loadManifest", "aiClip", "pickVoice", "voicesFor", "flagClip", "regenOpen", "regenFile", "speakText", "playLine",
-  "cardStatus", "verbStatus", "progressMetrics", "progressHTML", "libVerbHTML", "libList", "loadLog", "paceText", "undo"];
+  "cardStatus", "verbStatus", "progressMetrics", "progressHTML", "libVerbHTML", "libList", "loadLog", "paceText", "undo",
+  "unitSpec", "unitValid", "unitKey", "PATTERNS", "migrateCards", "irrOrder", "regOrder", "samplePerson", "sampled", "presentPassed", "TENSE_OFF", "selectNew", "exprHTML", "formHTML"];
 const HOOK = "\nwindow.__verbesTest = { setSetting(k, v) { settings[k] = v; } };\n" +
   JSON.stringify(HOOK_NAMES) + ".forEach(n => { try { window.__verbesTest[n] = eval(n); } catch (e) {} });\n";
 

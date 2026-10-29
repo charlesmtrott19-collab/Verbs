@@ -58,9 +58,32 @@ test("a 365-day simulation from this data, with a 7-day break, never goes over 3
 });
 
 // 14 days, not 7: a 7-day window can cut between two days when a group of cards moves by one day (15 vs 14 days).
-test("14-day forecast of existing cards within 10% of the previous version, measured as if reviews were on time", { skip: skip || (!OLD && "set VERBES_OLD_INDEX to compare") }, async () => {
+// CURRENT (Phase 6 changes): key cards replace 6 person cards per tense, so the forecast must drop (Section 2C).
+test("CURRENT (Phase 6 changes) 14-day forecast of existing cards drops against the previous version, measured as if reviews were on time", { skip: skip || (!OLD && "set VERBES_OLD_INDEX to compare") }, async t => {
   const probe = await loadApp(); const { addDays, dayDiff } = probe.internals; probe.close();
   const d = onTime(data, addDays, dayDiff);
   const [before, after] = [await forecast(OLD, d), await forecast(undefined, d)];
-  assert.ok(Math.abs(after - before) / before <= 0.10, `before ${before}, after ${after}`);
+  t.diagnostic(`14-day forecast: before ${before}, after ${after}`);
+  assert.ok(after < before, `before ${before}, after ${after}`);
+});
+
+test("Phase 6 migration (2C): one key card per started tense, weakest step, nothing due before today", { skip }, async t => {
+  const app = await loadApp({ localStorage: exportToStorage(data) });
+  try {
+    const I = app.internals, F = plain(app.verbes.formsched.forms), old = data.formsched.forms;
+    let want = 0, tenses = 0;
+    app.verbes.verbs.filter(v => v.type === "irregular" && !v.impersonal && !v.expressions.length).forEach(v => {
+      ["passe_compose", "imparfait", "futur", "conditionnel"].forEach(tn => {
+        const olds = v.tables[tn].rows.map(r => old[v.id + "|" + tn + "|" + r.key]).filter(Boolean), k = v.id + "|" + tn + "|*";
+        if (!olds.length) { assert.ok(!F[k], k); return; }
+        want++; tenses++;
+        assert.ok(F[k], k);
+        assert.equal(F[k].step, Math.min(...olds.map(e => e.step)), k + " weakest step");
+        assert.ok(F[k].due >= T, k + " due " + F[k].due);
+      });
+    });
+    const keys = Object.keys(F).filter(k => k.endsWith("|*"));
+    assert.equal(keys.length, want);
+    t.diagnostic(`key cards: ${keys.length} (one per started tense of each verb); scheduled irregular cards ${Object.keys(F).filter(I.unitValid).length}, was ${Object.keys(old).length}`);
+  } finally { app.close(); }
 });
