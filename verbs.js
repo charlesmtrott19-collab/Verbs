@@ -37,10 +37,30 @@
      hAspire      Optional. true only if the verb starts with an aspirated h (no j', no
                   liaison), e.g. haïr. Otherwise a starting h is treated as silent.
      test         Optional. true marks a test entry, so it is easy to find and remove.
+     hint         Optional. A short disambiguator shown in brackets after the English prompt:
+                  english "to know" + hint "a person, a place" shows "to know (a person, a place)".
+                  Give one to every verb that shares an English prompt (the validator warns).
+                  It must not give the answer away.
+     persons      Optional. The persons the verb is drilled in, e.g. ["il"]. Its tables (written
+                  or generated) then hold only these persons, and conjugations need only them.
+                  ["il"] alone means an impersonal verb (falloir, pleuvoir, se passer): the
+                  pronoun is il, never elle or on, the English starts with "it", and a generated
+                  être passé composé shows no agreement (il s'est passé).
+     reflexive    Optional, regular verbs only. true for se lever, s'appeler: french starts with
+                  "se " or "s'"; every generated form gets me, te, se, nous, vous, se (m', t', s'
+                  before a vowel or silent h); the passé composé uses être with agreement. Write
+                  overrides in conjugations WITHOUT the reflexive pronoun ("appelle"); the app
+                  adds it. Irregular reflexive verbs keep the pronoun in every written form.
+     expressions  Optional. 1 to 3 fixed phrases the verb is mostly used in, each { fr, phon, en }:
+                    expressions: [ { fr: "il vaut mieux", phon: "eel voh myuh", en: "it's better to" } ]
+                  Shown in Learn (they become cards in a later version).
+     family       Optional. "like <infinitive>" when the verb follows another verb's pattern,
+                  e.g. "like prendre" on apprendre. Shown on cards and in Learn, where the named
+                  verb lists its family. It never changes the order of introduction.
      conjugations REQUIRED for irregular verbs, with a table for EVERY tense in TENSES.
                   Optional for regular verbs: a table here REPLACES the generated forms for
                   that tense only (use it for spelling changes, e.g. manger: nous mangeons).
-                  Each table lists all six persons:
+                  Each table lists all six persons (or only those in persons):
 
                     present: {
                       je:   { fr: "suis",   phon: "swee",  en: "I am" },
@@ -97,6 +117,9 @@
        infinitiveEnding  removed from the infinitive to get the stem: parler -> parl
        participle        { fr, phon }: past participle = stem + fr; its sounds-like =
                          stemPhon + phon
+       like              Optional. Another group's key, e.g. "er". The verbs show under their own
+                         group in the Library but are scheduled and introduced inside that group's
+                         section, by rank, so -ger and -cer verbs sit among the -er verbs.
        futureStem        { drop, phon }: futur and conditionnel stem = the infinitive
                          minus its last `drop` letters (parler -> parler-, vendre -> vendr-);
                          its sounds-like = stemPhon + phon
@@ -203,6 +226,94 @@ const RULES = {
         il:   { fr: "ait",   phon: "eh" },
         nous: { fr: "ions",  phon: "yoh(n)" },
         vous: { fr: "iez",   phon: "yay" },
+        ils:  { fr: "aient", phon: "eh" }
+      }}
+    }
+  },
+
+  // -ger verbs keep an e before a and o (nous mangeons, je mangeais). stemPhon: the stem before g: manger "mah(n)"
+  ger: {
+    name: "-ger verbs",
+    like: "er",
+    infinitiveEnding: "ger",
+    participle: { fr: "gé", phon: "-zhay" },
+    futureStem: { drop: 0, phon: "-zhuh-r" },
+    tenses: {
+      present: { from: "stem", endings: {
+        je:   { fr: "ge", phon: "zh" },
+        tu:   { fr: "ges", phon: "zh" },
+        il:   { fr: "ge", phon: "zh" },
+        nous: { fr: "geons", phon: "-zhoh(n)" },
+        vous: { fr: "gez", phon: "-zhay" },
+        ils:  { fr: "gent", phon: "zh" }
+      }},
+      passe_compose: { from: "auxiliary" },
+      imparfait: { from: "stem", endings: {
+        je:   { fr: "geais", phon: "-zheh" },
+        tu:   { fr: "geais", phon: "-zheh" },
+        il:   { fr: "geait", phon: "-zheh" },
+        nous: { fr: "gions", phon: "-zhyoh(n)" },
+        vous: { fr: "giez", phon: "-zhyay" },
+        ils:  { fr: "geaient", phon: "-zheh" }
+      }},
+      futur: { from: "future", endings: {
+        je:   { fr: "ai", phon: "ay" },
+        tu:   { fr: "as", phon: "ah" },
+        il:   { fr: "a", phon: "ah" },
+        nous: { fr: "ons", phon: "oh(n)" },
+        vous: { fr: "ez", phon: "ay" },
+        ils:  { fr: "ont", phon: "oh(n)" }
+      }},
+      conditionnel: { from: "future", endings: {
+        je:   { fr: "ais", phon: "eh" },
+        tu:   { fr: "ais", phon: "eh" },
+        il:   { fr: "ait", phon: "eh" },
+        nous: { fr: "ions", phon: "yoh(n)" },
+        vous: { fr: "iez", phon: "yay" },
+        ils:  { fr: "aient", phon: "eh" }
+      }}
+    }
+  },
+
+  // -cer verbs write ç before a and o (nous commençons, je commençais). stemPhon: the stem before c: commencer "koh-mah(n)"
+  cer: {
+    name: "-cer verbs",
+    like: "er",
+    infinitiveEnding: "cer",
+    participle: { fr: "cé", phon: "-say" },
+    futureStem: { drop: 0, phon: "-suh-r" },
+    tenses: {
+      present: { from: "stem", endings: {
+        je:   { fr: "ce", phon: "s" },
+        tu:   { fr: "ces", phon: "s" },
+        il:   { fr: "ce", phon: "s" },
+        nous: { fr: "çons", phon: "-soh(n)" },
+        vous: { fr: "cez", phon: "-say" },
+        ils:  { fr: "cent", phon: "s" }
+      }},
+      passe_compose: { from: "auxiliary" },
+      imparfait: { from: "stem", endings: {
+        je:   { fr: "çais", phon: "-seh" },
+        tu:   { fr: "çais", phon: "-seh" },
+        il:   { fr: "çait", phon: "-seh" },
+        nous: { fr: "cions", phon: "-syoh(n)" },
+        vous: { fr: "ciez", phon: "-syay" },
+        ils:  { fr: "çaient", phon: "-seh" }
+      }},
+      futur: { from: "future", endings: {
+        je:   { fr: "ai", phon: "ay" },
+        tu:   { fr: "as", phon: "ah" },
+        il:   { fr: "a", phon: "ah" },
+        nous: { fr: "ons", phon: "oh(n)" },
+        vous: { fr: "ez", phon: "ay" },
+        ils:  { fr: "ont", phon: "oh(n)" }
+      }},
+      conditionnel: { from: "future", endings: {
+        je:   { fr: "ais", phon: "eh" },
+        tu:   { fr: "ais", phon: "eh" },
+        il:   { fr: "ait", phon: "eh" },
+        nous: { fr: "ions", phon: "yoh(n)" },
+        vous: { fr: "iez", phon: "yay" },
         ils:  { fr: "aient", phon: "eh" }
       }}
     }
@@ -693,7 +804,8 @@ const VERBS = [
     rank: "I08",
     type: "irregular",
     group: "irregular",
-    english: "to know (a fact, how to)",
+    english: "to know",
+    hint: "a fact, how to do something",
     french: "savoir",
     phonetic: "sah-vwahr",
     conjugations: {
@@ -960,6 +1072,7 @@ const VERBS = [
     english: "to come back",
     french: "revenir",
     phonetic: "ruh-vuh-neer",
+    family: "like venir",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -1013,6 +1126,7 @@ const VERBS = [
     english: "to become",
     french: "devenir",
     phonetic: "duh-vuh-neer",
+    family: "like venir",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -1066,6 +1180,7 @@ const VERBS = [
     english: "to obtain, get",
     french: "obtenir",
     phonetic: "ob-tuh-neer",
+    family: "like tenir",
     conjugations: {
       present: {
         je:   { fr: "obtiens", phon: "ob-tya(n)", en: "I obtain" },
@@ -1118,6 +1233,7 @@ const VERBS = [
     english: "to hold back; to remember",
     french: "retenir",
     phonetic: "ruh-tuh-neer",
+    family: "like tenir",
     conjugations: {
       present: {
         je:   { fr: "retiens", phon: "ruh-tya(n)", en: "I hold back" },
@@ -1170,6 +1286,7 @@ const VERBS = [
     english: "to warn, let know",
     french: "prévenir",
     phonetic: "pray-vuh-neer",
+    family: "like venir",
     conjugations: {
       present: {
         je:   { fr: "préviens", phon: "pray-vya(n)", en: "I warn" },
@@ -1222,6 +1339,10 @@ const VERBS = [
     english: "to belong to",
     french: "appartenir à",
     phonetic: "ah-par-tuh-neer ah",
+    expressions: [
+      { fr: "ça m'appartient", phon: "sah mah-par-tya(n)", en: "it belongs to me" }
+    ],
+    family: "like tenir",
     conjugations: {
       present: {
         je:   { fr: "appartiens", phon: "ah-par-tya(n)", en: "I belong to" },
@@ -1274,6 +1395,7 @@ const VERBS = [
     english: "to remember",
     french: "se souvenir de",
     phonetic: "suh soo-vuh-neer duh",
+    family: "like venir",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -1327,6 +1449,7 @@ const VERBS = [
     english: "to go out; to take out",
     french: "sortir",
     phonetic: "sor-teer",
+    family: "like partir",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -1377,7 +1500,8 @@ const VERBS = [
     rank: "I20",
     type: "irregular",
     group: "irregular",
-    english: "to leave, set off",
+    english: "to leave",
+    hint: "go away, set off",
     french: "partir",
     phonetic: "par-teer",
     auxiliary: "être",
@@ -1433,6 +1557,7 @@ const VERBS = [
     english: "to smell; to feel (touch)",
     french: "sentir",
     phonetic: "sah(n)-teer",
+    family: "like partir",
     conjugations: {
       present: {
         je:   { fr: "sens", phon: "sah(n)", en: "I smell" },
@@ -1485,6 +1610,7 @@ const VERBS = [
     english: "to serve",
     french: "servir",
     phonetic: "sehr-veer",
+    family: "like partir",
     conjugations: {
       present: {
         je:   { fr: "sers", phon: "sehr", en: "I serve" },
@@ -1537,6 +1663,7 @@ const VERBS = [
     english: "to sleep",
     french: "dormir",
     phonetic: "dor-meer",
+    family: "like partir",
     conjugations: {
       present: {
         je:   { fr: "dors", phon: "dor", en: "I sleep" },
@@ -1589,6 +1716,7 @@ const VERBS = [
     english: "to lie",
     french: "mentir",
     phonetic: "mah(n)-teer",
+    family: "like partir",
     conjugations: {
       present: {
         je:   { fr: "mens", phon: "mah(n)", en: "I lie" },
@@ -1641,6 +1769,7 @@ const VERBS = [
     english: "to feel (well, tired…)",
     french: "se sentir",
     phonetic: "suh sah(n)-teer",
+    family: "like partir",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -1694,6 +1823,7 @@ const VERBS = [
     english: "to fall asleep",
     french: "s'endormir",
     phonetic: "sah(n)-dor-meer",
+    family: "like partir",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -1799,6 +1929,7 @@ const VERBS = [
     english: "to offer, give (a gift)",
     french: "offrir",
     phonetic: "oh-freer",
+    family: "like ouvrir",
     conjugations: {
       present: {
         je:   { fr: "offre", phon: "oh-fruh", en: "I offer" },
@@ -1851,6 +1982,7 @@ const VERBS = [
     english: "to discover",
     french: "découvrir",
     phonetic: "day-koo-vreer",
+    family: "like ouvrir",
     conjugations: {
       present: {
         je:   { fr: "découvre", phon: "day-koo-vruh", en: "I discover" },
@@ -2007,6 +2139,7 @@ const VERBS = [
     english: "to cover",
     french: "couvrir",
     phonetic: "koo-vreer",
+    family: "like ouvrir",
     conjugations: {
       present: {
         je:   { fr: "couvre", phon: "koo-vruh", en: "I cover" },
@@ -2059,6 +2192,7 @@ const VERBS = [
     english: "to suffer",
     french: "souffrir",
     phonetic: "soo-freer",
+    family: "like ouvrir",
     conjugations: {
       present: {
         je:   { fr: "souffre", phon: "soo-fruh", en: "I suffer" },
@@ -2321,6 +2455,7 @@ const VERBS = [
     english: "to understand",
     french: "comprendre",
     phonetic: "koh(n)-prah(n)-druh",
+    family: "like prendre",
     conjugations: {
       present: {
         je:   { fr: "comprends", phon: "koh(n)-prah(n)", en: "I understand" },
@@ -2373,6 +2508,7 @@ const VERBS = [
     english: "to learn",
     french: "apprendre",
     phonetic: "ah-prah(n)-druh",
+    family: "like prendre",
     conjugations: {
       present: {
         je:   { fr: "apprends", phon: "ah-prah(n)", en: "I learn" },
@@ -2425,6 +2561,7 @@ const VERBS = [
     english: "to take again, resume",
     french: "reprendre",
     phonetic: "ruh-prah(n)-druh",
+    family: "like prendre",
     conjugations: {
       present: {
         je:   { fr: "reprends", phon: "ruh-prah(n)", en: "I take again" },
@@ -2477,6 +2614,7 @@ const VERBS = [
     english: "to surprise",
     french: "surprendre",
     phonetic: "sewr-prah(n)-druh",
+    family: "like prendre",
     conjugations: {
       present: {
         je:   { fr: "surprends", phon: "sewr-prah(n)", en: "I surprise" },
@@ -2633,6 +2771,7 @@ const VERBS = [
     english: "to allow",
     french: "permettre",
     phonetic: "pehr-meh-truh",
+    family: "like mettre",
     conjugations: {
       present: {
         je:   { fr: "permets", phon: "pehrm", en: "I allow" },
@@ -2685,6 +2824,7 @@ const VERBS = [
     english: "to promise",
     french: "promettre",
     phonetic: "proh-meh-truh",
+    family: "like mettre",
     conjugations: {
       present: {
         je:   { fr: "promets", phon: "proh(n)", en: "I promise" },
@@ -2737,6 +2877,7 @@ const VERBS = [
     english: "to put back; to hand in",
     french: "remettre",
     phonetic: "ruh-meh-truh",
+    family: "like mettre",
     conjugations: {
       present: {
         je:   { fr: "remets", phon: "rah(n)", en: "I put back" },
@@ -2789,6 +2930,7 @@ const VERBS = [
     english: "to start (doing)",
     french: "se mettre à",
     phonetic: "suh meh-truh ah",
+    family: "like mettre",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -2839,7 +2981,8 @@ const VERBS = [
     rank: "I14",
     type: "irregular",
     group: "irregular",
-    english: "to know (a person, place)",
+    english: "to know",
+    hint: "a person, a place",
     french: "connaître",
     phonetic: "koh-neh-truh",
     conjugations: {
@@ -2894,6 +3037,7 @@ const VERBS = [
     english: "to recognise",
     french: "reconnaître",
     phonetic: "ruh-koh-neh-truh",
+    family: "like connaître",
     conjugations: {
       present: {
         je:   { fr: "reconnais", phon: "ruh-koh-neh", en: "I recognise" },
@@ -2943,9 +3087,14 @@ const VERBS = [
     rank: "I48",
     type: "irregular",
     group: "irregular",
-    english: "to seem, appear",
+    english: "to seem",
+    hint: "to appear, more formal",
     french: "paraître",
     phonetic: "pah-reh-truh",
+    expressions: [
+      { fr: "il paraît que", phon: "eel pah-reh kuh", en: "apparently, people say that" }
+    ],
+    family: "like connaître",
     conjugations: {
       present: {
         je:   { fr: "parais", phon: "pah-reh", en: "I seem" },
@@ -3051,6 +3200,7 @@ const VERBS = [
     english: "to disappear",
     french: "disparaître",
     phonetic: "dees-pah-reh-truh",
+    family: "like connaître",
     conjugations: {
       present: {
         je:   { fr: "disparais", phon: "dees-pah-reh", en: "I disappear" },
@@ -3153,6 +3303,7 @@ const VERBS = [
     type: "irregular",
     group: "irregular",
     english: "to live",
+    hint: "be alive, live a life",
     french: "vivre",
     phonetic: "vee-vruh",
     conjugations: {
@@ -3259,6 +3410,7 @@ const VERBS = [
     english: "to describe",
     french: "décrire",
     phonetic: "day-kreer",
+    family: "like écrire",
     conjugations: {
       present: {
         je:   { fr: "décris", phon: "day-kree", en: "I describe" },
@@ -3311,6 +3463,7 @@ const VERBS = [
     english: "to sign up, enrol",
     french: "s'inscrire",
     phonetic: "sa(n)s-kreer",
+    family: "like écrire",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -3364,6 +3517,7 @@ const VERBS = [
     english: "to write to each other",
     french: "s'écrire",
     phonetic: "say-kreer",
+    family: "like écrire",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -3521,6 +3675,7 @@ const VERBS = [
     english: "to build",
     french: "construire",
     phonetic: "koh(n)st-rweer",
+    family: "like conduire",
     conjugations: {
       present: {
         je:   { fr: "construis", phon: "koh(n)st-rwee", en: "I build" },
@@ -3573,6 +3728,7 @@ const VERBS = [
     english: "to produce",
     french: "produire",
     phonetic: "proh-dweer",
+    family: "like conduire",
     conjugations: {
       present: {
         je:   { fr: "produis", phon: "proh-dwee", en: "I produce" },
@@ -3625,6 +3781,7 @@ const VERBS = [
     english: "to translate",
     french: "traduire",
     phonetic: "trah-dweer",
+    family: "like conduire",
     conjugations: {
       present: {
         je:   { fr: "traduis", phon: "trah-dwee", en: "I translate" },
@@ -3677,6 +3834,7 @@ const VERBS = [
     english: "to reduce",
     french: "réduire",
     phonetic: "ray-dweer",
+    family: "like conduire",
     conjugations: {
       present: {
         je:   { fr: "réduis", phon: "ray-dwee", en: "I reduce" },
@@ -3729,6 +3887,7 @@ const VERBS = [
     english: "to destroy",
     french: "détruire",
     phonetic: "dayt-rweer",
+    family: "like conduire",
     conjugations: {
       present: {
         je:   { fr: "détruis", phon: "dayt-rwee", en: "I destroy" },
@@ -3833,6 +3992,11 @@ const VERBS = [
     english: "to please",
     french: "plaire",
     phonetic: "plehr",
+    expressions: [
+      { fr: "ça me plaît", phon: "sah muh pleh", en: "I like it" },
+      { fr: "s'il vous plaît", phon: "seel voo pleh", en: "please (formal)" },
+      { fr: "s'il te plaît", phon: "seel tuh pleh", en: "please (informal)" }
+    ],
     conjugations: {
       present: {
         je:   { fr: "plais", phon: "pleh", en: "I please" },
@@ -4042,6 +4206,7 @@ const VERBS = [
     english: "to switch off",
     french: "éteindre",
     phonetic: "ay-ta(n)-druh",
+    family: "like peindre",
     conjugations: {
       present: {
         je:   { fr: "éteins", phon: "ay-ta(n)", en: "I switch off" },
@@ -4146,6 +4311,7 @@ const VERBS = [
     english: "to fear",
     french: "craindre",
     phonetic: "kra(n)-druh",
+    family: "like peindre",
     conjugations: {
       present: {
         je:   { fr: "crains", phon: "kra(n)", en: "I fear" },
@@ -4195,9 +4361,11 @@ const VERBS = [
     rank: "I38",
     type: "irregular",
     group: "irregular",
-    english: "to join, meet up with",
+    english: "to join",
+    hint: "meet up with someone",
     french: "rejoindre",
     phonetic: "ruh-zhwa(n)-druh",
+    family: "like peindre",
     conjugations: {
       present: {
         je:   { fr: "rejoins", phon: "ruh-zhwa(n)", en: "I join" },
@@ -4247,9 +4415,11 @@ const VERBS = [
     rank: "I70",
     type: "irregular",
     group: "irregular",
-    english: "to join; to contact",
+    english: "to join",
+    hint: "attach; get hold of someone",
     french: "joindre",
     phonetic: "zhwa(n)-druh",
+    family: "like peindre",
     conjugations: {
       present: {
         je:   { fr: "joins", phon: "zhwa(n)", en: "I join" },
@@ -4302,6 +4472,7 @@ const VERBS = [
     english: "to complain",
     french: "se plaindre",
     phonetic: "suh pla(n)-druh",
+    family: "like peindre",
     auxiliary: "être",
     conjugations: {
       present: {
@@ -4407,6 +4578,10 @@ const VERBS = [
     english: "to be enough",
     french: "suffire",
     phonetic: "sew-feer",
+    expressions: [
+      { fr: "ça suffit", phon: "sah sew-fee", en: "that's enough" },
+      { fr: "il suffit de", phon: "eel sew-fee duh", en: "all you need to do is" }
+    ],
     conjugations: {
       present: {
         je:   { fr: "suffis", phon: "sew-fee", en: "I am enough" },
@@ -4720,6 +4895,10 @@ const VERBS = [
     english: "to be worth",
     french: "valoir",
     phonetic: "vah-lwahr",
+    expressions: [
+      { fr: "il vaut mieux", phon: "eel voh myuh", en: "it's better to" },
+      { fr: "ça vaut la peine", phon: "sah voh lah pen", en: "it's worth it" }
+    ],
     conjugations: {
       present: {
         je:   { fr: "vaux", phon: "voh", en: "I am worth" },
@@ -4824,6 +5003,7 @@ const VERBS = [
     english: "to disappoint",
     french: "décevoir",
     phonetic: "day-suh-vwahr",
+    family: "like recevoir",
     conjugations: {
       present: {
         je:   { fr: "déçois", phon: "day-swah", en: "I disappoint" },
@@ -4876,6 +5056,7 @@ const VERBS = [
     english: "to notice, catch sight of",
     french: "apercevoir",
     phonetic: "ah-pehr-suh-vwahr",
+    family: "like recevoir",
     conjugations: {
       present: {
         je:   { fr: "aperçois", phon: "ah-pehr-swah", en: "I notice" },
@@ -4973,6 +5154,116 @@ const VERBS = [
     }
   },
 
+  /* ---------- IRREGULAR: added in v6.5 (ranks provisional, from spoken-frequency sources) ---------- */
+
+  {
+    id: "falloir",
+    rank: "I10.7",
+    type: "irregular",
+    group: "irregular",
+    english: "to be necessary, to have to",
+    french: "falloir",
+    phonetic: "fah-lwahr",
+    persons: ["il"],
+    conjugations: {
+      present: {
+        il:   { fr: "faut", phon: "foh", en: "it is necessary / one must" }
+      },
+      passe_compose: {
+        il:   { fr: "a fallu", phon: "ah fah-lew", en: "it was necessary / it has been necessary" }
+      },
+      imparfait: {
+        il:   { fr: "fallait", phon: "fah-leh", en: "it was necessary / it used to be necessary" }
+      },
+      futur: {
+        il:   { fr: "faudra", phon: "foh-drah", en: "it will be necessary" }
+      },
+      conditionnel: {
+        il:   { fr: "faudrait", phon: "foh-dreh", en: "it would be necessary" }
+      }
+    }
+  },
+
+  {
+    id: "envoyer",
+    rank: "I23.5",
+    type: "irregular",
+    group: "irregular",
+    english: "to send",
+    french: "envoyer",
+    phonetic: "ah(n)-vwah-yay",
+    conjugations: {
+      present: {
+        je:   { fr: "envoie", phon: "ah(n)-vwah", en: "I send" },
+        tu:   { fr: "envoies", phon: "ah(n)-vwah", en: "you send" },
+        il:   { fr: "envoie", phon: "ah(n)-vwah", en: "he/she/one sends" },
+        nous: { fr: "envoyons", phon: "ah(n)-vwah-yoh(n)", en: "we send" },
+        vous: { fr: "envoyez", phon: "ah(n)-vwah-yay", en: "you send" },
+        ils:  { fr: "envoient", phon: "ah(n)-vwah", en: "they send" }
+      },
+      passe_compose: {
+        je:   { fr: "ai envoyé", phon: "ay ah(n)-vwah-yay", en: "I sent / have sent" },
+        tu:   { fr: "as envoyé", phon: "ah ah(n)-vwah-yay", en: "you sent / have sent" },
+        il:   { fr: "a envoyé", phon: "ah ah(n)-vwah-yay", en: "he/she/one sent / has sent" },
+        nous: { fr: "avons envoyé", phon: "ah-voh(n) ah(n)-vwah-yay", en: "we sent / have sent" },
+        vous: { fr: "avez envoyé", phon: "ah-vay ah(n)-vwah-yay", en: "you sent / have sent" },
+        ils:  { fr: "ont envoyé", phon: "oh(n) ah(n)-vwah-yay", en: "they sent / have sent" }
+      },
+      imparfait: {
+        je:   { fr: "envoyais", phon: "ah(n)-vwah-yeh", en: "I was sending / used to send" },
+        tu:   { fr: "envoyais", phon: "ah(n)-vwah-yeh", en: "you were sending / used to send" },
+        il:   { fr: "envoyait", phon: "ah(n)-vwah-yeh", en: "he/she/one was sending / used to send" },
+        nous: { fr: "envoyions", phon: "ah(n)-vwah-yyoh(n)", en: "we were sending / used to send" },
+        vous: { fr: "envoyiez", phon: "ah(n)-vwah-yyay", en: "you were sending / used to send" },
+        ils:  { fr: "envoyaient", phon: "ah(n)-vwah-yeh", en: "they were sending / used to send" }
+      },
+      futur: {
+        je:   { fr: "enverrai", phon: "ah(n)-veh-ray", en: "I will send" },
+        tu:   { fr: "enverras", phon: "ah(n)-veh-rah", en: "you will send" },
+        il:   { fr: "enverra", phon: "ah(n)-veh-rah", en: "he/she/one will send" },
+        nous: { fr: "enverrons", phon: "ah(n)-veh-roh(n)", en: "we will send" },
+        vous: { fr: "enverrez", phon: "ah(n)-veh-ray", en: "you will send" },
+        ils:  { fr: "enverront", phon: "ah(n)-veh-roh(n)", en: "they will send" }
+      },
+      conditionnel: {
+        je:   { fr: "enverrais", phon: "ah(n)-veh-reh", en: "I would send" },
+        tu:   { fr: "enverrais", phon: "ah(n)-veh-reh", en: "you would send" },
+        il:   { fr: "enverrait", phon: "ah(n)-veh-reh", en: "he/she/one would send" },
+        nous: { fr: "enverrions", phon: "ah(n)-veh-ryoh(n)", en: "we would send" },
+        vous: { fr: "enverriez", phon: "ah(n)-veh-ryay", en: "you would send" },
+        ils:  { fr: "enverraient", phon: "ah(n)-veh-reh", en: "they would send" }
+      }
+    }
+  },
+
+  {
+    id: "pleuvoir",
+    rank: "I36.5",
+    type: "irregular",
+    group: "irregular",
+    english: "to rain",
+    french: "pleuvoir",
+    phonetic: "pluh-vwahr",
+    persons: ["il"],
+    conjugations: {
+      present: {
+        il:   { fr: "pleut", phon: "pluh", en: "it rains / it is raining" }
+      },
+      passe_compose: {
+        il:   { fr: "a plu", phon: "ah plew", en: "it rained / it has rained" }
+      },
+      imparfait: {
+        il:   { fr: "pleuvait", phon: "pluh-veh", en: "it was raining / it used to rain" }
+      },
+      futur: {
+        il:   { fr: "pleuvra", phon: "pluh-vrah", en: "it will rain" }
+      },
+      conditionnel: {
+        il:   { fr: "pleuvrait", phon: "pluh-vreh", en: "it would rain" }
+      }
+    }
+  },
+
   /* ---------- REGULAR -ER (plain) ---------- */
 
   {
@@ -4980,7 +5271,8 @@ const VERBS = [
     rank: "R007",
     type: "regular",
     group: "er",
-    english: "to spend (time); to go via",
+    english: "to spend",
+    hint: "time; also: to pass, go via",
     french: "passer",
     phonetic: "pah-say",
     stemPhon: "pahs"
@@ -5036,6 +5328,7 @@ const VERBS = [
     type: "regular",
     group: "er",
     english: "to think",
+    hint: "have an opinion, think of",
     french: "penser",
     phonetic: "pah(n)-say",
     stemPhon: "pah(n)s"
@@ -5093,6 +5386,7 @@ const VERBS = [
     type: "regular",
     group: "er",
     english: "to seem",
+    hint: "the everyday word",
     french: "sembler",
     phonetic: "sah(n)-blay",
     stemPhon: "sah(n)-bluh"
@@ -5103,7 +5397,8 @@ const VERBS = [
     rank: "R010",
     type: "regular",
     group: "er",
-    english: "to leave (something); to let",
+    english: "to leave",
+    hint: "something behind; also: to let",
     french: "laisser",
     phonetic: "leh-say",
     stemPhon: "les"
@@ -5115,6 +5410,7 @@ const VERBS = [
     type: "regular",
     group: "er",
     english: "to work",
+    hint: "standard word",
     french: "travailler",
     phonetic: "trah-vah-yay",
     stemPhon: "trah-vahy"
@@ -5471,7 +5767,8 @@ const VERBS = [
     rank: "R102",
     type: "regular",
     group: "er",
-    english: "to leave (a place, person)",
+    english: "to leave",
+    hint: "a place or a person",
     french: "quitter",
     phonetic: "kee-tay",
     stemPhon: "keet"
@@ -5581,7 +5878,8 @@ const VERBS = [
     rank: "R111",
     type: "regular",
     group: "er",
-    english: "to live (reside)",
+    english: "to live",
+    hint: "reside somewhere",
     french: "habiter",
     phonetic: "ah-bee-tay",
     stemPhon: "ah-beet"
@@ -5768,7 +6066,8 @@ const VERBS = [
     rank: "R127",
     type: "regular",
     group: "er",
-    english: "to spend (money)",
+    english: "to spend",
+    hint: "money",
     french: "dépenser",
     phonetic: "day-pah(n)-say",
     stemPhon: "day-pah(n)s"
@@ -5988,7 +6287,8 @@ const VERBS = [
     rank: "R147",
     type: "regular",
     group: "er",
-    english: "to work (informal)",
+    english: "to work",
+    hint: "informal",
     french: "bosser",
     phonetic: "boh-say",
     stemPhon: "bos"
@@ -6121,6 +6421,7 @@ const VERBS = [
     type: "regular",
     group: "er",
     english: "to finish",
+    hint: "-er verb; also: to end",
     french: "terminer",
     phonetic: "tehr-mee-nay",
     stemPhon: "tehr-ma(n)"
@@ -6310,6 +6611,7 @@ const VERBS = [
     type: "regular",
     group: "ir",
     english: "to finish",
+    hint: "-ir verb, the everyday word",
     french: "finir",
     phonetic: "fee-neer",
     stemPhon: "fee-n"
@@ -6342,7 +6644,8 @@ const VERBS = [
     rank: "R232",
     type: "regular",
     group: "ir",
-    english: "to think, reflect",
+    english: "to think",
+    hint: "reflect, think it over",
     french: "réfléchir",
     phonetic: "ray-flay-sheer",
     stemPhon: "ray-flay-sh"
@@ -6668,7 +6971,503 @@ const VERBS = [
     french: "confondre",
     phonetic: "koh(n)-foh(n)-druh",
     stemPhon: "koh(n)-foh(n)"
-  }
+  },
+
+  /* ---------- REGULAR: added in v6.5 (ranks provisional, from spoken-frequency sources) ---------- */
+
+  {
+    id: "s-appeler",
+    rank: "R011",
+    type: "regular",
+    group: "er",
+    english: "to be called",
+    french: "s'appeler",
+    phonetic: "sah-puh-lay",
+    stemPhon: "ah-puhl",
+    reflexive: true,
+    family: "like appeler",
+    conjugations: {
+      present: {
+        je:   { fr: "appelle", phon: "ah-pel" },
+        tu:   { fr: "appelles", phon: "ah-pel" },
+        il:   { fr: "appelle", phon: "ah-pel" },
+        nous: { fr: "appelons", phon: "ah-puh-loh(n)" },
+        vous: { fr: "appelez", phon: "ah-puh-lay" },
+        ils:  { fr: "appellent", phon: "ah-pel" }
+      },
+      futur: {
+        je:   { fr: "appellerai", phon: "ah-pel-ray" },
+        tu:   { fr: "appelleras", phon: "ah-pel-rah" },
+        il:   { fr: "appellera", phon: "ah-pel-rah" },
+        nous: { fr: "appellerons", phon: "ah-pel-roh(n)" },
+        vous: { fr: "appellerez", phon: "ah-pel-ray" },
+        ils:  { fr: "appelleront", phon: "ah-pel-roh(n)" }
+      },
+      conditionnel: {
+        je:   { fr: "appellerais", phon: "ah-pel-reh" },
+        tu:   { fr: "appellerais", phon: "ah-pel-reh" },
+        il:   { fr: "appellerait", phon: "ah-pel-reh" },
+        nous: { fr: "appellerions", phon: "ah-pel-ryoh(n)" },
+        vous: { fr: "appelleriez", phon: "ah-pel-ryay" },
+        ils:  { fr: "appelleraient", phon: "ah-pel-reh" }
+      }
+    }
+  },
+
+  {
+    id: "se-passer",
+    rank: "R022",
+    type: "regular",
+    group: "er",
+    english: "to happen",
+    french: "se passer",
+    phonetic: "suh pah-say",
+    stemPhon: "pahs",
+    reflexive: true,
+    persons: ["il"]
+  },
+
+  {
+    id: "manger",
+    rank: "R023",
+    type: "regular",
+    group: "ger",
+    english: "to eat",
+    french: "manger",
+    phonetic: "mah(n)-zhay",
+    stemPhon: "mah(n)"
+  },
+
+  {
+    id: "appeler",
+    rank: "R024",
+    type: "regular",
+    group: "er",
+    english: "to call",
+    french: "appeler",
+    phonetic: "ah-puh-lay",
+    stemPhon: "ah-puhl",
+    conjugations: {
+      present: {
+        je:   { fr: "appelle", phon: "ah-pel" },
+        tu:   { fr: "appelles", phon: "ah-pel" },
+        il:   { fr: "appelle", phon: "ah-pel" },
+        nous: { fr: "appelons", phon: "ah-puh-loh(n)" },
+        vous: { fr: "appelez", phon: "ah-puh-lay" },
+        ils:  { fr: "appellent", phon: "ah-pel" }
+      },
+      futur: {
+        je:   { fr: "appellerai", phon: "ah-pel-ray" },
+        tu:   { fr: "appelleras", phon: "ah-pel-rah" },
+        il:   { fr: "appellera", phon: "ah-pel-rah" },
+        nous: { fr: "appellerons", phon: "ah-pel-roh(n)" },
+        vous: { fr: "appellerez", phon: "ah-pel-ray" },
+        ils:  { fr: "appelleront", phon: "ah-pel-roh(n)" }
+      },
+      conditionnel: {
+        je:   { fr: "appellerais", phon: "ah-pel-reh" },
+        tu:   { fr: "appellerais", phon: "ah-pel-reh" },
+        il:   { fr: "appellerait", phon: "ah-pel-reh" },
+        nous: { fr: "appellerions", phon: "ah-pel-ryoh(n)" },
+        vous: { fr: "appelleriez", phon: "ah-pel-ryay" },
+        ils:  { fr: "appelleraient", phon: "ah-pel-reh" }
+      }
+    }
+  },
+
+  {
+    id: "commencer",
+    rank: "R025",
+    type: "regular",
+    group: "cer",
+    english: "to begin, start",
+    french: "commencer",
+    phonetic: "koh-mah(n)-say",
+    stemPhon: "koh-mah(n)"
+  },
+
+  {
+    id: "essayer",
+    rank: "R026",
+    type: "regular",
+    group: "er",
+    english: "to try; to try on",
+    french: "essayer",
+    phonetic: "eh-seh-yay",
+    stemPhon: "eh-sey",
+    family: "like payer",
+    conjugations: {
+      present: {
+        je:   { fr: "essaie", phon: "eh-seh" },
+        tu:   { fr: "essaies", phon: "eh-seh" },
+        il:   { fr: "essaie", phon: "eh-seh" },
+        nous: { fr: "essayons", phon: "eh-seh-yoh(n)" },
+        vous: { fr: "essayez", phon: "eh-seh-yay" },
+        ils:  { fr: "essaient", phon: "eh-seh" }
+      },
+      futur: {
+        je:   { fr: "essaierai", phon: "eh-seh-ray" },
+        tu:   { fr: "essaieras", phon: "eh-seh-rah" },
+        il:   { fr: "essaiera", phon: "eh-seh-rah" },
+        nous: { fr: "essaierons", phon: "eh-seh-roh(n)" },
+        vous: { fr: "essaierez", phon: "eh-seh-ray" },
+        ils:  { fr: "essaieront", phon: "eh-seh-roh(n)" }
+      },
+      conditionnel: {
+        je:   { fr: "essaierais", phon: "eh-seh-reh" },
+        tu:   { fr: "essaierais", phon: "eh-seh-reh" },
+        il:   { fr: "essaierait", phon: "eh-seh-reh" },
+        nous: { fr: "essaierions", phon: "eh-seh-ryoh(n)" },
+        vous: { fr: "essaieriez", phon: "eh-seh-ryay" },
+        ils:  { fr: "essaieraient", phon: "eh-seh-reh" }
+      }
+    }
+  },
+
+  {
+    id: "changer",
+    rank: "R027",
+    type: "regular",
+    group: "ger",
+    english: "to change",
+    french: "changer",
+    phonetic: "shah(n)-zhay",
+    stemPhon: "shah(n)"
+  },
+
+  {
+    id: "acheter",
+    rank: "R033",
+    type: "regular",
+    group: "er",
+    english: "to buy",
+    french: "acheter",
+    phonetic: "ash-tay",
+    stemPhon: "asht",
+    conjugations: {
+      present: {
+        je:   { fr: "achète", phon: "ah-shet" },
+        tu:   { fr: "achètes", phon: "ah-shet" },
+        il:   { fr: "achète", phon: "ah-shet" },
+        nous: { fr: "achetons", phon: "ash-toh(n)" },
+        vous: { fr: "achetez", phon: "ash-tay" },
+        ils:  { fr: "achètent", phon: "ah-shet" }
+      },
+      futur: {
+        je:   { fr: "achèterai", phon: "ah-shet-ray" },
+        tu:   { fr: "achèteras", phon: "ah-shet-rah" },
+        il:   { fr: "achètera", phon: "ah-shet-rah" },
+        nous: { fr: "achèterons", phon: "ah-shet-roh(n)" },
+        vous: { fr: "achèterez", phon: "ah-shet-ray" },
+        ils:  { fr: "achèteront", phon: "ah-shet-roh(n)" }
+      },
+      conditionnel: {
+        je:   { fr: "achèterais", phon: "ah-shet-reh" },
+        tu:   { fr: "achèterais", phon: "ah-shet-reh" },
+        il:   { fr: "achèterait", phon: "ah-shet-reh" },
+        nous: { fr: "achèterions", phon: "ah-shet-ryoh(n)" },
+        vous: { fr: "achèteriez", phon: "ah-shet-ryay" },
+        ils:  { fr: "achèteraient", phon: "ah-shet-reh" }
+      }
+    }
+  },
+
+  {
+    id: "payer",
+    rank: "R039",
+    type: "regular",
+    group: "er",
+    english: "to pay (for)",
+    french: "payer",
+    phonetic: "peh-yay",
+    stemPhon: "pey",
+    conjugations: {
+      present: {
+        je:   { fr: "paie", phon: "peh" },
+        tu:   { fr: "paies", phon: "peh" },
+        il:   { fr: "paie", phon: "peh" },
+        nous: { fr: "payons", phon: "peh-yoh(n)" },
+        vous: { fr: "payez", phon: "peh-yay" },
+        ils:  { fr: "paient", phon: "peh" }
+      },
+      futur: {
+        je:   { fr: "paierai", phon: "peh-ray" },
+        tu:   { fr: "paieras", phon: "peh-rah" },
+        il:   { fr: "paiera", phon: "peh-rah" },
+        nous: { fr: "paierons", phon: "peh-roh(n)" },
+        vous: { fr: "paierez", phon: "peh-ray" },
+        ils:  { fr: "paieront", phon: "peh-roh(n)" }
+      },
+      conditionnel: {
+        je:   { fr: "paierais", phon: "peh-reh" },
+        tu:   { fr: "paierais", phon: "peh-reh" },
+        il:   { fr: "paierait", phon: "peh-reh" },
+        nous: { fr: "paierions", phon: "peh-ryoh(n)" },
+        vous: { fr: "paieriez", phon: "peh-ryay" },
+        ils:  { fr: "paieraient", phon: "peh-reh" }
+      }
+    }
+  },
+
+  {
+    id: "esperer",
+    rank: "R047",
+    type: "regular",
+    group: "er",
+    english: "to hope",
+    french: "espérer",
+    phonetic: "es-pay-ray",
+    stemPhon: "es-payr",
+    family: "like préférer",
+    conjugations: {
+      present: {
+        je:   { fr: "espère", phon: "es-per" },
+        tu:   { fr: "espères", phon: "es-per" },
+        il:   { fr: "espère", phon: "es-per" },
+        nous: { fr: "espérons", phon: "es-pay-roh(n)" },
+        vous: { fr: "espérez", phon: "es-pay-ray" },
+        ils:  { fr: "espèrent", phon: "es-per" }
+      }
+    }
+  },
+
+  {
+    id: "se-lever",
+    rank: "R048",
+    type: "regular",
+    group: "er",
+    english: "to get up",
+    french: "se lever",
+    phonetic: "suh luh-vay",
+    stemPhon: "luhv",
+    reflexive: true,
+    family: "like acheter",
+    conjugations: {
+      present: {
+        je:   { fr: "lève", phon: "lev" },
+        tu:   { fr: "lèves", phon: "lev" },
+        il:   { fr: "lève", phon: "lev" },
+        nous: { fr: "levons", phon: "luh-voh(n)" },
+        vous: { fr: "levez", phon: "luh-vay" },
+        ils:  { fr: "lèvent", phon: "lev" }
+      },
+      futur: {
+        je:   { fr: "lèverai", phon: "lev-ray" },
+        tu:   { fr: "lèveras", phon: "lev-rah" },
+        il:   { fr: "lèvera", phon: "lev-rah" },
+        nous: { fr: "lèverons", phon: "lev-roh(n)" },
+        vous: { fr: "lèverez", phon: "lev-ray" },
+        ils:  { fr: "lèveront", phon: "lev-roh(n)" }
+      },
+      conditionnel: {
+        je:   { fr: "lèverais", phon: "lev-reh" },
+        tu:   { fr: "lèverais", phon: "lev-reh" },
+        il:   { fr: "lèverait", phon: "lev-reh" },
+        nous: { fr: "lèverions", phon: "lev-ryoh(n)" },
+        vous: { fr: "lèveriez", phon: "lev-ryay" },
+        ils:  { fr: "lèveraient", phon: "lev-reh" }
+      }
+    }
+  },
+
+  {
+    id: "jeter",
+    rank: "R049",
+    type: "regular",
+    group: "er",
+    english: "to throw (away)",
+    french: "jeter",
+    phonetic: "zhuh-tay",
+    stemPhon: "zhuht",
+    family: "like appeler",
+    conjugations: {
+      present: {
+        je:   { fr: "jette", phon: "zhet" },
+        tu:   { fr: "jettes", phon: "zhet" },
+        il:   { fr: "jette", phon: "zhet" },
+        nous: { fr: "jetons", phon: "zhuh-toh(n)" },
+        vous: { fr: "jetez", phon: "zhuh-tay" },
+        ils:  { fr: "jettent", phon: "zhet" }
+      },
+      futur: {
+        je:   { fr: "jetterai", phon: "zhet-ray" },
+        tu:   { fr: "jetteras", phon: "zhet-rah" },
+        il:   { fr: "jettera", phon: "zhet-rah" },
+        nous: { fr: "jetterons", phon: "zhet-roh(n)" },
+        vous: { fr: "jetterez", phon: "zhet-ray" },
+        ils:  { fr: "jetteront", phon: "zhet-roh(n)" }
+      },
+      conditionnel: {
+        je:   { fr: "jetterais", phon: "zhet-reh" },
+        tu:   { fr: "jetterais", phon: "zhet-reh" },
+        il:   { fr: "jetterait", phon: "zhet-reh" },
+        nous: { fr: "jetterions", phon: "zhet-ryoh(n)" },
+        vous: { fr: "jetteriez", phon: "zhet-ryay" },
+        ils:  { fr: "jetteraient", phon: "zhet-reh" }
+      }
+    }
+  },
+
+  {
+    id: "preferer",
+    rank: "R050",
+    type: "regular",
+    group: "er",
+    english: "to prefer",
+    french: "préférer",
+    phonetic: "pray-fay-ray",
+    stemPhon: "pray-fayr",
+    conjugations: {
+      present: {
+        je:   { fr: "préfère", phon: "pray-fer" },
+        tu:   { fr: "préfères", phon: "pray-fer" },
+        il:   { fr: "préfère", phon: "pray-fer" },
+        nous: { fr: "préférons", phon: "pray-fay-roh(n)" },
+        vous: { fr: "préférez", phon: "pray-fay-ray" },
+        ils:  { fr: "préfèrent", phon: "pray-fer" }
+      }
+    }
+  },
+
+  {
+    id: "se-coucher",
+    rank: "R051",
+    type: "regular",
+    group: "er",
+    english: "to go to bed",
+    french: "se coucher",
+    phonetic: "suh koo-shay",
+    stemPhon: "koosh",
+    reflexive: true
+  },
+
+  {
+    id: "se-reveiller",
+    rank: "R052",
+    type: "regular",
+    group: "er",
+    english: "to wake up",
+    french: "se réveiller",
+    phonetic: "suh ray-veh-yay",
+    stemPhon: "ray-vey",
+    reflexive: true
+  },
+
+  {
+    id: "s-habiller",
+    rank: "R053",
+    type: "regular",
+    group: "er",
+    english: "to get dressed",
+    french: "s'habiller",
+    phonetic: "sah-bee-yay",
+    stemPhon: "ah-beey",
+    reflexive: true
+  },
+
+  {
+    id: "repeter",
+    rank: "R054",
+    type: "regular",
+    group: "er",
+    english: "to repeat; to rehearse",
+    french: "répéter",
+    phonetic: "ray-pay-tay",
+    stemPhon: "ray-payt",
+    family: "like préférer",
+    conjugations: {
+      present: {
+        je:   { fr: "répète", phon: "ray-pet" },
+        tu:   { fr: "répètes", phon: "ray-pet" },
+        il:   { fr: "répète", phon: "ray-pet" },
+        nous: { fr: "répétons", phon: "ray-pay-toh(n)" },
+        vous: { fr: "répétez", phon: "ray-pay-tay" },
+        ils:  { fr: "répètent", phon: "ray-pet" }
+      }
+    }
+  },
+
+  {
+    id: "lever",
+    rank: "R055",
+    type: "regular",
+    group: "er",
+    english: "to raise, lift",
+    french: "lever",
+    phonetic: "luh-vay",
+    stemPhon: "luhv",
+    family: "like acheter",
+    conjugations: {
+      present: {
+        je:   { fr: "lève", phon: "lev" },
+        tu:   { fr: "lèves", phon: "lev" },
+        il:   { fr: "lève", phon: "lev" },
+        nous: { fr: "levons", phon: "luh-voh(n)" },
+        vous: { fr: "levez", phon: "luh-vay" },
+        ils:  { fr: "lèvent", phon: "lev" }
+      },
+      futur: {
+        je:   { fr: "lèverai", phon: "lev-ray" },
+        tu:   { fr: "lèveras", phon: "lev-rah" },
+        il:   { fr: "lèvera", phon: "lev-rah" },
+        nous: { fr: "lèverons", phon: "lev-roh(n)" },
+        vous: { fr: "lèverez", phon: "lev-ray" },
+        ils:  { fr: "lèveront", phon: "lev-roh(n)" }
+      },
+      conditionnel: {
+        je:   { fr: "lèverais", phon: "lev-reh" },
+        tu:   { fr: "lèverais", phon: "lev-reh" },
+        il:   { fr: "lèverait", phon: "lev-reh" },
+        nous: { fr: "lèverions", phon: "lev-ryoh(n)" },
+        vous: { fr: "lèveriez", phon: "lev-ryay" },
+        ils:  { fr: "lèveraient", phon: "lev-reh" }
+      }
+    }
+  },
+
+  {
+    id: "partager",
+    rank: "R056",
+    type: "regular",
+    group: "ger",
+    english: "to share",
+    french: "partager",
+    phonetic: "par-tah-zhay",
+    stemPhon: "par-tah"
+  },
+
+  {
+    id: "voyager",
+    rank: "R057",
+    type: "regular",
+    group: "ger",
+    english: "to travel",
+    french: "voyager",
+    phonetic: "vwah-yah-zhay",
+    stemPhon: "vwah-yah"
+  },
+
+  {
+    id: "ranger",
+    rank: "R058",
+    type: "regular",
+    group: "ger",
+    english: "to tidy, put away",
+    french: "ranger",
+    phonetic: "rah(n)-zhay",
+    stemPhon: "rah(n)"
+  },
+
+  {
+    id: "nager",
+    rank: "R059",
+    type: "regular",
+    group: "ger",
+    english: "to swim",
+    french: "nager",
+    phonetic: "nah-zhay",
+    stemPhon: "nah"
+  },
 
   // END OF VERBS
 ];

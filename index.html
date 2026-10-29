@@ -12,7 +12,7 @@
   --page:#f5f6f8; --paper:#ffffff; --ink:#1a1d26; --muted:#505767; --line:#d9dde6;
   --navy:#1c3f94; --navy-ink:#ffffff; --navy-soft:#e8edf8;
   --know:#1a6b3c; --know-ink:#ffffff; --know-soft:#e6f3ea;
-  --miss:#b3261e; --miss-soft:#fbe7e5;
+  --miss:#b3261e; --miss-soft:#fbe7e5; --hard:#8a5300;
   --ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --serif:Georgia,"Noto Serif","Droid Serif",Cambria,"Times New Roman",serif;
   --scale:1;
@@ -22,7 +22,7 @@
   --page:#0d1018; --paper:#12151f; --ink:#e8eaf0; --muted:#a3abbd; --line:#2a3042;
     --navy:#8fb0ff; --navy-ink:#0d1018; --navy-soft:#1c2540;
     --know:#6fcf97; --know-ink:#0d1018; --know-soft:#14291d;
-    --miss:#ff8a80; --miss-soft:#3a1c1f;
+    --miss:#ff8a80; --miss-soft:#3a1c1f; --hard:#f2c46b;
     color-scheme:dark;
 }
 @media (prefers-color-scheme:dark){
@@ -30,7 +30,7 @@
     --page:#0d1018; --paper:#12151f; --ink:#e8eaf0; --muted:#a3abbd; --line:#2a3042;
     --navy:#8fb0ff; --navy-ink:#0d1018; --navy-soft:#1c2540;
     --know:#6fcf97; --know-ink:#0d1018; --know-soft:#14291d;
-    --miss:#ff8a80; --miss-soft:#3a1c1f;
+    --miss:#ff8a80; --miss-soft:#3a1c1f; --hard:#f2c46b;
     color-scheme:dark;
   }
 }
@@ -170,6 +170,7 @@ body.no-anim .card{animation:none !important;transition:none !important}
 .act{flex:1;min-height:58px;border-radius:12px;font-size:1.05rem;font-weight:700;border:2px solid transparent}
 .act.know{background:var(--know);color:var(--know-ink)}
 .act.miss{background:var(--paper);color:var(--miss);border-color:var(--miss)}
+.act.hard{background:var(--paper);color:var(--hard);border-color:var(--hard)}
 .act.next,.act.reveal{background:var(--navy);color:var(--navy-ink)}
 .legend{margin:8px 0 0;text-align:center;color:var(--muted);font-size:.8rem}
 .legend kbd{margin:0 .25em 0 .8em}
@@ -357,12 +358,19 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 .rvmeta{font-size:.85rem;color:var(--muted)}
 .rven{margin-top:2px}
 .rvbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.libctl{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.libctl input[type=search],.libctl select{min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 10px;background:var(--paper);color:var(--ink);font:inherit}.libctl input[type=search]{flex:1 1 100%}.libchk{display:flex;align-items:center;gap:6px;min-height:44px}
+.tdots{display:inline-flex;gap:3px;margin:0 6px}.sd{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--navy);display:inline-block}.sd-new{border-color:var(--muted)}.sd-learning{background:transparent}.sd-reviewing{background:color-mix(in srgb,var(--navy) 35%,transparent)}.sd-retained{background:color-mix(in srgb,var(--navy) 70%,transparent)}.sd-mastered{background:var(--navy)}
+.stag{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:var(--line);font-size:.75rem;font-weight:600}.stag.persist{background:var(--miss-soft);color:var(--miss)}.lmeta{color:var(--muted);font-size:.85rem;margin-left:auto}
+.grid td.few{color:var(--muted);opacity:.6}.attempts td,.attempts th{padding:2px 8px;font-size:.85rem;text-align:left}
 .rvtag{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:var(--miss-soft);color:var(--miss);font-size:.75rem;font-weight:700;vertical-align:middle;white-space:nowrap}
 .aifix{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 134px);z-index:60;white-space:nowrap;min-height:40px;max-width:calc(100% - 20px);padding:0 14px;border-radius:999px;border:1.5px solid var(--navy);background:var(--paper);color:var(--navy);font:inherit;font-size:.9rem;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,.18);cursor:pointer}
 .aifix[hidden]{display:none}
 .aichips{display:flex;flex-wrap:wrap;gap:8px}
 .aichips button{min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;cursor:pointer}
 .aichips button[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:var(--navy-ink);font-weight:600}
+.rvprog{font-size:.85rem;color:var(--muted);align-self:center}
+.todaygo .sechead small{font-weight:400;color:var(--muted)}
+.blist{list-style:none;padding:0;margin:6px 0}.blist li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -378,20 +386,30 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 
 <!-- STATS -->
 <section class="screen" id="scr-stats" hidden>
-  <header class="pagehead"><h1>Stats</h1></header>
+  <header class="pagehead"><h1>Progress</h1><p class="lede">What you remember, where you slip, and what is coming.</p></header>
   <div id="statsBody"></div>
 </section>
 
 <!-- LIBRARY -->
 <section class="screen" id="scr-library" hidden>
   <header class="pagehead"><h1>Library</h1><p class="lede" id="libLede"></p></header>
-  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button><button data-tab="progress">Progress</button></nav>
+  <nav class="subnav" aria-label="Library"><button data-tab="library">Verbs</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button></nav>
   <p class="libnote">Practice here never changes your schedule, progress or time averages.</p>
   <div class="notices"></div>
   <div id="problems"></div>
   <div id="resume"></div>
   <div id="reviewSec"></div>
-  <div id="sections"></div>
+  <div class="libctl">
+    <input id="libSearch" type="search" placeholder="Search French or English" aria-label="Search verbs" autocomplete="off">
+    <select id="libType" aria-label="Type"><option value="all">All types</option><option value="irregular">Irregular</option><option value="er">-er</option><option value="ir">-ir</option><option value="re">-re</option></select>
+    <select id="libStatus" aria-label="Status"><option value="all">Any status</option><option value="new">New</option><option value="learning">Learning</option><option value="reviewing">Reviewing</option><option value="retained">Retained</option><option value="mastered">Mastered</option><option value="persistent">Persistent mistake</option></select>
+    <select id="libTense" aria-label="Tense"><option value="">Any tense</option></select>
+    <select id="libDue" aria-label="Due"><option value="any">Any due date</option><option value="overdue">Overdue</option><option value="today">Due today</option><option value="week">Due this week</option></select>
+    <select id="libSort" aria-label="Sort"><option value="rank">Sort: importance</option><option value="weak">Sort: weakest first</option><option value="due">Sort: due soonest</option></select>
+    <label class="libchk"><input type="checkbox" id="libReview"> To review</label>
+  </div>
+  <p class="shelp" id="libCount"></p>
+  <div id="libList"></div>
 </section>
 
 <!-- STUDY -->
@@ -428,7 +446,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 <section class="screen" id="scr-learn" hidden>
   <div id="learnBanner"></div>
   <header class="pagehead"><h1>Learn</h1></header>
-  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button><button data-tab="progress">Progress</button></nav>
+  <nav class="subnav" aria-label="Library"><button data-tab="library">Verbs</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button></nav>
   <div class="learnctl">
     <label class="sel"><span>Showing</span><select id="learnScope"></select></label>
     <input type="search" id="learnSearch" placeholder="Search verbs (French or English)" aria-label="Search verbs">
@@ -440,15 +458,8 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 <!-- TENSE GUIDE -->
 <section class="screen" id="scr-guide" hidden>
   <header class="pagehead"><h1>Tense guide</h1><p class="lede">How each tense is formed and when it’s used.</p></header>
-  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button><button data-tab="progress">Progress</button></nav>
+  <nav class="subnav" aria-label="Library"><button data-tab="library">Verbs</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button></nav>
   <div id="guideList"></div>
-</section>
-
-<!-- PROGRESS -->
-<section class="screen" id="scr-progress" hidden>
-  <header class="pagehead"><h1>Progress</h1><p class="lede">Reviews done for every verb and form.</p></header>
-  <nav class="subnav" aria-label="Library"><button data-tab="library">Sections</button><button data-tab="learn">Learn</button><button data-tab="guide">Tense guide</button><button data-tab="progress">Progress</button></nav>
-  <div id="progressBody"></div>
 </section>
 
 <!-- SETTINGS -->
@@ -461,7 +472,7 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 <nav class="tabs" id="tabs" aria-label="Main" hidden>
   <button data-tab="today">Today</button>
   <button data-tab="library">Library</button>
-  <button data-tab="stats">Stats</button>
+  <button data-tab="stats">Progress</button>
   <button data-tab="settings">Settings</button>
 </nav>
 
@@ -508,10 +519,10 @@ dialog legend{font-weight:650;margin-bottom:6px;padding:0}
 /* =========================================================================
    CONSTANTS AND SMALL HELPERS
    ========================================================================= */
-const APP_VERSION = "6.0";
+const APP_VERSION = "6.7";
 const SCHEMA = 1;
 // Storage keys. NEVER rename these: saved progress lives under them.
-const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", lastbackup: "frverbs.lastbackup", sync: "frverbs.sync", syncat: "frverbs.syncat", review: "frverbs.review", aikey: "frverbs.aikey", aibad: "frverbs.aibad", aistats: "frverbs.aistats", backup: "frverbs.backup." };
+const KEYS = { settings: "frverbs.settings", progress: "frverbs.progress", schedule: "frverbs.schedule", timing: "frverbs.timing", session: "frverbs.session", formsched: "frverbs.formsched", history: "frverbs.history", lastbackup: "frverbs.lastbackup", sync: "frverbs.sync", syncat: "frverbs.syncat", review: "frverbs.review", aikey: "frverbs.aikey", aibad: "frverbs.aibad", aistats: "frverbs.aistats", clipcache: "frverbs.clipcache", backup: "frverbs.backup." };
 const EXPORT_SCHEMA = 4;
 const TYPE_ORDER = ["irregular", "regular"];
 const GLOSS = { present: "now, or what usually happens", passe_compose: "finished past: I did, I have done", imparfait: "ongoing past: I was doing, I used to do", futur: "future: I will do", conditionnel: "would: I would do, polite requests" };
@@ -574,6 +585,7 @@ function lsSet(k, v) {
 }
 function lsRemove(k) { try { localStorage.removeItem(k); } catch (e) {} }
 function stamp() { return new Date().toISOString().replace(/[:.]/g, "-"); }
+// A copy of one store, made when that store is found damaged.
 function makeBackup(label, raw) {
   if (raw == null) return null;
   const k = KEYS.backup + label + "." + stamp();
@@ -581,21 +593,49 @@ function makeBackup(label, raw) {
   pruneBackups();
   return k;
 }
+// Before an import, reset or restore, every store is copied into one bundle, so the whole state can be put back
+// together. The newest 3 bundles are kept, and separately the newest 3 single-store copies.
+const BUNDLE_STORES = [["settings", KEYS.settings], ["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched],
+  ["review", KEYS.review], ["timing", KEYS.timing], ["session", KEYS.session], ["history", KEYS.history]];
+const BUNDLE_PREFIX = KEYS.backup + "bundle.";
+function makeBundle(label) {
+  const stores = {};
+  BUNDLE_STORES.forEach(([n, k]) => { stores[n] = lsGet(k); });
+  const key = BUNDLE_PREFIX + label + "." + stamp();
+  if (!lsSet(key, JSON.stringify({ v: 1, label, at: new Date().toISOString(), app: APP_VERSION, stores }))) return null;
+  pruneBackups();
+  return key;
+}
+function listBundles() {
+  const out = [];
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i); if (!k || k.indexOf(BUNDLE_PREFIX) !== 0) continue;
+      let b = null; try { b = JSON.parse(lsGet(k)); } catch (e) {}
+      if (isObj(b) && isObj(b.stores)) out.push({ key: k, label: String(b.label || ""), at: String(b.at || "") });
+    }
+  } catch (e) {}
+  return out.sort((a, b) => b.key.slice(b.key.lastIndexOf(".") + 1).localeCompare(a.key.slice(a.key.lastIndexOf(".") + 1)));
+}
+// Writes a bundle's stores back. A store that was empty when the bundle was made is removed.
+function restoreBundle(b) {
+  if (!isObj(b) || !isObj(b.stores)) return false;
+  BUNDLE_STORES.forEach(([n, k]) => { const raw = b.stores[n]; if (typeof raw === "string") lsSet(k, raw); else lsRemove(k); });
+  return true;
+}
 function pruneBackups() {
   try {
-    const ks = [];
-    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.indexOf(KEYS.backup) === 0) ks.push(k); }
+    const bundles = [], singles = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i); if (!k || k.indexOf(KEYS.backup) !== 0) continue;
+      (k.indexOf(BUNDLE_PREFIX) === 0 ? bundles : singles).push(k);
+    }
     const when = k => k.slice(k.lastIndexOf(".") + 1);
-    ks.sort((a, b) => (when(a) < when(b) ? 1 : -1));
-    ks.slice(3).forEach(lsRemove);
+    const newestFirst = (a, b) => when(b).localeCompare(when(a)) || b.localeCompare(a);
+    [bundles, singles].forEach(ks => ks.sort(newestFirst).slice(3).forEach(lsRemove));
   } catch (e) {}
 }
 
-/* ---------- AI voices: fixed choices (the six that passed the listening test) ---------- */
-const AI_VOICES = ["cedar", "coral", "echo", "marin", "onyx", "shimmer"];
-const AI_MODEL = "gpt-4o-mini-tts", AI_URL = "https://api.openai.com/v1/audio/speech";
-const AI_INSTR_FR = "Speak clear, natural French as a native speaker from Paris would, at an even, unhurried pace, like a teacher modelling a verb form for a learner. Read the text exactly as written, with correct liaisons, and add nothing.";
-const AI_INSTR_EN = "Speak clear, natural British English at an even, unhurried pace, like a teacher giving the English meaning of a French verb form. Read the text exactly as written and add nothing.";
 /* ---------- settings ---------- */
 const DEFAULTS = {
   autoplay: true, direction: "en-fr", phonetics: "always", mic: true,
@@ -605,16 +645,16 @@ const DEFAULTS = {
   budgetMin: 20, maxNew: 8, maxNewIrr: 2, tenseEvery: ["present"], regTables: 2, allowedWrong: 1,
   secondPass: true, schedDir: "en-fr", sectionOrder: ["irregular", "er", "ir", "re"],
   reviewStyle: "prompts", prompts: 3, listening: true,
-  budgetIrr: 20, budgetReg: 10, maxNewForms: 20, autoBackup: true,
+  budget: 30, budgetIrr: 20, budgetReg: 10, maxNewForms: 20, autoBackup: true,
   lapse: "on", reviewTarget: 7,
-  aiVoices: true, aiPool: AI_VOICES.slice(), aiSpeed: 1, aiInstr: AI_INSTR_FR
+  aiVoices: true
 };
 const CHOICES = {
   direction: ["en-fr", "fr-en", "mixed"], phonetics: ["always", "tap", "hidden"], theme: ["system", "light", "dark"],
   textSize: [0, 1, 2, 3], repeatAudio: [1, 2], practiseContent: ["main", "key", "full"], practiseOrder: ["order", "shuffle"],
   budgetMin: [10, 15, 20, 25, 30, 40, 60], maxNew: [2, 4, 6, 8, 10, 12], maxNewIrr: [0, 1, 2, 3], regTables: [0, 1, 2, 3],
-  budgetIrr: [15, 18, 20], budgetReg: [5, 10, 15], maxNewForms: [10, 15, 20, 25, 30],
-  allowedWrong: [0, 1, 2, 3], schedDir: ["en-fr", "follow"], reviewStyle: ["prompts", "tables"], prompts: [2, 3, 4, 5], lapse: ["off", "gentle", "on"], reviewTarget: [3, 5, 7], aiSpeed: [0.8, 0.9, 1]
+  budget: [20, 25, 30, 35, 40, 45], budgetIrr: [15, 18, 20], budgetReg: [5, 10, 15], maxNewForms: [10, 15, 20, 25, 30],
+  allowedWrong: [0, 1, 2, 3], schedDir: ["en-fr", "follow"], reviewStyle: ["prompts", "tables"], prompts: [2, 3, 4, 5], lapse: ["gentle", "on"], reviewTarget: [3, 5, 7]
 };
 const SCALE = [0.9, 1, 1.15, 1.3];
 function freshDefaults() { return JSON.parse(JSON.stringify(DEFAULTS)); }
@@ -632,9 +672,10 @@ function cleanSettings(o) {
     else if (typeof d === "boolean") { if (typeof v === "boolean") s[k] = v; }
     else if (typeof d === "string") { if (typeof v === "string") s[k] = v; }
   });
-  s.aiPool = s.aiPool.filter(x => AI_VOICES.includes(x));
-  if (!s.aiPool.length) s.aiPool = AI_VOICES.slice();
-  if (!s.aiInstr.trim() || s.aiInstr.length > 1000) s.aiInstr = AI_INSTR_FR;
+  // v6.4: the two section budgets became one daily budget. Carry over their total, to the nearest choice.
+  if (o.budget === undefined && typeof o.budgetIrr === "number" && typeof o.budgetReg === "number") {
+    const sum = o.budgetIrr + o.budgetReg; s.budget = CHOICES.budget.reduce((a, b) => (Math.abs(b - sum) < Math.abs(a - sum) ? b : a));
+  }
   return s;
 }
 function loadSettings() {
@@ -696,6 +737,7 @@ function checkGroup(G) {
   if (!filled(G.infinitiveEnding)) e.push("needs infinitiveEnding");
   if (!isObj(G.participle) || typeof G.participle.fr !== "string" || typeof G.participle.phon !== "string") e.push("needs participle: { fr, phon }");
   if (!isObj(G.futureStem) || typeof G.futureStem.drop !== "number" || typeof G.futureStem.phon !== "string") e.push("needs futureStem: { drop, phon }");
+  if (G.like !== undefined && (!filled(G.like) || !isObj(RULESX[G.like]) || RULESX[G.like].like !== undefined)) e.push('like must name another group without its own like, e.g. "er"');
   if (!isObj(G.tenses)) { e.push("needs tenses"); return e; }
   TENSE_KEYS.forEach(t => {
     const R = G.tenses[t];
@@ -731,20 +773,29 @@ function checkVerb(v, errs, seen) {
   if (v.auxiliary !== undefined && v.auxiliary !== "avoir" && v.auxiliary !== "être") errs.push('auxiliary must be "avoir" or "être"');
   if (v.hAspire !== undefined && typeof v.hAspire !== "boolean") errs.push("hAspire must be true or false");
   if (v.test !== undefined && typeof v.test !== "boolean") errs.push("test must be true or false");
+  if (v.hint !== undefined && !filled(v.hint)) errs.push("hint must be a short piece of text");
+  if (v.family !== undefined && !filled(v.family)) errs.push('family must be text, e.g. "like prendre"');
+  if (v.reflexive !== undefined && typeof v.reflexive !== "boolean") errs.push("reflexive must be true or false");
+  if (v.reflexive === true && v.type !== "regular") errs.push("reflexive: true is for regular verbs; irregular reflexive verbs write the pronoun into every form");
+  if (v.type === "regular" && filled(v.french) && /^(se |s')/.test(v.french) !== (v.reflexive === true)) errs.push(v.reflexive === true ? "a reflexive verb's french must start with se or s'" : "a regular verb starting with se or s' needs reflexive: true");
+  if (v.reflexive === true && v.auxiliary === "avoir") errs.push("reflexive verbs take être in the passé composé");
+  const PS = Array.isArray(v.persons) ? v.persons : PERSONS;
+  if (v.persons !== undefined && (!Array.isArray(v.persons) || !v.persons.length || v.persons.some(p => !PERSONS.includes(p)) || new Set(v.persons).size !== v.persons.length)) errs.push(`persons must list one or more of: ${PERSONS.join(", ")}`);
+  if (v.expressions !== undefined && (!Array.isArray(v.expressions) || v.expressions.length < 1 || v.expressions.length > 3 || v.expressions.some(x => !isObj(x) || !filled(x.fr) || !filled(x.phon) || !filled(x.en)))) errs.push("expressions must list 1 to 3 phrases, each { fr, phon, en }");
   if (v.conjugations !== undefined && !isObj(v.conjugations)) errs.push("conjugations must be { ... }");
   const C = isObj(v.conjugations) ? v.conjugations : {};
   Object.keys(C).forEach(t => {
     if (!TENSE_KEYS.includes(t)) { errs.push(`unknown tense “${t}” in conjugations (use: ${TENSE_KEYS.join(", ")})`); return; }
     const tab = C[t];
     if (!isObj(tab)) { errs.push(`conjugations.${t} must be { je: {...}, ... }`); return; }
-    PERSONS.forEach(p => {
+    PS.forEach(p => {
       const f = tab[p];
       if (!isObj(f)) { errs.push(`conjugations.${t} is missing the person “${p}”`); return; }
       if (!filled(f.fr)) errs.push(`conjugations.${t}.${p} needs fr`);
       if (!filled(f.phon)) errs.push(`conjugations.${t}.${p} needs phon`);
       if (v.type === "irregular" && !filled(f.en)) errs.push(`conjugations.${t}.${p} needs en`);
     });
-    Object.keys(tab).forEach(p => { if (!PERSONS.includes(p)) errs.push(`conjugations.${t} has an unknown person “${p}” (use: ${PERSONS.join(", ")})`); });
+    Object.keys(tab).forEach(p => { if (!PS.includes(p)) errs.push(PERSONS.includes(p) ? `conjugations.${t} has “${p}”, which is not in persons` : `conjugations.${t} has an unknown person “${p}” (use: ${PERSONS.join(", ")})`); });
   });
   if (v.type === "irregular") {
     if (!isObj(v.conjugations)) errs.push("irregular verbs need conjugations");
@@ -818,8 +869,18 @@ function vowelStart(form, v) {
 function stripAgree(s) { return s.replace(/\((?:e|s)\)/g, ""); }
 
 // One row of a table: the app adds the pronoun (elision, liaison) to a form.
+// Impersonal verbs (persons: ["il"]) use il alone: il faut, il pleut. Reflexive pronouns for reflexive: true.
+const IMPERS = { label: "il", fr: "il", speak: "il", phon: "eel" };
+const REFL = { je: ["me", "m'", "muh", "m"], tu: ["te", "t'", "tuh", "t"], il: ["se", "s'", "suh", "s"], nous: ["nous", "", "noo", ""], vous: ["vous", "", "voo", ""], ils: ["se", "s'", "suh", "s"] };
+// Adds the reflexive pronoun to a generated or override form (me lève, m'appelle, nous nous levons, vous vous êtes).
+function reflx(v, p, form, phon, pre) {
+  if (!v.reflexive) return [form, phon, pre];
+  const R = REFL[p], vow = vowelStart(form, v), el = vow && R[1];
+  const fr = el ? R[1] : R[0] + " ", ph = el ? R[3] : R[2] + " " + (vow ? "z" : "");
+  return [fr + form, ph + phon, pre == null ? null : fr + pre];
+}
 function makeRow(v, p, form, phon, en, pre, end) {
-  const P = PRONOUNS[p];
+  const P = v.impersonal && p === "il" ? IMPERS : PRONOUNS[p];
   const vowel = vowelStart(form, v);
   const elide = vowel && filled(P.elided);
   const pron = elide ? P.elided : P.fr + " ";
@@ -840,31 +901,31 @@ function buildTable0(v, t) {
     return {
       source: v.type === "irregular" ? "data" : "override",
       rule: v.type === "regular" ? "This verb has its own forms for this tense." : "",
-      rows: PERSONS.map(p => makeRow(v, p, own[p].fr.trim(), own[p].phon.trim(), own[p].en))
+      rows: v.persons.map(p => { const x = reflx(v, p, own[p].fr.trim(), own[p].phon.trim()); return makeRow(v, p, x[0], x[1], own[p].en); })
     };
   }
   const G = RULESX[v.group], R = G.tenses[t];
-  const stem = v.french.slice(0, v.french.length - G.infinitiveEnding.length);
+  const stem = v.inf.slice(0, v.inf.length - G.infinitiveEnding.length);
   if (R.from === "auxiliary") {
     const aux = v.auxiliary, A = AUX[aux], agree = aux === "être" ? AUX.agreement : null;
     const part = stem + G.participle.fr, partPh = v.stemPhon + G.participle.phon;
     return {
       source: "rules",
       rule: `${aux} (présent) + past participle ${part}${agree ? ", which agrees with the subject" : ""}`,
-      rows: PERSONS.map(p => {
-        const ag = agree ? agree[p] : "";
-        const pre = A[p].fr + " " + stem;
-        return makeRow(v, p, pre + G.participle.fr + ag, A[p].phon + " " + partPh, "", pre, G.participle.fr + ag);
+      rows: v.persons.map(p => {
+        const ag = agree && !v.impersonal ? agree[p] : "";
+        const pre = A[p].fr + " " + stem, x = reflx(v, p, pre + G.participle.fr + ag, A[p].phon + " " + partPh, pre);
+        return makeRow(v, p, x[0], x[1], "", x[2], G.participle.fr + ag);
       })
     };
   }
   const future = R.from === "future";
-  const base = future ? v.french.slice(0, v.french.length - (G.futureStem.drop || 0)) : stem;
+  const base = future ? v.inf.slice(0, v.inf.length - (G.futureStem.drop || 0)) : stem;
   const basePh = future ? v.stemPhon + G.futureStem.phon : v.stemPhon;
   return {
     source: "rules",
     rule: `stem ${base}- + ` + PERSONS.map(p => (R.endings[p].fr ? "-" + R.endings[p].fr : "(nothing)")).join(", "),
-    rows: PERSONS.map(p => makeRow(v, p, base + R.endings[p].fr, basePh + R.endings[p].phon, "", base, R.endings[p].fr))
+    rows: v.persons.map(p => { const x = reflx(v, p, base + R.endings[p].fr, basePh + R.endings[p].phon, base); return makeRow(v, p, x[0], x[1], "", x[2], R.endings[p].fr); })
   };
 }
 
@@ -873,7 +934,7 @@ function agreeSub(x, who) {
   if (!x || x.indexOf("(e)") < 0) return x || "";
   return who === "elle" || who === "elles" ? x.replace("(e)", "e") : who === "on" ? x.replace("(e)", "(e)(s)") : x.replace("(e)", "");
 }
-const SUBJ_RE = /^(I|you|he|she|one|we|they)\b/i;
+const SUBJ_RE = /^(I|you|he|she|one|we|they|it)\b/i;
 const escL = x => esc(x).replace(/\n/g, "<br>");
 // "I was / have been" -> ["I was", "I have been"]: one option per line, subject repeated.
 function enAlts(en) {
@@ -881,9 +942,10 @@ function enAlts(en) {
   const parts = en.split(" / ").map(x => x.trim()).filter(Boolean), m = SUBJ_RE.exec(parts[0]), subj = m ? m[1] : "";
   return parts.map((p, i) => (i === 0 || !subj || SUBJ_RE.test(p) ? p : subj + " " + p));
 }
-function addSubs(rows) {
+function addSubs(rows, v) {
   const nous = rows.find(r => r.key === "nous");
   rows.forEach(r => {
+    if (v && v.impersonal && r.key === "il") { r.enL = enAlts(r.en); r.en = r.enL.join("\n"); return; }
     let L = r.key === "il" ? enAlts((r.en || "").replace(/^he\/she\/one/i, "he")) : enAlts(r.en);
     const nousL = r.key === "il" && nous ? enAlts(nous.en) : [];
     if (r.key === "tu") L = L.map(x => x + " (informal)");
@@ -905,12 +967,17 @@ function addSubs(rows) {
     });
   });
 }
-function buildTable(v, t) { const tb = buildTable0(v, t); addSubs(tb.rows); return tb; }
+function buildTable(v, t) { const tb = buildTable0(v, t); addSubs(tb.rows, v); return tb; }
 
 function prepareVerb(raw, i) {
+  const en = raw.english.trim().replace(/^to go \/ come home$/, "to go home, to come home"), G = RULESX[raw.group];
+  const persons = Array.isArray(raw.persons) ? PERSONS.filter(p => raw.persons.includes(p)) : PERSONS.slice();
   const v = {
-    id: raw.id, type: raw.type, group: raw.group, english: raw.english.trim().replace(/^to go \/ come home$/, "to go home, to come home"), french: raw.french.trim(),
-    phonetic: raw.phonetic.trim(), auxiliary: raw.auxiliary || "avoir", stemPhon: raw.stemPhon || "",
+    id: raw.id, type: raw.type, group: raw.group, english: filled(raw.hint) ? en + " (" + raw.hint.trim() + ")" : en, gloss: en, hint: filled(raw.hint) ? raw.hint.trim() : "",
+    french: raw.french.trim(), inf: raw.reflexive ? raw.french.trim().replace(/^(se |s')/, "") : raw.french.trim(), reflexive: !!raw.reflexive,
+    persons, impersonal: persons.length === 1 && persons[0] === "il", family: filled(raw.family) ? raw.family.trim() : "",
+    expressions: Array.isArray(raw.expressions) ? raw.expressions : [], section: isObj(G) && filled(G.like) ? G.like : raw.group,
+    phonetic: raw.phonetic.trim(), auxiliary: raw.reflexive ? "être" : raw.auxiliary || "avoir", stemPhon: raw.stemPhon || "",
     hAspire: !!raw.hAspire, test: !!raw.test, order: i, raw, tables: {}, keyRows: [],
     rank: raw.rank, rankNum: parseFloat(raw.rank.slice(1))
   };
@@ -982,12 +1049,6 @@ function cardsFor(verbs, content) {
 }
 function cardKeyOf(c) { return c.kind === "main" ? "main" : c.kind === "keyforms" ? "keyforms" : "t:" + c.tense; }
 function cardName(c) { return c.kind === "main" ? "Main card" : c.kind === "keyforms" ? "Key forms" : TENSES[c.tense].name; }
-function verbStat(v) {
-  const keys = ["main"].concat(v.keyRows.length ? ["keyforms"] : [], TENSE_KEYS.map(t => "t:" + t));
-  const known = keys.filter(k => { const r = getRec(v.id, k); return r && r.last === "known"; }).length;
-  return { known, total: keys.length };
-}
-
 /* =========================================================================
    TEXT-TO-SPEECH (device voices, French)
    ========================================================================= */
@@ -1044,11 +1105,11 @@ function stopAudioNow() {
   if (aiCurRes) { const f = aiCurRes; aiCurRes = null; f(false); }
 }
 // `text` is one string, or a list of clips (strings, or {t, lang:"en"}) spoken one after another (Play all). Repeat-audio repeats the list.
-// `it` is the card, so one card keeps one AI voice. `force` is a voice name, or null for the browser voice only.
+// `it` is the card, so one card keeps one recorded voice. `force` is a voice name, or null for the browser voice only.
 function speak(text, btn, it, force) {
   const lines = normLines(text);
   if (!lines.length) return;
-  if (!synth && !aiConfigured()) { toast("This browser can’t play speech."); return; }
+  if (!synth && !clipsActive()) { toast("This browser can’t play speech."); return; }
   if (listening) stopListening();
   if (synth && !voice) loadVoices();
   const tok = ++speakTok, times = settings.repeatAudio === 2 ? 2 : 1, queue = lines.length > 1;
@@ -1057,7 +1118,7 @@ function speak(text, btn, it, force) {
   clipScope = queue && btn ? btn.closest(".ltense, .rvsec, #card") : null;
   setPlaying(btn);
   let vname = "";
-  if (force !== null && aiActive()) vname = force || (it ? (it.aiVoice || (it.aiVoice = pickVoice(lines))) : pickVoice(lines));
+  if (force !== null && clipsActive()) vname = force || (it ? (it.aiVoice || (it.aiVoice = pickVoice(lines))) : pickVoice(lines));
   speakRun(tok, lines, times, queue, vname).catch(() => {}).then(() => { if (tok === speakTok) { markClip(null); setPlaying(null); } });
 }
 async function speakRun(tok, lines, times, queue, vname) {
@@ -1073,15 +1134,21 @@ async function speakRun(tok, lines, times, queue, vname) {
     if (n + 1 < times) await new Promise(r => setTimeout(r, 450));
   }
 }
+// Playback order (D2): the recorded clip in the card's voice (or another recorded voice for this line), then the browser voice.
 async function playLine(L, vname, tok) {
-  if (vname && aiActive()) {
-    try {
-      const blob = await aiClip(vname, L.lang, L.t);
-      if (tok !== speakTok) return;
-      aiCur = { voice: vname, lang: L.lang, text: L.t }; showFix();
-      const ok = await aiPlayBlob(blob);
-      if (ok || tok !== speakTok) return;
-    } catch (e) { if (tok !== speakTok) return; }
+  if (vname && clipsActive()) {
+    const vs = voicesFor(L.lang, L.t), v = vs.includes(vname) ? vname : vs[0];
+    if (v) {
+      try {
+        const blob = await aiClip(v, L.lang, L.t);
+        if (tok !== speakTok) return;
+        if (blob) {
+          aiCur = { voice: v, lang: L.lang, text: L.t }; showFix();
+          const ok = await aiPlayBlob(blob);
+          if (ok || tok !== speakTok) return;
+        }
+      } catch (e) { if (tok !== speakTok) return; }
+    }
   }
   aiCur = null; hideFix();
   if (tok !== speakTok) return;
@@ -1111,31 +1178,77 @@ function browserLine(L) {
 }
 
 /* =========================================================================
-   AI VOICES (OpenAI text to speech). The key lives only on this device: never in the code, a backup or the sync file.
-   Each clip is made once and kept on this device (IndexedDB), so a repeat is free and instant. Any failure falls back to the browser voice.
+   RECORDED VOICES (decision D2, v6.6). tools/make-audio.js generates every clip once, on a laptop, into audio/<voice>/
+   and writes audio/manifest.json: { voices: [...], clips: { "fr|je suis": { marin: "<file id>", cedar: "<file id>" } } }.
+   The app makes no call to any speech service. Clips come from this site, are kept in IndexedDB so they also play
+   offline, and the browser voice covers anything missing. "Sounded wrong?" puts a clip on a regeneration list that
+   Settings exports for the script; a regenerated clip gets a new file id, so the flag lapses by itself.
    ========================================================================= */
-const aiCfg = { cap: 150 * 1024 * 1024, dayCap: 1500, timeout: 12000 };
-class AiError extends Error { constructor(kind, msg, detail) { super(msg || kind); this.kind = kind; this.detail = detail || ""; } }
-let aiBroken = "", aiOfflineUntil = 0, aiNotified = 0, aiLastVoice = "", aiCur = null, aiCurRes = null, aiFixT = null, aiBad = null;
+const aiCfg = { cap: 150 * 1024 * 1024, timeout: 12000 };
+const AUDIO_DIR = "audio/", CLIP_CACHE_VERSION = "pre1";
+let aiLastVoice = "", aiCur = null, aiCurRes = null, aiFixT = null, clipMan = null, clipManP = null;
 let aiAudio = null; try { aiAudio = new Audio(); } catch (e) {}
-const aiKey = () => (lsGet(KEYS.aikey) || "").trim();
-const aiConfigured = () => !!(settings.aiVoices && aiKey());
-function aiStats() { try { const o = JSON.parse(lsGet(KEYS.aistats) || "null"); if (isObj(o)) return o; } catch (e) {} return { date: "", today: 0, total: 0, secs: 0 }; }
-const aiToday = () => { const o = aiStats(); return o.date === todayStr() ? o.today : 0; };
-function aiCount(text) {
-  const o = aiStats(), t = todayStr();
-  if (o.date !== t) { o.date = t; o.today = 0; }
-  o.today++; o.total = (o.total || 0) + 1; o.secs = (o.secs || 0) + Math.max(0.8, text.length * 0.08);
-  lsSet(KEYS.aistats, JSON.stringify(o));
+function loadManifest() {
+  if (!clipManP) clipManP = typeof fetch !== "function" ? Promise.resolve(null) : fetch(AUDIO_DIR + "manifest.json", { cache: "no-cache" }).then(r => (r.ok ? r.json() : null))
+    .then(m => { clipMan = isObj(m) && isObj(m.clips) && Array.isArray(m.voices) ? m : null; return clipMan; }).catch(() => null);
+  return clipManP;
 }
-const aiActive = () => aiConfigured() && !aiBroken && Date.now() >= aiOfflineUntil && aiToday() < aiCfg.dayCap;
-const aiPool = () => { const p = (settings.aiPool || []).filter(v => AI_VOICES.includes(v)); return p.length ? p : AI_VOICES.slice(); };
-function badMap() { if (!aiBad) { try { aiBad = JSON.parse(lsGet(KEYS.aibad) || "{}") || {}; } catch (e) { aiBad = {}; } if (!isObj(aiBad)) aiBad = {}; } return aiBad; }
-const badVoices = (lang, text) => badMap()[lang + "|" + text] || [];
-function badAdd(lang, text, v) { const m = badMap(), k = lang + "|" + text; m[k] = (m[k] || []).filter(x => x !== v).concat(v); lsSet(KEYS.aibad, JSON.stringify(m)); }
-const aiHash = x => { let h = 5381; for (let i = 0; i < x.length; i++) h = ((h << 5) + h + x.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
-const aiInstrFor = lang => (lang === "en" ? AI_INSTR_EN : settings.aiInstr);
-const aiCacheKey = (voice, lang, text) => [voice, settings.aiSpeed, aiHash(aiInstrFor(lang)), lang, text].join("|");
+const clipsActive = () => settings.aiVoices !== false && !!clipMan;
+const clipOf = (lang, text) => { const c = clipMan && clipMan.clips[lang + "|" + text]; return isObj(c) ? c : null; };
+// Regeneration list: { "<voice>|<file id>": { voice, lang, text, id, on } }. Lists from before v6.6 (live AI clips) are dropped.
+let regen = null;
+function regenMap() {
+  if (!regen) { try { regen = JSON.parse(lsGet(KEYS.aibad) || "{}"); } catch (e) { regen = {}; } if (!isObj(regen)) regen = {}; Object.keys(regen).forEach(k => { if (!isObj(regen[k]) || !regen[k].id) delete regen[k]; }); }
+  return regen;
+}
+const saveRegen = () => lsSet(KEYS.aibad, JSON.stringify(regenMap()));
+function flagClip(voice, lang, text) {
+  const c = clipOf(lang, text); if (!c || !c[voice]) return false;
+  regenMap()[voice + "|" + c[voice]] = { voice, lang, text, id: c[voice], on: todayStr() }; saveRegen(); return true;
+}
+// Voices with an unflagged clip for this line, in the manifest's order.
+const voicesFor = (lang, text) => { const c = clipOf(lang, text); return c ? clipMan.voices.filter(v => c[v] && !regenMap()[v + "|" + c[v]]) : []; };
+// Flags whose clip has since been regenerated (new file id) no longer apply.
+const regenOpen = () => Object.values(regenMap()).filter(x => { const c = clipOf(x.lang, x.text); return c && c[x.voice] === x.id; });
+
+// Review log: one record per card per day, written at its first try in a scheduled session
+// ({ id: "date|card", d, k, g: "pass"|"miss", step, gap, late, m: "speak"|"listen", kind, s, t, v }).
+// Kept in IndexedDB, included in exports, and merged (never replaced) on import. A reset adds a marker record
+// ({ id: "mark|…", type: "reset" }) rather than deleting anything.
+const logDB = {
+  db: null, ready: null,
+  open() {
+    if (this.ready) return this.ready;
+    this.ready = new Promise(res => {
+      let rq; try { rq = indexedDB.open("frverbs-log", 1); } catch (e) { res(false); return; }
+      rq.onupgradeneeded = () => { try { rq.result.createObjectStore("reviews", { keyPath: "id" }); } catch (e) {} };
+      rq.onsuccess = () => { this.db = rq.result; res(true); };
+      rq.onerror = rq.onblocked = () => res(false);
+    });
+    return this.ready;
+  },
+  async tx(mode, fn) {
+    if (!(await this.open())) return null;
+    return new Promise(res => {
+      try {
+        const t = this.db.transaction("reviews", mode), st = t.objectStore("reviews");
+        let out = null; const r = fn(st); if (r) r.onsuccess = () => { out = r.result; };
+        t.oncomplete = () => res(out === null ? true : out);
+        t.onerror = t.onabort = () => res(null);
+      } catch (e) { res(null); }
+    });
+  },
+  put(rec) { logCache([rec]); return this.tx("readwrite", st => { st.put(rec); }); },
+  del(id) { LOG = LOG.filter(r => r.id !== id); logIdx = null; return this.tx("readwrite", st => { st.delete(id); }); },
+  async all() { const r = await this.tx("readonly", st => st.getAll()); return Array.isArray(r) ? r : []; },
+  merge(recs) { logCache(recs); return this.tx("readwrite", st => { recs.forEach(r => st.put(r)); }); },
+  mark(type) { return this.put({ id: "mark|" + Date.now(), type, d: todayStr(), t: Date.now(), v: APP_VERSION }); }
+};
+// In-memory copy of the log (Section 3E: every metric is one pass over it). Filled at start-up, kept current by put/del/merge.
+let LOG = [], logIdx = null, logLoaded = null;
+function logCache(recs) { const ids = new Set(recs.map(r => r && r.id)); LOG = LOG.filter(r => !ids.has(r.id)).concat(recs.filter(okLogRec)); logIdx = null; }
+function loadLog() { if (!logLoaded) logLoaded = logDB.all().then(a => { const mine = LOG; LOG = a.filter(okLogRec); logCache(mine); return LOG; }); return logLoaded; }
+const okLogRec = r => isObj(r) && typeof r.id === "string" && r.id.length > 0 && r.id.length < 300;
 
 const aiDB = {
   db: null, keys: new Map(), bytes: 0, ready: null, pruning: false,
@@ -1162,8 +1275,15 @@ const aiDB = {
   get(k) {
     return new Promise(res => {
       if (!this.db) { res(null); return; }
-      try { const rq = this.db.transaction("clips").objectStore("clips").get(k); rq.onsuccess = () => res(rq.result || null); rq.onerror = () => res(null); } catch (e) { res(null); }
+      try { const rq = this.db.transaction("clips").objectStore("clips").get(k); rq.onsuccess = () => { const r = rq.result || null; if (r) this.touch(r); res(r); }; rq.onerror = () => res(null); } catch (e) { res(null); }
     });
+  },
+  // Remember when a clip was last played, so pruning removes the least recently played first. Saved at most once a day per clip.
+  touch(rec) {
+    const now = Date.now();
+    if (now - (rec.t || 0) < 864e5) return;
+    const m = this.keys.get(rec.k); if (m) m.t = now;
+    this.put(Object.assign({}, rec, { t: now }));
   },
   put(rec) {
     return new Promise(res => {
@@ -1191,7 +1311,7 @@ const aiDB = {
       try { const t = this.db.transaction("clips", "readwrite"); t.objectStore("clips").clear(); t.oncomplete = () => { this.keys = new Map(); this.bytes = 0; res(); }; t.onerror = t.onabort = () => res(); } catch (e) { res(); }
     });
   },
-  // Oldest clips go first once the saved audio passes its limit.
+  // The least recently played clips go first once the saved audio passes its limit.
   async prune() {
     if (this.bytes <= aiCfg.cap || this.pruning) return;
     this.pruning = true;
@@ -1201,57 +1321,37 @@ const aiDB = {
   }
 };
 
-const aiInflight = new Map(), aiWaiters = []; let aiRunning = 0;
-const aiAcquire = () => new Promise(res => { if (aiRunning < 3) { aiRunning++; res(); } else aiWaiters.push(res); });
-const aiRelease = () => { const n = aiWaiters.shift(); if (n) n(); else aiRunning--; };
-function aiFailure(status, detail) {
-  if (status === 401) { aiBroken = "OpenAI didn’t accept the key."; return new AiError("auth", aiBroken, detail); }
-  if (status === 403) { aiBroken = "The key isn’t allowed to use gpt-4o-mini-tts. Allow the model in the project’s Limits, and set the key’s Model capabilities to Write."; return new AiError("perm", aiBroken, detail); }
-  if (status === 429 && /quota|billing|credit|budget|exceeded your current/i.test(detail)) { aiBroken = "OpenAI says you are out of credit or over the project’s monthly budget."; return new AiError("credit", aiBroken, detail); }
-  aiOfflineUntil = Date.now() + (status === 429 ? 20000 : 30000);
-  return new AiError(status === 429 ? "rate" : "server", status === 429 ? "OpenAI is busy." : "OpenAI had a problem.", detail);
-}
-function aiNote(e) {
-  if (!(e instanceof AiError) || e.kind === "off") return;
-  const now = Date.now(); syncAiUI();
-  if (now - aiNotified < 5 * 60000) return;
-  aiNotified = now; toast(e.message + " Using the browser voice for now.");
-}
-// Resolves to an audio Blob: from the saved audio if it is there, otherwise from OpenAI.
-function aiClip(voice, lang, text, opts) {
-  const k = aiCacheKey(voice, lang, text), fresh = !!(opts && opts.fresh);
-  if (!fresh && aiInflight.has(k)) return aiInflight.get(k);
+const aiInflight = new Map();
+// Resolves to the clip's audio Blob (saved copy first, then this site), or null when there is no clip for this voice.
+function aiClip(voice, lang, text) {
+  const c = clipOf(lang, text), id = c && c[voice];
+  if (!id) return Promise.resolve(null);
+  const k = voice + "|" + id;
+  if (aiInflight.has(k)) return aiInflight.get(k);
   const p = (async () => {
     await aiDB.open();
-    if (!fresh) { const hit = await aiDB.get(k); if (hit && hit.blob) return hit.blob; }
-    if (!aiActive()) throw new AiError("off");
-    await aiAcquire();
+    const hit = await aiDB.get(k); if (hit && hit.blob) return hit.blob;
+    const ctl = typeof AbortController !== "undefined" ? new AbortController() : null, to = setTimeout(() => { if (ctl) ctl.abort(); }, aiCfg.timeout);
     try {
-      const body = { model: AI_MODEL, voice, input: text, response_format: "mp3", instructions: aiInstrFor(lang) };
-      if (settings.aiSpeed !== 1) body.speed = settings.aiSpeed;
-      const ctl = typeof AbortController !== "undefined" ? new AbortController() : null, to = setTimeout(() => { if (ctl) ctl.abort(); }, aiCfg.timeout);
-      let res;
-      try { res = await fetch(AI_URL, { method: "POST", headers: { "Authorization": "Bearer " + aiKey(), "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctl ? ctl.signal : undefined }); }
-      catch (e) { aiOfflineUntil = Date.now() + 45000; throw new AiError("net", "Couldn’t reach OpenAI."); }
-      finally { clearTimeout(to); }
-      if (!res.ok) { let detail = ""; try { const j = await res.json(); detail = (j && j.error && j.error.message) || ""; } catch (e) {} throw aiFailure(res.status, detail); }
+      const res = await fetch(AUDIO_DIR + voice + "/" + id + ".mp3", { signal: ctl ? ctl.signal : undefined });
+      if (!res.ok) return null;
       const blob = await res.blob();
-      aiCount(text);
       await aiDB.put({ k, blob, size: blob.size, t: Date.now() });
       aiDB.prune();
       return blob;
-    } finally { aiRelease(); }
+    } catch (e) { return null; } finally { clearTimeout(to); }
   })();
-  if (!fresh) { aiInflight.set(k, p); p.then(() => aiInflight.delete(k), () => aiInflight.delete(k)); }
-  p.catch(aiNote);
+  aiInflight.set(k, p); p.then(() => aiInflight.delete(k), () => aiInflight.delete(k));
   return p;
 }
-function aiPrefetch(voice, L) { if (aiActive()) aiClip(voice, L.lang, L.t).catch(() => {}); }
+function aiPrefetch(voice, L) { if (clipsActive()) aiClip(voice, L.lang, L.t).catch(() => {}); }
+// One voice per card, alternating between cards: a voice with a clip for every line, else one with the first line, else none.
 function pickVoice(lines) {
-  const ok = aiPool().filter(v => !lines.some(L => badVoices(L.lang, L.t).includes(v))), cand = ok.length ? ok : aiPool();
-  const cached = cand.filter(v => lines.every(L => aiDB.keys.has(aiCacheKey(v, L.lang, L.t))));
-  let from = cached.length && Math.random() < 0.65 ? cached : cand; // mostly reuse a voice that is already saved, sometimes try another
-  if (from.length > 1) { const alt = from.filter(v => v !== aiLastVoice); if (alt.length) from = alt; }
+  if (!clipMan) return "";
+  let cand = clipMan.voices.filter(v => lines.every(L => voicesFor(L.lang, L.t).includes(v)));
+  if (!cand.length) cand = voicesFor(lines[0].lang, lines[0].t);
+  if (!cand.length) return "";
+  const alt = cand.filter(v => v !== aiLastVoice), from = alt.length ? alt : cand;
   const v = from[Math.floor(Math.random() * from.length)]; aiLastVoice = v; return v;
 }
 function aiPlayBlob(blob) {
@@ -1266,30 +1366,46 @@ function aiPlayBlob(blob) {
 }
 // Reads ahead in a session so the next few cards' audio is ready before you reach them.
 function aiPrefetchAhead() {
-  if (!aiActive() || !session || !session.queue) return;
+  if (!clipsActive() || !session || !session.queue) return;
   for (let j = session.idx; j < Math.min(session.queue.length, session.idx + 7); j++) {
     const it = session.queue[j]; if (!it) continue;
     let lines; try { lines = normLines(speakText(it)); } catch (e) { continue; }
     if (!lines.length) continue;
     if (!it.aiVoice) it.aiVoice = pickVoice(lines);
-    lines.slice(0, 3).forEach(L => aiPrefetch(it.aiVoice, L));
+    if (it.aiVoice) lines.slice(0, 3).forEach(L => aiPrefetch(it.aiVoice, L));
   }
 }
 function showFix() { const el = $("#aiFix"); if (!el) return; el.hidden = false; clearTimeout(aiFixT); aiFixT = setTimeout(hideFix, 10000); }
 function hideFix() { const el = $("#aiFix"); if (el) el.hidden = true; clearTimeout(aiFixT); }
-// "Sounded wrong": remember that this voice is bad for this form, delete its clip, and play the form in another voice.
+// "Sounded wrong?": put this clip on the regeneration list, drop its saved copy, and play the line in another voice.
 async function aiFix() {
   const c = aiCur; hideFix(); if (!c) return;
-  badAdd(c.lang, c.text, c.voice);
-  await aiDB.del(aiCacheKey(c.voice, c.lang, c.text));
-  const left = aiPool().filter(v => !badVoices(c.lang, c.text).includes(v));
-  stopSpeech();
+  const cl = clipOf(c.lang, c.text);
+  flagClip(c.voice, c.lang, c.text);
+  if (cl && cl[c.voice]) await aiDB.del(c.voice + "|" + cl[c.voice]);
+  const left = voicesFor(c.lang, c.text);
+  stopSpeech(); syncAiUI();
   const it = curItem();
-  if (!left.length) { toast("No other voice is left for this one, so it uses the browser voice."); speak([{ t: c.text, lang: c.lang }], undefined, undefined, null); return; }
-  const v = left[Math.floor(Math.random() * left.length)];
-  if (it && it.aiVoice === c.voice) it.aiVoice = v;
-  toast("Trying " + v + " instead.");
-  speak([{ t: c.text, lang: c.lang }], undefined, undefined, v);
+  if (!left.length) { toast("Added to the regeneration list. No other voice has this one, so the browser voice plays it."); speak([{ t: c.text, lang: c.lang }], undefined, undefined, null); return; }
+  if (it && it.aiVoice === c.voice) it.aiVoice = left[0];
+  toast("Added to the regeneration list. Trying " + left[0] + ".");
+  speak([{ t: c.text, lang: c.lang }], undefined, undefined, left[0]);
+}
+// The lines tools/make-audio.js records, once each. "cards" (the default): everything a scheduled session speaks by
+// itself (each card's infinitive or form, in speaking and listening) plus expressions. "full" adds every other line
+// a play button can say: il · elle · on and ils · elles variants, regular verbs' tables, and To review's English.
+function allClipLines(scope) {
+  const out = [], seen = new Set(), add = (t, lang) => { if (!t) return; const k = lang + "|" + t; if (!seen.has(k)) { seen.add(k); out.push({ t, lang }); } };
+  VERBS_OK.forEach(v => {
+    add(v.french, "fr");
+    if (v.type === "irregular") verbUnits(v).forEach(k => { const sp = unitSpec(k); if (sp.kind === "form") add(speakText(newItem(sp)), "fr"); });
+    v.expressions.forEach(x => add(x.fr, "fr"));
+  });
+  if (scope === "full") VERBS_OK.forEach(v => {
+    TENSE_KEYS.forEach(t => clipsOf(v.tables[t].rows).forEach(x => add(x, "fr")));
+    (v.type === "irregular" ? verbUnits(v) : [v.id]).forEach(k => { const r = reviewItem(k); if (r) { r.say.forEach(x => add(x, "fr")); add(r.enSay, "en"); } });
+  });
+  return out;
 }
 function speakText(it) {
   const v = BY_ID[it.verbId];
@@ -1481,27 +1597,23 @@ function presentCurrent(animate) {
 }
 function haptic() { if (settings.haptics && navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} } }
 
-function commit(it, wrongKeys) {
-  if (session.mode === "sched") { commitSched(it, wrongKeys); return; }
-  const key = cardKeyOf(it), before = getRec(it.verbId, key);
-  session.undo.push({
-    idx: session.idx, known: session.known, missed: session.missed, pileLen: session.pile.length,
-    missedLen: session.missedItems.length, verbId: it.verbId, key, before: before ? JSON.parse(JSON.stringify(before)) : null
-  });
+function commit(it, wrongKeys, grade) {
+  if (session.mode === "sched") { commitSched(it, wrongKeys, grade); return; }
+  session.undo.push({ idx: session.idx, known: session.known, missed: session.missed, pileLen: session.pile.length, missedLen: session.missedItems.length });
   if (session.undo.length > 60) session.undo.shift();
-  const r = ensureRec(it.verbId, key), knew = wrongKeys.length === 0;
-  r.seen = (r.seen || 0) + 1;
-  if (knew) r.known = (r.known || 0) + 1;
-  else {
-    r.missed = (r.missed || 0) + 1;
-    if (it.kind !== "main") {
-      if (!isObj(r.formMisses)) r.formMisses = {};
-      wrongKeys.forEach(k => { r.formMisses[k] = (r.formMisses[k] || 0) + 1; });
-    }
+  if (session.toReview) {
+    const rk = unitKey(it);
+    session.undo[session.undo.length - 1].rv = [rk, review.items[rk] ? JSON.stringify(review.items[rk]) : null];
+    reviewRecall(rk, wrongKeys.length === 0);
   }
-  r.last = knew ? "known" : "missed";
-  r.lastSeen = new Date().toISOString();
-  saveProgress();
+  const knew = wrongKeys.length === 0;
+  // B3: a practice attempt goes to the review log as mode practice. Progress screens show it; the schedule never reads it.
+  if (!it.retry) {
+    const k = it.kind === "main" || it.kind === "form" ? unitKey(it) : it.verbId + "|" + (it.kind === "tense" ? it.tense : "keyforms");
+    const rec = { id: todayStr() + "|p|" + k + "|" + Date.now(), d: todayStr(), k, g: knew ? (grade === "hard" ? "hard" : "pass") : "miss", p: "practice",
+      m: isListen(it) ? "listen" : "speak", kind: it.kind, wrong: wrongKeys.slice(), t: Date.now(), v: APP_VERSION };
+    logDB.put(rec); session.undo[session.undo.length - 1].logId = rec.id;
+  }
   if (knew) session.known++;
   else {
     session.missed++;
@@ -1515,9 +1627,8 @@ function undo() {
   if (session.mode === "sched") { undoSched(); return; }
   const u = session.undo.pop();
   stopSpeech(); stopListening();
-  if (u.before) { if (!isObj(progress.verbs[u.verbId])) progress.verbs[u.verbId] = {}; progress.verbs[u.verbId][u.key] = u.before; }
-  else if (isObj(progress.verbs[u.verbId])) { delete progress.verbs[u.verbId][u.key]; if (!Object.keys(progress.verbs[u.verbId]).length) delete progress.verbs[u.verbId]; }
-  saveProgress();
+  if (u.logId) logDB.del(u.logId);
+  if (u.rv) { if (u.rv[1]) review.items[u.rv[0]] = JSON.parse(u.rv[1]); else delete review.items[u.rv[0]]; saveReview(); }
   Object.assign(session, { idx: u.idx, known: u.known, missed: u.missed, done: false });
   session.pile.length = u.pileLen; session.missedItems.length = u.missedLen;
   const old = session.queue[u.idx], fresh = newItem(specOf(old));
@@ -1548,11 +1659,12 @@ function flyOut(dir, then) {
 }
 function afterReveal(it) { if (settings.autoplay && it.dir === "en-fr" && !isListen(it)) speak(speakText(it), $("#card .cplay .play"), it); }
 
-function gradeMain(knew, viaSwipe) {
+function gradeMain(knew, viaSwipe, grade) {
   const it = curItem(); if (!it || busy) return;
   if (it.pending) { advance(it.pending === "known" ? 1 : -1); return; }
+  if (!it.revealed) return; // a card can only be graded once its answer is showing
   stopListening();
-  commit(it, knew ? [] : [it.kind === "form" ? it.person : "main"]);
+  commit(it, knew ? [] : [it.kind === "form" ? it.person : "main"], grade);
   if (it.revealed || viaSwipe) { advance(knew ? 1 : -1); return; }
   it.revealed = true; it.pending = knew ? "known" : "missed";
   shownAt = performance.now();
@@ -1587,21 +1699,23 @@ function commitMulti() {
 }
 function turnCard() { if (!animOn()) return; const c = $("#card"); c.classList.remove("turn", "enter"); void c.offsetWidth; c.classList.add("turn"); }
 
-function onKnow() { const it = curItem(); if (!it || busy || tooSoon()) return; if (isSingle(it)) gradeMain(true); else if (!it.revealed) revealMulti(false); else commitMulti(); }
-function onDont() { const it = curItem(); if (!it || busy || tooSoon()) return; if (isSingle(it)) gradeMain(false); else if (!it.revealed) revealMulti(true); else toggleAllWrong(); }
+// On a card whose answer isn't showing yet, 1 and 2 show the answer instead of grading.
+function onKnow() { const it = curItem(); if (!it || busy || tooSoon()) return; if (isSingle(it)) { if (!it.revealed && !it.pending) onFlip(); else gradeMain(true); } else if (!it.revealed) revealMulti(false); else commitMulti(); }
+function onDont() { const it = curItem(); if (!it || busy || tooSoon()) return; if (isSingle(it)) { if (!it.revealed && !it.pending) onFlip(); else gradeMain(false); } else if (!it.revealed) revealMulti(true); else toggleAllWrong(); }
 function onFlip() {
   const it = curItem(); if (!it || busy || tooSoon()) return;
   if (isSingle(it)) {
     if (it.pending) { advance(it.pending === "known" ? 1 : -1); return; }
-    if (it.mode === "listen") {
-      if (!it.revealed) { it.revealed = true; shownAt = performance.now(); renderStudy(false); turnCard(); }
-      return;
-    }
-    it.revealed = !it.revealed;
-    renderStudy(false); turnCard();
-    if (it.revealed) afterReveal(it);
+    // Show the answer once; grading happens on the back. shownAt restarts the short guard against double taps.
+    if (!it.revealed) { it.revealed = true; shownAt = performance.now(); renderStudy(false); turnCard(); afterReveal(it); }
   } else if (!it.revealed) revealMulti(false);
   else { it.revealed = false; renderStudy(false); turnCard(); }
+}
+// Hard: right, but slow or with a slip. Only scheduled sessions tell it apart from Know.
+function onHard() {
+  const it = curItem(); if (!it || busy || tooSoon() || !isSingle(it)) return;
+  if (!it.revealed && !it.pending) { onFlip(); return; }
+  gradeMain(true, false, session.mode === "sched" ? "hard" : undefined);
 }
 function onNext() { const it = curItem(); if (!it || tooSoon()) return; if (isSingle(it)) { if (it.pending) advance(it.pending === "known" ? 1 : -1); else onFlip(); } else if (it.revealed) commitMulti(); else revealMulti(false); }
 
@@ -1702,11 +1816,14 @@ function listenFront(it, d) {
   return `<div class="cplay big">${playBtn(d.speak, "Play again")}</div><p class="cask">Listen and say what it means (verb, tense, person). Press Show answer to check, then choose Know or Don’t know.</p>`;
 }
 // il / ils often sound identical; say so on the card.
-function soundAlike(v, it) {
+// il and ils (with elle, on, elles) often sound the same. On the front of a listening card the note names no form,
+// so it doesn't give the answer away; after the reveal it shows both forms.
+function soundAlike(v, it, front) {
   if (it.kind !== "form" || (it.person !== "il" && it.person !== "ils")) return "";
   const tab = v.tables[it.tense], a = tab && tab.rows.find(r => r.key === "il"), b = tab && tab.rows.find(r => r.key === "ils");
   if (!a || !b) return "";
   const fp = r => r.phon.split(" ").slice(1).join(" ");
+  if (front) return fp(a) === fp(b) ? '<p class="cnote">Here <i>il</i> and <i>ils</i> sound the same, so either answer is right.</p>' : "";
   return fp(a) === fp(b) ? `<p class="cnote">“${esc(a.subs ? a.subs[0].fr : a.fr)}” and “${esc(b.subs ? b.subs[0].fr : b.fr)}” sound the same, so either answer is right.</p>` : "";
 }
 function subsHTML(it, r, noEn) {
@@ -1721,7 +1838,7 @@ function formHTML(it, v) {
   if (!it.revealed) {
     if (listenMode) {
       h += listenFront(it, { speak: r.speak, fr: r.fr, phon: r.phon, en: r.en || v.english });
-      if ((it.stage || 0) >= 1) h += soundAlike(v, it);
+      h += soundAlike(v, it, true);
     } else if (it.dir === "fr-en") {
       h += r.subs ? subsHTML(it, r, true) + '<p class="cask">What does it mean? Then flip.</p>' : `<div class="cbig fr" lang="fr">${esc(r.fr)}</div>${phonBlock(r.phon, it)}<div class="cplay">${playBtn(r.speak, "Play")}</div><p class="cask">What does it mean? Then flip.</p>`;
     } else if (r.en) {
@@ -1755,7 +1872,7 @@ function tableHTML(rows, o) {
       ci += nClip;
       h += `<tr${marks ? ` data-row="${i}" class="${wrong ? "wrong" : "right"}"` : ""} data-clips="${clipIds}">` +
         (marks ? `<td class="c-m">${wrong ? "✕" : "✓"}<span class="sr">${wrong ? " marked wrong" : " marked right"}</span></td>` : "") +
-        (showP ? `<td class="c-p">${esc(r.label)}</td>` : "") + `<td class="c-fr" lang="fr">${frHTML}${o.levels ? badge(o.levels[i]) : ""}${o.review && o.review.has(r0.key) ? '<span class="rvtag">to review</span>' : ""}</td>` +
+        (showP ? `<td class="c-p">${esc(r.label)}</td>` : "") + `<td class="c-fr" lang="fr">${frHTML}${o.levels ? badge(o.levels[i]) : ""}${o.review && o.review.has(r0.key) ? '<span class="rvtag">to review</span>' : ""}${o.st && o.st[r0.key] ? stTag(o.st[r0.key].status, o.st[r0.key].persistent ? '<span class="stag persist">persistent</span>' : "") : ""}</td>` +
         (o.en ? `<td class="c-en">${escL(r.en)}</td>` : "") + (o.phon ? `<td class="c-ph">${multi ? r0.subs.map(x => esc(x.phon)).join("<br>") : esc(r.phon)}</td>` : "") +
         `<td class="c-pl">${playBtn(r.speak, "", r.fr)}</td></tr>`;
     });
@@ -1772,6 +1889,7 @@ function mainHTML(it, v) {
   } else {
     h += `<div class="cbig fr" lang="fr">${esc(v.french)}</div>${phonBlock(v.phonetic, it)}<div class="cen">${esc(v.english)}</div><div class="cplay">${playBtn(v.french, "Play")}</div>`;
     if (v.auxiliary === "être") h += '<p class="cnote">Takes être in the passé composé.</p>';
+    if (familyText(v)) h += `<p class="cnote">${esc(familyText(v))}.</p>`;
     if (it.pending) h += `<p class="verdict ${it.pending}">${it.pending === "known" ? "Marked as known." : settings.repeatPile ? "Marked as don’t know. It comes back at the end of the round." : "Marked as don’t know."}</p>`;
     h += fullLink(v);
   }
@@ -1788,7 +1906,7 @@ function multiHTML(it, v) {
   if (!it.revealed) {
     if (it.dir === "en-fr") {
       h += '<ul class="plist">' + rows.map((r, i) => `<li><span class="pl">${esc(r.label)}</span><span class="dots" aria-label="hidden">· · ·</span>${levels ? badge(levels[i]) : ""}</li>`).join("") + "</ul>";
-      h += `<p class="cask">${it.kind === "keyforms" ? "Say the je form of each tense aloud" : "Say all six aloud"}, then show the answer.</p>`;
+      h += `<p class="cask">${it.kind === "keyforms" ? "Say the je form of each tense aloud" : rows.length === 6 ? "Say all six aloud" : rows.length === 1 ? "Say it aloud" : `Say all ${rows.length} aloud`}, then show the answer.</p>`;
     } else {
       h += `<div class="cplay">${playAll}</div>`;
       if (settings.phonetics === "tap" && !it.phonShown) h += '<button class="phontap" data-phon>Show sounds-like</button>';
@@ -1818,11 +1936,13 @@ function renderCard(animate) {
 function renderActions() {
   const it = curItem(); if (!it) return;
   let h;
-  if (isSingle(it) && it.mode === "listen" && !it.pending && !it.revealed) {
-    h = '<button class="act miss" data-act="dont">Don’t know<kbd>2</kbd></button><button class="act reveal" data-act="clue">Show answer<kbd>Space</kbd></button><button class="act know" data-act="know">Know<kbd>1</kbd></button>';
-  } else if (isSingle(it)) {
+  if (isSingle(it)) {
+    // Front: only Show answer. Back: Don't know and Know.
     h = it.pending ? '<button class="act next" data-act="next">Next<kbd>Space</kbd></button>'
-      : '<button class="act miss" data-act="dont">Don’t know<kbd>2</kbd></button><button class="act know" data-act="know">Know<kbd>1</kbd></button>';
+      : !it.revealed ? '<button class="act reveal" data-act="flip">Show answer<kbd>Space</kbd></button>'
+      : session.mode === "sched"
+        ? '<button class="act miss" data-act="dont">Don’t know<kbd>2</kbd></button><button class="act hard" data-act="hard">Hard<kbd>3</kbd></button><button class="act know" data-act="know">Know<kbd>1</kbd></button>'
+        : '<button class="act miss" data-act="dont">Don’t know<kbd>2</kbd></button><button class="act know" data-act="know">Know<kbd>1</kbd></button>';
   } else if (!it.revealed) {
     h = '<button class="act reveal" data-act="flip">Show answer<kbd>Space</kbd></button>';
   } else {
@@ -1847,14 +1967,14 @@ $("#card").addEventListener("click", e => {
   const row = t.closest("tr[data-row]");
   if (row) { toggleRow(Number(row.dataset.row)); return; }
   if (t.closest("button, a, input, select")) return;
-  if (it.kind === "main" || it.mode === "listen") onFlip();
+  if (isSingle(it)) onFlip();
   else if (!it.revealed) revealMulti(false);
 });
 $("#actions").addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
   b.blur();
   const a = b.dataset.act;
-  if (a === "know") onKnow(); else if (a === "dont") onDont(); else if (a === "flip" || a === "clue") onFlip(); else if (a === "next") onNext();
+  if (a === "know") onKnow(); else if (a === "dont") onDont(); else if (a === "hard") onHard(); else if (a === "flip" || a === "clue") onFlip(); else if (a === "next") onNext();
 });
 $("#studyBack").innerHTML = ICON.back;
 $("#undoBtn").innerHTML = ICON.undo;
@@ -1882,13 +2002,13 @@ $("#qMic").addEventListener("click", e => {
   renderStudy(false);
 });
 
-/* ---------- swipe (main card only) ---------- */
+/* ---------- swipe (single cards, after the answer is shown) ---------- */
 (function () {
   const card = $("#card");
   let sx = 0, sy = 0, dx = 0, t0 = 0, down = false, horiz = null, pid = null;
   card.addEventListener("pointerdown", e => {
     const it = curItem();
-    if (!it || !isSingle(it) || !settings.swipe || busy || e.button > 0) return;
+    if (!it || !isSingle(it) || !it.revealed || !settings.swipe || busy || e.button > 0) return; // swipe grades, so only once the answer shows
     if (e.target.closest("button, a, input, select")) return;
     down = true; pid = e.pointerId; sx = e.clientX; sy = e.clientY; dx = 0; t0 = performance.now(); horiz = null;
   });
@@ -1929,6 +2049,7 @@ document.addEventListener("keydown", e => {
   if (k === " " || k === "Spacebar") { e.preventDefault(); if (!e.repeat) onFlip(); }
   else if (k === "1") { e.preventDefault(); if (!e.repeat) onKnow(); }
   else if (k === "2") { e.preventDefault(); if (!e.repeat) onDont(); }
+  else if (k === "3" && isSingle(it)) { e.preventDefault(); if (!e.repeat) onHard(); }
   else if (/^[3-8]$/.test(k)) { e.preventDefault(); toggleRow(Number(k) - 3); }
   else if (k === "Enter") { if (e.target.closest && e.target.closest("button")) return; e.preventDefault(); if (!e.repeat) onNext(); }
   else if (k === "p" || k === "P") { e.preventDefault(); speak(speakText(it), $("#card .cplay .play"), it); }
@@ -1982,33 +2103,59 @@ $("#sumList").addEventListener("click", e => { const b = e.target.closest("[data
 /* =========================================================================
    LIBRARY
    ========================================================================= */
-function chipsHTML(verbs, ss) {
-  return '<ul class="vlist">' + verbs.map(v =>
-    `<li><button class="vchip" data-learn-verb="${esc(v.id)}"><span class="vfr" lang="fr">${esc(v.french)}<span class="rank">${esc(v.rank)}</span>${v.test ? '<span class="tag">test</span>' : ""}</span><span class="ven">${esc(v.english)}</span></button></li>`).join("") + "</ul>";
+const libF = { q: "", type: "all", status: "all", tense: "", due: "any", sort: "rank", review: false }, libOpen = new Set();
+function libRowHTML(v, st) {
+  const open = libOpen.has(v.id);
+  return `<section class="lverb" id="lb-${esc(v.id)}"><button class="lrow" data-libtoggle="${esc(v.id)}" aria-expanded="${open}"><span class="lname"><span class="lfr" lang="fr">${esc(v.french)}</span><span class="ldash"> — </span><span>${esc(v.english)}</span></span>` +
+    `${tenseDots(st)}<span class="lmeta">${esc(st.label)}${st.persistent.length ? " · persistent" : ""}${st.due ? " · " + esc(fmtDate(st.due)) : ""}</span><span class="lchev">${ICON.chev}</span></button><div class="lbody"${open ? "" : " hidden"}>${open ? libVerbHTML(v) : ""}</div></section>`;
+}
+function libList() {
+  const t = todayStr(), q = deacc(norm(libF.q)), rv = new Set(libF.review ? reviewActive().map(unitVerb) : []), rk = x => ST.indexOf(x);
+  const out = [];
+  VERBS_OK.forEach(v => {
+    if (libF.type !== "all" && (libF.type === "irregular" ? v.type !== "irregular" : v.section !== libF.type)) return;
+    if (q && deacc(norm(v.french + " " + v.english + " " + v.id)).indexOf(q) < 0) return;
+    if (libF.review && !rv.has(v.id)) return;
+    const st = verbStatus(v), s = libF.tense ? st.tenses[libF.tense] : st.status;
+    if (libF.tense && libF.status === "all" && s === "new") return;
+    if (libF.status === "persistent" ? !st.persistent.length : libF.status !== "all" && s !== libF.status) return;
+    if (libF.due !== "any" && (!st.due || (libF.due === "overdue" ? st.due >= t : libF.due === "today" ? st.due > t : st.due > addDays(t, 7)))) return;
+    out.push({ v, st, w: rk(s) });
+  });
+  const ord = schedSections();
+  out.sort(libF.sort === "weak" ? (a, b) => a.w - b.w || b.st.persistent.length - a.st.persistent.length || a.v.rankNum - b.v.rankNum
+    : libF.sort === "due" ? (a, b) => ((a.st.due || "9") < (b.st.due || "9") ? -1 : (a.st.due || "9") > (b.st.due || "9") ? 1 : a.v.rankNum - b.v.rankNum)
+    : (a, b) => ord.indexOf(a.v.section) - ord.indexOf(b.v.section) || a.v.rankNum - b.v.rankNum);
+  return out;
+}
+function renderLibList() {
+  const list = libList();
+  $("#libCount").textContent = `${plural(list.length, "verb")} shown.`;
+  $("#libList").innerHTML = list.length ? list.map(x => libRowHTML(x.v, x.st)).join("") : '<p class="empty">No verbs match these filters.</p>';
 }
 function renderLibrary() {
   renderReviewSec();
-  const n = VERBS_OK.length, ss = schedSession();
-  $("#libLede").textContent = n ? `${plural(n, "verb")}. Browse and practise freely, in any direction.` : "No verbs are loaded yet. Add them to verbs.js.";
+  const n = VERBS_OK.length;
+  $("#libLede").textContent = n ? `${plural(n, "verb")}. Tap a verb for its tables, status and recent attempts.` : "No verbs are loaded yet. Add them to verbs.js.";
   $("#problems").innerHTML = PROBLEMS.length ? `<details class="problems" open><summary>${plural(PROBLEMS.length, "problem")} in verbs.js. These parts were skipped; everything else loaded.</summary><ul>${PROBLEMS.map(p => `<li><b>${esc(p.where)}</b>: ${esc(p.errs.join("; "))}.</li>`).join("")}</ul></details>` : "";
   const it = session && session.mode !== "sched" ? curItem() : null;
   $("#resume").innerHTML = it ? `<div class="resume"><p>Practice in progress: <b>${esc(session.title)}</b>, card ${session.idx + 1} of ${session.queue.length}.</p><button class="primary sm" data-resume>Continue</button></div>` : "";
-  $("#sections").innerHTML = SECTIONS.map(T => {
-    const subs = T.type === "regular" || T.groups.length > 1;
-    let h = `<section class="lib"><div class="libhead"><div><h2>${esc(T.label)}</h2><p class="count">${esc(curricLine(T.verbs, T.label.replace(/ verbs$/, "")))}</p></div><div class="btnrow"><button class="primary sm" data-practise="type:${esc(T.type)}">Practise</button><button class="ghost sm" data-learn-scope="type:${esc(T.type)}">Learn</button></div></div>`;
-    if (subs) T.groups.forEach(G => {
-      const sc = `group:${T.type}:${G.group}`;
-      h += `<div class="subsec"><div class="libhead sub"><div><h3>${esc(G.label)}</h3><p class="count">${esc(curricLine(G.verbs, G.label))}</p></div><div class="btnrow"><button class="ghost sm" data-practise="${esc(sc)}">Practise</button><button class="ghost sm" data-learn-scope="${esc(sc)}">Learn</button></div></div>${chipsHTML(G.verbs, ss)}</div>`;
-    });
-    else h += chipsHTML(T.verbs, ss);
-    return h + "</section>";
-  }).join("");
+  const ts = $("#libTense"); if (ts.options.length === 1) TENSE_KEYS.forEach(t => ts.add(new Option(TENSES[t].name, t)));
+  renderLibList();
+  loadLog().then(() => { if (currentScreen === "library") renderLibList(); });
 }
+["libSearch", "libType", "libStatus", "libTense", "libDue", "libSort", "libReview"].forEach(id => $("#" + id).addEventListener(id === "libSearch" ? "input" : "change", e => {
+  const key = { libSearch: "q", libType: "type", libStatus: "status", libTense: "tense", libDue: "due", libSort: "sort", libReview: "review" }[id];
+  libF[key] = id === "libReview" ? e.target.checked : e.target.value; renderLibList();
+}));
 $("#scr-library").addEventListener("click", e => {
   const t = e.target;
   const pr = t.closest("[data-practise]"); if (pr) { openPractise(verbsInScope(pr.dataset.practise), scopeLabel(pr.dataset.practise)); return; }
   const ls = t.closest("[data-learn-scope]"); if (ls) { navigate("learn", { scope: ls.dataset.learnScope }); return; }
   const lv = t.closest("[data-learn-verb]"); if (lv) { navigate("learn", { scope: "all", verb: lv.dataset.learnVerb }); return; }
+  const pv = t.closest("[data-practise-verb]"); if (pv) { const v = BY_ID[pv.dataset.practiseVerb]; openPractise([v], v.french); return; }
+  const say = t.closest("[data-say]"); if (say) { speak(sayArg(say), say); return; }
+  const tg = t.closest("[data-libtoggle]"); if (tg) { toggleVerbIn($("#libList"), libOpen, "lb", tg.dataset.libtoggle, undefined, libVerbHTML); return; }
   if (t.closest("[data-resume]")) navigate("study");
 });
 
@@ -2049,16 +2196,27 @@ $("#pStart").addEventListener("click", () => {
    ========================================================================= */
 let learnScope = "all", learnFromStudy = false;
 const expanded = new Set();
-function verbDetailHTML(v) {
-  const regular = v.type === "regular";
+// "Like prendre" on a family member; "Same pattern: apprendre, comprendre" on the verb the family is named after.
+function familyText(v) {
+  if (v.family) return v.family.charAt(0).toUpperCase() + v.family.slice(1);
+  const kids = VERBS_OK.filter(x => x.family === "like " + v.french);
+  return kids.length ? "Same pattern: " + kids.map(x => x.french).join(", ") : "";
+}
+function expressionsHTML(v) {
+  if (!v.expressions.length) return "";
+  return `<div class="ltense"><div class="lthead"><h3>Common expressions</h3></div><table class="conj persons"><tbody>` +
+    v.expressions.map(x => `<tr><td class="c-fr" lang="fr">${esc(x.fr)}</td><td class="c-en">${esc(x.en)}</td><td class="c-ph">${esc(x.phon)}</td><td class="c-pl">${playBtn(x.fr, "", x.fr)}</td></tr>`).join("") + "</tbody></table></div>";
+}
+function verbDetailHTML(v, st) {
+  const regular = v.type === "regular", fam = familyText(v);
   let h = `<div class="vhead"><div><div class="vfr" lang="fr">${esc(v.french)}</div><div class="vph">${esc(v.phonetic)}</div><div class="ven">${esc(v.english)}</div>` +
-    `<p class="vmeta">${esc(typeName(v))}, importance ${esc(v.rank)}${v.auxiliary === "être" ? ", takes être in the passé composé" : ""}${reviewHasVerb(v) ? '<span class="rvtag">to review</span>' : ""}</p></div>${playBtn(v.french, "Play")}</div>` +
-    `<div class="vbtns"><button class="ghost sm" data-practise-verb="${esc(v.id)}">Practise this verb</button></div>`;
+    `<p class="vmeta">${esc(typeName(v))}, importance ${esc(v.rank)}${v.auxiliary === "être" ? ", takes être in the passé composé" : ""}${v.impersonal ? ", used only with il (impersonal)" : ""}${fam ? ". " + esc(fam) : ""}${reviewHasVerb(v) ? '<span class="rvtag">to review</span>' : ""}</p></div>${playBtn(v.french, "Play")}</div>` +
+    `<div class="vbtns"><button class="ghost sm" data-practise-verb="${esc(v.id)}">Practise this verb</button></div>` + expressionsHTML(v);
   TENSE_KEYS.forEach(t => {
     const tab = v.tables[t];
     h += `<div class="ltense"><div class="lthead"><h3>${esc(TENSES[t].name)}</h3><span class="gloss">${esc(GLOSS[t] || "")}</span><button class="linkbtn sm" data-guide="${esc(t)}">How it works</button>${playAllBtn(tab.rows, "Play all")}</div>` +
       (regular && tab.rule ? `<p class="rule">${esc(tab.rule)}</p>` : "") +
-      tableHTML(tab.rows, { en: !regular || tab.rows.some(r => r.en), phon: true, hl: regular && tab.source === "rules", review: reviewMarks(v.id, t) }) + "</div>";
+      tableHTML(tab.rows, { en: !regular || tab.rows.some(r => r.en), phon: true, hl: regular && tab.source === "rules", review: reviewMarks(v.id, t), st: st && !regular ? Object.fromEntries(st.cards.filter(c => c.k.split("|")[1] === t).map(c => [c.k.split("|")[2], c])) : null }) + "</div>";
   });
   return h;
 }
@@ -2072,7 +2230,7 @@ function renderLearnList() {
   const q = deacc(norm(($("#learnSearch") && $("#learnSearch").value) || ""));
   if (q) list = list.filter(v => deacc(norm(v.french + " " + v.english + " " + v.id)).indexOf(q) >= 0);
   const ss = schedSession(), ord = schedSections();
-  list.sort((a, b) => ord.indexOf(a.group) - ord.indexOf(b.group) || a.rankNum - b.rankNum);
+  list.sort((a, b) => ord.indexOf(a.section) - ord.indexOf(b.section) || a.rankNum - b.rankNum);
   $("#learnList").innerHTML = list.length ? list.map(v => verbRowHTML(v, expanded, "lv", ss)).join("") : '<p class="empty">No verbs here yet. Add them to verbs.js.</p>';
 }
 function renderLearn(st) {
@@ -2089,11 +2247,11 @@ function renderLearn(st) {
   $("#learnBanner").innerHTML = it ? `<div class="banner"><p>Session in progress: card ${session.idx + 1} of ${session.queue.length}.</p><button class="primary sm" data-back-session>Back to your session</button></div>` : "";
   renderLearnList();
 }
-function toggleVerbIn(root, set, prefix, id, open) {
+function toggleVerbIn(root, set, prefix, id, open, render) {
   const sec = root && document.getElementById(prefix + "-" + id); if (!sec || !root.contains(sec)) return;
   const btn = $(".lrow", sec), body = $(".lbody", sec);
   if (open === undefined) open = !set.has(id);
-  if (open) { set.add(id); if (!body.innerHTML) body.innerHTML = verbDetailHTML(BY_ID[id]); }
+  if (open) { set.add(id); if (!body.innerHTML) body.innerHTML = (render || verbDetailHTML)(BY_ID[id]); }
   else set.delete(id);
   body.hidden = !open; btn.setAttribute("aria-expanded", open);
 }
@@ -2162,7 +2320,7 @@ function buildSettings() {
     switchRow("animations", "Card animations", "Turn off for instant card changes.") +
     switchRow("keyLegend", "Keyboard shortcuts", "On a laptop, shows the keys under the card.") +
     `</section>` + aiSettingsHTML() + `<section class="sgroup"><h2>Browser voice</h2>` +
-    `<p class="shelp">Used when AI voices are off, offline or unavailable.</p>` +
+    `<p class="shelp">Used for anything not recorded, or when recorded voices are off.</p>` +
     `<div class="srow col"><label class="slabel" for="voiceSel">French voice</label><select id="voiceSel"></select><p class="shelp" id="voiceHelp"></p></div>` +
     `<div class="srow col"><label class="slabel" for="rateIn">Speaking speed: <span id="rateVal"></span></label><input type="range" id="rateIn" min="0.5" max="1.3" step="0.05"><div class="btnrow"><button class="ghost sm" id="testVoice">Test voice</button></div></div>` +
     `<details class="shelpbox"><summary>Get a better French voice</summary>` +
@@ -2174,6 +2332,7 @@ function buildSettings() {
     `</section>` + simHTML() + `<section class="sgroup"><h2>Your data</h2>` +
     switchRow("autoBackup", "Weekly backup to Downloads", "When you finish a section and your last backup is 7 or more days old, the app downloads a backup file. It can only do this while the app is open.") + `<p class="shelp" id="backupInfo"></p>` + `<p class="shelp">Progress and settings are saved in this browser only, so your laptop and phone each keep their own. To move them, export on one device and import the file on the other.</p>` +
     `<div class="btnrow wrap" style="margin-top:10px"><button class="primary sm" id="exportBtn">Export progress and settings</button><button class="ghost sm" id="importBtn">Import from a file</button></div>` +
+    `<h3 class="sh3">Copies kept in this browser</h3><div id="bundleList"></div>` +
     `<h3 class="sh3">Reset</h3><div class="btnrow wrap"><button class="ghost sm" data-reset="progress">Reset progress</button><button class="ghost sm" data-reset="settings">Reset settings</button><button class="danger sm" data-reset="all">Reset everything</button></div>` +
     `</section>` + syncHTML() + `<section class="sgroup"><h2>About</h2><p class="shelp" id="aboutText"></p></section>`;
 }
@@ -2200,8 +2359,31 @@ function syncSettingsUI0() {
   $("#rateIn").value = settings.rate;
   $("#rateVal").textContent = settings.rate.toFixed(2) + "×";
   syncVoiceUI();
+  renderBundles();
   const tests = VERBS_OK.filter(v => v.test).length;
   $("#aboutText").textContent = `Version ${APP_VERSION}, saved-data schema ${SCHEMA}. ${plural(VERBS_OK.length, "verb")} loaded${tests ? ` (${tests} marked test)` : ""}, ${plural(TENSE_KEYS.length, "tense")}${PROBLEMS.length ? `, ${plural(PROBLEMS.length, "problem")} in verbs.js (see the Library)` : ""}.`;
+}
+function renderBundles() {
+  const el = $("#bundleList"); if (!el) return;
+  const bs = listBundles();
+  const name = l => l.replace(/^before-/, "Before ").replace(/-/g, " ");
+  const when = a => { const d = new Date(a); return isNaN(d) ? "" : d.toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); };
+  el.innerHTML = bs.length
+    ? '<p class="shelp">Saved automatically before each import, reset or restore. The newest 3 are kept.</p><ul class="blist">' +
+      bs.map(b => `<li><span>${esc(name(b.label))} · ${esc(when(b.at))}</span><button class="ghost sm" data-restore="${esc(b.key)}">Restore</button></li>`).join("") + "</ul>"
+    : '<p class="shelp">None yet. A copy of all your data is saved here automatically before each import, reset or restore.</p>';
+}
+async function restoreFromBrowser(key) {
+  let b = null; try { b = JSON.parse(lsGet(key) || "null"); } catch (e) {}
+  if (!isObj(b) || !isObj(b.stores)) { alertBox("Restore failed", "<p>That copy is damaged or no longer there. Nothing was changed.</p>"); renderBundles(); return; }
+  const at = new Date(b.at), syncing = !!lsGet(KEYS.sync);
+  const ok = await confirmBox("Restore this copy?",
+    `<p>This puts back your schedule, settings, practice records, To review list and history as they were${isNaN(at) ? "" : " on " + esc(at.toLocaleString())}. A copy of your current data is kept first, and the app reloads.</p>` +
+    (syncing ? "<p>GitHub sync is on: progress that is further ahead on your other device will merge back in at the next sync.</p>" : ""), "Restore", false);
+  if (!ok) return;
+  if (!makeBundle("before-restore")) { alertBox("Restore stopped", "<p>A copy of your current data couldn’t be kept first (storage may be full), so nothing was changed.</p>"); return; }
+  restoreBundle(b);
+  location.reload();
 }
 function applyDisplay() {
   const r = document.documentElement;
@@ -2223,6 +2405,7 @@ function wireSettings() {
       return;
     }
     const rs = e.target.closest("[data-reset]"); if (rs) { doReset(rs.dataset.reset); return; }
+    const rb = e.target.closest("[data-restore]"); if (rb) { restoreFromBrowser(rb.dataset.restore); return; }
   });
   $("#voiceSel").addEventListener("change", e => {
     settings.voice = e.target.value; saveSettings();
@@ -2257,11 +2440,12 @@ const alertBox = (title, html) => confirmBox(title, html, "OK", false, true);
 /* ---------- export / import / reset ---------- */
 function daysSince(d) { return isDate(d) ? dayDiff(d, todayStr()) : 999; }
 function maybeAutoBackup() { if (settings.autoBackup !== false && daysSince(lsGet(KEYS.lastbackup)) >= 7) exportData(true); }
-function exportData(auto) {
+async function exportData(auto) {
   auto = auto === true;
   let sess = null;
   try { sess = JSON.parse(lsGet(KEYS.session) || "null"); } catch (e) {}
-  const data = { app: "french-verbs", schema: EXPORT_SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress, schedule, formsched: fsched, review, history: hist, timing, session: sess };
+  const log = await logDB.all();
+  const data = { app: "french-verbs", schema: EXPORT_SCHEMA, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), settings: Object.assign({}, settings), progress, schedule, formsched: fsched, review, history: hist, timing, session: sess, log };
   try {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -2312,10 +2496,10 @@ async function importData(file) {
   const sv = isObj(d.schedule) ? Object.keys(d.schedule.verbs) : [];
   const when = d.exportedAt ? new Date(d.exportedAt) : null;
   const ok = await confirmBox("Replace your data?",
-    `<p>Backup${when && !isNaN(when) ? " from " + esc(when.toLocaleString()) : ""}: schedule for ${plural(sv.length, "verb")} (${sv.filter(id => BY_ID[id]).length} in your current list), plus settings and practice records.</p><p>This replaces everything on this device. A copy of the current data is kept in this browser first.</p>`,
+    `<p>Backup${when && !isNaN(when) ? " from " + esc(when.toLocaleString()) : ""}: schedule for ${plural(sv.length, "verb")} (${sv.filter(id => BY_ID[id]).length} in your current list), plus settings and practice records.</p><p>This replaces everything on this device. A copy of the current data is kept in this browser first (Settings › Your data lists these copies). Your review log is kept and the backup's log is added to it.</p>`,
     "Replace", false);
   if (!ok) return;
-  [["settings", KEYS.settings], ["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched], ["review", KEYS.review], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-import-" + l, lsGet(k)));
+  if (!makeBundle("before-import")) { alertBox("Import stopped", "<p>A copy of your current data couldn’t be kept in this browser first (storage may be full), so nothing was changed. Export a backup, then try again.</p>"); return; }
   settings = cleanSettings(d.settings);
   progress = { schema: SCHEMA, verbs: d.progress.verbs };
   schedule = isObj(d.schedule) ? d.schedule : freshSchedule();
@@ -2326,8 +2510,10 @@ async function importData(file) {
   timing = freshTiming();
   if (isObj(d.timing)) CARD_TYPES.forEach(k => { if (Array.isArray(d.timing[k])) timing[k] = d.timing[k].filter(x => typeof x === "number" && x > 0); });
   hist = cleanHist(d.history); saveHist();
+  if (Array.isArray(d.log)) await logDB.merge(d.log.filter(okLogRec));
   saveSettings(); saveProgress(); saveSchedule(); saveForms(); saveReview(); saveTiming();
   if (!fsched.migrated) migrateForms();
+  migrateSched();
   reviewSeed(); reviewPrune();
   if (isObj(d.session) && d.session.schema === 2 && d.session.mode === "sched" && isDate(d.session.date) && Array.isArray(d.session.queue)) lsSet(KEYS.session, JSON.stringify(d.session)); else lsRemove(KEYS.session);
   session = null;
@@ -2336,14 +2522,15 @@ async function importData(file) {
 }
 async function doReset(kind) {
   const what = { progress: "This clears your schedule, every verb’s step, your time averages, your practice records and your To review list, on this device.", settings: "This puts every setting back to its default.", all: "This clears your schedule, time averages, practice records and your To review list, and puts every setting back to its default, on this device." }[kind];
-  const ok = await confirmBox(kind === "all" ? "Reset everything?" : `Reset ${kind}?`, `<p>${what}</p><p>A backup copy is kept in this browser, but export first if you might want it back.</p>`, "Reset", true);
+  const ok = await confirmBox(kind === "all" ? "Reset everything?" : `Reset ${kind}?`, `<p>${what}</p><p>A copy of all your data is kept in this browser first (Settings › Your data lists these copies), but export too if you might want it back.</p>`, "Reset", true);
   if (!ok) return;
+  if (!makeBundle("before-reset-" + kind)) { alertBox("Reset stopped", "<p>A copy of your current data couldn’t be kept in this browser first (storage may be full), so nothing was changed. Export a backup, then try again.</p>"); return; }
   if (kind !== "settings") {
-    [["progress", KEYS.progress], ["schedule", KEYS.schedule], ["formsched", KEYS.formsched], ["review", KEYS.review], ["timing", KEYS.timing], ["session", KEYS.session]].forEach(([l, k]) => makeBackup("before-reset-" + l, lsGet(k)));
+    logDB.mark("reset-" + kind);
     progress = { schema: SCHEMA, verbs: {} }; schedule = freshSchedule(); fsched = freshForms(); timing = freshTiming(); review = freshReview(); review.seeded = true;
     saveProgress(); saveSchedule(); saveForms(); saveReview(); saveTiming(); lsRemove(KEYS.session); session = null; hist = {}; saveHist();
   }
-  if (kind !== "progress") { makeBackup("before-reset-settings", lsGet(KEYS.settings)); settings = freshDefaults(); saveSettings(); applyDisplay(); loadVoices(); }
+  if (kind !== "progress") { settings = freshDefaults(); saveSettings(); applyDisplay(); loadVoices(); }
   syncSettingsUI();
   toast("Reset done.");
 }
@@ -2351,8 +2538,16 @@ async function doReset(kind) {
 /* =========================================================================
    DAILY SCHEDULE (spaced repetition). Library practice never touches this.
    ========================================================================= */
-// Fixed review days after a card is first learnt: 1, 3, 7, 14, 30, 60, 180, then every 180. A first-attempt miss on a later review sends the card back down the ladder (see lapseStep).
+// The ladder: the usual gap in days after a right answer at each step (1, 2, 4, 7, 16, 30, 120, then 180), which puts
+// on-time reviews about 1, 3, 7, 14, 30, 60 and 180 days after a card is first learnt (OFFSETS, used for load forecasts).
+// Since v6.3 gaps count from the last review (see applyResult). The numbers below are starting values to test.
 const GAPS = [1, 2, 4, 7, 16, 30, 120], LT_GAP = 180, OFFSETS = [1, 3, 7, 14, 30, 60, 180];
+const LADDER = GAPS.concat(LT_GAP);            // LADDER[k]: the ladder gap after a right answer at step k (k >= 7: 180)
+const GOOD_FACTOR = 2.0;                        // Know: next gap = 2 x the days since the last review, kept within the ladder's range
+const HARD_FACTOR = 1.2;                        // Hard: the card stays on its step; next gap = 1.2 x the days since the last review
+const MAX_GAP = 365;
+const LAPSE_TO = [0, 1, 1, 1, 2, 4, 5, 6, 6];   // a miss at step k returns the card to step LAPSE_TO[k]
+const REVIEW_CAP = 120;                         // most reviews in one day; the rest wait, most at risk first
 const DEF_COST = { main: 10, tense: 30, keyforms: 20, form: 10, listen: 12 };
 const CARD_TYPES = ["main", "form", "tense", "keyforms", "listen"];
 const CARD_LABEL = { main: "Infinitive / regular verb card", form: "Single form card", tense: "Tense card (table)", keyforms: "Key forms card", listen: "Listening card" };
@@ -2426,6 +2621,15 @@ function loadForms() {
   return o;
 }
 const saveForms = () => lsSet(KEYS.formsched, JSON.stringify(fsched));
+// v6.3: gaps count from the last review, so every reviewed card needs lastDate. Older entries lacking it get the
+// date the ladder implies (due date minus the step's gap). Step and due date are never changed. Safe to run again.
+function migrateSched() {
+  const missing = [];
+  [fsched.forms, schedule.verbs].forEach(st => Object.keys(st).forEach(k => { const e = st[k]; if (isObj(e) && (e.enc || 0) > 0 && !isDate(e.lastDate) && isDate(e.due)) missing.push(e); }));
+  if (missing.length && !makeBundle("before-v6.3-scheduler")) return;   // no copy, no change; tried again next start
+  missing.forEach(e => { const s = Math.max(1, Math.min(8, e.step | 0)); e.lastDate = addDays(e.due, -LADDER[s - 1]); });
+  if (missing.length || fsched.sched !== 2 || schedule.sched !== 2) { fsched.sched = 2; schedule.sched = 2; saveForms(); saveSchedule(); }
+}
 
 /* ---------- To review: cards missed at their first try, read aloud until ticked off. Key: frverbs.review ---------- */
 // Never changes the schedule. Items: { on: date missed, reads, done: date ticked off or "", u: last change in ms }, or { rm: true, u } once removed.
@@ -2441,6 +2645,7 @@ function cleanReview(o) {
     if (x.rm === true) { r.items[k] = { rm: true, u }; return; }
     if (!isDate(x.on)) return;
     r.items[k] = { on: x.on, reads: Number.isInteger(x.reads) && x.reads >= 0 ? Math.min(x.reads, 99) : 0, done: isDate(x.done) ? x.done : "", u };
+    if (Array.isArray(x.rd)) r.items[k].rd = x.rd.filter(isDate).slice(-REVIEW_RIGHT_DAYS);
   });
   return r;
 }
@@ -2456,6 +2661,20 @@ function reviewPrune() {
   if (n) saveReview();
 }
 function reviewTouch(k, patch) { review.items[k] = Object.assign({}, review.items[k], patch, { u: Date.now() }); saveReview(); syncSoon(); }
+// To review (v6.4, recall): review a card by hearing or seeing its prompt, saying it, then checking. It clears once it is
+// right on REVIEW_RIGHT_DAYS different days (rd: the days it was right). Never changes the schedule.
+const REVIEW_RIGHT_DAYS = 2;
+function reviewRecall(k, knew, date) {
+  const x = review.items[k]; if (!x || x.rm || x.done) return;
+  const t = date || todayStr(), rd = Array.isArray(x.rd) ? x.rd.slice() : [];
+  if (knew && !rd.includes(t)) rd.push(t);
+  reviewTouch(k, { rd, done: rd.length >= REVIEW_RIGHT_DAYS ? t : "" });
+}
+function startReviewSession() {
+  const ks = reviewActive(); if (!ks.length) return;
+  startSession(ks.map(k => unitSpec(k)), "To review", "shuffle");
+  if (session) session.toReview = true;
+}
 function reviewAdd(k, date) { if (!unitValid(k)) return; review.items[k] = { on: date, reads: 0, done: "", u: Date.now() }; saveReview(); }
 function reviewRead(k) {
   const x = review.items[k]; if (!x || x.rm || x.done) return;
@@ -2522,12 +2741,12 @@ function reviewRowHTML(k, spans, done) {
   return `<li class="rvrow"${spans && spans[k] ? ` data-clips="${spans[k]}"` : ""}><div class="rvtxt"><div class="rvfr" lang="fr">${esc(it.fr)}</div><div class="rvmeta">${esc(it.meta)} · missed ${esc(fmtDate(x.on))}</div><div class="rven">${escL(it.en)}</div></div>` +
     `<div class="rvbtns">${playClipsBtn(it.say, "Play", "Play " + it.fr)}` +
     (done ? `<button class="ghost sm" data-rback="${esc(k)}">Put back</button>`
-      : `<button class="primary sm" data-rread="${esc(k)}" aria-label="Count one read aloud of ${esc(it.fr)}">Read ${x.reads}/${reviewTarget()}</button><button class="linkbtn sm" data-rrem="${esc(k)}">Remove</button>`) + `</div></li>`;
+      : `<span class="rvprog">Right on ${(x.rd || []).length} of ${REVIEW_RIGHT_DAYS} days</span><button class="linkbtn sm" data-rrem="${esc(k)}">Remove</button>`) + `</div></li>`;
 }
 function reviewHTML() {
-  const act = reviewActive(), dn = reviewDoneList(), n = reviewTarget(), sp = reviewClips(act).spans;
-  let h = `<section class="lib rvsec" id="rvsec"><div class="libhead"><div><h2>To review</h2><p class="count">${act.length ? `${plural(act.length, "card")} you missed. Read each aloud ${n} times, tapping Read each time, and it moves to Done.` : "Nothing to review. Cards you miss at their first try in a scheduled session appear here."}</p></div>` +
-    (act.length ? `<div class="btnrow"><button class="play" data-rplayall aria-label="Play all to review, French then English">${ICON.play}<span>Play all</span></button><button class="ghost sm" data-rclear>Clear list</button></div>` : "") + "</div>";
+  const act = reviewActive(), dn = reviewDoneList(), sp = reviewClips(act).spans;
+  let h = `<section class="lib rvsec" id="rvsec"><div class="libhead"><div><h2>To review</h2><p class="count">${act.length ? `${plural(act.length, "card")} you missed. Review them: see or hear each one, say it, then check. A card clears once you get it right on ${REVIEW_RIGHT_DAYS} different days.` : "Nothing to review. Cards you miss in your daily session appear here."}</p></div>` +
+    (act.length ? `<div class="btnrow"><button class="primary sm" data-rstart>Review now</button><button class="play" data-rplayall aria-label="Play all to review, French then English">${ICON.play}<span>Play all</span></button><button class="ghost sm" data-rclear>Clear list</button></div>` : "") + "</div>";
   if (act.length) h += `<ul class="rvlist">${act.map(k => reviewRowHTML(k, sp, false)).join("")}</ul>`;
   if (dn.length) h += `<details class="shelpbox"><summary>Done (${dn.length}), kept for ${REVIEW_KEEP_DAYS} days</summary><ul class="rvlist">${dn.map(k => reviewRowHTML(k, null, true)).join("")}</ul></details>`;
   return h + "</section>";
@@ -2537,6 +2756,7 @@ let lastRead = { k: "", t: 0 };
 $("#reviewSec").addEventListener("click", async e => {
   const t = e.target;
   const say = t.closest("[data-say]"); if (say) { speak(sayArg(say), say); return; }
+  if (t.closest("[data-rstart]")) { startReviewSession(); return; }
   const pa = t.closest("[data-rplayall]"); if (pa) { const c = reviewClips(reviewActive()).clips; if (c.length) speak(c, pa); return; }
   const rd = t.closest("[data-rread]");
   if (rd) {
@@ -2589,14 +2809,6 @@ function unitCost(k, C, dir) {
   const spk = unitSpec(k).kind === "form" ? C.form : C.main;
   return dir === "fr-en" ? C.listen : dir === "en-fr" ? spk : (spk + C.listen) / 2;
 }
-// Whole-verb view for the Library dots and Stats: irregular verbs summarise their forms.
-function verbEntry(v) {
-  if (v.type !== "irregular") return entryOf(schedule, v.id);
-  const us = verbUnits(v), S = { forms: fsched.forms, verbs: {} };
-  let n = 0, sum = 0, due = null, all8 = true;
-  us.forEach(k => { const e = entryOfU(S, k); if (!e) { all8 = false; return; } n++; sum += e.step; if (e.step !== 8) all8 = false; if (!due || e.due < due) due = e.due; });
-  return n ? { step: all8 ? 8 : Math.min(7, Math.floor(sum / us.length)), due, enc: 1 } : null;
-}
 const introduced = (S, v) => (v.type === "irregular" ? verbUnits(v).every(k => S.forms[k]) : !!S.verbs[v.id]);
 // One-off move from the v3.1 per-verb schedule: every form starts at its verb's current step and due date.
 function migrateForms() {
@@ -2625,34 +2837,47 @@ function entryOf(S, id) {
 }
 // step 0 = new, 1–7 = review steps, 8 = long-term
 // The step a card drops back to after a first-attempt miss on review step k (0 means no penalty).
-// New cards (step 0) and the first, 1-day review (step 1) are exempt: they are still being learnt.
+// New cards (step 0) and the first, 1-day review (step 1) don't drop back: a miss keeps them where they are,
+// due tomorrow (see applyResult). Since v6.1 a miss never moves a card up.
 // On: reviews at 3, 7, 14 and 30 days go back to the 1-day step; 60 days, 180 days and long-term go back to the 7-day step.
-// Gentle: one step back. Off: a miss never moves a due date.
+// Gentle: one step back.
 function lapseStep(k) {
   const m = settings.lapse;
-  if (m === "off" || !(k >= 2)) return 0;
+  if (!(k >= 2)) return 0;
   if (m === "gentle") return k - 1;
-  return k <= 5 ? 1 : 4;
+  return LAPSE_TO[Math.min(8, k)];
 }
-// Put a card back on ladder step s: its next review is GAPS[s-1] days after `date`, and the later steps follow from there.
+// Put a card back on ladder step s: its next review is the ladder gap below that step, counted from `date`.
 function relapse(e, s, date) {
-  e.step = s; e.intro = addDays(date, s >= 2 ? -OFFSETS[s - 2] : 0); e.due = addDays(date, GAPS[s - 1]);
+  e.step = s; e.due = addDays(date, LADDER[Math.max(0, s - 1)]);
 }
-function applyResult(e, passed, date) {
-  // `passed` means the card was right at its first attempt of the day. Retries the same day are not counted by the caller.
-  // A pass advances the card. A miss either sends it back down the ladder (lapseStep) or, for exempt cards, advances it as before.
-  const k = e.step;
+// grade: true or "good" (Know), "hard" (Hard), false or "again" (Don't know): the first attempt of the day only.
+//  Know: one step up. Next gap = GOOD_FACTOR x the days since the last review, at least the ladder gap for the step and
+//        at most the ladder gap two steps further on (or MAX_GAP), so a late right answer earns a longer gap.
+//  Hard: stays on its step. Next gap = HARD_FACTOR x the days since the last review (at least 1 day). A new card moves to step 1.
+//  Don't know: never moves a card up. Step 0 or 1: same step, due tomorrow. Step 2+: back down the ladder (lapseStep).
+function applyResult(e, grade, date) {
+  const g = grade === true || grade === "good" ? "good" : grade === "hard" ? "hard" : "again";
+  const k = Math.max(0, Math.min(8, e.step | 0));
+  const since = isDate(e.lastDate) && e.lastDate < date ? dayDiff(e.lastDate, date) : 0;
   e.enc = (e.enc || 0) + 1; e.lastDate = date;
-  const back = passed ? 0 : lapseStep(k);
-  if (back) { e.last = "miss"; relapse(e, back, date); return; }
-  e.last = "pass";
+  if (g === "again") {
+    e.last = "miss";
+    const back = lapseStep(k);
+    if (back) relapse(e, back, date);
+    else { e.step = k; e.due = addDays(date, 1); }
+    return;
+  }
+  e.last = g === "hard" ? "hard" : "pass";
   e.dir = k === 0 ? "en-fr" : (e.dir === "fr-en" ? "en-fr" : "fr-en");
-  let nd;
-  if (k >= 8) nd = addDays(isDate(e.due) ? e.due : date, LT_GAP);
-  else if (isDate(e.intro)) nd = addDays(e.intro, k < 7 ? OFFSETS[k] : OFFSETS[6] + LT_GAP);
-  else nd = addDays(date, k < 7 ? GAPS[k] : LT_GAP);
-  if (nd <= date) nd = addDays(date, 1);
-  e.step = Math.min(8, k + 1); e.due = nd;
+  let gap;
+  if (g === "hard") { e.step = Math.max(1, k); gap = Math.max(1, Math.round(HARD_FACTOR * since)); }
+  else {
+    const lo = LADDER[Math.min(7, k)], hi = k === 0 ? 1 : (k + 2 <= 7 ? LADDER[k + 2] : MAX_GAP);
+    gap = Math.min(hi, Math.max(lo, Math.round(GOOD_FACTOR * since)));
+    e.step = Math.min(8, k + 1);
+  }
+  e.due = addDays(date, Math.min(MAX_GAP, gap));
 }
 function avgCosts() {
   const c = {};
@@ -2680,19 +2905,24 @@ function spread(list) {
 const byRank = (a, b) => a.rankNum - b.rankNum;
 function schedSections() {
   const gs = [];
-  VERBS_OK.forEach(v => { if (!gs.includes(v.group)) gs.push(v.group); });
+  VERBS_OK.forEach(v => { if (!gs.includes(v.section)) gs.push(v.section); });
   const order = settings.sectionOrder.filter(g => gs.includes(g));
   gs.forEach(g => { if (!order.includes(g)) order.push(g); });
   return order;
 }
 const sectionName = g => (g === "irregular" ? "Irregular verbs" : groupLabel(g));
-function sectionVerbs(g) { return VERBS_OK.filter(v => v.group === g).sort(byRank); }
+function sectionVerbs(g) { return VERBS_OK.filter(v => v.section === g).sort(byRank); }
 
 /* ---------- planning ---------- */
 // Two blocks: 0 = irregular (one card per form), 1 = regular (main card only). Each has its own time budget.
 const BLOCK_NAME = ["Irregular verbs", "Regular verbs"];
 const regSections = () => schedSections().filter(g => g !== "irregular");
-const blockBudget = bi => (bi === 0 ? settings.budgetIrr : settings.budgetReg) * 60;
+// One daily budget (settings.budget minutes), shared: irregular verbs are planned first, keeping back at least REG_MIN
+// minutes (or the time regular reviews need), and regular verbs get what is left. For pacing new cards against future
+// days, each block keeps a share: regular the larger of REG_MIN and a third, irregular the rest (20 + 10 at 30 minutes).
+const REG_MIN = 5;
+const regShare = () => Math.max(REG_MIN, Math.round(settings.budget / 3));
+const blockBudget = bi => (bi === 0 ? settings.budget - regShare() : regShare()) * 60;
 const secondF = () => (settings.secondPass ? 2 : 1);
 function curState() { return { verbs: schedule.verbs, forms: fsched.forms, newLog: schedule.newLog, fNewLog: fsched.newLog }; }
 function blockVerbs(bi) { return bi === 0 ? sectionVerbs("irregular") : [].concat(...regSections().map(sectionVerbs)); }
@@ -2710,8 +2940,8 @@ function loadMap(S, date, C, bi) {
 }
 // New cards in strict importance order. Irregular: verb by verb (infinitive, then présent je..ils, then the other tenses).
 // Regular: sections in the set order, then rank. The time budget, the daily cap or the future-day rule stops the day.
-function selectNew(bi, date, S, C, rawSoFar) {
-  const budget = blockBudget(bi), cap = 0.9 * budget, max = bi === 0 ? settings.maxNewForms : settings.maxNew;
+function selectNew(bi, date, S, C, rawSoFar, todaySec) {
+  const budget = todaySec !== undefined ? todaySec : blockBudget(bi), cap = 0.9 * blockBudget(bi), max = bi === 0 ? settings.maxNewForms : settings.maxNew;
   const out = [], learn = new Set(), sp = secondF(), started = new Set(bi === 0 ? Object.keys(S.forms).map(unitVerb) : []);
   let planned = rawSoFar * 1.15, cost = 0, lm = null;
   outer:
@@ -2732,28 +2962,48 @@ function selectNew(bi, date, S, C, rawSoFar) {
   }
   return { ids: out, learn: Array.from(learn), cost };
 }
+// How far past due a card is, as a share of the gap it was given: the higher, the more at risk.
+function riskOf(e, date) {
+  const gap = isDate(e.lastDate) && e.lastDate < e.due ? dayDiff(e.lastDate, e.due) : 1;
+  return dayDiff(e.due, date) / Math.max(1, gap);
+}
+// Due reviews from both blocks, most at risk first (then lower step, then rank), cut at REVIEW_CAP.
+// Returns the set of review keys allowed today and how many wait for another day.
+function capReviews(date, S) {
+  const all = [];
+  Object.keys(S.forms).filter(unitValid).forEach(k => { const e = S.forms[k]; if (e && (e.enc || 0) > 0 && e.due <= date) all.push(k); });
+  Object.keys(S.verbs).forEach(id => { const v = BY_ID[id], e = S.verbs[id]; if (v && v.type === "regular" && e && (e.enc || 0) > 0 && e.due <= date) all.push(id); });
+  const ent = k => unitStore(S, k)[k];
+  all.sort((a, b) => riskOf(ent(b), date) - riskOf(ent(a), date) || (ent(a).step - ent(b).step) ||
+    (BY_ID[unitVerb(a)].rankNum - BY_ID[unitVerb(b)].rankNum) || (a < b ? -1 : a > b ? 1 : 0));
+  return { allowed: new Set(all.slice(0, REVIEW_CAP)), held: Math.max(0, all.length - REVIEW_CAP) };
+}
 function plan(date, S, C, extraBi) {
-  const sp = secondF(), ord = regSections();
-  const blocks = [0, 1].map(bi => {
+  const sp = secondF(), ord = regSections(), cap = capReviews(date, S);
+  const blockPlan = (bi, todaySec) => {
     const keys = bi === 0 ? Object.keys(S.forms).filter(unitValid) : Object.keys(S.verbs).filter(id => BY_ID[id] && BY_ID[id].type === "regular");
     const rev = [], carry = [], seen = new Set();
     keys.forEach(k => {
       const e = entryOfU(S, k); if (!e) return;
       if ((e.enc || 0) > 0) seen.add(unitVerb(k));
       if (e.due > date) return;
-      ((e.enc || 0) === 0 ? carry : rev).push(k);
+      if ((e.enc || 0) === 0) { if (!cap.held) carry.push(k); }   // new cards wait while reviews are held back
+      else if (cap.allowed.has(k)) rev.push(k);
     });
-    const sec = k => (bi === 0 ? 0 : ord.indexOf(BY_ID[k].group)), rk = k => BY_ID[unitVerb(k)].rankNum;
+    const sec = k => (bi === 0 ? 0 : ord.indexOf(BY_ID[k].section)), rk = k => BY_ID[unitVerb(k)].rankNum;
     const cmp = (a, b) => sec(a) - sec(b) || rk(a) - rk(b) || (a < b ? -1 : a > b ? 1 : 0);
     rev.sort((a, b) => dayDiff(entryOfU(S, b).due, date) - dayDiff(entryOfU(S, a).due, date) || cmp(a, b));
     carry.sort(cmp);
     const carryLearn = bi === 0 ? Array.from(new Set(carry.map(unitVerb))).filter(id => !seen.has(id)) : carry.slice();
     const raw = rev.reduce((s, k) => s + unitCost(k, C, entryOfU(S, k).dir || "en-fr"), 0) + carry.reduce((s, k) => s + unitCost(k, C, "en-fr") + (sp > 1 ? C.listen : 0), 0) + carryLearn.reduce((s, id) => s + learnCost(BY_ID[id]), 0);
     const log = bi === 0 ? S.fNewLog : S.newLog;
-    const sel = (Array.isArray(log[date]) && bi !== extraBi) ? { ids: [], learn: [], cost: 0 } : selectNew(bi, date, S, C, raw);
+    const sel = ((Array.isArray(log[date]) && bi !== extraBi) || cap.held || todaySec <= 0) ? { ids: [], learn: [], cost: 0 } : selectNew(bi, date, S, C, raw, todaySec);
     return { reviews: rev, newIds: carry.concat(sel.ids), picked: sel.ids, learnIds: carryLearn.concat(sel.learn), sec: (raw + sel.cost) * 1.15 };
-  });
-  return { blocks, sec: blocks[0].sec + blocks[1].sec };
+  };
+  const B = settings.budget * 60, regOnly = blockPlan(1, 0);
+  const irr = blockPlan(0, B - Math.max(REG_MIN * 60, regOnly.sec));
+  const blocks = [irr, blockPlan(1, B - irr.sec)];
+  return { blocks, sec: blocks[0].sec + blocks[1].sec, held: cap.held };
 }
 
 /* ---------- the scheduled session ---------- */
@@ -2770,24 +3020,31 @@ function secondIds(s, bi) { bi = bi === undefined ? (s.bi || 0) : bi; return Obj
 function dirFor() { return session && session.mode === "sched" ? "en-fr" : resolveDir(); }
 const homeOf = () => (session && session.mode === "sched" ? "today" : "library");
 
+// bi undefined: today's one session, irregular verbs then regular verbs. bi 0 or 1: one block only (the "Do now" extras).
 function buildSession(bi, extra) {
-  const date = todayStr(), C = avgCosts(), p = plan(date, curState(), C, extra ? bi : -1), x = p.blocks[bi];
-  if (bi === 0) x.picked.forEach(k => { fsched.forms[k] = { step: 0, enc: 0, due: date, intro: date }; });
-  else x.picked.forEach(id => { schedule.verbs[id] = { step: 0, enc: 0, due: date, intro: date }; });
-  const lg = bi === 0 ? fsched.newLog : schedule.newLog;
-  lg[date] = (lg[date] || []).concat(x.picked);
+  const both = bi === undefined, inSession = i => both || i === bi;
+  const date = todayStr(), C = avgCosts(), p = plan(date, curState(), C, extra ? bi : -1);
+  [0, 1].filter(inSession).forEach(i => {
+    const x = p.blocks[i];
+    if (i === 0) x.picked.forEach(k => { fsched.forms[k] = { step: 0, enc: 0, due: date, intro: date }; });
+    else x.picked.forEach(id => { schedule.verbs[id] = { step: 0, enc: 0, due: date, intro: date }; });
+    const lg = i === 0 ? fsched.newLog : schedule.newLog;
+    lg[date] = (lg[date] || []).concat(x.picked);
+  });
   [fsched.newLog, schedule.newLog].forEach(log => Object.keys(log).forEach(d => { if (!isDate(d) || dayDiff(d, date) > 30) delete log[d]; }));
   saveSchedule(); saveForms();
   const vs = {}, blocks = p.blocks.map((y, i) => {
-    if (i !== bi) return { reviewIds: [], newIds: [], learnIds: [], plannedSec: 0 };
+    if (!inSession(i)) return { reviewIds: [], newIds: [], learnIds: [], plannedSec: 0 };
     y.reviews.forEach(k => { vs[k] = { st: "todo", left: 0, open: 0, fail: false, isNew: false, blk: i }; });
     y.newIds.forEach(k => { vs[k] = { st: "todo", left: 0, open: 0, fail: false, isNew: true, blk: i }; });
     return { reviewIds: y.reviews, newIds: y.newIds, learnIds: y.learnIds, plannedSec: y.sec };
   });
-  return { mode: "sched", schema: 2, only: bi, date, startedAt: Date.now(), elapsedMs: 0, plannedSec: x.sec, part: "start", bi, blocks, vs,
+  return { mode: "sched", schema: 2, only: both ? undefined : bi, date, startedAt: Date.now(), elapsedMs: 0,
+           plannedSec: both ? p.blocks[0].sec + p.blocks[1].sec : p.blocks[bi].sec, part: "start", bi: both ? 0 : bi, blocks, vs,
            queue: [], idx: 0, committed: -1, done: false, undo: [], title: "Today", round: 1 };
 }
 // Runs the irregular block (reviews, learn, test, second pass), then the regular block, then the finish screen.
+// A one-block session (s.only set, the "Do now" extras) stops after its block.
 function nextPart() {
   const s = session;
   let bi = s.bi || 0, i = PARTS.indexOf(s.part) + 1;
@@ -2822,7 +3079,7 @@ function enterPart(p) {
   // Two passes: speaking first, then listening. Irregular cards are shuffled across verbs, tenses and persons.
   const order = list => (s.bi === 0 ? spread(list) : list);
   s.queue = order(speak).concat(order(listen));
-  if (p === "done") { s.done = true; s.finishedAt = Date.now(); recordHist(s); toast("Section complete ✓"); maybeAutoBackup(); syncNow("done"); }
+  if (p === "done") { s.done = true; s.finishedAt = Date.now(); recordHist(s); toast(s.only === undefined ? "Session complete ✓" : "Section complete ✓"); maybeAutoBackup(); syncNow("done"); }
   saveSession();
   if (p === "learn" || p === "done") { navigate("today"); return; }
   navigate("study");
@@ -2854,7 +3111,7 @@ function resumeSched() {
   navigate("study");
   presentCurrent(true);
 }
-function commitSched(it, wrongKeys) {
+function commitSched(it, wrongKeys, grade) {
   const s = session, k = unitKey(it), st = unitStore({ forms: fsched.forms, verbs: schedule.verbs }, k);
   const vs = s.vs[k] || (s.vs[k] = { st: "todo", left: 0, open: 1, fail: false, isNew: false, blk: s.bi || 0 });
   const tk = it.mode === "listen" ? "listen" : it.kind;
@@ -2866,7 +3123,17 @@ function commitSched(it, wrongKeys) {
   if (timing[tk].length > 400) timing[tk] = timing[tk].slice(-400);
   saveTiming();
   const anyWrong = wrongKeys.length > 0;
-  if (it.first) { if (anyWrong) vs.fail = true; vs.left = 0; }
+  if (it.first) {
+    // One review-log record per card per day, at its first try (read before finalizeUnit changes the entry).
+    const prev = st[k] || null;
+    const rec = { id: s.date + "|" + k, d: s.date, k, g: anyWrong ? "miss" : grade === "hard" ? "hard" : "pass", step: prev ? prev.step : 0,
+      gap: prev && isDate(prev.lastDate) ? dayDiff(prev.lastDate, s.date) : null,
+      late: prev && isDate(prev.due) ? dayDiff(prev.due, s.date) : null,
+      m: it.mode === "listen" ? "listen" : "speak", kind: it.kind, s: Math.round(secs * 10) / 10, t: Date.now(), v: APP_VERSION };
+    logDB.put(rec);
+    s.undo[s.undo.length - 1].logId = rec.id;
+  }
+  if (it.first) { if (anyWrong) vs.fail = true; else if (grade === "hard") vs.hard = true; vs.left = 0; }
   if (it.first && anyWrong) reviewAdd(k, s.date);
   if (!anyWrong) finalizeUnit(k);
   vs.open = Math.max(0, vs.open - 1);
@@ -2885,8 +3152,11 @@ function commitSched(it, wrongKeys) {
 function finalizeUnit(k) {
   const s = session, vs = s.vs[k], e = unitStore({ forms: fsched.forms, verbs: schedule.verbs }, k)[k];
   if (!e || vs.final) return;
+  // Already applied for this session's day: the app closed after saving the schedule but before saving the
+  // session. Don't apply it twice.
+  if (e.lastDate === s.date && e.enc > 0) { vs.final = true; if (vs.before === undefined) vs.before = e.step; vs.after = e.step; return; }
   vs.before = e.step;
-  applyResult(e, !vs.fail, s.date); e.missed = !!vs.fail;
+  applyResult(e, vs.fail ? "again" : vs.hard ? "hard" : "good", s.date); e.missed = !!vs.fail;
   vs.after = e.step; vs.final = true;
   if (isFormUnit(k)) saveForms(); else saveSchedule();
 }
@@ -2898,6 +3168,7 @@ function undoSched() {
   if (u.entry) st[u.id] = JSON.parse(u.entry); else delete st[u.id];
   if ("rev" in u) { if (u.rev) review.items[u.id] = JSON.parse(u.rev); else delete review.items[u.id]; saveReview(); }
   if (Array.isArray(timing[u.kind])) timing[u.kind].pop();
+  if (u.logId) logDB.del(u.logId);
   saveSchedule(); saveForms(); saveTiming();
   const d = JSON.parse(u.data); d.committed = -1;
   const r = restoreSession(d); r.undo = s.undo; session = r;
@@ -2938,31 +3209,81 @@ setInterval(() => {
   if (++tickN % 15 === 0) saveSession();
 }, 1000);
 
-/* ---------- tracking dots ---------- */
-function verbStep(v) {
-  if (v.type !== "irregular") { const e = entryOf(schedule, v.id); return e ? { started: true, all: true, step: e.step } : { started: false }; }
-  const S = { forms: fsched.forms, verbs: {} }, us = verbUnits(v);
-  let n = 0, min = 8;
-  us.forEach(k => { const e = entryOfU(S, k); if (e) { n++; if (e.step < min) min = e.step; } });
-  return n ? { started: true, all: n === us.length, step: min } : { started: false };
+/* ---------- status model (Section 3B, v6.7) ----------
+   cardStatus(k) is the only definition of a card's status, verbStatus(v) rolls it up; every screen uses these two.
+   Evidence is the review log's first tries in scheduled sessions (never same-day repeats or Library practice):
+   Learning = introduced; Reviewing = right after a gap of 7+ days; Retained = right after 30+; Mastered = right after 60+
+   in both speaking and listening. Only attempts after the latest miss count, so a lapse starts the climb again.
+   Cards learnt before the log began: the step they had reached shows the gaps they passed (step 5+ passed a 7-day
+   review, step 7+ a 30-day one); Mastered always needs the log. Persistent mistake = 4 or more lapses. */
+const ST = ["new", "learning", "reviewing", "retained", "mastered"];
+const ST_LABEL = { new: "New", learning: "Learning", reviewing: "Reviewing", retained: "Retained", mastered: "Mastered" };
+const ST_REV = 7, ST_RET = 30, ST_MAS = 60, PERSIST = 4;
+function logIndex() {
+  if (logIdx) return logIdx;
+  logIdx = new Map();
+  LOG.forEach(r => { if (!r.k || !isDate(r.d)) return; let a = logIdx.get(r.k); if (!a) logIdx.set(r.k, a = []); a.push(r); });
+  logIdx.forEach(a => a.sort((x, y) => (x.d < y.d ? -1 : x.d > y.d ? 1 : (x.t || 0) - (y.t || 0))));
+  return logIdx;
 }
-function verbStatus(v) { const x = verbStep(v); if (!x.started) return "new"; if (x.all && x.step >= 8) return "lt"; return x.all && x.step >= 4 ? "secure" : "learning"; }
-function dotsHTML(v) {
-  const x = verbStep(v), st = verbStatus(v), n = x.started ? Math.min(x.step, 7) : 0;
-  let dots = ""; for (let i = 0; i < 7; i++) dots += `<i class="${i < n ? "on" : ""}"></i>`;
-  const label = { new: "Not started", learning: "Learning", secure: "Secure", lt: "Long-term" }[st];
-  return `<span class="dots ${x.started ? "st-on" : "st-new"}" title="${label}" aria-label="${label}">${dots}<span class="dtext">${label}</span></span>`;
+const verbCards = v => (v.type === "irregular" ? verbUnits(v) : [v.id]);
+function cardStatus(k) {
+  const e = entryOfU({ forms: fsched.forms, verbs: schedule.verbs }, k), all = logIndex().get(k) || [];
+  const recs = all.filter(r => !r.p), lapses = recs.filter(r => r.g === "miss" && (r.step || 0) > 0).length;
+  const out = { k, status: "new", lapses, persistent: lapses >= PERSIST, e, recs, all, inferred: false };
+  if (!e && !recs.length) return out;
+  let i = recs.length - 1; while (i >= 0 && recs[i].g !== "miss") i--;
+  const since = recs.slice(i + 1), ok = r => r.g !== "miss" && typeof r.gap === "number";
+  let best = 0;
+  since.forEach(r => { if (ok(r) && r.gap >= ST_RET) best = 2; else if (ok(r) && r.gap >= ST_REV) best = Math.max(best, 1); });
+  if (i < 0) { const s0 = recs.length ? recs[0].step || 0 : e.step, inf = s0 >= 7 ? 2 : s0 >= 5 ? 1 : 0; if (inf > best) { best = inf; out.inferred = true; } }
+  const mastered = ["speak", "listen"].every(m => since.some(r => ok(r) && r.gap >= ST_MAS && r.m === m));
+  out.status = mastered ? "mastered" : ["learning", "reviewing", "retained"][best];
+  return out;
 }
-function curricLine(verbs, name) {
-  const started = verbs.filter(v => verbEntry(v)).length;
-  const lt = verbs.filter(v => { const e = verbEntry(v); return e && e.step === 8; }).length;
-  return `${name}: ${started} of ${verbs.length} started · ${lt} long-term`;
+function verbStatus(v) {
+  const cs = verbCards(v).map(cardStatus), rk = x => ST.indexOf(x);
+  const minOf = list => (list.length ? list.reduce((a, c) => (rk(c.status) < rk(a) ? c.status : a), "mastered") : "new");
+  const tenses = {};
+  TENSE_KEYS.forEach(t => { tenses[t] = v.type === "irregular" ? minOf(cs.filter(c => c.k.split("|")[1] === t)) : cs[0].status; });
+  let status = cs.every(c => c.status === "new") ? "new" : v.type === "irregular" ? minOf(cs.filter(c => /\|(inf|present)(\||$)/.test(c.k))) : cs[0].status;
+  if (status === "new" && cs.some(c => c.status !== "new")) status = "learning";
+  const core = tenses.present === "mastered" && (tenses.passe_compose === "mastered" || !("passe_compose" in tenses));
+  const complete = TENSE_KEYS.every(t => tenses[t] === "mastered");
+  const dues = cs.filter(c => c.e).map(c => c.e.due).sort();
+  return { status, tenses, cards: cs, persistent: cs.filter(c => c.persistent), core, complete, due: dues[0] || null,
+    label: complete ? "Complete" : core ? "Core secure" : ST_LABEL[status] };
 }
-
+const stTag = (s, extra) => `<span class="stag st-${s}">${esc(ST_LABEL[s])}</span>${extra || ""}`;
+function tenseDots(st) {
+  return `<span class="tdots">${TENSE_KEYS.map(t => `<i class="sd sd-${st.tenses[t]}" title="${esc(TENSES[t].name)}: ${ST_LABEL[st.tenses[t]]}"></i>`).join("")}</span><span class="sr">${esc(TENSE_KEYS.map(t => TENSES[t].name + " " + ST_LABEL[st.tenses[t]]).join(", "))}</span>`;
+}
+// Plain-language reason for a verb's next review, and the last 10 first attempts (practice included, labelled).
+function verbReason(v, st) {
+  if (st.complete || st.status === "mastered") { const r = st.cards.flatMap(c => c.recs).filter(r => r.g !== "miss" && r.gap >= ST_MAS).pop(); return `Mastered${r ? `: right after ${r.gap} days, both directions` : ""}.`; }
+  const c = st.cards.filter(x => x.e).sort((a, b) => (a.e.due < b.e.due ? -1 : 1))[0];
+  if (!c) return "Not introduced yet. It comes up in the daily session by importance.";
+  const e = c.e, gap = isDate(e.lastDate) ? dayDiff(e.lastDate, e.due) : null, last = c.recs.filter(r => r.g !== "miss").pop();
+  return `Due ${fmtDate(e.due)}: ${last ? `last right on ${fmtDate(last.d)}` : "not yet right at a first try"}${gap !== null ? `, next gap ${plural(gap, "day")}` : ""}.`;
+}
+const unitName = k => { const p = k.split("|"), v = BY_ID[p[0]]; if (!v) return k; if (p.length === 1 || p[1] === "inf") return v.french; if (p[1] === "keyforms") return v.french + " key forms"; if (p.length === 2) return v.french + " " + TENSES[p[1]].name; const r = v.tables[p[1]] && v.tables[p[1]].rows.find(x => x.key === p[2]); return r ? r.fr : k; };
+function attemptsHTML(st) {
+  const recs = st.cards.flatMap(c => c.all).concat(LOG.filter(r => r.p && r.k && st.cards.length && r.k.split("|")[0] === st.cards[0].k.split("|")[0] && !st.cards.some(c => c.k === r.k)))
+    .sort((a, b) => (a.d < b.d ? 1 : a.d > b.d ? -1 : (b.t || 0) - (a.t || 0))).slice(0, 10);
+  if (!recs.length) return '<p class="shelp">No attempts logged yet.</p>';
+  const G = { pass: "Right", hard: "Hard", miss: "Again" };
+  return `<table class="attempts"><thead><tr><th>Date</th><th>Card</th><th>Grade</th><th>Gap</th><th>Mode</th></tr></thead><tbody>` +
+    recs.map(r => `<tr><td>${esc(fmtDate(r.d))}</td><td lang="fr">${esc(unitName(r.k))}</td><td>${G[r.g] || esc(r.g)}</td><td>${typeof r.gap === "number" ? r.gap + " d" : "–"}</td><td>${r.p ? "practice" : r.m === "listen" ? "listening" : "speaking"}</td></tr>`).join("") + "</tbody></table>";
+}
+function libVerbHTML(v) {
+  const st = verbStatus(v);
+  return `<div class="vstatus"><p>${stTag(st.status)}${st.label !== ST_LABEL[st.status] ? ` <b>${esc(st.label)}</b>` : ""}${st.persistent.length ? '<span class="stag persist">Persistent mistake</span>' : ""} ${esc(verbReason(v, st))}</p>` +
+    `<details class="shelpbox"><summary>Last 10 attempts</summary>${attemptsHTML(st)}</details></div>` + verbDetailHTML(v, st);
+}
 /* ---------- Today screen ---------- */
 function learnStepHTML(s) {
   const ids = liveIds(blk(s).learnIds), groups = {};
-  ids.forEach(id => { const g = BY_ID[id].group; (groups[g] = groups[g] || []).push(id); });
+  ids.forEach(id => { const g = BY_ID[id].section; (groups[g] = groups[g] || []).push(id); });
   const heads = Object.keys(groups).map(g => {
     const all = sectionVerbs(g), pos = groups[g].map(id => all.findIndex(v => v.id === id) + 1).sort((a, b) => a - b);
     return `Learning: ${esc(sectionName(g))} (${pos.length === 1 ? "verb " + pos[0] : "verbs " + pos.join(", ")} of ${all.length})`;
@@ -3031,27 +3352,44 @@ function secRow(bi, o) {
     : o.state === "extra" ? `<button class="ghost sm" data-sec="extra:${bi}">Do now</button>` : "";
   return `<div class="sec${o.done ? " isdone" : ""}"><div class="sechead"><b>${SECN[bi]}</b>${btn}</div><p class="vsmall">${nw}${nw && meta.length ? " · " : ""}${meta.join(" · ")}</p></div>`;
 }
+// A session left unfinished on an earlier day closes when Today next opens: finished cards are already saved, and the
+// rest are simply still due.
+function closeStaleSession() {
+  const s = schedSession(); if (!s || s.done || s.date >= todayStr()) return false;
+  lsRemove(KEYS.session); if (session && session.mode === "sched") session = null;
+  addNotice(`The session from ${fmtDate(s.date)} was closed. Cards you finished are saved; the rest are due today.`);
+  return true;
+}
 function renderToday() {
+  closeStaleSession();
   const t = todayStr(), body = $("#todayBody");
   $("#todayDate").textContent = parseD(t).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
   const s = schedSession(), prog = !!(s && !s.done);
   if (prog && s.part === "learn") { body.innerHTML = learnStepHTML(s); return; }
   if (!VERBS_OK.length) { body.innerHTML = '<p class="todayline">No verbs are loaded yet.</p><p class="lede">Add verbs to verbs.js.</p>'; return; }
   const C = avgCosts(), p = plan(t, curState(), C), sim = simulate(10, 1, C, t, false).rows;
-  let h = prog && s.date !== t ? `<div class="notice"><p>A session from ${esc(fmtDate(s.date))} is still open. Finish it first: it counts for that day.</p></div>` : "";
+  let h = p.held && !prog ? `<div class="notice"><p>${plural(p.held, "review")} will wait for another day: at most ${REVIEW_CAP} a day, the cards most at risk first. New cards pause until you’re caught up.</p></div>` : "";
   { const ds = daysSince(lsGet(KEYS.lastbackup)); if (ds >= 8) h += `<div class="notice"><p>Last backup: ${ds === 999 ? "never" : ds + " days ago"}.</p><button class="primary sm" data-today="backup">Save backup now</button></div>`; }
-  { const nr = reviewActive().length; if (nr) h += `<div class="notice"><p>To review: ${plural(nr, "card")} you missed. Read them aloud in the Library.</p><button class="ghost sm" data-today="review">Open</button></div>`; }
-  const today = [0, 1].map(bi => {
-    const x = p.blocks[bi], dn = hist[t] && hist[t][SECK[bi]];
-    if (dn) return secRow(bi, { done: true, list: histList(dn), reviews: 0, min: 0 });
-    if (prog && (s.only === undefined || s.only === bi)) {
+  { const nr = reviewActive().length; if (nr) h += `<div class="notice"><p>To review: ${plural(nr, "card")} you missed. Review them in the Library.</p><button class="ghost sm" data-today="review">Open</button></div>`; }
+  // One session for the day. Each block shows what it holds; one button starts or continues the whole session.
+  const doneB = [0, 1].map(bi => !!(hist[t] && hist[t][SECK[bi]]));
+  const rows = [0, 1].map(bi => {
+    if (doneB[bi]) return secRow(bi, { done: true, list: histList(hist[t][SECK[bi]]), reviews: 0, min: 0 });
+    if (prog) {
+      if (s.only !== undefined && s.only !== bi) return "";
       const b = s.blocks[bi];
-      return secRow(bi, { list: newOf(bi, liveIds(b.newIds)), n: liveIds(b.newIds).length, reviews: liveIds(b.reviewIds).length, min: plannedMin(s), state: "continue" });
+      return secRow(bi, { list: newOf(bi, liveIds(b.newIds)), n: liveIds(b.newIds).length, reviews: liveIds(b.reviewIds).length, min: 0, state: "" });
     }
-    const list = newOf(bi, x.newIds), nn = x.newIds.filter(unitValid).length, has = x.reviews.length + list.length > 0;
-    return secRow(bi, { list, n: nn, reviews: x.reviews.length, min: has ? Math.max(1, Math.round(x.sec / 60)) : 0, state: prog ? "" : has ? "start" : "" });
+    const x = p.blocks[bi], list = newOf(bi, x.newIds), nn = x.newIds.filter(unitValid).length, has = x.reviews.length + list.length > 0;
+    return secRow(bi, { list, n: nn, reviews: x.reviews.length, min: has ? Math.max(1, Math.round(x.sec / 60)) : 0, state: "" });
   });
-  h += `<section class="day"><h2 class="dayh">${esc(fmtDate(t))} <small>Today</small></h2>${today.join("")}</section>`;
+  const todo = [0, 1].filter(bi => !doneB[bi] && (p.blocks[bi].reviews.length + p.blocks[bi].newIds.filter(unitValid).length > 0));
+  const go = prog ? '<button class="primary sm" data-today="continue">Continue</button>'
+    : todo.length ? `<button class="primary sm" data-sec="start:${todo.length === 2 ? "all" : todo[0]}">Start</button>`
+    : doneB[0] || doneB[1] ? '<span class="tick">✓ Done</span>' : "";
+  const totalMin = prog ? plannedMin(s) : Math.round(todo.reduce((a, bi) => a + p.blocks[bi].sec, 0) / 60);
+  h += `<section class="day"><h2 class="dayh">${esc(fmtDate(t))} <small>Today</small></h2>` +
+    `<div class="sec todaygo"><div class="sechead"><b>${prog ? "Session in progress" : "Today’s session"}${totalMin ? ` <small>about ${totalMin} min</small>` : ""}</b>${go}</div></div>${rows.join("")}</section>`;
   const extraOK = [0, 1].map(bi => !prog && hist[t] && hist[t][SECK[bi]] && selectNew(bi, t, curState(), C, 0).ids.length > 0);
   sim.slice(1).forEach((r, i) => {
     h += `<section class="day"><h2 class="dayh">${esc(fmtDate(r.date))}${i === 0 ? " <small>Tomorrow</small>" : ""}</h2>` +
@@ -3072,13 +3410,14 @@ $("#scr-today").addEventListener("click", e => {
   const vl = t.closest("[data-vlink]"); if (vl) { navigate("learn", { scope: "all", verb: vl.dataset.vlink }); return; }
   const sc = t.closest("[data-sec]");
   if (sc) {
+    closeStaleSession();
     const cur = schedSession();
     if (cur && !cur.done) { resumeSched(); return; }
     const a = sc.dataset.sec.split(":");
     (async () => {
       if (syncCfg()) { toast("Syncing…"); await Promise.race([syncNow("start"), new Promise(r => setTimeout(r, 8000))]); }
       const again = schedSession(); if (again && !again.done) { resumeSched(); return; }
-      session = buildSession(Number(a[1]), a[0] === "extra"); nextPart();
+      session = buildSession(a[1] === "all" ? undefined : Number(a[1]), a[0] === "extra"); nextPart();
     })();
     return;
   }
@@ -3106,11 +3445,13 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden && cu
 /* ---------- simulation (works on a copy; never saved) ---------- */
 function rng(seed) { let a = seed; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function simStart() { const t = todayStr(), h = hist[t]; return h && h.irr && h.reg ? addDays(t, 1) : t; }
-function simulate(days, passRate, C, start, stopWhenAllIn) {
+// skip: optional set of day indexes on which no session happens (to test breaks).
+function simulate(days, passRate, C, start, stopWhenAllIn, skip) {
   const S = JSON.parse(JSON.stringify(curState()));
   const rnd = rng(20261018), rows = [];
   let d = start, allIn = null;
   for (let i = 0; i < days; i++) {
+    if (skip && skip.has(i)) { rows.push({ date: d, pa: [], pb: [], reviews: 0, added: 0, min: 0, minI: 0, minR: 0, held: 0, skipped: true }); d = addDays(d, 1); continue; }
     const p = plan(d, S, C), [a, b] = p.blocks;
     a.picked.forEach(k => { S.forms[k] = { step: 0, enc: 0, due: d, intro: d }; });
     b.picked.forEach(id => { S.verbs[id] = { step: 0, enc: 0, due: d, intro: d }; });
@@ -3125,7 +3466,7 @@ function simulate(days, passRate, C, start, stopWhenAllIn) {
       x.reviews.forEach(k => run(k, false)); x.newIds.forEach(k => run(k, true));
       x.learnIds.forEach(id => { secs[bi] += learnCost(BY_ID[id]); });
     });
-    rows.push({ date: d, pa: a.picked.slice(), pb: b.picked.slice(), reviews: a.reviews.length + b.reviews.length, added: a.picked.length + b.picked.length, min: (secs[0] + secs[1]) / 60, minI: secs[0] / 60, minR: secs[1] / 60 });
+    rows.push({ date: d, pa: a.picked.slice(), pb: b.picked.slice(), reviews: a.reviews.length + b.reviews.length, added: a.picked.length + b.picked.length, min: (secs[0] + secs[1]) / 60, minI: secs[0] / 60, minR: secs[1] / 60, held: p.held || 0 });
     if (!allIn && VERBS_OK.length && VERBS_OK.every(v => introduced(S, v))) { allIn = d; if (stopWhenAllIn) break; }
     d = addDays(d, 1);
   }
@@ -3145,92 +3486,80 @@ function runSim() {
 
 /* ---------- Stats ---------- */
 const ABOUT = `<p>This schedule uses the spacing effect: a memory lasts longer when you review it just as it starts to fade, and each successful review lets the next gap grow. Each card is reviewed on fixed days after you first learn it: day 1, 3, 7, 14, 30, 60 and 180, then every 180 days. Those days never move.</p>
-<p>The aim is strong long-term memory, not guaranteed 100% recall. A miss is repeated at the back of the pile until you get it right, but only your first try of the day counts toward the schedule. Miss a card on a review of 3 days or longer and it goes back down the ladder (to the 1-day step, or to the 7-day step for cards at 60 days or more) and climbs again; the miss rule can be changed in Settings. New cards and the first 1-day review are never penalised. If you are late, the next review is due the following day instead.</p>
+<p>The aim is strong long-term memory, not guaranteed 100% recall. A miss is repeated at the back of the pile until you get it right, but only your first try of the day counts toward the schedule. Know moves a card up and roughly doubles the gap since its last review; Hard keeps it on its step with a slightly longer gap; a miss sends it back down to a gap about a quarter of the one it failed at (the miss rule can be changed in Settings). A miss on a new card or at its 1-day review keeps it where it is, due again the next day. If you are late and still right, the next gap is longer, not shorter. At most ${REVIEW_CAP} reviews come up in a day, the cards most at risk first; any others wait, and new cards pause until you’re caught up.</p>
 <p>Irregular verbs: every form (and the infinitive) is its own card with its own schedule, so a form you know moves out to months while a weak one keeps coming back. Cards are shuffled across all verbs, tenses and persons, so you can’t follow a pattern. Forms are introduced in importance order: verb by verb, présent first.</p>
 <p>Regular verbs follow rules, so each one has a single card: English to the French infinitive. Full tables are for learning, on the Learn page.</p>
 <p>Each card alternates between two directions: speaking (English shown, you say the French) and listening (audio only, you say the meaning). A new card is tested speaking, then listening in the second pass. After that it flips at every review, starting with speaking. A miss repeats the card in the same direction until you get it right. On a listening card you press Show answer to see the French and English, then choose Know or Don’t know. Speaking cards are done first in a session, then listening cards.</p>`;
-function renderStats() {
-  const C = avgCosts(), cnt = { irr: { new: 0, learning: 0, secure: 0, lt: 0 }, reg: { new: 0, learning: 0, secure: 0, lt: 0 } };
-  VERBS_OK.forEach(v => { cnt[v.type === "irregular" ? "irr" : "reg"][verbStatus(v)]++; });
-  const nI = VERBS_OK.filter(v => v.type === "irregular").length, nR = VERBS_OK.length - nI;
-  const rows = [["Not started", "new"], ["Learning (steps 0–3)", "learning"], ["Secure (steps 4–7)", "secure"], ["Long-term", "lt"]];
-  const secs = Object.keys(hist).reduce((n, d) => n + (hist[d].irr ? 1 : 0) + (hist[d].reg ? 1 : 0), 0);
-  const missed = Object.keys(fsched.forms).filter(k => unitValid(k) && fsched.forms[k].missed).length + Object.keys(schedule.verbs).filter(id => BY_ID[id] && BY_ID[id].type === "regular" && schedule.verbs[id].missed).length;
-  const status = `<section class="sgroup"><h2>Progress</h2><table class="kv"><thead><tr><th></th><th>Irregular (${nI})</th><th>Regular (${nR})</th></tr></thead><tbody>` +
-    rows.map(r => `<tr><th>${r[0]}</th><td>${cnt.irr[r[1]]}</td><td>${cnt.reg[r[1]]}</td></tr>`).join("") +
-    `</tbody></table><p class="shelp">An irregular verb counts at its weakest form. Sections finished: ${secs}. Missed at last review: ${missed} (the next review follows the miss rule in Settings).</p></section>`;
-  const ord = schedSections();
-  const list = `<section class="sgroup"><details class="shelpbox"><summary>All verbs</summary>` +
-    VERBS_OK.slice().sort((a, b) => ord.indexOf(a.group) - ord.indexOf(b.group) || a.rankNum - b.rankNum).map(v => `<div class="vrow"><span class="vfr" lang="fr">${esc(v.french)}</span>${dotsHTML(v)}</div>`).join("") + "</details></section>";
-  const start = simStart(), fc = simulate(7, 1, C, start, false).rows, budget = settings.budgetIrr + settings.budgetReg;
-  const maxM = Math.max(budget, ...fc.map(r => r.min));
-  const everyIn = VERBS_OK.length && VERBS_OK.every(v => introduced(curState(), v));
-  const pk = [Object.keys(fsched.forms).length, Object.keys(schedule.verbs).length, start, settings.budgetIrr, settings.budgetReg, settings.maxNew, settings.maxNewForms, settings.secondPass].join("|");
-  let allIn = null;
-  if (!everyIn && VERBS_OK.length) { if (paceCache.k === pk) allIn = paceCache.v; else { allIn = simulate(1500, 1, C, start, true).allIn; paceCache = { k: pk, v: allIn }; } }
-  const pace = !VERBS_OK.length ? "No verbs are loaded yet." : everyIn ? "Every verb has been introduced."
-    : allIn ? `At this pace, every card will be introduced by ${esc(parseD(allIn).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" }))}.`
-    : "At this pace, introducing every card would take more than four years. A bigger daily budget or more new cards per day would speed it up.";
-  $("#statsBody").innerHTML = status + list +
-    `<section class="sgroup"><h2>Next 7 days</h2><p class="shelp">Minutes per day if you pass everything. Budget: ${settings.budgetIrr} min irregular + ${settings.budgetReg} min regular.</p>` +
-    fc.map(r => `<div class="fc"><span>${esc(fmtDate(r.date))}</span><div class="barwrap"><div class="bar${r.min > budget ? " over" : ""}" style="width:${Math.max(1, r.min / maxM * 100)}%"></div></div><span>${Math.round(r.minI)} + ${Math.round(r.minR)} min</span></div>`).join("") + "</section>" +
-    `<section class="sgroup"><h2>Pace</h2><p>${pace}</p></section>` +
+// Every metric in one pass over the log (Section 3E). Scheduled first tries only, except the practice count.
+const MIN_RATE = 50, MIN_BUCKET = 20, MIN_CELL = 10, MIN_WEAK = 3;
+const GAP_BUCKETS = [[1, 6], [7, 20], [21, 59], [60, Infinity]];
+function progressMetrics(today) {
+  const f30 = addDays(today, -29), f28 = addDays(today, -27);
+  const m = { rate: { n: 0, ok: 0 }, gaps: GAP_BUCKETS.map(([a, b]) => ({ a, b, n: 0, ok: 0 })), grid: {}, days: new Map(), practice: 0 };
+  LOG.forEach(r => {
+    if (!r.k || !isDate(r.d) || r.d > today) return;
+    if (r.p) { if (r.d >= f28) m.practice++; return; }
+    if (r.d >= f28) m.days.set(r.d, (m.days.get(r.d) || 0) + (r.s || 0));
+    if (!((r.step || 0) > 0 && typeof r.gap === "number")) return;   // reviews only, not a new card's first test
+    const ok = r.g !== "miss";
+    if (r.d >= f30) { m.rate.n++; if (ok) m.rate.ok++; }
+    const b = m.gaps.find(x => r.gap >= x.a && r.gap <= x.b); if (b) { b.n++; if (ok) b.ok++; }
+    const p = r.k.split("|"); if (p.length === 3) { const c = m.grid[p[1] + "|" + p[2]] || (m.grid[p[1] + "|" + p[2]] = { n: 0, miss: 0 }); c.n++; if (!ok) c.miss++; }
+  });
+  const cov = { irr: {}, reg: {} }, weak = [];
+  ST.forEach(s => { cov.irr[s] = 0; cov.reg[s] = 0; });
+  let persistent = 0;
+  VERBS_OK.forEach(v => verbCards(v).forEach(k => {
+    const c = cardStatus(k); cov[v.type === "irregular" ? "irr" : "reg"][c.status]++;
+    if (c.persistent) persistent++;
+    const last = c.recs.slice(-10), miss = last.filter(r => r.g === "miss").length;
+    if (c.persistent || (last.length >= MIN_WEAK && miss)) weak.push({ k, persistent: c.persistent, lapses: c.lapses, rate: miss / last.length, n: last.length });
+  }));
+  weak.sort((a, b) => b.persistent - a.persistent || b.lapses - a.lapses || b.rate - a.rate || b.n - a.n);
+  const load = [];
+  for (let i = 0; i < 14; i++) load.push({ d: addDays(today, i), n: 0 });
+  [fsched.forms, schedule.verbs].forEach(S => Object.keys(S).forEach(k => { const e = entryOfU({ forms: fsched.forms, verbs: schedule.verbs }, k); if (!e || !unitValid(k) && !(BY_ID[k] && BY_ID[k].type === "regular")) return; const i = Math.max(0, dayDiff(today, e.due)); if (i < 14) load[i].n++; }));
+  const secs = Array.from(m.days.values());
+  return Object.assign(m, { cov, persistent, weak: weak.slice(0, 10), load, practiceDays: m.days.size, avgMin: secs.length ? secs.reduce((a, b) => a + b, 0) / secs.length / 60 : 0 });
+}
+const pct = (a, n) => Math.round(a / n * 100) + "%";
+function renderProgress() {
+  const el = $("#statsBody");
+  el.innerHTML = '<p class="shelp">Loading…</p>';
+  return loadLog().then(() => { el.innerHTML = progressHTML(todayStr()); });
+}
+function progressHTML(today) {
+  const m = progressMetrics(today), C = avgCosts();
+  const rate = m.rate.n >= MIN_RATE ? `<p class="ptot"><b>${pct(m.rate.ok, m.rate.n)}</b> of ${m.rate.n.toLocaleString()} reviews right at the first try in the last 30 days. Target 85–95%: ${m.rate.ok / m.rate.n > 0.95 ? "above it, so gaps could safely be longer." : m.rate.ok / m.rate.n < 0.85 ? "below it, so too much is being forgotten between reviews." : "on target."}</p>`
+    : `<p class="shelp">Not enough data yet: ${m.rate.n} of ${MIN_RATE} reviews needed.</p>`;
+  const gaps = `<table class="kv"><thead><tr><th>Days since last review</th><th>Right first try</th></tr></thead><tbody>` + m.gaps.map(g => `<tr><th>${g.b === Infinity ? g.a + "+" : g.a + "–" + g.b}</th><td>${g.n >= MIN_BUCKET ? `${pct(g.ok, g.n)} <small>(${g.n})</small>` : `<small>not enough data (${g.n} of ${MIN_BUCKET})</small>`}</td></tr>`).join("") + "</tbody></table>";
+  const nI = ST.reduce((a, s) => a + m.cov.irr[s], 0), nR = ST.reduce((a, s) => a + m.cov.reg[s], 0);
+  const cov = `<table class="kv"><thead><tr><th></th><th>Irregular cards (${nI.toLocaleString()})</th><th>Regular verbs (${nR})</th></tr></thead><tbody>` + ST.map(s => `<tr><th>${ST_LABEL[s]}</th><td>${m.cov.irr[s].toLocaleString()}</td><td>${m.cov.reg[s]}</td></tr>`).join("") +
+    `</tbody></table><p class="shelp">Persistent mistakes (${PERSIST}+ lapses): ${m.persistent}. Seen, recalled and retained are counted separately; Library practice and same-day repeats never count.</p>`;
+  const weak = m.weak.length ? "<ol>" + m.weak.map(w => `<li><span lang="fr">${esc(unitName(w.k))}</span> <small>${w.persistent ? `persistent, ${w.lapses} lapses` : `Again ${pct(w.rate * w.n, w.n)} of the last ${w.n}`}</small></li>`).join("") + "</ol>" : `<p class="shelp">Not enough data yet: a card needs ${MIN_WEAK} first tries to be ranked.</p>`;
+  const grid = `<div class="simtable"><table class="kv grid"><thead><tr><th></th>${PERSONS.map(p => `<th>${esc(p)}</th>`).join("")}</tr></thead><tbody>` + TENSE_KEYS.map(t => `<tr><th>${esc(TENSES[t].name)}</th>${PERSONS.map(p => { const c = m.grid[t + "|" + p]; return !c ? "<td class=\"few\">–</td>" : `<td class="${c.n < MIN_CELL ? "few" : ""}" title="${c.miss} of ${c.n}">${pct(c.miss, c.n)}</td>`; }).join("")}</tr>`).join("") + `</tbody></table></div><p class="shelp">Again rate per tense and person on reviews. Grey cells have fewer than ${MIN_CELL} attempts.</p>`;
+  const maxL = Math.max(REVIEW_CAP, ...m.load.map(x => x.n));
+  const load = m.load.map(x => `<div class="fc"><span>${esc(fmtDate(x.d))}</span><div class="barwrap"><div class="bar${x.n > REVIEW_CAP ? " over" : ""}" style="width:${Math.max(1, x.n / maxL * 100)}%"></div></div><span>${x.n}</span></div>`).join("") + `<p class="shelp">Cards due each day, overdue ones counted today, before new cards. At most ${REVIEW_CAP} come up in a day; the rest wait.</p>`;
+  return `<section class="sgroup"><h2>Am I remembering?</h2>${rate}</section>` +
+    `<section class="sgroup"><h2>Does it hold over longer gaps?</h2>${gaps}</section>` +
+    `<section class="sgroup"><h2>How much do I know?</h2>${cov}</section>` +
+    `<section class="sgroup"><h2>What do I keep getting wrong?</h2>${weak}</section>` +
+    `<section class="sgroup"><h2>Where exactly?</h2>${grid}</section>` +
+    `<section class="sgroup"><h2>Next 14 days</h2>${load}</section>` +
+    `<section class="sgroup"><h2>Am I consistent?</h2><p>${m.practiceDays} of the last 28 days practised${m.practiceDays ? `, about ${Math.round(m.avgMin)} min of answering a day` : ""}. Library practice: ${plural(m.practice, "attempt")} (not counted above).</p></section>` +
+    `<section class="sgroup"><details class="shelpbox"><summary>Pace</summary><p class="shelp">How long until every card is introduced, at your current settings. It runs only when asked (up to 365 days).</p><div class="btnrow"><button class="ghost sm" id="paceRun">Calculate</button></div><p id="paceOut"></p></details></section>` +
     `<section class="sgroup"><details class="shelpbox"><summary>Timing and how the schedule works</summary><table class="kv"><tbody>${["main", "form", "listen"].map(k => { const n = timing[k].length; return `<tr><th>${CARD_LABEL[k]}<span class="shelp" style="display:block;font-weight:400">${n >= 50 ? `Your average over the last ${Math.min(n, 200)}` : `Default until you’ve done 50 (${n} so far)`}</span></th><td>${Math.round(C[k])} s</td></tr>`; }).join("")}</tbody></table>${ABOUT}</details></section>`;
 }
-
-/* ---------- Progress page ---------- */
-let progSort = "done";
-const rdone = e => (e ? Math.min(7, Math.max(0, e.step - 1)) : -1);
-function progDots(n) { let d = ""; for (let i = 0; i < 7; i++) d += `<i class="${i < n ? "on" : ""}"></i>`; return `<span class="dots st-on" aria-hidden="true">${d}</span>`; }
-function verbProgress(v) {
-  const us = v.type === "irregular" ? verbUnits(v) : [v.id], S = { forms: fsched.forms, verbs: schedule.verbs };
-  const es = us.map(k => entryOfU(S, k));
-  const pts = es.reduce((a, e) => a + (e ? Math.min(8, e.step) : 0), 0);
-  return { us, es, started: es.filter(Boolean).length, pct: Math.round(pts / (us.length * 8) * 100) };
+// B2: the pace simulation runs only on request, capped at 365 days, and is cached for the day.
+function paceText() {
+  const C = avgCosts(), start = simStart();
+  if (!VERBS_OK.length) return "No verbs are loaded yet.";
+  if (VERBS_OK.every(v => introduced(curState(), v))) return "Every verb has been introduced.";
+  const pk = [todayStr(), Object.keys(fsched.forms).length, Object.keys(schedule.verbs).length, settings.budget, settings.maxNew, settings.maxNewForms, settings.secondPass].join("|");
+  if (paceCache.k !== pk) paceCache = { k: pk, v: simulate(365, 1, C, start, true).allIn };
+  return paceCache.v ? `At this pace, every card will be introduced by ${parseD(paceCache.v).toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" })}.` : "At this pace, introducing every card takes more than a year. A bigger daily budget or more new cards a day would speed it up.";
 }
-function unitRowHTML(v, k, e) {
-  const p = k.split("|"); let t, sm;
-  if (p.length === 1 || p[1] === "inf") { t = v.french; sm = "infinitive"; }
-  else { const r = v.tables[p[1]].rows.find(x => x.key === p[2]); t = r.subs ? r.subs.map(x => x.fr).join(" · ") : r.fr; sm = TENSES[p[1]].name; }
-  const n = rdone(e), next = !e ? "Not started" : e.step >= 8 ? "Long-term, every 180 days" : "next " + fmtDate(e.due);
-  return `<div class="prow${e ? "" : " off"}"><div><span lang="fr">${esc(t)}</span><small>${esc(sm)}${e && e.missed ? " · ↻ missed last time" : ""}</small></div>${e ? progDots(n) : "<span></span>"}<div class="pn">${e ? n + " of 7" : "–"}<small>${esc(next)}</small></div></div>`;
-}
-function progBody(v) {
-  const x = verbProgress(v);
-  let list = x.us.map((k, i) => ({ k, e: x.es[i], i }));
-  if (progSort === "done") list.sort((a, b) => rdone(b.e) - rdone(a.e) || a.i - b.i);
-  return list.map(o => unitRowHTML(v, o.k, o.e)).join("");
-}
-function activityHTML() {
-  const t = todayStr(), days = [];
-  for (let i = 29; i >= 0; i--) days.push(addDays(t, -i));
-  const val = d => { const e = hist[d]; return e ? ((e.irr ? (e.irr.n || 1) : 0) + (e.reg ? (e.reg.n || 1) : 0)) : 0; };
-  const vals = days.map(val), max = Math.max(1, ...vals);
-  let streak = 0, i = vals[29] ? 29 : 28;
-  for (; i >= 0 && vals[i]; i--) streak++;
-  return `<section class="sgroup"><h2>Last 30 days</h2><div class="chart" role="img" aria-label="Cards completed per day">` +
-    days.map((d, j) => `<div class="cbar" title="${esc(fmtDate(d))}: ${vals[j]} cards"><i style="height:${vals[j] ? Math.max(8, Math.round(vals[j] / max * 100)) : 0}%"></i></div>`).join("") +
-    `</div><p class="shelp">Cards completed per day. Days in a row: ${streak}.</p></section>`;
-}
-function renderProgress() {
-  const tot = { irr: { n: 0, s: 0, d: 0 }, reg: { n: 0, s: 0, d: 0 } }, info = {};
-  VERBS_OK.forEach(v => { const x = verbProgress(v); info[v.id] = x; const t = tot[v.type === "irregular" ? "irr" : "reg"]; t.n += x.us.length; x.es.forEach(e => { if (e) { t.s++; if (e.step >= 8) t.d++; } }); });
-  const bar = (a, b) => `<div class="pbar"><i style="width:${b ? Math.round(a / b * 100) : 0}%"></i></div>`;
-  let h = `<section class="sgroup"><h2>Overall</h2>` + [["Irregular", tot.irr], ["Regular", tot.reg]].map(([n, t]) => `<p class="ptot"><b>${n}:</b> ${t.s.toLocaleString()} of ${t.n.toLocaleString()} cards started, ${t.d.toLocaleString()} through all 7 reviews</p>${bar(t.s, t.n)}`).join("") + "</section>";
-  h += activityHTML();
-  h += `<div class="btnrow" style="margin:8px 0"><button class="ghost sm" id="progSort">Sort forms: ${progSort === "done" ? "most done first" : "natural order"}</button></div>`;
-  schedSections().forEach(g => {
-    const vs = sectionVerbs(g); if (!vs.length) return;
-    h += `<section class="sgroup"><h2>${esc(sectionName(g))}</h2>` + vs.map(v => { const x = info[v.id];
-      return `<details class="pv" data-pv="${esc(v.id)}"><summary><span><span class="fr" lang="fr">${esc(v.french)}</span> <span class="ven">${esc(v.english)}</span></span><span class="pct">${x.started} of ${x.us.length} started</span><div class="pbar"><i style="width:${x.pct}%"></i></div></summary><div class="pbody"></div></details>`; }).join("") + "</section>";
-  });
-  $("#progressBody").innerHTML = h;
-}
-$("#progressBody").addEventListener("toggle", e => {
-  const d = e.target;
-  if (d && d.dataset && d.dataset.pv && d.open && BY_ID[d.dataset.pv]) d.querySelector(".pbody").innerHTML = progBody(BY_ID[d.dataset.pv]);
-}, true);
-$("#progressBody").addEventListener("click", e => { if (e.target.closest("#progSort")) { progSort = progSort === "done" ? "natural" : "done"; renderProgress(); } });
+$("#statsBody").addEventListener("click", e => { if (e.target.closest("#paceRun")) $("#paceOut").textContent = paceText(); });
 
 /* ---------- GitHub sync ---------- */
 let syncing = false, syncTimer = null, syncErr = "", syncNotified = false;
@@ -3364,13 +3693,13 @@ function wireSync() {
 function schedSettingsHTML() {
   const nums = (a, f) => a.map(n => [String(n), f ? f(n) : String(n)]);
   return `<section class="sgroup"><h2>Daily schedule</h2>` +
-    segRow("budgetIrr", "Irregular verbs: daily time budget", nums([15, 18, 20], n => n + " min"), "Every form of every irregular verb is its own card. Reviews always come first and are never capped. New forms are added only while they fit.") +
+    segRow("budget", "Daily time", nums([20, 25, 30, 35, 40, 45], n => n + " min"), "One session a day, within about this time. Reviews come first (at most 120 a day, the cards most at risk first); new cards fill the time that is left. Regular verbs always get at least 5 minutes.") +
     segRow("maxNewForms", "Most new irregular forms per day", nums([10, 15, 20, 25, 30]), "Introduced verb by verb in rank order: the infinitive, then présent (je to ils), then the other tenses.") +
-    segRow("budgetReg", "Regular verbs: daily time budget", nums([5, 10, 15], n => n + " min"), "Regular verbs get one card each: English to the French infinitive.") +
+
     segRow("maxNew", "Most new regular verbs per day", nums([2, 4, 6, 8, 10, 12])) +
     switchRow("secondPass", "Second pass", "One more recall of today’s new cards, as listening, at the end of each section.") +
-    segRow("lapse", "When you miss a card at a review", [["off", "Off"], ["gentle", "Gentle"], ["on", "On"]], "On: miss a card at its first try on a review of 3 to 30 days and it goes back to the 1-day step; at 60 days or more it goes back to the 7-day step. Then it climbs again. Gentle: it drops back one step. Off: a miss never changes a date. New cards and the first 1-day review are never penalised, and only your first try of the day counts.") +
-    segRow("reviewTarget", "Reads to clear a To review card", nums([3, 5, 7], n => n + " times"), "Cards you miss appear under To review in the Library. Read one aloud this many times, tapping Read each time, and it moves to Done. This never changes your schedule.") +
+    segRow("lapse", "When you miss a card at a review", [["gentle", "Gentle"], ["on", "In proportion"]], "In proportion: the card drops back to a gap about a quarter of the one it failed at (after a gap of 2–4 days: back to 1 day; 7 days: 2 days; 16 days: 7 days; 30 days: 16 days; 120 days or more: 30 days), then climbs again. Gentle: it drops back one step. Either way, a miss on a new card or at its 1-day review keeps it where it is, due tomorrow. Only your first try of the day counts.") +
+
     `<p class="shelp">Each card alternates between speaking (English to French) and listening (audio only). A new card is tested speaking and then listening in the second pass; its first review is speaking again. A miss goes to the back of the pile, in the same direction, until you get it right. Only your first try of the day counts toward the schedule. Speaking cards come first in a session, then listening cards.</p>` +
     `<div class="srow col"><span class="slabel">Order of regular groups for new verbs</span><p class="shelp">Within each group, verbs are introduced by importance rank. Irregular verbs have their own block.</p><ol class="secorder" id="secOrder"></ol></div>` +
     `</section>`;
@@ -3390,62 +3719,34 @@ function syncSchedSettings() {
   $("#secOrder").innerHTML = ord.map((g, i) => `<li><span>${esc(sectionName(g))}</span><button class="ghost sm" data-sec-up="${esc(g)}"${i ? "" : " disabled"}>Move up</button></li>`).join("");
 }
 function aiSettingsHTML() {
-  const field = "min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--paper);color:var(--ink);font:inherit";
-  return `<section class="sgroup"><h2>AI voices</h2><p class="shelp">Natural voices from OpenAI, shuffled between cards. Each clip is made once and kept on this device, so hearing it again costs nothing. If anything goes wrong, the browser voice takes over.</p>` +
-    switchRow("aiVoices", "Use AI voices", null) +
-    `<div class="srow col"><label class="slabel" for="aiKeyIn">OpenAI API key</label><input id="aiKeyIn" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-…" style="${field}">` +
-    `<div class="btnrow wrap" style="margin-top:10px"><button class="primary sm" id="aiKeySave">Save and test</button><button class="ghost sm" id="aiKeyRemove">Remove key</button></div>` +
-    `<p class="shelp" id="aiStatus" role="status" aria-live="polite"></p><p class="shelp">The key stays on this device. It is never put in backups, never synced and not in the app’s code. Set it up once on each device. Reset does not remove it.</p></div>` +
-    `<div class="srow col"><span class="slabel" id="lbl-aiPool">Voices to shuffle</span><div class="aichips" id="aiPool" role="group" aria-labelledby="lbl-aiPool">${AI_VOICES.map(v => `<button data-ai-voice="${v}" aria-pressed="true">${v}</button>`).join("")}</div><p class="shelp">Keep at least one. With one voice, every card uses it.</p></div>` +
-    segRow("aiSpeed", "Speed", [["0.8", "Slow"], ["0.9", "Slightly slow"], ["1", "Normal"]], "You tested Normal. A change makes new clips; clips already saved are kept.") +
-    `<details class="shelpbox"><summary>Voice instructions</summary><label class="slabel" for="aiInstrIn" style="display:block;margin-top:8px">How the French voice should speak</label><textarea id="aiInstrIn" rows="5" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit"></textarea><div class="btnrow" style="margin-top:8px"><button class="ghost sm" id="aiInstrReset">Use the tested wording</button></div><p class="shelp">English meanings use fixed wording.</p></details>` +
+  return `<section class="sgroup"><h2>Recorded voices</h2><p class="shelp">Every form is recorded in advance in two natural voices, which alternate between cards. Clips are downloaded from this site as you need them and kept on this device, so they also play offline. Anything not recorded uses the browser voice.</p>` +
+    switchRow("aiVoices", "Use recorded voices", null) +
+    `<p class="shelp" id="aiStatus" role="status" aria-live="polite"></p>` +
+    `<div class="srow col"><span class="slabel">Regeneration list</span><p class="shelp" id="aiRegenInfo"></p><div class="btnrow wrap"><button class="ghost sm" id="aiRegenExport">Export list</button><button class="ghost sm" id="aiRegenClear">Clear list</button></div><p class="shelp">“Sounded wrong?” on a card adds its clip here. Export the list and give it to tools/make-audio.js on your laptop to record those clips again.</p></div>` +
     `<div class="srow col"><span class="slabel">Saved audio</span><p class="shelp" id="aiCacheInfo"></p><div class="btnrow"><button class="ghost sm" id="aiCacheClear">Clear saved audio</button></div></div></section>`;
 }
 function syncAiUI() {
   if (!$("#aiStatus")) return;
-  const key = aiKey(), st = aiStats(), cost = (st.secs || 0) / 60 * 0.015;
-  let t;
-  if (!key) t = "No key saved on this device, so the browser voice is used.";
-  else if (aiBroken) t = aiBroken + " Fix it, then press Save and test.";
-  else if (!settings.aiVoices) t = "Key saved. AI voices are switched off.";
-  else if (Date.now() < aiOfflineUntil) t = "OpenAI isn’t reachable right now. The browser voice is covering, and AI voices retry shortly.";
-  else t = `Ready. ${plural(aiToday(), "clip")} made today, ${st.total || 0} in total, about $${cost.toFixed(2)}.`;
-  $("#aiStatus").textContent = aiStatusOverride || t;
-  $$("#aiPool button").forEach(b => b.setAttribute("aria-pressed", String(aiPool().includes(b.dataset.aiVoice))));
-  const ta = $("#aiInstrIn"); if (ta && document.activeElement !== ta) ta.value = settings.aiInstr;
-  $("#aiCacheInfo").textContent = `${plural(aiDB.keys.size, "clip")} kept on this device, ${(aiDB.bytes / 1048576).toFixed(1)} MB of ${Math.round(aiCfg.cap / 1048576)} MB. The oldest are removed first.`;
+  const n = clipMan ? Object.keys(clipMan.clips).length : 0;
+  $("#aiStatus").textContent = !clipMan ? "No recorded audio was found, so the browser voice is used." : !settings.aiVoices ? "Recorded voices are switched off, so the browser voice is used." : `${n.toLocaleString()} lines recorded in ${clipMan.voices.join(" and ")}.`;
+  const open = regenOpen().length;
+  $("#aiRegenInfo").textContent = open ? `${plural(open, "clip")} to record again.` : "Empty.";
+  $("#aiCacheInfo").textContent = `${plural(aiDB.keys.size, "clip")} kept on this device, ${(aiDB.bytes / 1048576).toFixed(1)} MB of ${Math.round(aiCfg.cap / 1048576)} MB. The least recently played are removed first.`;
 }
-let aiStatusOverride = "";
+function regenFile() { return { app: "verbes", type: "regenerate", made: todayStr(), version: APP_VERSION, items: regenOpen().map(x => ({ voice: x.voice, lang: x.lang, text: x.text, id: x.id })) }; }
 function wireAi() {
   const root = $("#settingsBody");
   root.addEventListener("click", async e => {
     const t = e.target;
-    if (t.closest("#aiKeySave")) {
-      const k = $("#aiKeyIn").value.trim();
-      if (!k) { aiStatusOverride = "Paste your key first."; syncAiUI(); return; }
-      lsSet(KEYS.aikey, k); $("#aiKeyIn").value = ""; aiBroken = ""; aiOfflineUntil = 0; aiNotified = 0;
-      settings.aiVoices = true; saveSettings(); syncSettingsUI();
-      aiStatusOverride = "Testing…"; syncAiUI();
-      try {
-        const v = aiPool()[0], blob = await aiClip(v, "fr", "Bonjour. Je suis, tu es, il est.", { fresh: true });
-        aiStatusOverride = "The key works. You should hear a short sample."; syncAiUI();
-        await aiPlayBlob(blob);
-      } catch (err) { aiStatusOverride = (err.message || "That didn’t work.") + (err.detail ? " OpenAI said: " + err.detail : ""); }
-      setTimeout(() => { aiStatusOverride = ""; syncAiUI(); }, 6000); syncAiUI();
-    } else if (t.closest("#aiKeyRemove")) {
-      lsRemove(KEYS.aikey); aiBroken = ""; aiStatusOverride = "Key removed from this device."; syncAiUI(); setTimeout(() => { aiStatusOverride = ""; syncAiUI(); }, 4000);
-    } else if (t.closest("[data-ai-voice]")) {
-      const v = t.closest("[data-ai-voice]").dataset.aiVoice, cur = aiPool();
-      if (cur.includes(v) && cur.length === 1) { toast("Keep at least one voice."); return; }
-      settings.aiPool = cur.includes(v) ? cur.filter(x => x !== v) : cur.concat(v); saveSettings(); syncAiUI();
-    } else if (t.closest("#aiInstrReset")) {
-      settings.aiInstr = AI_INSTR_FR; saveSettings(); syncAiUI();
+    if (t.closest("#aiRegenExport")) {
+      const f = regenFile(); if (!f.items.length) { toast("The list is empty."); return; }
+      const url = URL.createObjectURL(new Blob([JSON.stringify(f, null, 1)], { type: "application/json" })), a = document.createElement("a");
+      a.href = url; a.download = `verbes-regenerate-${todayStr()}.json`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+    } else if (t.closest("#aiRegenClear")) {
+      if (await confirmBox("Clear the regeneration list?", "<p>Flagged clips play again in their voice. Clear it after you have run the script on the exported list.</p>", "Clear", true)) { regen = {}; saveRegen(); syncAiUI(); }
     } else if (t.closest("#aiCacheClear")) {
-      if (await confirmBox("Clear saved audio?", "<p>This deletes the audio clips kept on this device. They are made again, one at a time, as you need them.</p>", "Clear", true)) { await aiDB.clear(); syncAiUI(); toast("Saved audio cleared."); }
+      if (await confirmBox("Clear saved audio?", "<p>This deletes the audio clips kept on this device. They download again as you need them.</p>", "Clear", true)) { await aiDB.clear(); syncAiUI(); toast("Saved audio cleared."); }
     }
-  });
-  root.addEventListener("change", e => {
-    if (e.target.id === "aiInstrIn") { const v = e.target.value.trim(); settings.aiInstr = v && v.length <= 1000 ? v : AI_INSTR_FR; saveSettings(); syncAiUI(); }
   });
   $("#aiFix").addEventListener("click", aiFix);
 }
@@ -3466,7 +3767,7 @@ function wireSched() {
    NAVIGATION
    ========================================================================= */
 let currentScreen = "";
-const SCREENS = ["today", "library", "study", "summary", "learn", "guide", "progress", "stats", "settings"];
+const SCREENS = ["today", "library", "study", "summary", "learn", "guide", "stats", "settings"];
 const TAB_OF = { today: "today", library: "library", learn: "library", guide: "library", progress: "library", stats: "stats", settings: "settings" };
 document.addEventListener("input", e => { if (e.target && e.target.id === "learnSearch") renderLearnList(); });
 function showScreen(name) {
@@ -3486,17 +3787,16 @@ function navigate(name, extra) {
 }
 function route(st) {
   st = st || {};
-  let name = SCREENS.includes(st.screen) ? st.screen : "library";
+  let name = st.screen === "progress" ? "stats" : SCREENS.includes(st.screen) ? st.screen : "library";
   if (name === "study" && !curItem()) name = session && session.mode === "sched" ? "today" : (session && session.done ? "summary" : "library");
   if (name === "summary" && !(session && session.mode !== "sched" && session.done)) name = curItem() ? "study" : "today";
   if (name === "today") renderToday();
-  else if (name === "stats") renderStats();
+  else if (name === "stats") renderProgress();
   else if (name === "library") renderLibrary();
   else if (name === "study") renderStudy(false);
   else if (name === "summary") renderSummary();
   else if (name === "learn") renderLearn(st);
   else if (name === "guide") renderGuide();
-  else if (name === "progress") renderProgress();
   else if (name === "settings") syncSettingsUI();
   showScreen(name);
   if (name === "learn" && st.verb && document.getElementById("lv-" + st.verb)) {
@@ -3536,13 +3836,17 @@ function init() {
   loadData();
   if (FATAL) { showFatal(FATAL); return; }
   migrateForms();
+  migrateSched();
   reviewSeed(); reviewPrune();
   SECTIONS = buildSections();
   buildSettings();
   wireSettings();
   wireSched();
   wireSync();
-  wireAi(); aiDB.open().then(syncAiUI);
+  wireAi(); loadLog();
+  lsRemove(KEYS.aikey); lsRemove(KEYS.aistats); // v6.6: no API key is kept on any device (risk R2)
+  aiDB.open().then(async () => { if (lsGet(KEYS.clipcache) !== CLIP_CACHE_VERSION) { await aiDB.clear(); lsSet(KEYS.clipcache, CLIP_CACHE_VERSION); } syncAiUI(); });
+  loadManifest().then(syncAiUI);
   const raw = loadSessionRaw();
   if (raw) session = restoreSession(raw);
   if (synth) {

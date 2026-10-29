@@ -1,0 +1,5238 @@
+[
+ {
+  "id": "etre",
+  "french": "être",
+  "english": "to be",
+  "phonetic": "eh-truh",
+  "type": "irregular",
+  "group": "irregular",
+  "auxiliary": "avoir",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je suis",
+     "phon": "zhuh swee",
+     "en": "I am",
+     "speak": "je suis",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu es",
+     "phon": "tew eh",
+     "en": "you are (informal)",
+     "speak": "tu es",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on est",
+     "phon": "eel/el/oh(n) eh",
+     "en": "he is",
+     "speak": "il est",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il est",
+       "phon": "eel eh",
+       "en": "he is",
+       "speak": "il est"
+      },
+      {
+       "label": "elle",
+       "fr": "elle est",
+       "phon": "el eh",
+       "en": "she is",
+       "speak": "elle est"
+      },
+      {
+       "label": "on",
+       "fr": "on est",
+       "phon": "oh(n) neh",
+       "en": "one is\ncasual: we are",
+       "speak": "on est"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous sommes",
+     "phon": "noo sum",
+     "en": "we are",
+     "speak": "nous sommes",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous êtes",
+     "phon": "voo zet",
+     "en": "you are (formal, or plural)",
+     "speak": "vous êtes",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles sont",
+     "phon": "eel/el soh(n)",
+     "en": "they are",
+     "speak": "ils sont",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils sont",
+       "phon": "eel soh(n)",
+       "en": "they are",
+       "speak": "ils sont"
+      },
+      {
+       "label": "elles",
+       "fr": "elles sont",
+       "phon": "el soh(n)",
+       "en": "they are",
+       "speak": "elles sont"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'ai été",
+     "phon": "zhay ay-tay",
+     "en": "I was\nI have been",
+     "speak": "j'ai été",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu as été",
+     "phon": "tew ah ay-tay",
+     "en": "you were (informal)\nyou have been (informal)",
+     "speak": "tu as été",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on a été",
+     "phon": "eel/el/oh(n) ah ay-tay",
+     "en": "he was\nhe has been",
+     "speak": "il a été",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il a été",
+       "phon": "eel ah ay-tay",
+       "en": "he was\nhe has been",
+       "speak": "il a été"
+      },
+      {
+       "label": "elle",
+       "fr": "elle a été",
+       "phon": "el ah ay-tay",
+       "en": "she was\nshe has been",
+       "speak": "elle a été"
+      },
+      {
+       "label": "on",
+       "fr": "on a été",
+       "phon": "oh(n) nah ay-tay",
+       "en": "one was\none has been\ncasual: we were\ncasual: we have been",
+       "speak": "on a été"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous avons été",
+     "phon": "noo zah-voh(n) ay-tay",
+     "en": "we were\nwe have been",
+     "speak": "nous avons été",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous avez été",
+     "phon": "voo zah-vay ay-tay",
+     "en": "you were (formal, or plural)\nyou have been (formal, or plural)",
+     "speak": "vous avez été",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles ont été",
+     "phon": "eel/el zoh(n) ay-tay",
+     "en": "they were\nthey have been",
+     "speak": "ils ont été",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils ont été",
+       "phon": "eel zoh(n) ay-tay",
+       "en": "they were\nthey have been",
+       "speak": "ils ont été"
+      },
+      {
+       "label": "elles",
+       "fr": "elles ont été",
+       "phon": "el zoh(n) ay-tay",
+       "en": "they were\nthey have been",
+       "speak": "elles ont été"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'étais",
+     "phon": "zhay-teh",
+     "en": "I was\nI used to be",
+     "speak": "j'étais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu étais",
+     "phon": "tew ay-teh",
+     "en": "you were (informal)\nyou used to be (informal)",
+     "speak": "tu étais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on était",
+     "phon": "eel/el/oh(n) ay-teh",
+     "en": "he was\nhe used to be",
+     "speak": "il était",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il était",
+       "phon": "eel ay-teh",
+       "en": "he was\nhe used to be",
+       "speak": "il était"
+      },
+      {
+       "label": "elle",
+       "fr": "elle était",
+       "phon": "el ay-teh",
+       "en": "she was\nshe used to be",
+       "speak": "elle était"
+      },
+      {
+       "label": "on",
+       "fr": "on était",
+       "phon": "oh(n) nay-teh",
+       "en": "one was\none used to be\ncasual: we were\ncasual: we used to be",
+       "speak": "on était"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous étions",
+     "phon": "noo zay-tyoh(n)",
+     "en": "we were\nwe used to be",
+     "speak": "nous étions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous étiez",
+     "phon": "voo zay-tyay",
+     "en": "you were (formal, or plural)\nyou used to be (formal, or plural)",
+     "speak": "vous étiez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles étaient",
+     "phon": "eel/el zay-teh",
+     "en": "they were\nthey used to be",
+     "speak": "ils étaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils étaient",
+       "phon": "eel zay-teh",
+       "en": "they were\nthey used to be",
+       "speak": "ils étaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles étaient",
+       "phon": "el zay-teh",
+       "en": "they were\nthey used to be",
+       "speak": "elles étaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je serai",
+     "phon": "zhuh suh-ray",
+     "en": "I will be",
+     "speak": "je serai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu seras",
+     "phon": "tew suh-rah",
+     "en": "you will be (informal)",
+     "speak": "tu seras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on sera",
+     "phon": "eel/el/oh(n) suh-rah",
+     "en": "he will be",
+     "speak": "il sera",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il sera",
+       "phon": "eel suh-rah",
+       "en": "he will be",
+       "speak": "il sera"
+      },
+      {
+       "label": "elle",
+       "fr": "elle sera",
+       "phon": "el suh-rah",
+       "en": "she will be",
+       "speak": "elle sera"
+      },
+      {
+       "label": "on",
+       "fr": "on sera",
+       "phon": "oh(n) suh-rah",
+       "en": "one will be\ncasual: we will be",
+       "speak": "on sera"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous serons",
+     "phon": "noo suh-roh(n)",
+     "en": "we will be",
+     "speak": "nous serons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous serez",
+     "phon": "voo suh-ray",
+     "en": "you will be (formal, or plural)",
+     "speak": "vous serez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles seront",
+     "phon": "eel/el suh-roh(n)",
+     "en": "they will be",
+     "speak": "ils seront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils seront",
+       "phon": "eel suh-roh(n)",
+       "en": "they will be",
+       "speak": "ils seront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles seront",
+       "phon": "el suh-roh(n)",
+       "en": "they will be",
+       "speak": "elles seront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je serais",
+     "phon": "zhuh suh-reh",
+     "en": "I would be",
+     "speak": "je serais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu serais",
+     "phon": "tew suh-reh",
+     "en": "you would be (informal)",
+     "speak": "tu serais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on serait",
+     "phon": "eel/el/oh(n) suh-reh",
+     "en": "he would be",
+     "speak": "il serait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il serait",
+       "phon": "eel suh-reh",
+       "en": "he would be",
+       "speak": "il serait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle serait",
+       "phon": "el suh-reh",
+       "en": "she would be",
+       "speak": "elle serait"
+      },
+      {
+       "label": "on",
+       "fr": "on serait",
+       "phon": "oh(n) suh-reh",
+       "en": "one would be\ncasual: we would be",
+       "speak": "on serait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous serions",
+     "phon": "noo suh-ryoh(n)",
+     "en": "we would be",
+     "speak": "nous serions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous seriez",
+     "phon": "voo suh-ryay",
+     "en": "you would be (formal, or plural)",
+     "speak": "vous seriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles seraient",
+     "phon": "eel/el suh-reh",
+     "en": "they would be",
+     "speak": "ils seraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils seraient",
+       "phon": "eel suh-reh",
+       "en": "they would be",
+       "speak": "ils seraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles seraient",
+       "phon": "el suh-reh",
+       "en": "they would be",
+       "speak": "elles seraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "avoir",
+  "french": "avoir",
+  "english": "to have",
+  "phonetic": "ah-vwahr",
+  "type": "irregular",
+  "group": "irregular",
+  "auxiliary": "avoir",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'ai",
+     "phon": "zhay",
+     "en": "I have",
+     "speak": "j'ai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu as",
+     "phon": "tew ah",
+     "en": "you have (informal)",
+     "speak": "tu as",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on a",
+     "phon": "eel/el/oh(n) ah",
+     "en": "he has",
+     "speak": "il a",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il a",
+       "phon": "eel ah",
+       "en": "he has",
+       "speak": "il a"
+      },
+      {
+       "label": "elle",
+       "fr": "elle a",
+       "phon": "el ah",
+       "en": "she has",
+       "speak": "elle a"
+      },
+      {
+       "label": "on",
+       "fr": "on a",
+       "phon": "oh(n) nah",
+       "en": "one has\ncasual: we have",
+       "speak": "on a"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous avons",
+     "phon": "noo zah-voh(n)",
+     "en": "we have",
+     "speak": "nous avons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous avez",
+     "phon": "voo zah-vay",
+     "en": "you have (formal, or plural)",
+     "speak": "vous avez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles ont",
+     "phon": "eel/el zoh(n)",
+     "en": "they have",
+     "speak": "ils ont",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils ont",
+       "phon": "eel zoh(n)",
+       "en": "they have",
+       "speak": "ils ont"
+      },
+      {
+       "label": "elles",
+       "fr": "elles ont",
+       "phon": "el zoh(n)",
+       "en": "they have",
+       "speak": "elles ont"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'ai eu",
+     "phon": "zhay ew",
+     "en": "I had\nI have had",
+     "speak": "j'ai eu",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu as eu",
+     "phon": "tew ah ew",
+     "en": "you had (informal)\nyou have had (informal)",
+     "speak": "tu as eu",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on a eu",
+     "phon": "eel/el/oh(n) ah ew",
+     "en": "he had\nhe has had",
+     "speak": "il a eu",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il a eu",
+       "phon": "eel ah ew",
+       "en": "he had\nhe has had",
+       "speak": "il a eu"
+      },
+      {
+       "label": "elle",
+       "fr": "elle a eu",
+       "phon": "el ah ew",
+       "en": "she had\nshe has had",
+       "speak": "elle a eu"
+      },
+      {
+       "label": "on",
+       "fr": "on a eu",
+       "phon": "oh(n) nah ew",
+       "en": "one had\none has had\ncasual: we had\ncasual: we have had",
+       "speak": "on a eu"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous avons eu",
+     "phon": "noo zah-voh(n) ew",
+     "en": "we had\nwe have had",
+     "speak": "nous avons eu",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous avez eu",
+     "phon": "voo zah-vay ew",
+     "en": "you had (formal, or plural)\nyou have had (formal, or plural)",
+     "speak": "vous avez eu",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles ont eu",
+     "phon": "eel/el zoh(n) ew",
+     "en": "they had\nthey have had",
+     "speak": "ils ont eu",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils ont eu",
+       "phon": "eel zoh(n) ew",
+       "en": "they had\nthey have had",
+       "speak": "ils ont eu"
+      },
+      {
+       "label": "elles",
+       "fr": "elles ont eu",
+       "phon": "el zoh(n) ew",
+       "en": "they had\nthey have had",
+       "speak": "elles ont eu"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'avais",
+     "phon": "zhah-veh",
+     "en": "I had\nI used to have",
+     "speak": "j'avais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu avais",
+     "phon": "tew ah-veh",
+     "en": "you had (informal)\nyou used to have (informal)",
+     "speak": "tu avais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on avait",
+     "phon": "eel/el/oh(n) ah-veh",
+     "en": "he had\nhe used to have",
+     "speak": "il avait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il avait",
+       "phon": "eel ah-veh",
+       "en": "he had\nhe used to have",
+       "speak": "il avait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle avait",
+       "phon": "el ah-veh",
+       "en": "she had\nshe used to have",
+       "speak": "elle avait"
+      },
+      {
+       "label": "on",
+       "fr": "on avait",
+       "phon": "oh(n) nah-veh",
+       "en": "one had\none used to have\ncasual: we had\ncasual: we used to have",
+       "speak": "on avait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous avions",
+     "phon": "noo zah-vyoh(n)",
+     "en": "we had\nwe used to have",
+     "speak": "nous avions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous aviez",
+     "phon": "voo zah-vyay",
+     "en": "you had (formal, or plural)\nyou used to have (formal, or plural)",
+     "speak": "vous aviez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles avaient",
+     "phon": "eel/el zah-veh",
+     "en": "they had\nthey used to have",
+     "speak": "ils avaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils avaient",
+       "phon": "eel zah-veh",
+       "en": "they had\nthey used to have",
+       "speak": "ils avaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles avaient",
+       "phon": "el zah-veh",
+       "en": "they had\nthey used to have",
+       "speak": "elles avaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'aurai",
+     "phon": "zhoh-ray",
+     "en": "I will have",
+     "speak": "j'aurai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu auras",
+     "phon": "tew oh-rah",
+     "en": "you will have (informal)",
+     "speak": "tu auras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on aura",
+     "phon": "eel/el/oh(n) oh-rah",
+     "en": "he will have",
+     "speak": "il aura",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il aura",
+       "phon": "eel oh-rah",
+       "en": "he will have",
+       "speak": "il aura"
+      },
+      {
+       "label": "elle",
+       "fr": "elle aura",
+       "phon": "el oh-rah",
+       "en": "she will have",
+       "speak": "elle aura"
+      },
+      {
+       "label": "on",
+       "fr": "on aura",
+       "phon": "oh(n) noh-rah",
+       "en": "one will have\ncasual: we will have",
+       "speak": "on aura"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous aurons",
+     "phon": "noo zoh-roh(n)",
+     "en": "we will have",
+     "speak": "nous aurons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous aurez",
+     "phon": "voo zoh-ray",
+     "en": "you will have (formal, or plural)",
+     "speak": "vous aurez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles auront",
+     "phon": "eel/el zoh-roh(n)",
+     "en": "they will have",
+     "speak": "ils auront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils auront",
+       "phon": "eel zoh-roh(n)",
+       "en": "they will have",
+       "speak": "ils auront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles auront",
+       "phon": "el zoh-roh(n)",
+       "en": "they will have",
+       "speak": "elles auront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'aurais",
+     "phon": "zhoh-reh",
+     "en": "I would have",
+     "speak": "j'aurais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu aurais",
+     "phon": "tew oh-reh",
+     "en": "you would have (informal)",
+     "speak": "tu aurais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on aurait",
+     "phon": "eel/el/oh(n) oh-reh",
+     "en": "he would have",
+     "speak": "il aurait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il aurait",
+       "phon": "eel oh-reh",
+       "en": "he would have",
+       "speak": "il aurait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle aurait",
+       "phon": "el oh-reh",
+       "en": "she would have",
+       "speak": "elle aurait"
+      },
+      {
+       "label": "on",
+       "fr": "on aurait",
+       "phon": "oh(n) noh-reh",
+       "en": "one would have\ncasual: we would have",
+       "speak": "on aurait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous aurions",
+     "phon": "noo zoh-ryoh(n)",
+     "en": "we would have",
+     "speak": "nous aurions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous auriez",
+     "phon": "voo zoh-ryay",
+     "en": "you would have (formal, or plural)",
+     "speak": "vous auriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles auraient",
+     "phon": "eel/el zoh-reh",
+     "en": "they would have",
+     "speak": "ils auraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils auraient",
+       "phon": "eel zoh-reh",
+       "en": "they would have",
+       "speak": "ils auraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles auraient",
+       "phon": "el zoh-reh",
+       "en": "they would have",
+       "speak": "elles auraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "aller",
+  "french": "aller",
+  "english": "to go",
+  "phonetic": "ah-lay",
+  "type": "irregular",
+  "group": "irregular",
+  "auxiliary": "être",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je vais",
+     "phon": "zhuh veh",
+     "en": "I go\nI am going",
+     "speak": "je vais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu vas",
+     "phon": "tew vah",
+     "en": "you go (informal)\nyou are going (informal)",
+     "speak": "tu vas",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on va",
+     "phon": "eel/el/oh(n) vah",
+     "en": "he goes\nhe is going",
+     "speak": "il va",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il va",
+       "phon": "eel vah",
+       "en": "he goes\nhe is going",
+       "speak": "il va"
+      },
+      {
+       "label": "elle",
+       "fr": "elle va",
+       "phon": "el vah",
+       "en": "she goes\nshe is going",
+       "speak": "elle va"
+      },
+      {
+       "label": "on",
+       "fr": "on va",
+       "phon": "oh(n) vah",
+       "en": "one goes\none is going\ncasual: we go\ncasual: we are going",
+       "speak": "on va"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous allons",
+     "phon": "noo zah-loh(n)",
+     "en": "we go\nwe are going",
+     "speak": "nous allons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous allez",
+     "phon": "voo zah-lay",
+     "en": "you go (formal, or plural)\nyou are going (formal, or plural)",
+     "speak": "vous allez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles vont",
+     "phon": "eel/el voh(n)",
+     "en": "they go\nthey are going",
+     "speak": "ils vont",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils vont",
+       "phon": "eel voh(n)",
+       "en": "they go\nthey are going",
+       "speak": "ils vont"
+      },
+      {
+       "label": "elles",
+       "fr": "elles vont",
+       "phon": "el voh(n)",
+       "en": "they go\nthey are going",
+       "speak": "elles vont"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je suis allé(e)",
+     "phon": "zhuh swee ah-lay",
+     "en": "I went\nI have gone",
+     "speak": "je suis allé",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu es allé(e)",
+     "phon": "tew eh ah-lay",
+     "en": "you went (informal)\nyou have gone (informal)",
+     "speak": "tu es allé",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on est allé(e)",
+     "phon": "eel/el/oh(n) eh ah-lay",
+     "en": "he went\nhe has gone",
+     "speak": "il est allé",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il est allé",
+       "phon": "eel eh ah-lay",
+       "en": "he went\nhe has gone",
+       "speak": "il est allé"
+      },
+      {
+       "label": "elle",
+       "fr": "elle est allée",
+       "phon": "el eh ah-lay",
+       "en": "she went\nshe has gone",
+       "speak": "elle est allée"
+      },
+      {
+       "label": "on",
+       "fr": "on est allé(e)(s)",
+       "phon": "oh(n) neh ah-lay",
+       "en": "one went\none has gone\ncasual: we went\ncasual: we have gone",
+       "speak": "on est allé"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous sommes allé(e)s",
+     "phon": "noo sum ah-lay",
+     "en": "we went\nwe have gone",
+     "speak": "nous sommes allés",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous êtes allé(e)(s)",
+     "phon": "voo zet ah-lay",
+     "en": "you went (formal, or plural)\nyou have gone (formal, or plural)",
+     "speak": "vous êtes allé",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles sont allé(e)s",
+     "phon": "eel/el soh(n) ah-lay",
+     "en": "they went\nthey have gone",
+     "speak": "ils sont allés",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils sont allés",
+       "phon": "eel soh(n) ah-lay",
+       "en": "they went\nthey have gone",
+       "speak": "ils sont allés"
+      },
+      {
+       "label": "elles",
+       "fr": "elles sont allées",
+       "phon": "el soh(n) ah-lay",
+       "en": "they went\nthey have gone",
+       "speak": "elles sont allées"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'allais",
+     "phon": "zhah-leh",
+     "en": "I was going\nI used to go",
+     "speak": "j'allais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu allais",
+     "phon": "tew ah-leh",
+     "en": "you were going (informal)\nyou used to go (informal)",
+     "speak": "tu allais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on allait",
+     "phon": "eel/el/oh(n) ah-leh",
+     "en": "he was going\nhe used to go",
+     "speak": "il allait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il allait",
+       "phon": "eel ah-leh",
+       "en": "he was going\nhe used to go",
+       "speak": "il allait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle allait",
+       "phon": "el ah-leh",
+       "en": "she was going\nshe used to go",
+       "speak": "elle allait"
+      },
+      {
+       "label": "on",
+       "fr": "on allait",
+       "phon": "oh(n) nah-leh",
+       "en": "one was going\none used to go\ncasual: we were going\ncasual: we used to go",
+       "speak": "on allait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous allions",
+     "phon": "noo zah-lyoh(n)",
+     "en": "we were going\nwe used to go",
+     "speak": "nous allions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous alliez",
+     "phon": "voo zah-lyay",
+     "en": "you were going (formal, or plural)\nyou used to go (formal, or plural)",
+     "speak": "vous alliez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles allaient",
+     "phon": "eel/el zah-leh",
+     "en": "they were going\nthey used to go",
+     "speak": "ils allaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils allaient",
+       "phon": "eel zah-leh",
+       "en": "they were going\nthey used to go",
+       "speak": "ils allaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles allaient",
+       "phon": "el zah-leh",
+       "en": "they were going\nthey used to go",
+       "speak": "elles allaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'irai",
+     "phon": "zhee-ray",
+     "en": "I will go",
+     "speak": "j'irai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu iras",
+     "phon": "tew ee-rah",
+     "en": "you will go (informal)",
+     "speak": "tu iras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on ira",
+     "phon": "eel/el/oh(n) ee-rah",
+     "en": "he will go",
+     "speak": "il ira",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il ira",
+       "phon": "eel ee-rah",
+       "en": "he will go",
+       "speak": "il ira"
+      },
+      {
+       "label": "elle",
+       "fr": "elle ira",
+       "phon": "el ee-rah",
+       "en": "she will go",
+       "speak": "elle ira"
+      },
+      {
+       "label": "on",
+       "fr": "on ira",
+       "phon": "oh(n) nee-rah",
+       "en": "one will go\ncasual: we will go",
+       "speak": "on ira"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous irons",
+     "phon": "noo zee-roh(n)",
+     "en": "we will go",
+     "speak": "nous irons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous irez",
+     "phon": "voo zee-ray",
+     "en": "you will go (formal, or plural)",
+     "speak": "vous irez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles iront",
+     "phon": "eel/el zee-roh(n)",
+     "en": "they will go",
+     "speak": "ils iront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils iront",
+       "phon": "eel zee-roh(n)",
+       "en": "they will go",
+       "speak": "ils iront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles iront",
+       "phon": "el zee-roh(n)",
+       "en": "they will go",
+       "speak": "elles iront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'irais",
+     "phon": "zhee-reh",
+     "en": "I would go",
+     "speak": "j'irais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu irais",
+     "phon": "tew ee-reh",
+     "en": "you would go (informal)",
+     "speak": "tu irais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on irait",
+     "phon": "eel/el/oh(n) ee-reh",
+     "en": "he would go",
+     "speak": "il irait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il irait",
+       "phon": "eel ee-reh",
+       "en": "he would go",
+       "speak": "il irait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle irait",
+       "phon": "el ee-reh",
+       "en": "she would go",
+       "speak": "elle irait"
+      },
+      {
+       "label": "on",
+       "fr": "on irait",
+       "phon": "oh(n) nee-reh",
+       "en": "one would go\ncasual: we would go",
+       "speak": "on irait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous irions",
+     "phon": "noo zee-ryoh(n)",
+     "en": "we would go",
+     "speak": "nous irions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous iriez",
+     "phon": "voo zee-ryay",
+     "en": "you would go (formal, or plural)",
+     "speak": "vous iriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles iraient",
+     "phon": "eel/el zee-reh",
+     "en": "they would go",
+     "speak": "ils iraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils iraient",
+       "phon": "eel zee-reh",
+       "en": "they would go",
+       "speak": "ils iraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles iraient",
+       "phon": "el zee-reh",
+       "en": "they would go",
+       "speak": "elles iraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "faire",
+  "french": "faire",
+  "english": "to do, make",
+  "phonetic": "fehr",
+  "type": "irregular",
+  "group": "irregular",
+  "auxiliary": "avoir",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je fais",
+     "phon": "zhuh feh",
+     "en": "I do\nI make",
+     "speak": "je fais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu fais",
+     "phon": "tew feh",
+     "en": "you do (informal)\nyou make (informal)",
+     "speak": "tu fais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on fait",
+     "phon": "eel/el/oh(n) feh",
+     "en": "he does\nhe makes",
+     "speak": "il fait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il fait",
+       "phon": "eel feh",
+       "en": "he does\nhe makes",
+       "speak": "il fait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle fait",
+       "phon": "el feh",
+       "en": "she does\nshe makes",
+       "speak": "elle fait"
+      },
+      {
+       "label": "on",
+       "fr": "on fait",
+       "phon": "oh(n) feh",
+       "en": "one does\none makes\ncasual: we do\ncasual: we make",
+       "speak": "on fait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous faisons",
+     "phon": "noo fuh-zoh(n)",
+     "en": "we do\nwe make",
+     "speak": "nous faisons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous faites",
+     "phon": "voo fet",
+     "en": "you do (formal, or plural)\nyou make (formal, or plural)",
+     "speak": "vous faites",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles font",
+     "phon": "eel/el foh(n)",
+     "en": "they do\nthey make",
+     "speak": "ils font",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils font",
+       "phon": "eel foh(n)",
+       "en": "they do\nthey make",
+       "speak": "ils font"
+      },
+      {
+       "label": "elles",
+       "fr": "elles font",
+       "phon": "el foh(n)",
+       "en": "they do\nthey make",
+       "speak": "elles font"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'ai fait",
+     "phon": "zhay feh",
+     "en": "I did\nI have done",
+     "speak": "j'ai fait",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu as fait",
+     "phon": "tew ah feh",
+     "en": "you did (informal)\nyou have done (informal)",
+     "speak": "tu as fait",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on a fait",
+     "phon": "eel/el/oh(n) ah feh",
+     "en": "he did\nhe has done",
+     "speak": "il a fait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il a fait",
+       "phon": "eel ah feh",
+       "en": "he did\nhe has done",
+       "speak": "il a fait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle a fait",
+       "phon": "el ah feh",
+       "en": "she did\nshe has done",
+       "speak": "elle a fait"
+      },
+      {
+       "label": "on",
+       "fr": "on a fait",
+       "phon": "oh(n) nah feh",
+       "en": "one did\none has done\ncasual: we did\ncasual: we have done",
+       "speak": "on a fait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous avons fait",
+     "phon": "noo zah-voh(n) feh",
+     "en": "we did\nwe have done",
+     "speak": "nous avons fait",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous avez fait",
+     "phon": "voo zah-vay feh",
+     "en": "you did (formal, or plural)\nyou have done (formal, or plural)",
+     "speak": "vous avez fait",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles ont fait",
+     "phon": "eel/el zoh(n) feh",
+     "en": "they did\nthey have done",
+     "speak": "ils ont fait",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils ont fait",
+       "phon": "eel zoh(n) feh",
+       "en": "they did\nthey have done",
+       "speak": "ils ont fait"
+      },
+      {
+       "label": "elles",
+       "fr": "elles ont fait",
+       "phon": "el zoh(n) feh",
+       "en": "they did\nthey have done",
+       "speak": "elles ont fait"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je faisais",
+     "phon": "zhuh fuh-zeh",
+     "en": "I was doing\nI used to do",
+     "speak": "je faisais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu faisais",
+     "phon": "tew fuh-zeh",
+     "en": "you were doing (informal)\nyou used to do (informal)",
+     "speak": "tu faisais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on faisait",
+     "phon": "eel/el/oh(n) fuh-zeh",
+     "en": "he was doing\nhe used to do",
+     "speak": "il faisait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il faisait",
+       "phon": "eel fuh-zeh",
+       "en": "he was doing\nhe used to do",
+       "speak": "il faisait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle faisait",
+       "phon": "el fuh-zeh",
+       "en": "she was doing\nshe used to do",
+       "speak": "elle faisait"
+      },
+      {
+       "label": "on",
+       "fr": "on faisait",
+       "phon": "oh(n) fuh-zeh",
+       "en": "one was doing\none used to do\ncasual: we were doing\ncasual: we used to do",
+       "speak": "on faisait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous faisions",
+     "phon": "noo fuh-zyoh(n)",
+     "en": "we were doing\nwe used to do",
+     "speak": "nous faisions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous faisiez",
+     "phon": "voo fuh-zyay",
+     "en": "you were doing (formal, or plural)\nyou used to do (formal, or plural)",
+     "speak": "vous faisiez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles faisaient",
+     "phon": "eel/el fuh-zeh",
+     "en": "they were doing\nthey used to do",
+     "speak": "ils faisaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils faisaient",
+       "phon": "eel fuh-zeh",
+       "en": "they were doing\nthey used to do",
+       "speak": "ils faisaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles faisaient",
+       "phon": "el fuh-zeh",
+       "en": "they were doing\nthey used to do",
+       "speak": "elles faisaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je ferai",
+     "phon": "zhuh fuh-ray",
+     "en": "I will do",
+     "speak": "je ferai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu feras",
+     "phon": "tew fuh-rah",
+     "en": "you will do (informal)",
+     "speak": "tu feras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on fera",
+     "phon": "eel/el/oh(n) fuh-rah",
+     "en": "he will do",
+     "speak": "il fera",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il fera",
+       "phon": "eel fuh-rah",
+       "en": "he will do",
+       "speak": "il fera"
+      },
+      {
+       "label": "elle",
+       "fr": "elle fera",
+       "phon": "el fuh-rah",
+       "en": "she will do",
+       "speak": "elle fera"
+      },
+      {
+       "label": "on",
+       "fr": "on fera",
+       "phon": "oh(n) fuh-rah",
+       "en": "one will do\ncasual: we will do",
+       "speak": "on fera"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous ferons",
+     "phon": "noo fuh-roh(n)",
+     "en": "we will do",
+     "speak": "nous ferons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous ferez",
+     "phon": "voo fuh-ray",
+     "en": "you will do (formal, or plural)",
+     "speak": "vous ferez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles feront",
+     "phon": "eel/el fuh-roh(n)",
+     "en": "they will do",
+     "speak": "ils feront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils feront",
+       "phon": "eel fuh-roh(n)",
+       "en": "they will do",
+       "speak": "ils feront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles feront",
+       "phon": "el fuh-roh(n)",
+       "en": "they will do",
+       "speak": "elles feront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je ferais",
+     "phon": "zhuh fuh-reh",
+     "en": "I would do",
+     "speak": "je ferais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu ferais",
+     "phon": "tew fuh-reh",
+     "en": "you would do (informal)",
+     "speak": "tu ferais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on ferait",
+     "phon": "eel/el/oh(n) fuh-reh",
+     "en": "he would do",
+     "speak": "il ferait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il ferait",
+       "phon": "eel fuh-reh",
+       "en": "he would do",
+       "speak": "il ferait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle ferait",
+       "phon": "el fuh-reh",
+       "en": "she would do",
+       "speak": "elle ferait"
+      },
+      {
+       "label": "on",
+       "fr": "on ferait",
+       "phon": "oh(n) fuh-reh",
+       "en": "one would do\ncasual: we would do",
+       "speak": "on ferait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous ferions",
+     "phon": "noo fuh-ryoh(n)",
+     "en": "we would do",
+     "speak": "nous ferions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous feriez",
+     "phon": "voo fuh-ryay",
+     "en": "you would do (formal, or plural)",
+     "speak": "vous feriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles feraient",
+     "phon": "eel/el fuh-reh",
+     "en": "they would do",
+     "speak": "ils feraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils feraient",
+       "phon": "eel fuh-reh",
+       "en": "they would do",
+       "speak": "ils feraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles feraient",
+       "phon": "el fuh-reh",
+       "en": "they would do",
+       "speak": "elles feraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "se-souvenir",
+  "french": "se souvenir de",
+  "english": "to remember",
+  "phonetic": "suh soo-vuh-neer duh",
+  "type": "irregular",
+  "group": "irregular",
+  "auxiliary": "être",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je me souviens",
+     "phon": "zhuh muh soo-vya(n)",
+     "en": "I remember",
+     "speak": "je me souviens",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu te souviens",
+     "phon": "tew tuh soo-vya(n)",
+     "en": "you remember (informal)",
+     "speak": "tu te souviens",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on se souvient",
+     "phon": "eel/el/oh(n) suh soo-vya(n)",
+     "en": "he remembers",
+     "speak": "il se souvient",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il se souvient",
+       "phon": "eel suh soo-vya(n)",
+       "en": "he remembers",
+       "speak": "il se souvient"
+      },
+      {
+       "label": "elle",
+       "fr": "elle se souvient",
+       "phon": "el suh soo-vya(n)",
+       "en": "she remembers",
+       "speak": "elle se souvient"
+      },
+      {
+       "label": "on",
+       "fr": "on se souvient",
+       "phon": "oh(n) suh soo-vya(n)",
+       "en": "one remembers\ncasual: we remember",
+       "speak": "on se souvient"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous souvenons",
+     "phon": "noo noo soo-vuh-noh(n)",
+     "en": "we remember",
+     "speak": "nous nous souvenons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous souvenez",
+     "phon": "voo voo soo-vuh-nay",
+     "en": "you remember (formal, or plural)",
+     "speak": "vous vous souvenez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles se souviennent",
+     "phon": "eel/el suh soo-vyen",
+     "en": "they remember",
+     "speak": "ils se souviennent",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils se souviennent",
+       "phon": "eel suh soo-vyen",
+       "en": "they remember",
+       "speak": "ils se souviennent"
+      },
+      {
+       "label": "elles",
+       "fr": "elles se souviennent",
+       "phon": "el suh soo-vyen",
+       "en": "they remember",
+       "speak": "elles se souviennent"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je me suis souvenu(e)",
+     "phon": "zhuh muh swee soo-vuh-new",
+     "en": "I remembered\nI have remembered",
+     "speak": "je me suis souvenu",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu t'es souvenu(e)",
+     "phon": "tew teh soo-vuh-new",
+     "en": "you remembered (informal)\nyou have remembered (informal)",
+     "speak": "tu t'es souvenu",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on s'est souvenu(e)",
+     "phon": "eel/el/oh(n) seh soo-vuh-new",
+     "en": "he remembered\nhe has remembered",
+     "speak": "il s'est souvenu",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il s'est souvenu",
+       "phon": "eel seh soo-vuh-new",
+       "en": "he remembered\nhe has remembered",
+       "speak": "il s'est souvenu"
+      },
+      {
+       "label": "elle",
+       "fr": "elle s'est souvenue",
+       "phon": "el seh soo-vuh-new",
+       "en": "she remembered\nshe has remembered",
+       "speak": "elle s'est souvenue"
+      },
+      {
+       "label": "on",
+       "fr": "on s'est souvenu(e)(s)",
+       "phon": "oh(n) seh soo-vuh-new",
+       "en": "one remembered\none has remembered\ncasual: we remembered\ncasual: we have remembered",
+       "speak": "on s'est souvenu"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous sommes souvenu(e)s",
+     "phon": "noo noo sum soo-vuh-new",
+     "en": "we remembered\nwe have remembered",
+     "speak": "nous nous sommes souvenus",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous êtes souvenu(e)(s)",
+     "phon": "voo voo zet soo-vuh-new",
+     "en": "you remembered (formal, or plural)\nyou have remembered (formal, or plural)",
+     "speak": "vous vous êtes souvenu",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles se sont souvenu(e)s",
+     "phon": "eel/el suh soh(n) soo-vuh-new",
+     "en": "they remembered\nthey have remembered",
+     "speak": "ils se sont souvenus",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils se sont souvenus",
+       "phon": "eel suh soh(n) soo-vuh-new",
+       "en": "they remembered\nthey have remembered",
+       "speak": "ils se sont souvenus"
+      },
+      {
+       "label": "elles",
+       "fr": "elles se sont souvenues",
+       "phon": "el suh soh(n) soo-vuh-new",
+       "en": "they remembered\nthey have remembered",
+       "speak": "elles se sont souvenues"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je me souvenais",
+     "phon": "zhuh muh soo-vuh-neh",
+     "en": "I was remembering\nI used to remember",
+     "speak": "je me souvenais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu te souvenais",
+     "phon": "tew tuh soo-vuh-neh",
+     "en": "you were remembering (informal)\nyou used to remember (informal)",
+     "speak": "tu te souvenais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on se souvenait",
+     "phon": "eel/el/oh(n) suh soo-vuh-neh",
+     "en": "he was remembering\nhe used to remember",
+     "speak": "il se souvenait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il se souvenait",
+       "phon": "eel suh soo-vuh-neh",
+       "en": "he was remembering\nhe used to remember",
+       "speak": "il se souvenait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle se souvenait",
+       "phon": "el suh soo-vuh-neh",
+       "en": "she was remembering\nshe used to remember",
+       "speak": "elle se souvenait"
+      },
+      {
+       "label": "on",
+       "fr": "on se souvenait",
+       "phon": "oh(n) suh soo-vuh-neh",
+       "en": "one was remembering\none used to remember\ncasual: we were remembering\ncasual: we used to remember",
+       "speak": "on se souvenait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous souvenions",
+     "phon": "noo noo soo-vuh-nyoh(n)",
+     "en": "we were remembering\nwe used to remember",
+     "speak": "nous nous souvenions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous souveniez",
+     "phon": "voo voo soo-vuh-nyay",
+     "en": "you were remembering (formal, or plural)\nyou used to remember (formal, or plural)",
+     "speak": "vous vous souveniez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles se souvenaient",
+     "phon": "eel/el suh soo-vuh-neh",
+     "en": "they were remembering\nthey used to remember",
+     "speak": "ils se souvenaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils se souvenaient",
+       "phon": "eel suh soo-vuh-neh",
+       "en": "they were remembering\nthey used to remember",
+       "speak": "ils se souvenaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles se souvenaient",
+       "phon": "el suh soo-vuh-neh",
+       "en": "they were remembering\nthey used to remember",
+       "speak": "elles se souvenaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je me souviendrai",
+     "phon": "zhuh muh soo-vya(n)-dray",
+     "en": "I will remember",
+     "speak": "je me souviendrai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu te souviendras",
+     "phon": "tew tuh soo-vya(n)-drah",
+     "en": "you will remember (informal)",
+     "speak": "tu te souviendras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on se souviendra",
+     "phon": "eel/el/oh(n) suh soo-vya(n)-drah",
+     "en": "he will remember",
+     "speak": "il se souviendra",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il se souviendra",
+       "phon": "eel suh soo-vya(n)-drah",
+       "en": "he will remember",
+       "speak": "il se souviendra"
+      },
+      {
+       "label": "elle",
+       "fr": "elle se souviendra",
+       "phon": "el suh soo-vya(n)-drah",
+       "en": "she will remember",
+       "speak": "elle se souviendra"
+      },
+      {
+       "label": "on",
+       "fr": "on se souviendra",
+       "phon": "oh(n) suh soo-vya(n)-drah",
+       "en": "one will remember\ncasual: we will remember",
+       "speak": "on se souviendra"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous souviendrons",
+     "phon": "noo noo soo-vya(n)-droh(n)",
+     "en": "we will remember",
+     "speak": "nous nous souviendrons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous souviendrez",
+     "phon": "voo voo soo-vya(n)-dray",
+     "en": "you will remember (formal, or plural)",
+     "speak": "vous vous souviendrez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles se souviendront",
+     "phon": "eel/el suh soo-vya(n)-droh(n)",
+     "en": "they will remember",
+     "speak": "ils se souviendront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils se souviendront",
+       "phon": "eel suh soo-vya(n)-droh(n)",
+       "en": "they will remember",
+       "speak": "ils se souviendront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles se souviendront",
+       "phon": "el suh soo-vya(n)-droh(n)",
+       "en": "they will remember",
+       "speak": "elles se souviendront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je me souviendrais",
+     "phon": "zhuh muh soo-vya(n)-dreh",
+     "en": "I would remember",
+     "speak": "je me souviendrais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu te souviendrais",
+     "phon": "tew tuh soo-vya(n)-dreh",
+     "en": "you would remember (informal)",
+     "speak": "tu te souviendrais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on se souviendrait",
+     "phon": "eel/el/oh(n) suh soo-vya(n)-dreh",
+     "en": "he would remember",
+     "speak": "il se souviendrait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il se souviendrait",
+       "phon": "eel suh soo-vya(n)-dreh",
+       "en": "he would remember",
+       "speak": "il se souviendrait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle se souviendrait",
+       "phon": "el suh soo-vya(n)-dreh",
+       "en": "she would remember",
+       "speak": "elle se souviendrait"
+      },
+      {
+       "label": "on",
+       "fr": "on se souviendrait",
+       "phon": "oh(n) suh soo-vya(n)-dreh",
+       "en": "one would remember\ncasual: we would remember",
+       "speak": "on se souviendrait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous souviendrions",
+     "phon": "noo noo soo-vya(n)-dree-yoh(n)",
+     "en": "we would remember",
+     "speak": "nous nous souviendrions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous souviendriez",
+     "phon": "voo voo soo-vya(n)-dree-yay",
+     "en": "you would remember (formal, or plural)",
+     "speak": "vous vous souviendriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles se souviendraient",
+     "phon": "eel/el suh soo-vya(n)-dreh",
+     "en": "they would remember",
+     "speak": "ils se souviendraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils se souviendraient",
+       "phon": "eel suh soo-vya(n)-dreh",
+       "en": "they would remember",
+       "speak": "ils se souviendraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles se souviendraient",
+       "phon": "el suh soo-vya(n)-dreh",
+       "en": "they would remember",
+       "speak": "elles se souviendraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "s-en-aller",
+  "french": "s'en aller",
+  "english": "to go away, leave",
+  "phonetic": "sah(n) nah-lay",
+  "type": "irregular",
+  "group": "irregular",
+  "auxiliary": "être",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je m'en vais",
+     "phon": "zhuh mah(n) veh",
+     "en": "I go away",
+     "speak": "je m'en vais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu t'en vas",
+     "phon": "tew tah(n) vah",
+     "en": "you go away (informal)",
+     "speak": "tu t'en vas",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on s'en va",
+     "phon": "eel/el/oh(n) sah(n) vah",
+     "en": "he goes away",
+     "speak": "il s'en va",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il s'en va",
+       "phon": "eel sah(n) vah",
+       "en": "he goes away",
+       "speak": "il s'en va"
+      },
+      {
+       "label": "elle",
+       "fr": "elle s'en va",
+       "phon": "el sah(n) vah",
+       "en": "she goes away",
+       "speak": "elle s'en va"
+      },
+      {
+       "label": "on",
+       "fr": "on s'en va",
+       "phon": "oh(n) sah(n) vah",
+       "en": "one goes away\ncasual: we go away",
+       "speak": "on s'en va"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous en allons",
+     "phon": "noo noo zah(n) nah-loh(n)",
+     "en": "we go away",
+     "speak": "nous nous en allons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous en allez",
+     "phon": "voo voo zah(n) nah-lay",
+     "en": "you go away (formal, or plural)",
+     "speak": "vous vous en allez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles s'en vont",
+     "phon": "eel/el sah(n) voh(n)",
+     "en": "they go away",
+     "speak": "ils s'en vont",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils s'en vont",
+       "phon": "eel sah(n) voh(n)",
+       "en": "they go away",
+       "speak": "ils s'en vont"
+      },
+      {
+       "label": "elles",
+       "fr": "elles s'en vont",
+       "phon": "el sah(n) voh(n)",
+       "en": "they go away",
+       "speak": "elles s'en vont"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je m'en suis allé(e)",
+     "phon": "zhuh mah(n) swee ah-lay",
+     "en": "I went away\nI have gone away",
+     "speak": "je m'en suis allé",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu t'en es allé(e)",
+     "phon": "tew tah(n) neh ah-lay",
+     "en": "you went away (informal)\nyou have gone away (informal)",
+     "speak": "tu t'en es allé",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on s'en est allé(e)",
+     "phon": "eel/el/oh(n) sah(n) neh ah-lay",
+     "en": "he went away\nhe has gone away",
+     "speak": "il s'en est allé",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il s'en est allé",
+       "phon": "eel sah(n) neh ah-lay",
+       "en": "he went away\nhe has gone away",
+       "speak": "il s'en est allé"
+      },
+      {
+       "label": "elle",
+       "fr": "elle s'en est allée",
+       "phon": "el sah(n) neh ah-lay",
+       "en": "she went away\nshe has gone away",
+       "speak": "elle s'en est allée"
+      },
+      {
+       "label": "on",
+       "fr": "on s'en est allé(e)(s)",
+       "phon": "oh(n) sah(n) neh ah-lay",
+       "en": "one went away\none has gone away\ncasual: we went away\ncasual: we have gone away",
+       "speak": "on s'en est allé"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous en sommes allé(e)s",
+     "phon": "noo noo zah(n) sum ah-lay",
+     "en": "we went away\nwe have gone away",
+     "speak": "nous nous en sommes allés",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous en êtes allé(e)(s)",
+     "phon": "voo voo zah(n) net ah-lay",
+     "en": "you went away (formal, or plural)\nyou have gone away (formal, or plural)",
+     "speak": "vous vous en êtes allé",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles s'en sont allé(e)s",
+     "phon": "eel/el sah(n) soh(n) ah-lay",
+     "en": "they went away\nthey have gone away",
+     "speak": "ils s'en sont allés",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils s'en sont allés",
+       "phon": "eel sah(n) soh(n) ah-lay",
+       "en": "they went away\nthey have gone away",
+       "speak": "ils s'en sont allés"
+      },
+      {
+       "label": "elles",
+       "fr": "elles s'en sont allées",
+       "phon": "el sah(n) soh(n) ah-lay",
+       "en": "they went away\nthey have gone away",
+       "speak": "elles s'en sont allées"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je m'en allais",
+     "phon": "zhuh mah(n) nah-leh",
+     "en": "I was going away\nI used to go away",
+     "speak": "je m'en allais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu t'en allais",
+     "phon": "tew tah(n) nah-leh",
+     "en": "you were going away (informal)\nyou used to go away (informal)",
+     "speak": "tu t'en allais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on s'en allait",
+     "phon": "eel/el/oh(n) sah(n) nah-leh",
+     "en": "he was going away\nhe used to go away",
+     "speak": "il s'en allait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il s'en allait",
+       "phon": "eel sah(n) nah-leh",
+       "en": "he was going away\nhe used to go away",
+       "speak": "il s'en allait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle s'en allait",
+       "phon": "el sah(n) nah-leh",
+       "en": "she was going away\nshe used to go away",
+       "speak": "elle s'en allait"
+      },
+      {
+       "label": "on",
+       "fr": "on s'en allait",
+       "phon": "oh(n) sah(n) nah-leh",
+       "en": "one was going away\none used to go away\ncasual: we were going away\ncasual: we used to go away",
+       "speak": "on s'en allait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous en allions",
+     "phon": "noo noo zah(n) nah-lyoh(n)",
+     "en": "we were going away\nwe used to go away",
+     "speak": "nous nous en allions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous en alliez",
+     "phon": "voo voo zah(n) nah-lyay",
+     "en": "you were going away (formal, or plural)\nyou used to go away (formal, or plural)",
+     "speak": "vous vous en alliez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles s'en allaient",
+     "phon": "eel/el sah(n) nah-leh",
+     "en": "they were going away\nthey used to go away",
+     "speak": "ils s'en allaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils s'en allaient",
+       "phon": "eel sah(n) nah-leh",
+       "en": "they were going away\nthey used to go away",
+       "speak": "ils s'en allaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles s'en allaient",
+       "phon": "el sah(n) nah-leh",
+       "en": "they were going away\nthey used to go away",
+       "speak": "elles s'en allaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je m'en irai",
+     "phon": "zhuh mah(n) nee-ray",
+     "en": "I will go away",
+     "speak": "je m'en irai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu t'en iras",
+     "phon": "tew tah(n) nee-rah",
+     "en": "you will go away (informal)",
+     "speak": "tu t'en iras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on s'en ira",
+     "phon": "eel/el/oh(n) sah(n) nee-rah",
+     "en": "he will go away",
+     "speak": "il s'en ira",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il s'en ira",
+       "phon": "eel sah(n) nee-rah",
+       "en": "he will go away",
+       "speak": "il s'en ira"
+      },
+      {
+       "label": "elle",
+       "fr": "elle s'en ira",
+       "phon": "el sah(n) nee-rah",
+       "en": "she will go away",
+       "speak": "elle s'en ira"
+      },
+      {
+       "label": "on",
+       "fr": "on s'en ira",
+       "phon": "oh(n) sah(n) nee-rah",
+       "en": "one will go away\ncasual: we will go away",
+       "speak": "on s'en ira"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous en irons",
+     "phon": "noo noo zah(n) nee-roh(n)",
+     "en": "we will go away",
+     "speak": "nous nous en irons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous en irez",
+     "phon": "voo voo zah(n) nee-ray",
+     "en": "you will go away (formal, or plural)",
+     "speak": "vous vous en irez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles s'en iront",
+     "phon": "eel/el sah(n) nee-roh(n)",
+     "en": "they will go away",
+     "speak": "ils s'en iront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils s'en iront",
+       "phon": "eel sah(n) nee-roh(n)",
+       "en": "they will go away",
+       "speak": "ils s'en iront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles s'en iront",
+       "phon": "el sah(n) nee-roh(n)",
+       "en": "they will go away",
+       "speak": "elles s'en iront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je m'en irais",
+     "phon": "zhuh mah(n) nee-reh",
+     "en": "I would go away",
+     "speak": "je m'en irais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu t'en irais",
+     "phon": "tew tah(n) nee-reh",
+     "en": "you would go away (informal)",
+     "speak": "tu t'en irais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on s'en irait",
+     "phon": "eel/el/oh(n) sah(n) nee-reh",
+     "en": "he would go away",
+     "speak": "il s'en irait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il s'en irait",
+       "phon": "eel sah(n) nee-reh",
+       "en": "he would go away",
+       "speak": "il s'en irait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle s'en irait",
+       "phon": "el sah(n) nee-reh",
+       "en": "she would go away",
+       "speak": "elle s'en irait"
+      },
+      {
+       "label": "on",
+       "fr": "on s'en irait",
+       "phon": "oh(n) sah(n) nee-reh",
+       "en": "one would go away\ncasual: we would go away",
+       "speak": "on s'en irait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous nous en irions",
+     "phon": "noo noo zah(n) nee-ryoh(n)",
+     "en": "we would go away",
+     "speak": "nous nous en irions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vous en iriez",
+     "phon": "voo voo zah(n) nee-ryay",
+     "en": "you would go away (formal, or plural)",
+     "speak": "vous vous en iriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles s'en iraient",
+     "phon": "eel/el sah(n) nee-reh",
+     "en": "they would go away",
+     "speak": "ils s'en iraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils s'en iraient",
+       "phon": "eel sah(n) nee-reh",
+       "en": "they would go away",
+       "speak": "ils s'en iraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles s'en iraient",
+       "phon": "el sah(n) nee-reh",
+       "en": "they would go away",
+       "speak": "elles s'en iraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "parler",
+  "french": "parler",
+  "english": "to speak",
+  "phonetic": "par-lay",
+  "type": "regular",
+  "group": "er",
+  "auxiliary": "avoir",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je parle",
+     "phon": "zhuh parl",
+     "en": "",
+     "speak": "je parle",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu parles",
+     "phon": "tew parl",
+     "en": "",
+     "speak": "tu parles",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on parle",
+     "phon": "eel/el/oh(n) parl",
+     "en": "",
+     "speak": "il parle",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il parle",
+       "phon": "eel parl",
+       "en": "",
+       "speak": "il parle"
+      },
+      {
+       "label": "elle",
+       "fr": "elle parle",
+       "phon": "el parl",
+       "en": "",
+       "speak": "elle parle"
+      },
+      {
+       "label": "on",
+       "fr": "on parle",
+       "phon": "oh(n) parl",
+       "en": "",
+       "speak": "on parle"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous parlons",
+     "phon": "noo parl-oh(n)",
+     "en": "",
+     "speak": "nous parlons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous parlez",
+     "phon": "voo parl-ay",
+     "en": "",
+     "speak": "vous parlez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles parlent",
+     "phon": "eel/el parl",
+     "en": "",
+     "speak": "ils parlent",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils parlent",
+       "phon": "eel parl",
+       "en": "",
+       "speak": "ils parlent"
+      },
+      {
+       "label": "elles",
+       "fr": "elles parlent",
+       "phon": "el parl",
+       "en": "",
+       "speak": "elles parlent"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'ai parlé",
+     "phon": "zhay parl-ay",
+     "en": "",
+     "speak": "j'ai parlé",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu as parlé",
+     "phon": "tew ah parl-ay",
+     "en": "",
+     "speak": "tu as parlé",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on a parlé",
+     "phon": "eel/el/oh(n) ah parl-ay",
+     "en": "",
+     "speak": "il a parlé",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il a parlé",
+       "phon": "eel ah parl-ay",
+       "en": "",
+       "speak": "il a parlé"
+      },
+      {
+       "label": "elle",
+       "fr": "elle a parlé",
+       "phon": "el ah parl-ay",
+       "en": "",
+       "speak": "elle a parlé"
+      },
+      {
+       "label": "on",
+       "fr": "on a parlé",
+       "phon": "oh(n) nah parl-ay",
+       "en": "",
+       "speak": "on a parlé"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous avons parlé",
+     "phon": "noo zah-voh(n) parl-ay",
+     "en": "",
+     "speak": "nous avons parlé",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous avez parlé",
+     "phon": "voo zah-vay parl-ay",
+     "en": "",
+     "speak": "vous avez parlé",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles ont parlé",
+     "phon": "eel/el zoh(n) parl-ay",
+     "en": "",
+     "speak": "ils ont parlé",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils ont parlé",
+       "phon": "eel zoh(n) parl-ay",
+       "en": "",
+       "speak": "ils ont parlé"
+      },
+      {
+       "label": "elles",
+       "fr": "elles ont parlé",
+       "phon": "el zoh(n) parl-ay",
+       "en": "",
+       "speak": "elles ont parlé"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je parlais",
+     "phon": "zhuh parl-eh",
+     "en": "",
+     "speak": "je parlais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu parlais",
+     "phon": "tew parl-eh",
+     "en": "",
+     "speak": "tu parlais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on parlait",
+     "phon": "eel/el/oh(n) parl-eh",
+     "en": "",
+     "speak": "il parlait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il parlait",
+       "phon": "eel parl-eh",
+       "en": "",
+       "speak": "il parlait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle parlait",
+       "phon": "el parl-eh",
+       "en": "",
+       "speak": "elle parlait"
+      },
+      {
+       "label": "on",
+       "fr": "on parlait",
+       "phon": "oh(n) parl-eh",
+       "en": "",
+       "speak": "on parlait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous parlions",
+     "phon": "noo parl-yoh(n)",
+     "en": "",
+     "speak": "nous parlions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous parliez",
+     "phon": "voo parl-yay",
+     "en": "",
+     "speak": "vous parliez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles parlaient",
+     "phon": "eel/el parl-eh",
+     "en": "",
+     "speak": "ils parlaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils parlaient",
+       "phon": "eel parl-eh",
+       "en": "",
+       "speak": "ils parlaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles parlaient",
+       "phon": "el parl-eh",
+       "en": "",
+       "speak": "elles parlaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je parlerai",
+     "phon": "zhuh parl-uh-ray",
+     "en": "",
+     "speak": "je parlerai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu parleras",
+     "phon": "tew parl-uh-rah",
+     "en": "",
+     "speak": "tu parleras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on parlera",
+     "phon": "eel/el/oh(n) parl-uh-rah",
+     "en": "",
+     "speak": "il parlera",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il parlera",
+       "phon": "eel parl-uh-rah",
+       "en": "",
+       "speak": "il parlera"
+      },
+      {
+       "label": "elle",
+       "fr": "elle parlera",
+       "phon": "el parl-uh-rah",
+       "en": "",
+       "speak": "elle parlera"
+      },
+      {
+       "label": "on",
+       "fr": "on parlera",
+       "phon": "oh(n) parl-uh-rah",
+       "en": "",
+       "speak": "on parlera"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous parlerons",
+     "phon": "noo parl-uh-roh(n)",
+     "en": "",
+     "speak": "nous parlerons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous parlerez",
+     "phon": "voo parl-uh-ray",
+     "en": "",
+     "speak": "vous parlerez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles parleront",
+     "phon": "eel/el parl-uh-roh(n)",
+     "en": "",
+     "speak": "ils parleront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils parleront",
+       "phon": "eel parl-uh-roh(n)",
+       "en": "",
+       "speak": "ils parleront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles parleront",
+       "phon": "el parl-uh-roh(n)",
+       "en": "",
+       "speak": "elles parleront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je parlerais",
+     "phon": "zhuh parl-uh-reh",
+     "en": "",
+     "speak": "je parlerais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu parlerais",
+     "phon": "tew parl-uh-reh",
+     "en": "",
+     "speak": "tu parlerais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on parlerait",
+     "phon": "eel/el/oh(n) parl-uh-reh",
+     "en": "",
+     "speak": "il parlerait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il parlerait",
+       "phon": "eel parl-uh-reh",
+       "en": "",
+       "speak": "il parlerait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle parlerait",
+       "phon": "el parl-uh-reh",
+       "en": "",
+       "speak": "elle parlerait"
+      },
+      {
+       "label": "on",
+       "fr": "on parlerait",
+       "phon": "oh(n) parl-uh-reh",
+       "en": "",
+       "speak": "on parlerait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous parlerions",
+     "phon": "noo parl-uh-ryoh(n)",
+     "en": "",
+     "speak": "nous parlerions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous parleriez",
+     "phon": "voo parl-uh-ryay",
+     "en": "",
+     "speak": "vous parleriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles parleraient",
+     "phon": "eel/el parl-uh-reh",
+     "en": "",
+     "speak": "ils parleraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils parleraient",
+       "phon": "eel parl-uh-reh",
+       "en": "",
+       "speak": "ils parleraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles parleraient",
+       "phon": "el parl-uh-reh",
+       "en": "",
+       "speak": "elles parleraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "finir",
+  "french": "finir",
+  "english": "to finish (-ir verb, the everyday word)",
+  "phonetic": "fee-neer",
+  "type": "regular",
+  "group": "ir",
+  "auxiliary": "avoir",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je finis",
+     "phon": "zhuh fee-nee",
+     "en": "",
+     "speak": "je finis",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu finis",
+     "phon": "tew fee-nee",
+     "en": "",
+     "speak": "tu finis",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on finit",
+     "phon": "eel/el/oh(n) fee-nee",
+     "en": "",
+     "speak": "il finit",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il finit",
+       "phon": "eel fee-nee",
+       "en": "",
+       "speak": "il finit"
+      },
+      {
+       "label": "elle",
+       "fr": "elle finit",
+       "phon": "el fee-nee",
+       "en": "",
+       "speak": "elle finit"
+      },
+      {
+       "label": "on",
+       "fr": "on finit",
+       "phon": "oh(n) fee-nee",
+       "en": "",
+       "speak": "on finit"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous finissons",
+     "phon": "noo fee-nee-soh(n)",
+     "en": "",
+     "speak": "nous finissons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous finissez",
+     "phon": "voo fee-nee-say",
+     "en": "",
+     "speak": "vous finissez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles finissent",
+     "phon": "eel/el fee-neess",
+     "en": "",
+     "speak": "ils finissent",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils finissent",
+       "phon": "eel fee-neess",
+       "en": "",
+       "speak": "ils finissent"
+      },
+      {
+       "label": "elles",
+       "fr": "elles finissent",
+       "phon": "el fee-neess",
+       "en": "",
+       "speak": "elles finissent"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'ai fini",
+     "phon": "zhay fee-nee",
+     "en": "",
+     "speak": "j'ai fini",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu as fini",
+     "phon": "tew ah fee-nee",
+     "en": "",
+     "speak": "tu as fini",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on a fini",
+     "phon": "eel/el/oh(n) ah fee-nee",
+     "en": "",
+     "speak": "il a fini",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il a fini",
+       "phon": "eel ah fee-nee",
+       "en": "",
+       "speak": "il a fini"
+      },
+      {
+       "label": "elle",
+       "fr": "elle a fini",
+       "phon": "el ah fee-nee",
+       "en": "",
+       "speak": "elle a fini"
+      },
+      {
+       "label": "on",
+       "fr": "on a fini",
+       "phon": "oh(n) nah fee-nee",
+       "en": "",
+       "speak": "on a fini"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous avons fini",
+     "phon": "noo zah-voh(n) fee-nee",
+     "en": "",
+     "speak": "nous avons fini",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous avez fini",
+     "phon": "voo zah-vay fee-nee",
+     "en": "",
+     "speak": "vous avez fini",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles ont fini",
+     "phon": "eel/el zoh(n) fee-nee",
+     "en": "",
+     "speak": "ils ont fini",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils ont fini",
+       "phon": "eel zoh(n) fee-nee",
+       "en": "",
+       "speak": "ils ont fini"
+      },
+      {
+       "label": "elles",
+       "fr": "elles ont fini",
+       "phon": "el zoh(n) fee-nee",
+       "en": "",
+       "speak": "elles ont fini"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je finissais",
+     "phon": "zhuh fee-nee-seh",
+     "en": "",
+     "speak": "je finissais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu finissais",
+     "phon": "tew fee-nee-seh",
+     "en": "",
+     "speak": "tu finissais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on finissait",
+     "phon": "eel/el/oh(n) fee-nee-seh",
+     "en": "",
+     "speak": "il finissait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il finissait",
+       "phon": "eel fee-nee-seh",
+       "en": "",
+       "speak": "il finissait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle finissait",
+       "phon": "el fee-nee-seh",
+       "en": "",
+       "speak": "elle finissait"
+      },
+      {
+       "label": "on",
+       "fr": "on finissait",
+       "phon": "oh(n) fee-nee-seh",
+       "en": "",
+       "speak": "on finissait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous finissions",
+     "phon": "noo fee-nee-syoh(n)",
+     "en": "",
+     "speak": "nous finissions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous finissiez",
+     "phon": "voo fee-nee-syay",
+     "en": "",
+     "speak": "vous finissiez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles finissaient",
+     "phon": "eel/el fee-nee-seh",
+     "en": "",
+     "speak": "ils finissaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils finissaient",
+       "phon": "eel fee-nee-seh",
+       "en": "",
+       "speak": "ils finissaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles finissaient",
+       "phon": "el fee-nee-seh",
+       "en": "",
+       "speak": "elles finissaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je finirai",
+     "phon": "zhuh fee-nee-ray",
+     "en": "",
+     "speak": "je finirai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu finiras",
+     "phon": "tew fee-nee-rah",
+     "en": "",
+     "speak": "tu finiras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on finira",
+     "phon": "eel/el/oh(n) fee-nee-rah",
+     "en": "",
+     "speak": "il finira",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il finira",
+       "phon": "eel fee-nee-rah",
+       "en": "",
+       "speak": "il finira"
+      },
+      {
+       "label": "elle",
+       "fr": "elle finira",
+       "phon": "el fee-nee-rah",
+       "en": "",
+       "speak": "elle finira"
+      },
+      {
+       "label": "on",
+       "fr": "on finira",
+       "phon": "oh(n) fee-nee-rah",
+       "en": "",
+       "speak": "on finira"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous finirons",
+     "phon": "noo fee-nee-roh(n)",
+     "en": "",
+     "speak": "nous finirons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous finirez",
+     "phon": "voo fee-nee-ray",
+     "en": "",
+     "speak": "vous finirez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles finiront",
+     "phon": "eel/el fee-nee-roh(n)",
+     "en": "",
+     "speak": "ils finiront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils finiront",
+       "phon": "eel fee-nee-roh(n)",
+       "en": "",
+       "speak": "ils finiront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles finiront",
+       "phon": "el fee-nee-roh(n)",
+       "en": "",
+       "speak": "elles finiront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je finirais",
+     "phon": "zhuh fee-nee-reh",
+     "en": "",
+     "speak": "je finirais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu finirais",
+     "phon": "tew fee-nee-reh",
+     "en": "",
+     "speak": "tu finirais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on finirait",
+     "phon": "eel/el/oh(n) fee-nee-reh",
+     "en": "",
+     "speak": "il finirait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il finirait",
+       "phon": "eel fee-nee-reh",
+       "en": "",
+       "speak": "il finirait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle finirait",
+       "phon": "el fee-nee-reh",
+       "en": "",
+       "speak": "elle finirait"
+      },
+      {
+       "label": "on",
+       "fr": "on finirait",
+       "phon": "oh(n) fee-nee-reh",
+       "en": "",
+       "speak": "on finirait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous finirions",
+     "phon": "noo fee-nee-ryoh(n)",
+     "en": "",
+     "speak": "nous finirions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous finiriez",
+     "phon": "voo fee-nee-ryay",
+     "en": "",
+     "speak": "vous finiriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles finiraient",
+     "phon": "eel/el fee-nee-reh",
+     "en": "",
+     "speak": "ils finiraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils finiraient",
+       "phon": "eel fee-nee-reh",
+       "en": "",
+       "speak": "ils finiraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles finiraient",
+       "phon": "el fee-nee-reh",
+       "en": "",
+       "speak": "elles finiraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "vendre",
+  "french": "vendre",
+  "english": "to sell",
+  "phonetic": "vah(n)-druh",
+  "type": "regular",
+  "group": "re",
+  "auxiliary": "avoir",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je vends",
+     "phon": "zhuh vah(n)",
+     "en": "",
+     "speak": "je vends",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu vends",
+     "phon": "tew vah(n)",
+     "en": "",
+     "speak": "tu vends",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on vend",
+     "phon": "eel/el/oh(n) vah(n)",
+     "en": "",
+     "speak": "il vend",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il vend",
+       "phon": "eel vah(n)",
+       "en": "",
+       "speak": "il vend"
+      },
+      {
+       "label": "elle",
+       "fr": "elle vend",
+       "phon": "el vah(n)",
+       "en": "",
+       "speak": "elle vend"
+      },
+      {
+       "label": "on",
+       "fr": "on vend",
+       "phon": "oh(n) vah(n)",
+       "en": "",
+       "speak": "on vend"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous vendons",
+     "phon": "noo vah(n)-doh(n)",
+     "en": "",
+     "speak": "nous vendons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vendez",
+     "phon": "voo vah(n)-day",
+     "en": "",
+     "speak": "vous vendez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles vendent",
+     "phon": "eel/el vah(n)-d",
+     "en": "",
+     "speak": "ils vendent",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils vendent",
+       "phon": "eel vah(n)-d",
+       "en": "",
+       "speak": "ils vendent"
+      },
+      {
+       "label": "elles",
+       "fr": "elles vendent",
+       "phon": "el vah(n)-d",
+       "en": "",
+       "speak": "elles vendent"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'ai vendu",
+     "phon": "zhay vah(n)-dew",
+     "en": "",
+     "speak": "j'ai vendu",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu as vendu",
+     "phon": "tew ah vah(n)-dew",
+     "en": "",
+     "speak": "tu as vendu",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on a vendu",
+     "phon": "eel/el/oh(n) ah vah(n)-dew",
+     "en": "",
+     "speak": "il a vendu",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il a vendu",
+       "phon": "eel ah vah(n)-dew",
+       "en": "",
+       "speak": "il a vendu"
+      },
+      {
+       "label": "elle",
+       "fr": "elle a vendu",
+       "phon": "el ah vah(n)-dew",
+       "en": "",
+       "speak": "elle a vendu"
+      },
+      {
+       "label": "on",
+       "fr": "on a vendu",
+       "phon": "oh(n) nah vah(n)-dew",
+       "en": "",
+       "speak": "on a vendu"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous avons vendu",
+     "phon": "noo zah-voh(n) vah(n)-dew",
+     "en": "",
+     "speak": "nous avons vendu",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous avez vendu",
+     "phon": "voo zah-vay vah(n)-dew",
+     "en": "",
+     "speak": "vous avez vendu",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles ont vendu",
+     "phon": "eel/el zoh(n) vah(n)-dew",
+     "en": "",
+     "speak": "ils ont vendu",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils ont vendu",
+       "phon": "eel zoh(n) vah(n)-dew",
+       "en": "",
+       "speak": "ils ont vendu"
+      },
+      {
+       "label": "elles",
+       "fr": "elles ont vendu",
+       "phon": "el zoh(n) vah(n)-dew",
+       "en": "",
+       "speak": "elles ont vendu"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je vendais",
+     "phon": "zhuh vah(n)-deh",
+     "en": "",
+     "speak": "je vendais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu vendais",
+     "phon": "tew vah(n)-deh",
+     "en": "",
+     "speak": "tu vendais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on vendait",
+     "phon": "eel/el/oh(n) vah(n)-deh",
+     "en": "",
+     "speak": "il vendait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il vendait",
+       "phon": "eel vah(n)-deh",
+       "en": "",
+       "speak": "il vendait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle vendait",
+       "phon": "el vah(n)-deh",
+       "en": "",
+       "speak": "elle vendait"
+      },
+      {
+       "label": "on",
+       "fr": "on vendait",
+       "phon": "oh(n) vah(n)-deh",
+       "en": "",
+       "speak": "on vendait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous vendions",
+     "phon": "noo vah(n)-dyoh(n)",
+     "en": "",
+     "speak": "nous vendions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vendiez",
+     "phon": "voo vah(n)-dyay",
+     "en": "",
+     "speak": "vous vendiez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles vendaient",
+     "phon": "eel/el vah(n)-deh",
+     "en": "",
+     "speak": "ils vendaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils vendaient",
+       "phon": "eel vah(n)-deh",
+       "en": "",
+       "speak": "ils vendaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles vendaient",
+       "phon": "el vah(n)-deh",
+       "en": "",
+       "speak": "elles vendaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je vendrai",
+     "phon": "zhuh vah(n)-dray",
+     "en": "",
+     "speak": "je vendrai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu vendras",
+     "phon": "tew vah(n)-drah",
+     "en": "",
+     "speak": "tu vendras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on vendra",
+     "phon": "eel/el/oh(n) vah(n)-drah",
+     "en": "",
+     "speak": "il vendra",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il vendra",
+       "phon": "eel vah(n)-drah",
+       "en": "",
+       "speak": "il vendra"
+      },
+      {
+       "label": "elle",
+       "fr": "elle vendra",
+       "phon": "el vah(n)-drah",
+       "en": "",
+       "speak": "elle vendra"
+      },
+      {
+       "label": "on",
+       "fr": "on vendra",
+       "phon": "oh(n) vah(n)-drah",
+       "en": "",
+       "speak": "on vendra"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous vendrons",
+     "phon": "noo vah(n)-droh(n)",
+     "en": "",
+     "speak": "nous vendrons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vendrez",
+     "phon": "voo vah(n)-dray",
+     "en": "",
+     "speak": "vous vendrez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles vendront",
+     "phon": "eel/el vah(n)-droh(n)",
+     "en": "",
+     "speak": "ils vendront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils vendront",
+       "phon": "eel vah(n)-droh(n)",
+       "en": "",
+       "speak": "ils vendront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles vendront",
+       "phon": "el vah(n)-droh(n)",
+       "en": "",
+       "speak": "elles vendront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je vendrais",
+     "phon": "zhuh vah(n)-dreh",
+     "en": "",
+     "speak": "je vendrais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu vendrais",
+     "phon": "tew vah(n)-dreh",
+     "en": "",
+     "speak": "tu vendrais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on vendrait",
+     "phon": "eel/el/oh(n) vah(n)-dreh",
+     "en": "",
+     "speak": "il vendrait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il vendrait",
+       "phon": "eel vah(n)-dreh",
+       "en": "",
+       "speak": "il vendrait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle vendrait",
+       "phon": "el vah(n)-dreh",
+       "en": "",
+       "speak": "elle vendrait"
+      },
+      {
+       "label": "on",
+       "fr": "on vendrait",
+       "phon": "oh(n) vah(n)-dreh",
+       "en": "",
+       "speak": "on vendrait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous vendrions",
+     "phon": "noo vah(n)-dree-yoh(n)",
+     "en": "",
+     "speak": "nous vendrions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous vendriez",
+     "phon": "voo vah(n)-dree-yay",
+     "en": "",
+     "speak": "vous vendriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles vendraient",
+     "phon": "eel/el vah(n)-dreh",
+     "en": "",
+     "speak": "ils vendraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils vendraient",
+       "phon": "eel vah(n)-dreh",
+       "en": "",
+       "speak": "ils vendraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles vendraient",
+       "phon": "el vah(n)-dreh",
+       "en": "",
+       "speak": "elles vendraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "arriver",
+  "french": "arriver",
+  "english": "to arrive; to happen",
+  "phonetic": "ah-ree-vay",
+  "type": "regular",
+  "group": "er",
+  "auxiliary": "être",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'arrive",
+     "phon": "zhah-reev",
+     "en": "",
+     "speak": "j'arrive",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu arrives",
+     "phon": "tew ah-reev",
+     "en": "",
+     "speak": "tu arrives",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on arrive",
+     "phon": "eel/el/oh(n) ah-reev",
+     "en": "",
+     "speak": "il arrive",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il arrive",
+       "phon": "eel ah-reev",
+       "en": "",
+       "speak": "il arrive"
+      },
+      {
+       "label": "elle",
+       "fr": "elle arrive",
+       "phon": "el ah-reev",
+       "en": "",
+       "speak": "elle arrive"
+      },
+      {
+       "label": "on",
+       "fr": "on arrive",
+       "phon": "oh(n) nah-reev",
+       "en": "",
+       "speak": "on arrive"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous arrivons",
+     "phon": "noo zah-reev-oh(n)",
+     "en": "",
+     "speak": "nous arrivons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous arrivez",
+     "phon": "voo zah-reev-ay",
+     "en": "",
+     "speak": "vous arrivez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles arrivent",
+     "phon": "eel/el zah-reev",
+     "en": "",
+     "speak": "ils arrivent",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils arrivent",
+       "phon": "eel zah-reev",
+       "en": "",
+       "speak": "ils arrivent"
+      },
+      {
+       "label": "elles",
+       "fr": "elles arrivent",
+       "phon": "el zah-reev",
+       "en": "",
+       "speak": "elles arrivent"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "je suis arrivé(e)",
+     "phon": "zhuh swee ah-reev-ay",
+     "en": "",
+     "speak": "je suis arrivé",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu es arrivé(e)",
+     "phon": "tew eh ah-reev-ay",
+     "en": "",
+     "speak": "tu es arrivé",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on est arrivé(e)",
+     "phon": "eel/el/oh(n) eh ah-reev-ay",
+     "en": "",
+     "speak": "il est arrivé",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il est arrivé",
+       "phon": "eel eh ah-reev-ay",
+       "en": "",
+       "speak": "il est arrivé"
+      },
+      {
+       "label": "elle",
+       "fr": "elle est arrivée",
+       "phon": "el eh ah-reev-ay",
+       "en": "",
+       "speak": "elle est arrivée"
+      },
+      {
+       "label": "on",
+       "fr": "on est arrivé(e)(s)",
+       "phon": "oh(n) neh ah-reev-ay",
+       "en": "",
+       "speak": "on est arrivé"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous sommes arrivé(e)s",
+     "phon": "noo sum ah-reev-ay",
+     "en": "",
+     "speak": "nous sommes arrivés",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous êtes arrivé(e)(s)",
+     "phon": "voo zet ah-reev-ay",
+     "en": "",
+     "speak": "vous êtes arrivé",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles sont arrivé(e)s",
+     "phon": "eel/el soh(n) ah-reev-ay",
+     "en": "",
+     "speak": "ils sont arrivés",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils sont arrivés",
+       "phon": "eel soh(n) ah-reev-ay",
+       "en": "",
+       "speak": "ils sont arrivés"
+      },
+      {
+       "label": "elles",
+       "fr": "elles sont arrivées",
+       "phon": "el soh(n) ah-reev-ay",
+       "en": "",
+       "speak": "elles sont arrivées"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'arrivais",
+     "phon": "zhah-reev-eh",
+     "en": "",
+     "speak": "j'arrivais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu arrivais",
+     "phon": "tew ah-reev-eh",
+     "en": "",
+     "speak": "tu arrivais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on arrivait",
+     "phon": "eel/el/oh(n) ah-reev-eh",
+     "en": "",
+     "speak": "il arrivait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il arrivait",
+       "phon": "eel ah-reev-eh",
+       "en": "",
+       "speak": "il arrivait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle arrivait",
+       "phon": "el ah-reev-eh",
+       "en": "",
+       "speak": "elle arrivait"
+      },
+      {
+       "label": "on",
+       "fr": "on arrivait",
+       "phon": "oh(n) nah-reev-eh",
+       "en": "",
+       "speak": "on arrivait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous arrivions",
+     "phon": "noo zah-reev-yoh(n)",
+     "en": "",
+     "speak": "nous arrivions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous arriviez",
+     "phon": "voo zah-reev-yay",
+     "en": "",
+     "speak": "vous arriviez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles arrivaient",
+     "phon": "eel/el zah-reev-eh",
+     "en": "",
+     "speak": "ils arrivaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils arrivaient",
+       "phon": "eel zah-reev-eh",
+       "en": "",
+       "speak": "ils arrivaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles arrivaient",
+       "phon": "el zah-reev-eh",
+       "en": "",
+       "speak": "elles arrivaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'arriverai",
+     "phon": "zhah-reev-uh-ray",
+     "en": "",
+     "speak": "j'arriverai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu arriveras",
+     "phon": "tew ah-reev-uh-rah",
+     "en": "",
+     "speak": "tu arriveras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on arrivera",
+     "phon": "eel/el/oh(n) ah-reev-uh-rah",
+     "en": "",
+     "speak": "il arrivera",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il arrivera",
+       "phon": "eel ah-reev-uh-rah",
+       "en": "",
+       "speak": "il arrivera"
+      },
+      {
+       "label": "elle",
+       "fr": "elle arrivera",
+       "phon": "el ah-reev-uh-rah",
+       "en": "",
+       "speak": "elle arrivera"
+      },
+      {
+       "label": "on",
+       "fr": "on arrivera",
+       "phon": "oh(n) nah-reev-uh-rah",
+       "en": "",
+       "speak": "on arrivera"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous arriverons",
+     "phon": "noo zah-reev-uh-roh(n)",
+     "en": "",
+     "speak": "nous arriverons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous arriverez",
+     "phon": "voo zah-reev-uh-ray",
+     "en": "",
+     "speak": "vous arriverez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles arriveront",
+     "phon": "eel/el zah-reev-uh-roh(n)",
+     "en": "",
+     "speak": "ils arriveront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils arriveront",
+       "phon": "eel zah-reev-uh-roh(n)",
+       "en": "",
+       "speak": "ils arriveront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles arriveront",
+       "phon": "el zah-reev-uh-roh(n)",
+       "en": "",
+       "speak": "elles arriveront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'arriverais",
+     "phon": "zhah-reev-uh-reh",
+     "en": "",
+     "speak": "j'arriverais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu arriverais",
+     "phon": "tew ah-reev-uh-reh",
+     "en": "",
+     "speak": "tu arriverais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on arriverait",
+     "phon": "eel/el/oh(n) ah-reev-uh-reh",
+     "en": "",
+     "speak": "il arriverait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il arriverait",
+       "phon": "eel ah-reev-uh-reh",
+       "en": "",
+       "speak": "il arriverait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle arriverait",
+       "phon": "el ah-reev-uh-reh",
+       "en": "",
+       "speak": "elle arriverait"
+      },
+      {
+       "label": "on",
+       "fr": "on arriverait",
+       "phon": "oh(n) nah-reev-uh-reh",
+       "en": "",
+       "speak": "on arriverait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous arriverions",
+     "phon": "noo zah-reev-uh-ryoh(n)",
+     "en": "",
+     "speak": "nous arriverions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous arriveriez",
+     "phon": "voo zah-reev-uh-ryay",
+     "en": "",
+     "speak": "vous arriveriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles arriveraient",
+     "phon": "eel/el zah-reev-uh-reh",
+     "en": "",
+     "speak": "ils arriveraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils arriveraient",
+       "phon": "eel zah-reev-uh-reh",
+       "en": "",
+       "speak": "ils arriveraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles arriveraient",
+       "phon": "el zah-reev-uh-reh",
+       "en": "",
+       "speak": "elles arriveraient"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "id": "etudier",
+  "french": "étudier",
+  "english": "to study",
+  "phonetic": "ay-tew-dyay",
+  "type": "regular",
+  "group": "er",
+  "auxiliary": "avoir",
+  "tables": {
+   "present": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'étudie",
+     "phon": "zhay-tew-dee",
+     "en": "",
+     "speak": "j'étudie",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu étudies",
+     "phon": "tew ay-tew-dee",
+     "en": "",
+     "speak": "tu étudies",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on étudie",
+     "phon": "eel/el/oh(n) ay-tew-dee",
+     "en": "",
+     "speak": "il étudie",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il étudie",
+       "phon": "eel ay-tew-dee",
+       "en": "",
+       "speak": "il étudie"
+      },
+      {
+       "label": "elle",
+       "fr": "elle étudie",
+       "phon": "el ay-tew-dee",
+       "en": "",
+       "speak": "elle étudie"
+      },
+      {
+       "label": "on",
+       "fr": "on étudie",
+       "phon": "oh(n) nay-tew-dee",
+       "en": "",
+       "speak": "on étudie"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous étudions",
+     "phon": "noo zay-tew-dee-oh(n)",
+     "en": "",
+     "speak": "nous étudions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous étudiez",
+     "phon": "voo zay-tew-dee-ay",
+     "en": "",
+     "speak": "vous étudiez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles étudient",
+     "phon": "eel/el zay-tew-dee",
+     "en": "",
+     "speak": "ils étudient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils étudient",
+       "phon": "eel zay-tew-dee",
+       "en": "",
+       "speak": "ils étudient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles étudient",
+       "phon": "el zay-tew-dee",
+       "en": "",
+       "speak": "elles étudient"
+      }
+     ]
+    }
+   ],
+   "passe_compose": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'ai étudié",
+     "phon": "zhay ay-tew-dee-ay",
+     "en": "",
+     "speak": "j'ai étudié",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu as étudié",
+     "phon": "tew ah ay-tew-dee-ay",
+     "en": "",
+     "speak": "tu as étudié",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on a étudié",
+     "phon": "eel/el/oh(n) ah ay-tew-dee-ay",
+     "en": "",
+     "speak": "il a étudié",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il a étudié",
+       "phon": "eel ah ay-tew-dee-ay",
+       "en": "",
+       "speak": "il a étudié"
+      },
+      {
+       "label": "elle",
+       "fr": "elle a étudié",
+       "phon": "el ah ay-tew-dee-ay",
+       "en": "",
+       "speak": "elle a étudié"
+      },
+      {
+       "label": "on",
+       "fr": "on a étudié",
+       "phon": "oh(n) nah ay-tew-dee-ay",
+       "en": "",
+       "speak": "on a étudié"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous avons étudié",
+     "phon": "noo zah-voh(n) ay-tew-dee-ay",
+     "en": "",
+     "speak": "nous avons étudié",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous avez étudié",
+     "phon": "voo zah-vay ay-tew-dee-ay",
+     "en": "",
+     "speak": "vous avez étudié",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles ont étudié",
+     "phon": "eel/el zoh(n) ay-tew-dee-ay",
+     "en": "",
+     "speak": "ils ont étudié",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils ont étudié",
+       "phon": "eel zoh(n) ay-tew-dee-ay",
+       "en": "",
+       "speak": "ils ont étudié"
+      },
+      {
+       "label": "elles",
+       "fr": "elles ont étudié",
+       "phon": "el zoh(n) ay-tew-dee-ay",
+       "en": "",
+       "speak": "elles ont étudié"
+      }
+     ]
+    }
+   ],
+   "imparfait": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'étudiais",
+     "phon": "zhay-tew-dee-eh",
+     "en": "",
+     "speak": "j'étudiais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu étudiais",
+     "phon": "tew ay-tew-dee-eh",
+     "en": "",
+     "speak": "tu étudiais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on étudiait",
+     "phon": "eel/el/oh(n) ay-tew-dee-eh",
+     "en": "",
+     "speak": "il étudiait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il étudiait",
+       "phon": "eel ay-tew-dee-eh",
+       "en": "",
+       "speak": "il étudiait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle étudiait",
+       "phon": "el ay-tew-dee-eh",
+       "en": "",
+       "speak": "elle étudiait"
+      },
+      {
+       "label": "on",
+       "fr": "on étudiait",
+       "phon": "oh(n) nay-tew-dee-eh",
+       "en": "",
+       "speak": "on étudiait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous étudiions",
+     "phon": "noo zay-tew-dee-yoh(n)",
+     "en": "",
+     "speak": "nous étudiions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous étudiiez",
+     "phon": "voo zay-tew-dee-yay",
+     "en": "",
+     "speak": "vous étudiiez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles étudiaient",
+     "phon": "eel/el zay-tew-dee-eh",
+     "en": "",
+     "speak": "ils étudiaient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils étudiaient",
+       "phon": "eel zay-tew-dee-eh",
+       "en": "",
+       "speak": "ils étudiaient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles étudiaient",
+       "phon": "el zay-tew-dee-eh",
+       "en": "",
+       "speak": "elles étudiaient"
+      }
+     ]
+    }
+   ],
+   "futur": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'étudierai",
+     "phon": "zhay-tew-dee-uh-ray",
+     "en": "",
+     "speak": "j'étudierai",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu étudieras",
+     "phon": "tew ay-tew-dee-uh-rah",
+     "en": "",
+     "speak": "tu étudieras",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on étudiera",
+     "phon": "eel/el/oh(n) ay-tew-dee-uh-rah",
+     "en": "",
+     "speak": "il étudiera",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il étudiera",
+       "phon": "eel ay-tew-dee-uh-rah",
+       "en": "",
+       "speak": "il étudiera"
+      },
+      {
+       "label": "elle",
+       "fr": "elle étudiera",
+       "phon": "el ay-tew-dee-uh-rah",
+       "en": "",
+       "speak": "elle étudiera"
+      },
+      {
+       "label": "on",
+       "fr": "on étudiera",
+       "phon": "oh(n) nay-tew-dee-uh-rah",
+       "en": "",
+       "speak": "on étudiera"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous étudierons",
+     "phon": "noo zay-tew-dee-uh-roh(n)",
+     "en": "",
+     "speak": "nous étudierons",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous étudierez",
+     "phon": "voo zay-tew-dee-uh-ray",
+     "en": "",
+     "speak": "vous étudierez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles étudieront",
+     "phon": "eel/el zay-tew-dee-uh-roh(n)",
+     "en": "",
+     "speak": "ils étudieront",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils étudieront",
+       "phon": "eel zay-tew-dee-uh-roh(n)",
+       "en": "",
+       "speak": "ils étudieront"
+      },
+      {
+       "label": "elles",
+       "fr": "elles étudieront",
+       "phon": "el zay-tew-dee-uh-roh(n)",
+       "en": "",
+       "speak": "elles étudieront"
+      }
+     ]
+    }
+   ],
+   "conditionnel": [
+    {
+     "key": "je",
+     "label": "je",
+     "fr": "j'étudierais",
+     "phon": "zhay-tew-dee-uh-reh",
+     "en": "",
+     "speak": "j'étudierais",
+     "subs": []
+    },
+    {
+     "key": "tu",
+     "label": "tu",
+     "fr": "tu étudierais",
+     "phon": "tew ay-tew-dee-uh-reh",
+     "en": "",
+     "speak": "tu étudierais",
+     "subs": []
+    },
+    {
+     "key": "il",
+     "label": "il · elle · on",
+     "fr": "il/elle/on étudierait",
+     "phon": "eel/el/oh(n) ay-tew-dee-uh-reh",
+     "en": "",
+     "speak": "il étudierait",
+     "subs": [
+      {
+       "label": "il",
+       "fr": "il étudierait",
+       "phon": "eel ay-tew-dee-uh-reh",
+       "en": "",
+       "speak": "il étudierait"
+      },
+      {
+       "label": "elle",
+       "fr": "elle étudierait",
+       "phon": "el ay-tew-dee-uh-reh",
+       "en": "",
+       "speak": "elle étudierait"
+      },
+      {
+       "label": "on",
+       "fr": "on étudierait",
+       "phon": "oh(n) nay-tew-dee-uh-reh",
+       "en": "",
+       "speak": "on étudierait"
+      }
+     ]
+    },
+    {
+     "key": "nous",
+     "label": "nous",
+     "fr": "nous étudierions",
+     "phon": "noo zay-tew-dee-uh-ryoh(n)",
+     "en": "",
+     "speak": "nous étudierions",
+     "subs": []
+    },
+    {
+     "key": "vous",
+     "label": "vous",
+     "fr": "vous étudieriez",
+     "phon": "voo zay-tew-dee-uh-ryay",
+     "en": "",
+     "speak": "vous étudieriez",
+     "subs": []
+    },
+    {
+     "key": "ils",
+     "label": "ils · elles",
+     "fr": "ils/elles étudieraient",
+     "phon": "eel/el zay-tew-dee-uh-reh",
+     "en": "",
+     "speak": "ils étudieraient",
+     "subs": [
+      {
+       "label": "ils",
+       "fr": "ils étudieraient",
+       "phon": "eel zay-tew-dee-uh-reh",
+       "en": "",
+       "speak": "ils étudieraient"
+      },
+      {
+       "label": "elles",
+       "fr": "elles étudieraient",
+       "phon": "el zay-tew-dee-uh-reh",
+       "en": "",
+       "speak": "elles étudieraient"
+      }
+     ]
+    }
+   ]
+  }
+ }
+]

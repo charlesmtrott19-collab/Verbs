@@ -1,0 +1,6 @@
+node_modules/
+tests/out/
+# Personal data and local handover notes: never commit (the site is public)
+*backup*.json
+verbes-regenerate-*.json
+handover/
