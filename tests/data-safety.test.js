@@ -167,7 +167,8 @@ test("review log: Reset keeps the log and adds a marker", async () => {
   const app = await loadApp(); const D = driver(app);
   try {
     D.start(); D.know(); await sleep(20);
-    D.d.querySelector("#tabs [data-tab=settings]").click();
+    D.d.querySelector("#tabs [data-tab=today]").click();
+    D.d.querySelector(".gear[data-tab=settings]").click();   // v6.9: Settings sit behind the gear on Today
     D.d.querySelector('[data-reset="progress"]').click();
     await D.confirmNext(); await sleep(30);
     const log = plain(await app.internals.logDB.all());

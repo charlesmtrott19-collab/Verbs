@@ -54,11 +54,12 @@ test("Know on the back grades and moves on", () => {
   assert.equal(e.step, 1); assert.equal(e.last, "pass"); assert.equal(e.enc, 1);
 });
 
-test("Hard (key 3): reveals first, then grades Hard; the card stays on its step and the log says hard", async () => {
+test("CURRENT (Phase 8 changes) Hard (key 2): reveals first, then grades Hard; the card stays on its step and the log says hard", async () => {
   const it = cur(), k = unitKey(it), idx = S().idx;
-  key("3");
+  key("2");
   assert.equal(it.revealed, true); assert.equal(S().idx, idx, "first press only shows the answer");
-  key("3");
+  assert.deepEqual([...d.querySelectorAll("#actions .act")].map(b => b.textContent.replace(/\d$/, "")), ["Again", "Hard", "Good"], "4C labels and order");
+  key("2");
   assert.equal(S().idx, idx + 1, "second press grades");
   const e = V().formsched.forms[k];
   assert.deepEqual({ step: e.step, last: e.last }, { step: 1, last: "hard" }, "a new card graded Hard moves to step 1");
