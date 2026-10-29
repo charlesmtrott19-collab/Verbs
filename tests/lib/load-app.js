@@ -31,6 +31,8 @@ function readApp({ indexPath = path.join(ROOT, "index.html"), verbsSource } = {}
   if (!html.includes(VERBS_TAG)) throw new Error("load-app: the verbs.js <script> tag in index.html has changed; update VERBS_TAG in tests/lib/load-app.js");
   const inlined = verbs.replace(/^const (TENSES|PRONOUNS|RULES|AUXILIARIES|VERBS)\s*=/gm, "var $1 =");
   html = html.replace(VERBS_TAG, () => "<script>" + inlined + "\n</script>");
+  // v6.10: the app is split into plain scripts under js/; inline each one the same way (older versions have none).
+  html = html.replace(/<script src="(js\/[\w-]+\.js)"><\/script>/g, (m, p) => "<script>" + fs.readFileSync(path.join(path.dirname(indexPath), p), "utf8") + "\n</script>");
   // Add the hook after the line that defines window.__verbes (the line ends with "};").
   const at = html.indexOf(HOOK_ANCHOR);
   if (at < 0) throw new Error("load-app: window.__verbes was not found in index.html; update HOOK_ANCHOR in tests/lib/load-app.js");

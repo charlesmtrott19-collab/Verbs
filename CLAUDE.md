@@ -11,7 +11,8 @@ writing second). The app chooses the session; recall, not recognition; seen, rec
 weaknesses drive what comes back; it must be reliable for months, and progress must never be lost.
 
 ## Files
-- index.html: the whole app (one closure, about 3,900 lines). verbs.js: data only (267 verbs; header documents every field).
+- index.html: markup and CSS. js/: the code as 7 plain scripts loaded in order (core, conjugate, audio, study, screens,
+  scheduler, app; top-level names are shared globals). verbs.js: data only (267 verbs; header documents every field).
 - tests/: Node + jsdom harness. tests/lib/load-app.js loads the app; HOOK_NAMES exposes internals to tests.
 - tools/make-audio.js: records audio clips with OpenAI on this laptop (the app never calls OpenAI).
 - handover/ROADMAP.md: the full audit, decisions D1–D8 and Section 7 phase specs, with status notes per phase.
@@ -25,7 +26,7 @@ weaknesses drive what comes back; it must be reliable for months, and progress m
 - `node tests/make-golden.js` only for intended changes; report the before/after difference.
 
 ## Rules (used for every phase so far)
-- No code outside the phase being built. One APP_VERSION bump per phase (next: 6.10).
+- No code outside the phase being built. One APP_VERSION bump per phase (next: 6.11).
 - Read only the functions you change. Exact-text edits in one pass, then the full suite once.
 - Every behaviour change gets tests. Tests named "CURRENT (Phase n changes)" are updated in the phase that changes them.
 - Saved data: back up first (makeBundle), migrations safe to run twice, check with tests/real-export.test.js.
@@ -34,6 +35,6 @@ weaknesses drive what comes back; it must be reliable for months, and progress m
 - After each phase: a short status note under that phase in handover/ROADMAP.md, update its "Implementation progress"
   line, and one git commit named "Phase N (vX.Y): ...". Do not push unless Charles asks.
 
-## State (29 Oct 2026, v6.9)
-Done: Phases 0, 1, 2, 3, 4, 7 (v6.5), 9 (v6.6), 5 (v6.7), 6 (v6.8), 8 (v6.9); real-export checks pass. Pending:
-recording the audio (OPENAI_API_KEY not yet set); Phase 10 (11 optional). Node and Git are in C:\Program Files (add to PATH). Session A notes and departures are under each phase in handover/ROADMAP.md.
+## State (29 Oct 2026, v6.10)
+Done: Phases 0–10 (6 = v6.8, 8 = v6.9, 10 = v6.10); real-export checks pass. Pending: recording the audio
+(OPENAI_API_KEY not yet set); pushing to GitHub; Phase 11 (optional, after 6 weeks of log). Node and Git are in C:\Program Files (add to PATH). Session A notes and departures are under each phase in handover/ROADMAP.md.

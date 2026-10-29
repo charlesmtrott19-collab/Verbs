@@ -6,10 +6,10 @@ const assert = require("node:assert/strict");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { loadApp, plain, ROOT } = require("./lib/load-app");
+const { loadApp, readApp, plain } = require("./lib/load-app");
 const audio = require("../tools/make-audio");
 
-const HTML = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+const HTML = readApp();   // index.html with every script it loads (js/*.js since v6.10)
 
 test("the app has no OpenAI address, key field or live speech call", () => {
   assert.doesNotMatch(HTML, /api\.openai\.com/i);
